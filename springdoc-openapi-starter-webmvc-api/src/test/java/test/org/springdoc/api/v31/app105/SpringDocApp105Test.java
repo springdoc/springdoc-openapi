@@ -31,7 +31,7 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -55,7 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		"springdoc.group-configs[3].paths-to-exclude=/v1/users",
 		"springdoc.group-configs[3].packages-to-scan=test.org.springdoc.api.v31.app105.api.user,test.org.springdoc.api.v31.app105.api.store",
 })
-public class SpringDocApp105Test extends AbstractSpringDocV31Test {
+public class SpringDocApp105Test extends AbstractSpringDocTest {
 
 	public static String className;
 

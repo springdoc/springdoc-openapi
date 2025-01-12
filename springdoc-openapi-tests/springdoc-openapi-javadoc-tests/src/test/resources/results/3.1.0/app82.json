@@ -1,0 +1,94 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/test": {
+      "put": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Put response entity.",
+        "description": "Put response entity.",
+        "operationId": "put",
+        "parameters": [
+          {
+            "name": "configuration",
+            "in": "query",
+            "description": "the configuration",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "second",
+            "in": "query",
+            "description": "the second",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "personDTO",
+            "in": "query",
+            "description": "the person dto",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PersonDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PersonDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The Email."
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The First name."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The Last name."
+          }
+        },
+        "description": "The type Person dto."
+      }
+    }
+  }
+}

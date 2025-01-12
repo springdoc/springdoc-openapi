@@ -25,11 +25,11 @@
 package test.org.springdoc.api.v31.app162;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class SpringDocApp162Test extends AbstractSpringDocV31Test {
+public class SpringDocApp162Test extends AbstractSpringDocTest {
 
 	@Test
 	void testApp2() throws Exception {

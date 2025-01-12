@@ -36,13 +36,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.core.jackson.mixin.Schema31Mixin;
 
 /**
  * The interface Sorted schema mixin 31.
  *
  * @author bnasslashen
  */
-@JsonPropertyOrder(value = { "type", "format" }, alphabetic = true)
+@JsonPropertyOrder(value = {"type", "format", "if", "then", "else"}, alphabetic = true)
 public interface SortedSchemaMixin31 {
 
 	/**
@@ -116,6 +118,7 @@ public interface SortedSchemaMixin31 {
 	 * @return the types
 	 */
 	@JsonProperty("type")
+	@JsonSerialize(using = Schema31Mixin.TypeSerializer.class)
 	Set<String> getTypes();
 
 	/**
@@ -140,7 +143,7 @@ public interface SortedSchemaMixin31 {
 	 *
 	 * @return the example
 	 */
-	@JsonInclude(JsonInclude.Include.CUSTOM)
+	@JsonInclude(value = JsonInclude.Include.NON_NULL)
 	Object getExample();
 
 	/**
@@ -150,5 +153,13 @@ public interface SortedSchemaMixin31 {
 	 */
 	@JsonIgnore
 	Object getJsonSchemaImpl();
+
+	/**
+	 * Gets boolean schema value.
+	 *
+	 * @return the boolean schema value
+	 */
+	@JsonIgnore
+	Boolean getBooleanSchemaValue();
 
 }

@@ -1,0 +1,107 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API Examples",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Operations"
+    },
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/api/foo": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Create string.",
+        "description": "Create string.",
+        "operationId": "create",
+        "requestBody": {
+          "description": "the foo",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FooBean_View2"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FooBean_View1"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FooBean_View1": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Code.",
+            "format": "int32"
+          }
+        },
+        "description": "The type Foo bean."
+      },
+      "FooBean_View2": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Code.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          }
+        },
+        "description": "The type Foo bean."
+      }
+    }
+  }
+}

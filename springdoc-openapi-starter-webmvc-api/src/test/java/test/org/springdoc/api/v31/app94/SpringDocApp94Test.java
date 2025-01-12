@@ -40,7 +40,7 @@ import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.webmvc.api.OpenApiWebMvcResource;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 import test.org.springdoc.api.v31.app91.Greeting;
 
 import org.springframework.beans.BeansException;
@@ -62,7 +62,7 @@ import static org.springdoc.core.utils.Constants.DEFAULT_GROUP_NAME;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @TestPropertySource(properties = "springdoc.default-produces-media-type=application/json")
-public class SpringDocApp94Test extends AbstractSpringDocV31Test {
+public class SpringDocApp94Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp implements ApplicationContextAware {

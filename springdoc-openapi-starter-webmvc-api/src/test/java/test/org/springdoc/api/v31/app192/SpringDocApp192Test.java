@@ -23,12 +23,12 @@
 package test.org.springdoc.api.v31.app192;
 
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-public class SpringDocApp192Test extends AbstractSpringDocV31Test {
+public class SpringDocApp192Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}

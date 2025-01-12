@@ -42,7 +42,7 @@ import io.swagger.v3.oas.models.Paths;
  *
  * @author bnasslashen
  */
-@JsonPropertyOrder(value = { "openapi", "info", "externalDocs", "servers", "security", "tags", "paths", "components", "webhooks" }, alphabetic = true)
+@JsonPropertyOrder(value = {"openapi", "info", "externalDocs", "servers", "security", "tags", "paths", "components", "webhooks"}, alphabetic = true)
 public interface SortedOpenAPIMixin31 {
 
 	/**
@@ -71,5 +71,4 @@ public interface SortedOpenAPIMixin31 {
 	 */
 	@JsonSerialize(using = PathsSerializer.class)
 	Paths getPaths();
-
 }

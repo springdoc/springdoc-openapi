@@ -1,0 +1,85 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/multi": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Multiple files and JSON payloads as multi part request",
+        "description": "Multi files in multi part string.",
+        "operationId": "multiFilesInMultiPart",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "params": {
+                    "$ref": "#/components/schemas/JsonRequest",
+                    "description": "the json request"
+                  },
+                  "file1": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "This is file1"
+                  },
+                  "file2": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "This is file2"
+                  }
+                },
+                "required": [
+                  "params"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "JsonRequest": {
+        "type": "object",
+        "description": "This is the configuration",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The Name."
+          }
+        }
+      }
+    }
+  }
+}

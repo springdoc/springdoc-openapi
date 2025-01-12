@@ -1,0 +1,86 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/values/data": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "List tracker data.",
+        "description": "List tracker data.",
+        "operationId": "list",
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/test.org.springdoc.api.v30.app4.TrackerData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the tracker data",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/test.org.springdoc.api.v30.app4.TrackerData"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "test.org.springdoc.api.v30.app4.TrackerData": {
+        "required": [
+          "timestamp",
+          "trackerId",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "trackerId": {
+            "type": "string",
+            "description": "The Tracker id.",
+            "example": "the-tracker-id"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "The Timestamp.",
+            "format": "date-time",
+            "example": "2018-01-01T00:00:00Z"
+          },
+          "value": {
+            "type": "number",
+            "description": "The data value",
+            "format": "double",
+            "example": 19.0
+          }
+        },
+        "description": "The type Tracker data."
+      }
+    }
+  }
+}

@@ -25,14 +25,14 @@
 package test.org.springdoc.api.v31.app156;
 
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Tests Spring meta-annotations as method parameters
  */
-public class SpringDocApp156Test extends AbstractSpringDocV31Test {
+public class SpringDocApp156Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}

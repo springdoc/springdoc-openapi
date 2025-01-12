@@ -29,7 +29,7 @@ import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = Constants.SPRINGDOC_CACHE_DISABLED + "=false")
-public class SpringDocApp171Test extends AbstractSpringDocV31Test {
+public class SpringDocApp171Test extends AbstractSpringDocTest {
 
 	@Test
 	@Override

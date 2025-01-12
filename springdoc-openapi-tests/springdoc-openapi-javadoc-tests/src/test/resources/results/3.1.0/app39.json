@@ -1,0 +1,94 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/hello": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Hello string.",
+        "description": "Hello string.",
+        "operationId": "hello",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/myGlobalHeader",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "test Request",
+        "description": "Search employee.",
+        "operationId": "searchEmployee",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/myGlobalHeader",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "description": "test value",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "myGlobalHeader": {
+        "name": "My-Global-Header",
+        "in": "header",
+        "description": "My Global Header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

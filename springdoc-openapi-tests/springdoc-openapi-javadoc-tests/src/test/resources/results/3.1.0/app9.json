@@ -1,0 +1,64 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "my-api-controller",
+      "description": "The type My api controller."
+    }
+  ],
+  "paths": {
+    "/myapi": {
+      "get": {
+        "tags": [
+          "my-api-controller"
+        ],
+        "description": "Annotations from interfaces test",
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/myapi/getCode": {
+      "get": {
+        "tags": [
+          "my-api-controller"
+        ],
+        "description": "Annotations from class with hidden parameter code",
+        "operationId": "getCode",
+        "responses": {
+          "200": {
+            "description": "the code",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

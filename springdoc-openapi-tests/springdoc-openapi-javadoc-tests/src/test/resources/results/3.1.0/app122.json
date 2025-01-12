@@ -1,0 +1,76 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "example"
+        ],
+        "summary": "create",
+        "description": "Create response entity.",
+        "operationId": "create",
+        "requestBody": {
+          "description": "the payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WrapperCustomerDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CustomerDto": {
+        "type": "object",
+        "properties": {
+          "baseStr": {
+            "type": "string",
+            "description": "The Base str."
+          },
+          "customerName": {
+            "type": "string",
+            "description": "The Customer name."
+          }
+        },
+        "description": "The type Customer dto."
+      },
+      "WrapperCustomerDto": {
+        "type": "object",
+        "properties": {
+          "wrapper": {
+            "type": "string",
+            "description": "The Wrapper."
+          }
+        },
+        "description": "The type Wrapper."
+      }
+    }
+  }
+}

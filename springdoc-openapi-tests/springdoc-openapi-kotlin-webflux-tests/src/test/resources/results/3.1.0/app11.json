@@ -1,0 +1,117 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/status": {
+      "get": {
+        "tags": [
+          "system-status-controller"
+        ],
+        "operationId": "index",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status/foo": {
+      "get": {
+        "tags": [
+          "system-status-controller"
+        ],
+        "operationId": "foo",
+        "parameters": [
+          {
+            "name": "personDTO",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PersonDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SystemStatusResponse": {
+        "required": [
+          "emptyTest",
+          "nonEmptyDesc",
+          "systemStatus"
+        ],
+        "type": "object",
+        "properties": {
+          "systemStatus": {
+            "type": "string",
+            "description": "will be removed in next version",
+            "deprecated": true,
+            "enum": [
+              "OK"
+            ]
+          },
+          "emptyTest": {
+            "type": "string",
+            "deprecated": true
+          },
+          "nonEmptyDesc": {
+            "type": "string",
+            "description": "nonEmptyDesc",
+            "deprecated": true
+          }
+        }
+      },
+      "PersonDTO": {
+        "required": [
+          "email",
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "no-email",
+            "deprecated": true
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

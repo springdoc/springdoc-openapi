@@ -1,0 +1,168 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "greetings-rest-controller",
+      "description": "The type Greetings rest controller."
+    },
+    {
+      "name": "person-service",
+      "description": "The type Person service."
+    }
+  ],
+  "paths": {
+    "/greet/{name}": {
+      "get": {
+        "tags": [
+          "greetings-rest-controller"
+        ],
+        "summary": "Greet string.",
+        "description": "Greet string.",
+        "operationId": "greet",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "the name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/people": {
+      "get": {
+        "tags": [
+          "person-service"
+        ],
+        "summary": "All set.",
+        "description": "All set.",
+        "operationId": "all",
+        "responses": {
+          "200": {
+            "description": "the set",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "person-service"
+        ],
+        "summary": "Save person.",
+        "description": "Save person.",
+        "operationId": "save",
+        "parameters": [
+          {
+            "name": "p",
+            "in": "query",
+            "description": "the p",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Person"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the person",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/people/{id}": {
+      "get": {
+        "tags": [
+          "person-service"
+        ],
+        "summary": "By id person.",
+        "description": "By id person.",
+        "operationId": "byId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the person",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Person": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "The Name."
+          }
+        },
+        "description": "The type Person."
+      }
+    }
+  }
+}

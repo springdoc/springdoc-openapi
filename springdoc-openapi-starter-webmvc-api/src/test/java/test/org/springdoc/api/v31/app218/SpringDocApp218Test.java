@@ -19,7 +19,7 @@
 package test.org.springdoc.api.v31.app218;
 
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * A test for {@link SpecPropertiesCustomizer}
  */
 @SpringBootTest
-public class SpringDocApp218Test extends AbstractSpringDocV31Test {
+public class SpringDocApp218Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}

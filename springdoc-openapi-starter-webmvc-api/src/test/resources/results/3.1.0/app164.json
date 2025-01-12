@@ -52,7 +52,7 @@
           "listBlah": {
             "type": "array",
             "items": {
-              "description": "${blahDescription.value}"
+              "description": "test"
             }
           }
         }

@@ -1,0 +1,58 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/hello": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Hello hello dto.",
+        "description": "Hello hello dto.",
+        "operationId": "hello",
+        "responses": {
+          "default": {
+            "description": "the hello dto",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloDTO",
+                  "description": "${test.app101.operation.hello.response.schema.description}"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HelloDTO": {
+        "type": "object",
+        "description": "Description of schema of hello entity",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Description of schema of param id for api hello"
+          }
+        }
+      }
+    }
+  }
+}

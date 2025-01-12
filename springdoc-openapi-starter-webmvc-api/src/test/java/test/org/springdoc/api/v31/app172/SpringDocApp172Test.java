@@ -29,7 +29,7 @@ import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = { "springdoc.show-actuator=true", "management.endpoints.enabled-by-default=true",
 		"management.endpoints.web.exposure.include = tenant" })
-public class SpringDocApp172Test extends AbstractSpringDocV31Test {
+public class SpringDocApp172Test extends AbstractSpringDocTest {
 
 	@Test
 	protected void testApp() throws Exception {

@@ -21,7 +21,7 @@ package test.org.springdoc.api.v31.app217;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @ActiveProfiles("217")
-public class SpringDocApp217Test extends AbstractSpringDocV31Test {
+public class SpringDocApp217Test extends AbstractSpringDocTest {
 	
 	
 	@Test

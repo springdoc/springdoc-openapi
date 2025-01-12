@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = { "management.endpoints.web.exposure.include=*",
 				"springdoc.use-management-port=true",
-				"management.server.port=9294",
+				"management.server.port=9394",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
 class SpringDocApp15Test extends AbstractSpringDocActuatorTest {

@@ -24,13 +24,13 @@
 
 package test.org.springdoc.api.v31.app164;
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "springdoc.api-docs.resolve-schema-properties=true")
-public class SpringDocApp164Test extends AbstractSpringDocV31Test {
+public class SpringDocApp164Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {

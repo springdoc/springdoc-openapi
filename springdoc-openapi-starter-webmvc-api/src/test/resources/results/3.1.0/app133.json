@@ -11,19 +11,25 @@
     }
   ],
   "paths": {
-    "/test3": {
+    "/test1": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "getMessageFromHeader3",
+        "operationId": "getMessageFromHeader1",
         "parameters": [
           {
             "name": "myHeader",
             "in": "header",
             "description": "A header",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string",
+              "enum": [
+                "foo",
+                "bar"
+              ]
+            }
           }
         ],
         "responses": {
@@ -52,7 +58,9 @@
             "in": "header",
             "description": "A header",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -69,12 +77,12 @@
         }
       }
     },
-    "/test1": {
+    "/test3": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "getMessageFromHeader1",
+        "operationId": "getMessageFromHeader3",
         "parameters": [
           {
             "name": "myHeader",
@@ -82,10 +90,7 @@
             "description": "A header",
             "required": true,
             "schema": {
-              "enum": [
-                "foo",
-                "bar"
-              ]
+              "type": "integer"
             }
           }
         ],

@@ -24,7 +24,7 @@
 
 package test.org.springdoc.api.v31.app166;
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
@@ -34,7 +34,7 @@ import org.springframework.test.context.TestPropertySource;
  * Exactly, that the local handler takes precedence over the global one
  * */
 @TestPropertySource(properties = "springdoc.api-docs.resolve-schema-properties=true")
-public class SpringDocApp166Test extends AbstractSpringDocV31Test {
+public class SpringDocApp166Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {

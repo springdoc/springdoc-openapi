@@ -1,1 +1,162 @@
-{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost","description":"Generated server url"}],"paths":{"/values/{trackerId}/data":{"get":{"tags":["hello-controller"],"description":"Get last data from a tracker","operationId":"thirdList","parameters":[{"name":"trackerId","in":"path","required":true,"schema":{"example":"the-tracker-id"}},{"name":"start","in":"query","required":false,"schema":{"format":"date-time","example":"1970-01-01T00:00:00.000Z"}},{"name":"end","in":"query","required":false,"schema":{"format":"date-time","example":"1970-01-01T00:10:00.000Z"}},{"name":"limit","in":"query","required":false,"schema":{"example":10}}],"responses":{"200":{"description":"OK"}}}},"/secondlist/{trackerId}":{"get":{"tags":["hello-controller"],"operationId":"secondlist","parameters":[{"name":"trackerId","in":"path","required":true,"schema":{"example":"the-tracker-id"}},{"name":"start","in":"query","required":false,"schema":{"format":"date-time","example":"1970-01-01T00:00:00.000Z"}},{"name":"end","in":"query","required":false,"schema":{"format":"date-time","example":"1970-01-01T00:10:00.000Z"}}],"responses":{"200":{"description":"OK"}}}},"/list":{"get":{"tags":["hello-controller"],"operationId":"list","parameters":[{"name":"start","in":"query","required":false,"schema":{"format":"date-time","example":"1970-01-01T00:00:00.000Z"}},{"name":"end","in":"query","required":false,"schema":{"format":"date-time","example":"1970-01-01T00:10:00.000Z"}}],"responses":{"200":{"description":"OK"}}}},"/check":{"get":{"tags":["hello-controller"],"operationId":"check","responses":{"200":{"description":"OK"}}}}},"components":{}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/values/{trackerId}/data": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Get last data from a tracker",
+        "operationId": "thirdList",
+        "parameters": [
+          {
+            "name": "trackerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "the-tracker-id"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:10:00.000Z"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/secondlist/{trackerId}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "secondlist",
+        "parameters": [
+          {
+            "name": "trackerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "the-tracker-id"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:10:00.000Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/list": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "list",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:10:00.000Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/check": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "check",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

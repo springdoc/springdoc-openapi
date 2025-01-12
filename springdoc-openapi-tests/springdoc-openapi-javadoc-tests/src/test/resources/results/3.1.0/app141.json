@@ -1,0 +1,428 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "book-repository",
+      "description": "The type Book repository."
+    }
+  ],
+  "paths": {
+    "/books": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find all list.",
+        "description": "Find all list.",
+        "operationId": "findAll",
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/{author}": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find by author list.",
+        "description": "Find by author list.",
+        "operationId": "findByAuthor",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "description": "the author",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/greeter/greeter2/books": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find all list.",
+        "description": "Find all list.",
+        "operationId": "findAll_1",
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/greeter/greeter2/books/{author}": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find by author list.",
+        "description": "Find by author list.",
+        "operationId": "findByAuthor_1",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "description": "the author",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/greeter/greeter2/books": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find all list.",
+        "description": "Find all list.",
+        "operationId": "findAll_2",
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/greeter/greeter2/books/{author}": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find by author list.",
+        "description": "Find by author list.",
+        "operationId": "findByAuthor_2",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "description": "the author",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/greeter/books": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find all list.",
+        "description": "Find all list.",
+        "operationId": "findAll_3",
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/greeter/books/{author}": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find by author list.",
+        "description": "Find by author list.",
+        "operationId": "findByAuthor_3",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "description": "the author",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/greeter2/books": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find all list.",
+        "description": "Find all list.",
+        "operationId": "findAll_4",
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/greeter2/books/{author}": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "summary": "Find by author list.",
+        "description": "Find by author list.",
+        "operationId": "findByAuthor_4",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "description": "the author",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The Id."
+          },
+          "title": {
+            "type": "string",
+            "description": "The Title."
+          },
+          "author": {
+            "type": "string",
+            "description": "The Author."
+          }
+        },
+        "description": "The type Book."
+      }
+    }
+  }
+}

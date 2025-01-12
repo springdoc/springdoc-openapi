@@ -1,0 +1,217 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "test-controller",
+      "description": "The type Test controller."
+    }
+  ],
+  "paths": {
+    "/test": {
+      "post": {
+        "tags": [
+          "test-controller"
+        ],
+        "summary": "Gets test.",
+        "description": "Gets test.",
+        "operationId": "getTest",
+        "parameters": [
+          {
+            "name": "param",
+            "in": "query",
+            "description": "the param",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "childParam",
+            "in": "query",
+            "description": "parameter from child of RequestParams",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stringParam",
+            "in": "query",
+            "description": "string parameter",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stringParam1",
+            "in": "query",
+            "description": "The String param 1.",
+            "required": false,
+            "deprecated": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stringParam2",
+            "in": "query",
+            "description": "string parameter2",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "intParam",
+            "in": "query",
+            "description": "int parameter",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "intParam2",
+            "in": "query",
+            "description": "The Int param 2.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "intParam3",
+            "in": "query",
+            "description": "The Int param 3.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nested.param1",
+            "in": "query",
+            "description": "nested string parameter",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nested.param2",
+            "in": "query",
+            "description": "nested BigInteger parameter",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "nestedList",
+            "in": "query",
+            "description": "The Nested list.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Nested"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the test",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InheritedRequestParams"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "InheritedRequestParams": {
+        "type": "object",
+        "description": "The type Inherited request params.",
+        "properties": {
+          "childParam": {
+            "type": "string",
+            "description": "parameter from child of RequestParams"
+          },
+          "intParam": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The Int param."
+          },
+          "intParam2": {
+            "type": "string",
+            "description": "The Int param 2."
+          },
+          "intParam3": {
+            "type": "string",
+            "description": "The Int param 3."
+          },
+          "nested": {
+            "$ref": "#/components/schemas/Nested",
+            "description": "The Nested."
+          },
+          "nestedList": {
+            "type": "array",
+            "description": "The Nested list.",
+            "items": {
+              "$ref": "#/components/schemas/Nested"
+            }
+          },
+          "stringParam": {
+            "type": "string",
+            "description": "The String param."
+          },
+          "stringParam1": {
+            "type": "string",
+            "deprecated": true,
+            "description": "The String param 1."
+          },
+          "stringParam2": {
+            "type": "string",
+            "description": "The String param 2."
+          }
+        },
+        "required": [
+          "childParam"
+        ]
+      },
+      "Nested": {
+        "type": "object",
+        "description": "The type Nested.",
+        "properties": {
+          "param1": {
+            "type": "string",
+            "description": "The Param 1."
+          },
+          "param2": {
+            "type": "integer",
+            "description": "The Param 2."
+          }
+        }
+      }
+    }
+  }
+}

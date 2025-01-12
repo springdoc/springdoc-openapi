@@ -1,0 +1,47 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "My title",
+    "description": "My description",
+    "termsOfService": "My terms",
+    "contact": {
+      "email": "My contact email",
+      "name": "My contact name",
+      "url": "My contact url"
+    },
+    "license": {
+      "name": "My license name",
+      "url": "My license url"
+    },
+    "version": "My version"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/persons": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "My Desc",
+        "operationId": "persons",
+        "responses": {
+          "200": {
+            "description": "the json object"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

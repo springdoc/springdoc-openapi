@@ -1,0 +1,88 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Update action result.",
+        "description": "Update action result.",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the action result",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResultVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActionResultVoid": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "description": "The Error code."
+          },
+          "errorValue": {
+            "type": "object",
+            "description": "The Error value."
+          },
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          },
+          "success": {
+            "type": "boolean",
+            "description": "The Success."
+          },
+          "targetUrl": {
+            "type": "string",
+            "description": "The Target url."
+          },
+          "value": {
+            "type": "object",
+            "description": "The Value."
+          }
+        },
+        "description": "The type Action result."
+      }
+    }
+  }
+}

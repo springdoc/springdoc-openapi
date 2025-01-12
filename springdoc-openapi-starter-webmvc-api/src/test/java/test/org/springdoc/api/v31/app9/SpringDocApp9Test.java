@@ -22,13 +22,13 @@
 
 package test.org.springdoc.api.v31.app9;
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "springdoc.remove-broken-reference-definitions=false")
-public class SpringDocApp9Test extends AbstractSpringDocV31Test {
+public class SpringDocApp9Test extends AbstractSpringDocTest {
 
     @SpringBootApplication
     static class SpringDocTestApp {

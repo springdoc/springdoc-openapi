@@ -31,7 +31,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.springdoc.core.converters.CollectionModelContentConverter;
-import org.springdoc.core.converters.RepresentationModelLinksOASMixin;
+import org.springdoc.core.converters.HateoasLinksConverter;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiHateoasLinksCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -49,7 +49,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.hateoas.Links;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.LinkRelationProvider;
 
 /**
@@ -99,20 +98,32 @@ public class SpringDocHateoasConfiguration {
 	 *
 	 * @param halProvider               the hal provider
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param objectMapperProvider      the object mapper provider
 	 * @return the open api customizer
-	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
+	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
 	@Bean(Constants.LINKS_SCHEMA_CUSTOMISER)
 	@ConditionalOnMissingBean(name = Constants.LINKS_SCHEMA_CUSTOMISER)
 	@Lazy(false)
-	GlobalOpenApiCustomizer linksSchemaCustomizer(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties,
-			ObjectMapperProvider objectMapperProvider) {
+	GlobalOpenApiCustomizer linksSchemaCustomizer(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties) {
 		if (!halProvider.isHalEnabled()) {
 			return openApi -> {
 			};
 		}
-		objectMapperProvider.jsonMapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
 		return new OpenApiHateoasLinksCustomizer(springDocConfigProperties);
 	}
+
+	/**
+	 * Hateoas links converter hateoas links converter.
+	 *
+	 * @param springDocObjectMapper the spring doc object mapper
+	 * @return the hateoas links converter
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	HateoasLinksConverter hateoasLinksConverter(ObjectMapperProvider springDocObjectMapper) {
+		return new HateoasLinksConverter(springDocObjectMapper) ;
+	}
+	
+	
 }

@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.web.servlet.MvcResult;
@@ -54,7 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author bnasslahsen, michael.clarke
  */
-class SpringDocApp233Test extends AbstractSpringDocV31Test {
+class SpringDocApp233Test extends AbstractSpringDocTest {
 
     @CsvSource({"requiredNotNullParameterObject.requiredNotNullField, true",
             "requiredNotNullParameterObject.requiredNoValidationField, true",

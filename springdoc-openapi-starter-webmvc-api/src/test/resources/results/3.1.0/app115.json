@@ -23,7 +23,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
+                  "type": "string",
                   "properties": {}
                 }
               }

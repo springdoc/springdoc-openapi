@@ -57,6 +57,7 @@ import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.apache.commons.lang3.ArrayUtils;
@@ -68,6 +69,8 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestAttribute;
+
+import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
 
 /**
  * The type Spring doc annotations utils.
@@ -131,7 +134,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		try {
 			resolvedSchema = ModelConverters.getInstance(openapi31)
 					.resolveAsResolvedSchema(
-							new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
+							new AnnotatedType(returnType)
+									.resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
 		}
 		catch (Exception e) {
 			LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
@@ -168,13 +172,16 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 				components.setSchemas(componentSchemas);
 			}
 			if (resolvedSchema.schema != null) {
-				schemaN = new Schema();
+				schemaN = new Schema(specVersion);
 				if (StringUtils.isNotBlank(resolvedSchema.schema.getName()))
 					schemaN.set$ref(COMPONENTS_REF + resolvedSchema.schema.getName());
 				else
 					schemaN = resolvedSchema.schema;
 			}
 		}
+		if(openapi31)
+			handleSchemaTypes(schemaN);
+		
 		return schemaN;
 	}
 
@@ -215,9 +222,10 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			}
 		}
 
-		if (content.size() == 0 && annotationContents.length != 1) {
+		if (content.isEmpty() && annotationContents.length != 1) {
 			return Optional.empty();
 		}
+		handleSchemaTypes(content);
 		return Optional.of(content);
 	}
 
@@ -386,7 +394,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			getSchema(annotationContent, components, jsonViewAnnotation, openapi31).ifPresent(mediaType::setSchema);
 			if (annotationContent.schemaProperties().length > 0) {
 				if (mediaType.getSchema() == null) {
-					mediaType.schema(new Schema<Object>().type("object"));
+					mediaType.schema(new ObjectSchema());
 				}
 				Schema oSchema = mediaType.getSchema();
 				for (SchemaProperty sp : annotationContent.schemaProperties()) {

@@ -41,6 +41,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
+import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
+
 /**
  * The type Additional models converter.
  *
@@ -146,8 +148,11 @@ public class AdditionalModelsConverter implements ModelConverter {
 			Class<?> cls = javaType.getRawClass();
 			if (modelToSchemaMap.containsKey(cls))
 				try {
+					Schema schema = modelToSchemaMap.get(cls);
+					if(springDocObjectMapper.isOpenapi31())
+						handleSchemaTypes(schema);
 					return springDocObjectMapper.jsonMapper()
-							.readValue(springDocObjectMapper.jsonMapper().writeValueAsString(modelToSchemaMap.get(cls)), new TypeReference<Schema>() {});
+							.readValue(springDocObjectMapper.jsonMapper().writeValueAsString(schema), new TypeReference<Schema>() {});
 				}
 				catch (JsonProcessingException e) {
 					LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());

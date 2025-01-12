@@ -1,0 +1,123 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/api1": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test 1 string.",
+        "description": "Test 1 string.",
+        "operationId": "test1",
+        "requestBody": {
+          "description": "the test",
+          "content": {
+            "application/json": {
+              "schema": {
+                "minimum": 2,
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test 2 string.",
+        "description": "Test 2 string.",
+        "operationId": "test2",
+        "requestBody": {
+          "description": "the test",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api3": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test 3 string.",
+        "description": "Test 3 string.",
+        "operationId": "test3",
+        "parameters": [
+          {
+            "name": "test",
+            "in": "query",
+            "description": "the test",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

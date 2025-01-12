@@ -1,0 +1,682 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SpringShop API",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://springdoc.org"
+    },
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/{email}": {
+      "get": {
+        "tags": [
+          "people"
+        ],
+        "description": "Find person by e-mail",
+        "operationId": "findPerson",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "E-Mail address to lookup for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "the person dto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Person with such e-mail doesn't exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "people"
+        ],
+        "description": "Create new person",
+        "operationId": "addPerson",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "E-Mail",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "First Name"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "Last Name"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "the response entity",
+            "headers": {
+              "Location": {
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Person with such e-mail already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "people"
+        ],
+        "description": "Delete existing person",
+        "operationId": "deletePerson",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "E-Mail address to lookup for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Person has been deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Person with such e-mail doesn't exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/items": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Show items list.",
+        "description": "Show items list.",
+        "operationId": "showItems",
+        "parameters": [
+          {
+            "name": "cusID",
+            "in": "query",
+            "description": "the customer id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 6,
+              "minLength": 4
+            }
+          },
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 6,
+              "minimum": 4
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "the start date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "filterIds",
+            "in": "query",
+            "description": "the filter ids",
+            "required": false,
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ItemDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Add item response entity.",
+        "description": "Add item response entity.",
+        "operationId": "addItem",
+        "requestBody": {
+          "description": "the item dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemLightDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inventory": {
+      "get": {
+        "tags": [
+          "developers",
+          "inventory"
+        ],
+        "summary": "By passing in the appropriate options, you can search for available inventory in the system ",
+        "description": "searches inventory",
+        "operationId": "searchInventory",
+        "parameters": [
+          {
+            "name": "searchString",
+            "in": "query",
+            "description": "pass an optional search string for looking up inventory",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "number of records to skip for pagination",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "maximum number of records to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 50,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InventoryItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InventoryItem"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "inventory",
+          "admins"
+        ],
+        "summary": "Adds an item to the system",
+        "description": "adds an inventory item",
+        "operationId": "addInventory",
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryItem"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/people": {
+      "get": {
+        "tags": [
+          "people"
+        ],
+        "description": "List all people",
+        "operationId": "getPeople",
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "the people",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello/{numTelco}": {
+      "get": {
+        "tags": [
+          "tea"
+        ],
+        "summary": "Index string.",
+        "description": "Index string.",
+        "operationId": "index",
+        "parameters": [
+          {
+            "name": "numTelco",
+            "in": "path",
+            "description": "the num tel",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "adresse",
+            "in": "query",
+            "description": "the adresse",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "418": {
+            "description": "the string",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorMessage": {
+        "type": "object",
+        "description": "The type Error message.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The Id."
+          },
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          }
+        }
+      },
+      "PersonDTO": {
+        "type": "object",
+        "description": "The type Person dto.",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The Email."
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The First name."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The Last name."
+          }
+        }
+      },
+      "ItemLightDTO": {
+        "type": "object",
+        "description": "The type Item light dto.",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "description of type String"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "description": "price of type int"
+          },
+          "deprecatedPrice": {
+            "type": "integer",
+            "format": "int32",
+            "deprecated": true,
+            "description": "The Deprecated price."
+          }
+        }
+      },
+      "InventoryItem": {
+        "type": "object",
+        "description": "InventoryItem",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The Id.",
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "name": {
+            "type": "string",
+            "description": "The Name.",
+            "example": "Widget Adapter"
+          },
+          "releaseDate": {
+            "type": "string",
+            "description": "The Release date.",
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "manufacturer": {
+            "$ref": "#/components/schemas/Manufacturer",
+            "description": "The Manufacturer."
+          }
+        },
+        "required": [
+          "id",
+          "manufacturer",
+          "name",
+          "releaseDate"
+        ]
+      },
+      "Manufacturer": {
+        "type": "object",
+        "description": "Manufacturer",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The Name.",
+            "example": "ACME Corporation"
+          },
+          "homePage": {
+            "type": "string",
+            "description": "The Home page.",
+            "example": "https://www.acme-corp.com"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The Phone.",
+            "example": "408-867-5309"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ItemDTO": {
+        "type": "object",
+        "description": "The type Item dto.",
+        "properties": {
+          "itemID": {
+            "type": "string",
+            "description": "itemID of type String"
+          },
+          "description": {
+            "type": "string",
+            "description": "description of type String"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "description": "price of type int"
+          },
+          "deprecatedPrice": {
+            "type": "integer",
+            "format": "int32",
+            "deprecated": true,
+            "description": "The Deprecated price."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicScheme": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

@@ -25,13 +25,13 @@
 package test.org.springdoc.api.v31.app101;
 
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("101")
-public class SpringDocApp101Test extends AbstractSpringDocV31Test {
+public class SpringDocApp101Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}

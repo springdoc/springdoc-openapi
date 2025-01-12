@@ -22,13 +22,13 @@
 
 package test.org.springdoc.api.v31.app204;
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = { "springdoc.default-flat-param-object=true" })
-public class SpringDocApp204Test extends AbstractSpringDocV31Test {
+public class SpringDocApp204Test extends AbstractSpringDocTest {
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 }

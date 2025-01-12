@@ -1,0 +1,194 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "toto",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    },
+    {
+      "bearerToken": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/personsone": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Createone.",
+        "description": "Createone.",
+        "operationId": "createone",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "the id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "the o",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/persons": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Create.",
+        "description": "Create.",
+        "operationId": "create",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "the id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "the o",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/createtwo": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Createtwo.",
+        "description": "Createtwo.",
+        "operationId": "createtwo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "the id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/createthree": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Createthree.",
+        "description": "Createthree.",
+        "operationId": "createthree",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "the id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Hello string.",
+        "description": "Hello string.",
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

@@ -79,6 +79,7 @@
       "Body": {
         "type": "object",
         "additionalProperties": {
+          "type": "object",
           "description": "Body",
           "example": {
             "key": "value"

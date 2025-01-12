@@ -1,0 +1,136 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/examplePost": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "schema example",
+        "description": "Example object.",
+        "operationId": "example",
+        "responses": {
+          "200": {
+            "description": "the object",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foo": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Foobar.",
+        "description": "Foobar.",
+        "operationId": "foobar",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "description": "User",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PersonDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/foo1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Foobar 1.",
+        "description": "Foobar 1.",
+        "operationId": "foobar1",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "description": "User",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/example": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test.",
+        "description": "Test.",
+        "operationId": "test",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PersonDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The Email."
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The First name."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The Last name."
+          }
+        },
+        "description": "The type Person dto."
+      }
+    }
+  }
+}

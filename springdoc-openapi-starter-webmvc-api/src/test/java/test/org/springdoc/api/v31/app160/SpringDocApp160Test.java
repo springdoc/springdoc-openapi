@@ -26,7 +26,7 @@ package test.org.springdoc.api.v31.app160;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = "springdoc.api-docs.resolve-schema-properties=true")
-public class SpringDocApp160Test extends AbstractSpringDocV31Test {
+public class SpringDocApp160Test extends AbstractSpringDocTest {
 
 	@Test
 	void testApp2() throws Exception {

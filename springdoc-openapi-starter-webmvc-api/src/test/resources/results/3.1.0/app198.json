@@ -1,1 +1,57 @@
-{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost","description":"Generated server url"}],"paths":{"/":{"get":{"tags":["hello-controller"],"operationId":"test","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/Response"}}}}}}}},"components":{"schemas":{"Response":{"type":"object","properties":{"val1":{"format":"decimal","deprecated":true},"val2":{"format":"decimal"},"val3":{"format":"decimal"}}}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Response": {
+        "type": "object",
+        "properties": {
+          "val1": {
+            "type": "string",
+            "format": "decimal",
+            "deprecated": true
+          },
+          "val2": {
+            "type": "string",
+            "format": "decimal"
+          },
+          "val3": {
+            "type": "string",
+            "format": "decimal"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,1 +1,103 @@
-{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost","description":"Generated server url"}],"paths":{"/test":{"post":{"tags":["hello-controller"],"description":"subscribes a client to updates relevant to the requestor's account, as identified by the input token.  The supplied url will be used as the delivery address for response payloads","operationId":"subscribe","parameters":[{"name":"x-auth-token","in":"header","description":"the authentication token provided after initially authenticating to the application","required":true,"schema":{"type":"string","description":"the authentication token provided after initially authenticating to the application"}},{"name":"url","in":"query","description":"the URL to call with response data","required":true,"schema":{"type":"string","description":"the URL to call with response data"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/SubscriptionResponse"}}}}},"callbacks":{"subscription":{"http://$request.query.url":{"post":{"description":"payload data will be sent","parameters":[{"name":"subscriptionId","in":"path","required":true,"schema":{"format":"uuid","description":"the generated UUID","readOnly":true}}],"responses":{"200":{"description":"Return this code if the callback was received and processed successfully"},"205":{"description":"Return this code to unsubscribe from future data updates"},"default":{"description":"All other response codes will disable this callback subscription"}}}}}}}}},"components":{"schemas":{"SubscriptionResponse":{"type":"object","properties":{"subscriptionUuid":{"type":"string"}}}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "subscribes a client to updates relevant to the requestor's account, as identified by the input token.  The supplied url will be used as the delivery address for response payloads",
+        "operationId": "subscribe",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "description": "the authentication token provided after initially authenticating to the application",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "the authentication token provided after initially authenticating to the application"
+            }
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "description": "the URL to call with response data",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "the URL to call with response data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionResponse"
+                }
+              }
+            }
+          }
+        },
+        "callbacks": {
+          "subscription": {
+            "http://$request.query.url": {
+              "post": {
+                "description": "payload data will be sent",
+                "parameters": [
+                  {
+                    "name": "subscriptionId",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                      "type": "string",
+                      "description": "the generated UUID",
+                      "format": "uuid",
+                      "readOnly": true
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "Return this code if the callback was received and processed successfully"
+                  },
+                  "205": {
+                    "description": "Return this code to unsubscribe from future data updates"
+                  },
+                  "default": {
+                    "description": "All other response codes will disable this callback subscription"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SubscriptionResponse": {
+        "type": "object",
+        "properties": {
+          "subscriptionUuid": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/demo/operation4": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Operation 4 (expected result - 3 parameters)",
+        "description": "Operation 4 string.",
+        "operationId": "operation4",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "page number",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "sort specification",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/demo/operation3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Operation 3 (expected result - 3 parameters)",
+        "description": "Operation 3 string.",
+        "operationId": "operation3",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "page number",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "sort specification",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/demo/operation2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Operation 2 (expected result - 3 parameters)",
+        "description": "Operation 2 string.",
+        "operationId": "operation2",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "page number",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "sort specification",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/demo/operation1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Operation 1 (expected result - no parameters)",
+        "description": "Operation 1 string.",
+        "operationId": "operation1",
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

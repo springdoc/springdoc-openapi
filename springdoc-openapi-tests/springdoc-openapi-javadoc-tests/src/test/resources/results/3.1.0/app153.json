@@ -1,0 +1,60 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "test-controller",
+      "description": "The type Test controller."
+    }
+  ],
+  "paths": {
+    "/orders": {
+      "get": {
+        "tags": [
+          "test-controller"
+        ],
+        "summary": "Method object.",
+        "description": "Method object.",
+        "operationId": "method",
+        "parameters": [
+          {
+            "name": "state",
+            "in": "query",
+            "description": "the order state",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "finished",
+              "enum": [
+                "finished",
+                "new"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the object",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

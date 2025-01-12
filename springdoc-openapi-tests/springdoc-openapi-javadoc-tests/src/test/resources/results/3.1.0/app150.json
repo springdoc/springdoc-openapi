@@ -1,0 +1,137 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/test/": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test.",
+        "description": "Test.",
+        "operationId": "test",
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          }
+        }
+      }
+    },
+    "/test1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test 1.",
+        "description": "Test 1.",
+        "operationId": "test1",
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          }
+        }
+      }
+    },
+    "/test3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test 3.",
+        "description": "Test 3.",
+        "operationId": "test3",
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": [
+                "users",
+                "123"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          }
+        }
+      }
+    },
+    "/test4": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test 4.",
+        "description": "Test 4.",
+        "operationId": "test4",
+        "parameters": [
+          {
+            "name": "localDate",
+            "in": "query",
+            "description": "the local date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

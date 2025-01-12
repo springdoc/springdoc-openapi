@@ -28,11 +28,11 @@ import java.util.Locale;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class SpringDocApp14Test extends AbstractSpringDocV31Test {
+public class SpringDocApp14Test extends AbstractSpringDocTest {
 
 	private static Locale DEFAULT_LOCALE;
 

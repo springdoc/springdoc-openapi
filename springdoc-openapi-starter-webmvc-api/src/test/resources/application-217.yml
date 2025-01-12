@@ -4,6 +4,7 @@ springdoc:
       display-name: Example Interfaces
       packages-to-scan:
         - test.org.springdoc.api.v30.app217
+        - test.org.springdoc.api.v31.app217
       open-api:
         info:
           title: Example Interfaces
@@ -24,6 +25,7 @@ springdoc:
       display-name: User Interfaces
       packages-to-scan:
         - test.org.springdoc.api.v30.app217
+        - test.org.springdoc.api.v31.app217
       open-api:
         info:
           title: User Interfaces

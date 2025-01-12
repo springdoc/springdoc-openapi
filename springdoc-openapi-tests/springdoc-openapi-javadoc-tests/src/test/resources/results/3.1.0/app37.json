@@ -1,0 +1,169 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/bar/baz": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Process car.",
+        "description": "Process car.",
+        "operationId": "process",
+        "requestBody": {
+          "description": "the c",
+          "content": {
+            "application/x.a+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Foo"
+              }
+            },
+            "application/x.b+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bar"
+              }
+            },
+            "application/x.c+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Car"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Foo"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Bar"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets1": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Pets post response entity.",
+        "description": "Pets post response entity.",
+        "operationId": "petsPost1",
+        "requestBody": {
+          "description": "the pet",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the response entity"
+          }
+        }
+      }
+    },
+    "/pets2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Pets post response entity.",
+        "description": "Pets post response entity.",
+        "operationId": "petsPost2",
+        "requestBody": {
+          "description": "the pet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the response entity"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Bar": {
+        "type": "object",
+        "properties": {
+          "bar": {
+            "type": "string",
+            "description": "The Bar."
+          }
+        },
+        "description": "The type Bar."
+      },
+      "Car": {
+        "type": "object",
+        "properties": {
+          "car": {
+            "type": "string",
+            "description": "The Car."
+          }
+        },
+        "description": "The type Car."
+      },
+      "Foo": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string",
+            "description": "The Foo."
+          }
+        },
+        "description": "The type Foo."
+      },
+      "Pet": {
+        "type": "object",
+        "properties": {
+          "pet": {
+            "type": "string",
+            "description": "The Pet."
+          }
+        },
+        "description": "The type Pet."
+      }
+    }
+  }
+}

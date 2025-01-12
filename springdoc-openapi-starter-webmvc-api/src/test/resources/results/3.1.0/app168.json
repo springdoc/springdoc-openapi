@@ -75,10 +75,10 @@
   "components": {
     "schemas": {
       "ConcreteParent": {
+        "required": [
+          "type"
+        ],
         "type": "object",
-        "discriminator": {
-          "propertyName": "type"
-        },
         "properties": {
           "id": {
             "type": "integer",
@@ -88,15 +88,15 @@
             "type": "string"
           }
         },
-        "required": [
-          "type"
-        ]
+        "discriminator": {
+          "propertyName": "type"
+        }
       },
       "AbstractParent": {
+        "required": [
+          "type"
+        ],
         "type": "object",
-        "discriminator": {
-          "propertyName": "type"
-        },
         "properties": {
           "id": {
             "type": "integer",
@@ -106,9 +106,9 @@
             "type": "string"
           }
         },
-        "required": [
-          "type"
-        ]
+        "discriminator": {
+          "propertyName": "type"
+        }
       },
       "Response": {
         "type": "object",

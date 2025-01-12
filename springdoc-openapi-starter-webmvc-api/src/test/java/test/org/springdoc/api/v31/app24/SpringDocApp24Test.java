@@ -24,9 +24,9 @@
 
 package test.org.springdoc.api.v31.app24;
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
-public class SpringDocApp24Test extends AbstractSpringDocV31Test {
+public class SpringDocApp24Test extends AbstractSpringDocTest {
 
 
 }

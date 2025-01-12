@@ -1,0 +1,83 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/entity-b": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Gets entity b.",
+        "description": "Gets entity b.",
+        "operationId": "getEntityB",
+        "responses": {
+          "200": {
+            "description": "the entity b",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityB"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityB"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EntityA": {
+        "type": "object",
+        "description": "The type Entity a.",
+        "properties": {
+          "fieldA": {
+            "type": "string",
+            "description": "The Field a."
+          }
+        },
+        "required": [
+          "fieldA"
+        ]
+      },
+      "EntityB": {
+        "type": "object",
+        "description": "The type Entity b.",
+        "properties": {
+          "entityA": {
+            "$ref": "#/components/schemas/EntityA",
+            "description": "The Entity a."
+          },
+          "fieldB": {
+            "type": "string",
+            "description": "The Field b."
+          }
+        },
+        "required": [
+          "entityA",
+          "fieldB"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SpringShop API",
+    "description": "The description of the api",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "no-generic-override-rest-controller",
+      "description": "This is the <code>JavadocOnlyRestController</code> class javadoc."
+    }
+  ],
+  "paths": {
+    "/no-generic-override": {
+      "post": {
+        "tags": [
+          "no-generic-override-rest-controller"
+        ],
+        "summary": "This is the create method's javadoc.",
+        "description": "This is the create method's javadoc.\n The method's signature: <code>#create(JavadocOnlyRestDto)</code>",
+        "operationId": "create",
+        "requestBody": {
+          "description": "the <code>@param input</code> javadoc for the <code>#create(JavadocOnlyRestDto)</code> method",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "the <code>@return</code> javadoc for the <code>#create(JavadocOnlyRestDto)</code> method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/no-generic-override/startsBy/{prefix}": {
+      "get": {
+        "tags": [
+          "no-generic-override-rest-controller"
+        ],
+        "summary": "This is the findStartsBy method's javadoc.",
+        "description": "This is the findStartsBy method's javadoc.\n The method's signature: <code>#findStartsBy(String)</code>",
+        "operationId": "findStartsBy",
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "path",
+            "description": "the <code>@param prefix</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "the <code>@return</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

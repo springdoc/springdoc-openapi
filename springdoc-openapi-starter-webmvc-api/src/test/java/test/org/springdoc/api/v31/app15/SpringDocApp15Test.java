@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
@@ -45,7 +45,7 @@ import org.springframework.test.context.TestPropertySource;
 		"springdoc.openapidefinition.info.contact.email=My contact email",
 		"springdoc.openapidefinition.info.contact.url=My contact url"
 })
-public class SpringDocApp15Test extends AbstractSpringDocV31Test {
+public class SpringDocApp15Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	@OpenAPIDefinition(info = @Info(

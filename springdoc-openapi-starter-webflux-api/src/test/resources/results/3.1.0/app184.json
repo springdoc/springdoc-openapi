@@ -1,0 +1,112 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    },
+    {
+      "url": "urlGlobalBean"
+    },
+    {
+      "url": "urlBean"
+    }
+  ],
+  "paths": {
+    "/group3Filtered": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "group3Filtered",
+        "parameters": [
+          {
+            "name": "headerGlobalBean",
+            "in": "header"
+          },
+          {
+            "name": "headerBean",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group2Filtered": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "group2Filtered",
+        "parameters": [
+          {
+            "name": "headerGlobalBean",
+            "in": "header"
+          },
+          {
+            "name": "headerBean",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group1Filtered": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "group1Filtered",
+        "parameters": [
+          {
+            "name": "headerGlobalBean",
+            "in": "header"
+          },
+          {
+            "name": "headerBean",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

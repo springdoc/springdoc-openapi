@@ -1,0 +1,133 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/demo": {
+      "get": {
+        "tags": [
+          "documents-api-controller"
+        ],
+        "operationId": "getDocuments",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DemoRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DemoRequest": {
+        "required": [
+          "noRequiredNoNullableNoDefault",
+          "requiredNoNullableDefault",
+          "requiredNoNullableDefault1",
+          "requiredNoNullableNoDefault",
+          "requiredNoNullableNoDefault1",
+          "requiredNullableDefault",
+          "requiredNullableDefault1",
+          "requiredNullableNoDefault",
+          "requiredNullableNoDefault1"
+        ],
+        "type": "object",
+        "properties": {
+          "requiredNullableDefault": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "requiredNullableNoDefault": {
+            "type": "string"
+          },
+          "requiredNoNullableDefault": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "requiredNoNullableNoDefault": {
+            "type": "string"
+          },
+          "requiredNullableDefault1": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "requiredNullableNoDefault1": {
+            "type": "string"
+          },
+          "requiredNoNullableDefault1": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "requiredNoNullableNoDefault1": {
+            "type": "string"
+          },
+          "noRequiredNullableDefault2": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "noRequiredNullableNoDefault2": {
+            "type": "string"
+          },
+          "noRequiredNoNullableDefault2": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "noRequiredNoNullableNoDefault2": {
+            "type": "string"
+          },
+          "noRequiredNullableDefault": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "noRequiredNullableNoDefault": {
+            "type": "string"
+          },
+          "noRequiredNoNullableDefault": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "noRequiredNoNullableNoDefault": {
+            "type": "string"
+          }
+        }
+      },
+      "DemoDto": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    }
+  }
+}

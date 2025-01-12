@@ -1,0 +1,123 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/latest/helloWorld/helloWorld": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Example endpoint",
+        "operationId": "helloWorld",
+        "parameters": [
+          {
+            "name": "abc",
+            "in": "query",
+            "description": "Description for abc",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "def"
+          },
+          {
+            "name": "thisDate",
+            "in": "query",
+            "description": "Description of this date",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2020-10-25"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloWorldModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/helloWorld/helloWorld": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Example endpoint",
+        "operationId": "helloWorld_1",
+        "parameters": [
+          {
+            "name": "abc",
+            "in": "query",
+            "description": "Description for abc",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "def"
+          },
+          {
+            "name": "thisDate",
+            "in": "query",
+            "description": "Description of this date",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2020-10-25"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloWorldModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HelloWorldModel": {
+        "required": [
+          "abc",
+          "thisDate"
+        ],
+        "type": "object",
+        "properties": {
+          "abc": {
+            "type": "string"
+          },
+          "thisDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

@@ -26,11 +26,11 @@ package test.org.springdoc.api.v31.app98;
 
 
 import org.springdoc.core.utils.SpringDocUtils;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class SpringDocApp98Test extends AbstractSpringDocV31Test {
+public class SpringDocApp98Test extends AbstractSpringDocTest {
 
 	static {
 		SpringDocUtils.getConfig().addAnnotationsToIgnore(IgnoredAnnotationParameter.class);

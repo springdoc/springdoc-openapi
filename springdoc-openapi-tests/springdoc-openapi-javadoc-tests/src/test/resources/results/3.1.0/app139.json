@@ -1,0 +1,90 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/test1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Echo 1 string.",
+        "description": "Echo 1 string.",
+        "operationId": "echo1",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "description": "the text",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "default-text"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Echo 2 string.",
+        "description": "Echo 2 string.",
+        "operationId": "echo2",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "description": "the text",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "default-text"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

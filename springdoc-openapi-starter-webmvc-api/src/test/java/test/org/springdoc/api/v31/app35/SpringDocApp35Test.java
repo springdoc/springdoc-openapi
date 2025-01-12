@@ -24,13 +24,13 @@
 
 package test.org.springdoc.api.v31.app35;
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
-public class SpringDocApp35Test extends AbstractSpringDocV31Test {
+public class SpringDocApp35Test extends AbstractSpringDocTest {
 
 	static {
 		getConfig().addRestControllers(HelloController.class);

@@ -27,7 +27,7 @@ package test.org.springdoc.api.v31.app111;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,7 +37,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {
 		"application-description=description",
 		"application-version=v1" })
-public class SpringDocApp111Test extends AbstractSpringDocV31Test {
+public class SpringDocApp111Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {

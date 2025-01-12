@@ -1,0 +1,142 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Response API",
+    "description": "API for some response",
+    "contact": {
+      "name": "EAlf91"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "ResponseTag",
+      "description": "ResponseTag for API"
+    },
+    {
+      "name": "ResponseData",
+      "description": "Version 2 ResponseApi"
+    }
+  ],
+  "paths": {
+    "/some-route/foo/{id}": {
+      "get": {
+        "tags": [
+          "ResponseDataController"
+        ],
+        "summary": "Get all data",
+        "description": "Get all data",
+        "operationId": "getFoo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FeedResponse": {
+        "properties": {
+          "_links": {
+            "properties": {
+              "next": {
+                "$ref": "#/components/schemas/Link",
+                "example": "http://localhost:8080/some-link"
+              },
+              "self": {
+                "$ref": "#/components/schemas/Link",
+                "example": "http://localhost:8080/some-other-link"
+              }
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResponseData"
+            }
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "hreflang": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "deprecation": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ResponseData": {
+        "type": "object",
+        "properties": {
+          "DATA_ID": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "DATE": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-03-27"
+          }
+        },
+        "required": [
+          "DATA_ID",
+          "DATE"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearerScheme": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

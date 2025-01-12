@@ -26,7 +26,7 @@ package test.org.springdoc.api.v31.app27;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class SpringDocApp27Test extends AbstractSpringDocV31Test {
+public class SpringDocApp27Test extends AbstractSpringDocTest {
 
 	@Test
 	protected void testApp() throws Exception {

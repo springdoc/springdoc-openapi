@@ -40,7 +40,7 @@ public class HelloController {
 	public GroupedOpenApi userOpenApi() {
 		return GroupedOpenApi.builder()
 				.group("users")
-				.packagesToScan("test.org.springdoc.api.app145")
+				.packagesToScan("test.org.springdoc.api.v30.app145")
 				.build();
 	}
 }

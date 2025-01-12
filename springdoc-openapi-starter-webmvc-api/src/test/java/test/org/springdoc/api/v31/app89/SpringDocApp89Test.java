@@ -26,7 +26,7 @@ package test.org.springdoc.api.v31.app89;
 
 
 import io.swagger.v3.oas.models.media.ObjectSchema;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
@@ -35,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 @TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
-public class SpringDocApp89Test extends AbstractSpringDocV31Test {
+public class SpringDocApp89Test extends AbstractSpringDocTest {
 
 	static {
 		getConfig().replaceWithSchema(ModelAndView.class, new ObjectSchema());

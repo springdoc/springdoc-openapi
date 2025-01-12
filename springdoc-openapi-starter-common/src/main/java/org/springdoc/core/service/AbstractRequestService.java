@@ -302,7 +302,7 @@ public abstract class AbstractRequestService {
 
 		for (MethodParameter methodParameter : parameters) {
 			// check if query param
-			Parameter parameter = null;
+			Parameter parameter;
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
 					AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()),
 					io.swagger.v3.oas.annotations.Parameter.class);

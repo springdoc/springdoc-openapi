@@ -33,9 +33,10 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
-import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.converters.models.Pageable;
 import org.springdoc.core.providers.ObjectMapperProvider;
+
+import static org.springdoc.core.utils.SpringDocUtils.getParentTypeName;
 
 /**
  * The Pageable Type models converter.
@@ -90,7 +91,7 @@ public class PageableOpenAPIConverter implements ModelConverter {
 				if (!type.isSchemaProperty())
 					type = PAGEABLE;
 				else
-					type.name(cls.getSimpleName() + StringUtils.capitalize(type.getParent().getType()));
+					type.name(getParentTypeName(type, cls));
 			}
 		}
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;

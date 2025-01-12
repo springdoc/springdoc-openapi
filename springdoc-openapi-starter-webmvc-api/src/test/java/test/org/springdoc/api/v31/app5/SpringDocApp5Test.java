@@ -3,7 +3,7 @@ package test.org.springdoc.api.v31.app5;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class SpringDocApp5Test extends AbstractSpringDocV31Test {
+class SpringDocApp5Test extends AbstractSpringDocTest {
 
 	@Test
 	void testAddRouterOperationCustomizerBean() throws Exception {

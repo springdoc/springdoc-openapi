@@ -1,0 +1,80 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API Examples",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Operations"
+    },
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/api/foo": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Hello simple dto.",
+        "description": "Hello simple dto.",
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "the simple dto",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleDTO"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "the error dto",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorDTO": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          }
+        },
+        "description": "The type Error dto."
+      },
+      "SimpleDTO": {
+        "type": "object",
+        "properties": {
+          "payload": {
+            "type": "string",
+            "description": "The Payload."
+          }
+        },
+        "description": "The type Simple dto."
+      }
+    }
+  }
+}

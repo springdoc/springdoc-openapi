@@ -26,7 +26,7 @@ package test.org.springdoc.api.v31.app16;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = "springdoc.api-docs.enabled=false")
-public class SpringDocApp16Test extends AbstractSpringDocV31Test {
+public class SpringDocApp16Test extends AbstractSpringDocTest {
 
 	@Test
 	protected void testApp() throws Exception {
