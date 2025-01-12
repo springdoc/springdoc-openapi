@@ -25,7 +25,7 @@ import test.org.springdoc.api.v30.AbstractKotlinSpringDocMVCTest
 class SpringDocApp12Test : AbstractKotlinSpringDocMVCTest() {
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.v31.app12"])
+	@ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.v31.app12", "test.org.springdoc.api.app12"])
 	class DemoApplication
 
 	enum class MyEnum {
