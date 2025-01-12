@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.2] - 2025-01-12
+
+### Added
+- #2849 - Provide better compatibility for projects migrating from OAS 3.0 to OAS 3.1
+
+### Fixed
+- #2846 - ClassCastException with spring-data-rest and openapi version 3.1 bug
+- #2844 - PageableObject and SortObject are called Pageablenull and Sortnull i
+
 ## [2.8.1] - 2025-01-06
 
 ### Fixed
