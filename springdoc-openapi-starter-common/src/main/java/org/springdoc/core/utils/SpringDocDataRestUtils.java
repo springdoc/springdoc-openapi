@@ -249,8 +249,7 @@ public class SpringDocDataRestUtils {
 					if (entry.getValue().getItems()!=null)
 						referencedSchema.addProperty(propId, new ArraySchema().items(new StringSchema()));
 					else
-						referencedSchema.addProperty(propId, new StringSchema()); {
-					}
+						referencedSchema.addProperty(propId, new StringSchema());
 				}
 			}
 		}

@@ -69,8 +69,7 @@ public class HateoasLinksConverter implements ModelConverter {
 			Iterator<ModelConverter> chain
 	) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
-		if (javaType != null) {
-			if (RepresentationModel.class.isAssignableFrom(javaType.getRawClass())) {
+		if (javaType != null && RepresentationModel.class.isAssignableFrom(javaType.getRawClass())) {
 				Schema<?> schema = chain.next().resolve(type, context, chain);
 				String schemaName = schema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 				Schema original = context.getDefinedModels().get(schemaName);
@@ -84,7 +83,6 @@ public class HateoasLinksConverter implements ModelConverter {
 					arraySchema.set$ref(AnnotationsUtils.COMPONENTS_REF + "Links");
 				}
 				return schema;
-			}
 		}
 		return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;
 	}
