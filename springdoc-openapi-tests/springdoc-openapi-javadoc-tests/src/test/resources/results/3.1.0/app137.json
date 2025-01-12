@@ -1,0 +1,67 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "My App",
+    "description": "Some long and useful description",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://test.toto.com",
+      "description": "toto desc"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/test": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test.",
+        "description": "Test.",
+        "operationId": "test",
+        "parameters": [
+          {
+            "name": "hello",
+            "in": "query",
+            "description": "the hello",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "security_auth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "security_auth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "http://authorization.url",
+            "tokenUrl": "http://token.url",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  }
+}

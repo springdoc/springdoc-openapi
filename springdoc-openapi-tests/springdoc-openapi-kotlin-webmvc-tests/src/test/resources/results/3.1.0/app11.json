@@ -1,0 +1,136 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/foo/trim-kotlin-indent": {
+      "get": {
+        "tags": [
+          "example-controller"
+        ],
+        "summary": "foo api",
+        "description": "\nthis api is foo\n\n#### Custom exception case\n| Http Status | Error Code  | Error Message | Error Data | Remark   |\n|-------------|-------------|--------------|------------|-----------|\n| 403         | NO_PERMISSION       |This request is only available to administrators.  |            |           |\n| 400         | STORE_NOT_FOUND       |Store not found.   |            |           |\n",
+        "operationId": "readFoo",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FooResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foo/trim-kotlin-indent/schema": {
+      "get": {
+        "tags": [
+          "example-controller-2"
+        ],
+        "operationId": "readFoo_1",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/foo request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/foo response"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FooResponse": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "foo request": {
+        "required": [
+          "age"
+        ],
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer",
+            "description": "\nfoo request field with kotlin indent\n",
+            "format": "int32"
+          }
+        },
+        "description": "\nfoo request class description\nwith kotlin indent\n"
+      },
+      "foo response": {
+        "required": [
+          "name",
+          "subFoo"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "\nfoo response fields with kotlin indent\n"
+          },
+          "subFoo": {
+            "$ref": "#/components/schemas/sub foo response"
+          }
+        },
+        "description": "\nfoo response class description\nwith kotlin indent\n"
+      },
+      "sub foo response": {
+        "required": [
+          "subName"
+        ],
+        "type": "object",
+        "properties": {
+          "subName": {
+            "type": "string",
+            "description": "\nsub foo response fields with kotlin indent\n"
+          }
+        },
+        "description": "\nsub foo response class description\nwith kotlin indent\n"
+      }
+    }
+  }
+}

@@ -24,7 +24,7 @@
 
 package test.org.springdoc.api.v31.app63;
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
@@ -33,7 +33,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {
 		"springdoc.packagesToScan=hell,hello1, hello.me",
 		"springdoc.packagesToExclude=test.org.springdoc.api.app63.65" })
-public class SpringDocApp63Test extends AbstractSpringDocV31Test {
+public class SpringDocApp63Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}

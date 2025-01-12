@@ -25,13 +25,13 @@
 package test.org.springdoc.api.v31.app91;
 
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "springdoc.override-with-generic-response=false")
-public class SpringDocApp91Test extends AbstractSpringDocV31Test {
+public class SpringDocApp91Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}

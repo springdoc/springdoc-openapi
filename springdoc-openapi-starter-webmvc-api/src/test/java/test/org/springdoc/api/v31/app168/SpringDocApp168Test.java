@@ -30,14 +30,14 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
 
 @TestPropertySource(properties = Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED + "=false")
-public class SpringDocApp168Test extends AbstractSpringDocV31Test {
+public class SpringDocApp168Test extends AbstractSpringDocTest {
 
 	static {
 		Optional<ModelConverter> modelConverterOptional =

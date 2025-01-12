@@ -37,7 +37,7 @@ import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -51,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		"springdoc.group-configs[0].group=group1",
 		"springdoc.group-configs[0].paths-to-exclude=/group1Filtered",
 })
-public class SpringDocApp184Test extends AbstractSpringDocV31Test {
+public class SpringDocApp184Test extends AbstractSpringDocTest {
 
 	@Test
 	void testGroup1() throws Exception {

@@ -37,7 +37,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -55,7 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Tests Spring meta-annotations as method parameters
  */
 @TestPropertySource(properties = "springdoc.writer-with-order-by-keys=true")
-public class SpringDocApp138Test extends AbstractSpringDocV31Test {
+public class SpringDocApp138Test extends AbstractSpringDocTest {
 
 	@Autowired
 	ObjectMapperProvider objectMapperProvider;

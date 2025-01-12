@@ -1,0 +1,154 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/api/student/header3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Header v 3 student v 3.",
+        "description": "Header v 3 student v 3.",
+        "operationId": "headerV3",
+        "parameters": [
+          {
+            "name": "X-API-VERSION",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the student v 3",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentV3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/student/header2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Header v 2 student v 2.",
+        "description": "Header v 2 student v 2.",
+        "operationId": "headerV2",
+        "parameters": [
+          {
+            "name": "X-API-VERSION",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the student v 2",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentV2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/student/header1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Header v 1 student v 1.",
+        "description": "Header v 1 student v 1.",
+        "operationId": "headerV1",
+        "parameters": [
+          {
+            "name": "X-API-VERSION",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the student v 1",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentV1"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StudentV3": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The Name."
+          }
+        },
+        "description": "The type Student v 3."
+      },
+      "StudentV2": {
+        "type": "object",
+        "properties": {
+          "bb": {
+            "type": "string",
+            "description": "The Name."
+          }
+        },
+        "description": "The type Student v 2."
+      },
+      "StudentV1": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The Name."
+          }
+        },
+        "description": "The type Student v 1."
+      }
+    }
+  }
+}

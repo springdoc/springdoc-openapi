@@ -1,0 +1,106 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "To test the case a user does not use @RestController but puts @Operation on handler methods\n and wants these methods to be exposed."
+    }
+  ],
+  "paths": {
+    "/message": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Message hello message.",
+        "description": "Message hello message.",
+        "operationId": "message",
+        "responses": {
+          "200": {
+            "description": "the hello message",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Hello string.",
+        "description": "Hello string.",
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/helloModelAndView": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Hello model and view model and view.",
+        "description": "Hello model and view model and view.",
+        "operationId": "helloModelAndView",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HelloMessage": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The Text."
+          },
+          "number": {
+            "type": "integer",
+            "description": "The Number.",
+            "format": "int32"
+          }
+        },
+        "description": "The type Hello message."
+      }
+    }
+  }
+}

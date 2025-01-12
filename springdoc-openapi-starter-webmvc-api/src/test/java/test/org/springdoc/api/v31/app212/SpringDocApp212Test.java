@@ -21,7 +21,7 @@ package test.org.springdoc.api.v31.app212;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * A test for {@link SpecPropertiesCustomizer}
  */
 @ActiveProfiles("212")
-public class SpringDocApp212Test extends AbstractSpringDocV31Test {
+public class SpringDocApp212Test extends AbstractSpringDocTest {
 
     /**
      * The type Spring doc test app.

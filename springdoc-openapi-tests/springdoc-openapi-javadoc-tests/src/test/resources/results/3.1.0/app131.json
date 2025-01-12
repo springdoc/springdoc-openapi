@@ -1,0 +1,114 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/organizations": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Create the organization",
+        "description": "Create the organization",
+        "operationId": "createOrganization",
+        "requestBody": {
+          "description": "the organization",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Organization"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid argument",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestControllerError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error has occurred and the request could not be processed at this time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestControllerError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "An organization with the specified ID already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestControllerError"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "The organization was created successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Organization": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The Universally Unique Identifier (UUID) uniquely identifying the organization",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the organization"
+          }
+        },
+        "description": "This is the description being overwritten"
+      },
+      "RestControllerError": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The Id."
+          },
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          }
+        },
+        "description": "The type Rest controller error."
+      }
+    }
+  }
+}

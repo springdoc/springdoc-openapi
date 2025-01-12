@@ -1,0 +1,76 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/search": {
+      "post": {
+        "tags": [
+          "The sample resource"
+        ],
+        "description": "Searches for sample objects using the given search request.",
+        "operationId": "searchSamples",
+        "requestBody": {
+          "description": "the search request",
+          "content": {
+            "application/vnd.samples.v2+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SampleSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "application/vnd.samples.v2+json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SampleV2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SampleSearchRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int64"
+          }
+        },
+        "description": "The type Sample search request."
+      },
+      "SampleV2": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int64"
+          }
+        },
+        "description": "The type Sample v 2."
+      }
+    }
+  }
+}

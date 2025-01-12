@@ -1,0 +1,112 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    },
+    {
+      "url": "urlGlobalBean"
+    },
+    {
+      "url": "urlGroup2"
+    }
+  ],
+  "paths": {
+    "/group3Filtered": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "group3Filtered",
+        "parameters": [
+          {
+            "name": "headerGlobalBean",
+            "in": "header"
+          },
+          {
+            "name": "headerGroup2",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group1Filtered": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "group1Filtered",
+        "parameters": [
+          {
+            "name": "headerGlobalBean",
+            "in": "header"
+          },
+          {
+            "name": "headerGroup2",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/beanFiltered": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "beanFiltered",
+        "parameters": [
+          {
+            "name": "headerGlobalBean",
+            "in": "header"
+          },
+          {
+            "name": "headerGroup2",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

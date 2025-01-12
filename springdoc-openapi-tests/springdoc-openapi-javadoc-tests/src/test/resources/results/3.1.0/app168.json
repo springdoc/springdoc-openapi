@@ -1,0 +1,63 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "description-field-in-request-body-is-null-controller",
+      "description": "If the RequestBody description field is null, get the description from the javadoc."
+    }
+  ],
+  "paths": {
+    "/description-in-requestbody-is-null": {
+      "post": {
+        "tags": [
+          "description-field-in-request-body-is-null-controller"
+        ],
+        "operationId": "person",
+        "summary": "Person person.",
+        "description": "Person person.",
+        "operationId": "person",
+        "requestBody": {
+          "description": "the person",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Person": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int64"
+          }
+        },
+        "description": "The type Person."
+      }
+    }
+  }
+}

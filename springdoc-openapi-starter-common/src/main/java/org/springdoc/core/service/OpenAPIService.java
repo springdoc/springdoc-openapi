@@ -61,7 +61,6 @@ import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
@@ -477,15 +476,14 @@ public class OpenAPIService implements ApplicationContextAware {
 		if (!CollectionUtils.isEmpty(properties)) {
 			LinkedHashMap<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
 				es.setValue(resolveProperties(es.getValue(), locale));
-				if (es.getValue() instanceof ArraySchema arraySchema) {
-					resolveProperties(arraySchema.getItems(), locale);
+				if (es.getValue().getItems() !=null ) {
+					resolveProperties(es.getValue().getItems(), locale);
 				}
 				return es;
 			}).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e2,
 					LinkedHashMap::new));
 			schema.setProperties(resolvedSchemas);
 		}
-
 		return schema;
 	}
 
@@ -606,12 +604,14 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param locale  the locale
 	 */
 	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef, Locale locale) {
+		boolean isOpenapi3 = propertyResolverUtils.isOpenapi31();
+		Map<String, Object> extensions = AnnotationsUtils.getExtensions(isOpenapi3, apiDef.info().extensions());
 		// info
-		AnnotationsUtils.getInfo(apiDef.info(), propertyResolverUtils.isOpenapi31()).map(info -> resolveProperties(info, locale)).ifPresent(openAPI::setInfo);
+		AnnotationsUtils.getInfo(apiDef.info(),true).map(info -> resolveProperties(info, extensions, locale)).ifPresent(openAPI::setInfo);
 		// OpenApiDefinition security requirements
 		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
-		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs(), propertyResolverUtils.isOpenapi31()).ifPresent(openAPI::setExternalDocs);
+		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs(), isOpenapi3).ifPresent(openAPI::setExternalDocs);
 		// OpenApiDefinition tags
 		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 		// OpenApiDefinition servers
@@ -623,7 +623,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		);
 		// OpenApiDefinition extensions
 		if (apiDef.extensions().length > 0) {
-			openAPI.setExtensions(AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiDef.extensions()));
+			openAPI.setExtensions(AnnotationsUtils.getExtensions(isOpenapi3, apiDef.extensions()));
 		}
 	}
 
@@ -647,11 +647,12 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * Resolve properties info.
 	 *
-	 * @param info   the info
-	 * @param locale the locale
+	 * @param info       the info
+	 * @param extensions
+	 * @param locale     the locale
 	 * @return the info
 	 */
-	private Info resolveProperties(Info info, Locale locale) {
+	private Info resolveProperties(Info info, Map<String, Object> extensions, Locale locale) {
 		resolveProperty(info::getTitle, info::title, propertyResolverUtils, locale);
 		resolveProperty(info::getDescription, info::description, propertyResolverUtils, locale);
 		resolveProperty(info::getVersion, info::version, propertyResolverUtils, locale);
@@ -670,9 +671,12 @@ public class OpenAPIService implements ApplicationContextAware {
 			resolveProperty(contact::getUrl, contact::url, propertyResolverUtils, locale);
 		}
 
-		if (propertyResolverUtils.isResolveExtensionsProperties()) {
-			Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, info.getExtensions());
-			info.setExtensions(extensionsResolved);
+		if (propertyResolverUtils.isResolveExtensionsProperties() && extensions != null)  {
+			Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
+			if(propertyResolverUtils.isOpenapi31())
+				extensionsResolved.forEach(info::addExtension31);
+			else
+				info.setExtensions(extensionsResolved);
 		}
 
 		return info;

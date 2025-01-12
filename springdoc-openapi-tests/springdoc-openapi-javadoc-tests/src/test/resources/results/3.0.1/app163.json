@@ -1,0 +1,227 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "SpringShop API",
+    "description": "The description of the api",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "annotation-override",
+      "description": "Description for the tag."
+    }
+  ],
+  "paths": {
+    "/annotation-override/{guid}": {
+      "put": {
+        "tags": [
+          "annotation-override"
+        ],
+        "summary": "Summary for #update(String, AnnotationOverrideForJavadocRestDto)",
+        "description": "This is the update method's javadoc.\n The method's signature: <code>#update(String, AnnotationOverrideForJavadocRestDto)</code>",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "description": "the <code>@param input</code> javadoc for the <code>#update(String, AnnotationOverrideForJavadocRestDto)</code> method",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnotationOverrideForJavadocRestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.v30.app163.exception.NoResultException"
+            ]
+          },
+          "400": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.v30.app163.exception.NonUniqueResultException"
+            ]
+          },
+          "200": {
+            "description": "the <code>@return</code> javadoc for the <code>#update(String, AnnotationOverrideForJavadocRestDto)</code> method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnotationOverrideForJavadocRestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/annotation-override": {
+      "post": {
+        "tags": [
+          "annotation-override"
+        ],
+        "summary": "Summary for #create(AnnotationOverrideForJavadocRestDto)",
+        "description": "Description for #create(AnnotationOverrideForJavadocRestDto)",
+        "operationId": "create",
+        "requestBody": {
+          "description": "Request body for  #create(AnnotationOverrideForJavadocRestDto)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnotationOverrideForJavadocRestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.v30.app163.exception.NoResultException"
+            ]
+          },
+          "400": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.v30.app163.exception.NonUniqueResultException"
+            ]
+          },
+          "default": {
+            "description": "API Response 201 for #create(AnnotationOverrideForJavadocRestDto)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnotationOverrideForJavadocRestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/annotation-override/startsBy/{prefix}": {
+      "get": {
+        "tags": [
+          "annotation-override"
+        ],
+        "summary": "This is the findStartsBy method's javadoc.",
+        "description": "This is the findStartsBy method's javadoc.\n The method's signature: <code>#findStartsBy(String)</code>",
+        "operationId": "findStartsBy",
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "path",
+            "description": "Parameter prefix",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.v30.app163.exception.NoResultException"
+            ]
+          },
+          "400": {
+            "description": "API Response 400 for #findStartsBy(prefix)"
+          },
+          "200": {
+            "description": "API Response 200 for #findStartsBy(prefix)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnotationOverrideForJavadocRestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnnotationOverrideForJavadocRestDto": {
+        "title": "annotation-override-dto",
+        "type": "object",
+        "properties": {
+          "guid": {
+            "type": "string",
+            "description": "Description for the #guid field"
+          },
+          "inner": {
+            "$ref": "#/components/schemas/AnnotationOverrideForJavadocStaticInnerRestDto"
+          }
+        },
+        "description": "Description for the tag."
+      },
+      "AnnotationOverrideForJavadocStaticInnerRestDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "This is the private <code>#content</code> field's javadoc."
+          }
+        },
+        "description": "This is the <code>AnnotationOverrideForJavadocStaticInnerRestDto</code> class javadoc."
+      }
+    }
+  }
+}

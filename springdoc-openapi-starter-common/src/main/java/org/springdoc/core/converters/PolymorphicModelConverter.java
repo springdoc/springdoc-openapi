@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.converters;
@@ -64,6 +64,11 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 */
 	private static final List<String> PARENT_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
 
+	/**
+	 * The constant PARENT_TYPES_TO_IGNORE.
+	 */
+	private static final List<String> TYPES_TO_SKIP = Collections.synchronizedList(new ArrayList<>());
+	
 	static {
 		PARENT_TYPES_TO_IGNORE.add("JsonSchema");
 		PARENT_TYPES_TO_IGNORE.add("Pageable");
@@ -115,6 +120,9 @@ public class PolymorphicModelConverter implements ModelConverter {
 				if (field.isAnnotationPresent(JsonUnwrapped.class)) {
 					PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getSimpleName());
 				}
+				else if (field.isAnnotationPresent(io.swagger.v3.oas.annotations.media.Schema.class)) {
+					TYPES_TO_SKIP.add(field.getType().getSimpleName());
+				}
 			}
 			if (chain.hasNext()) {
 				if (!type.isResolveAsRef() && type.getParent() != null
@@ -149,12 +157,13 @@ public class PolymorphicModelConverter implements ModelConverter {
 	private Schema composePolymorphicSchema(AnnotatedType type, Schema schema, Collection<Schema> schemas) {
 		String ref = schema.get$ref();
 		List<Schema> composedSchemas = findComposedSchemas(ref, schemas);
-
 		if (composedSchemas.isEmpty()) return schema;
-
 		ComposedSchema result = new ComposedSchema();
 		if (isConcreteClass(type)) result.addOneOfItem(schema);
-		composedSchemas.forEach(result::addOneOfItem);
+		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
+		Class<?> clazz = javaType.getRawClass();
+		if(TYPES_TO_SKIP.stream().noneMatch(typeToSkip -> typeToSkip.equals(clazz.getSimpleName())))
+			composedSchemas.forEach(result::addOneOfItem);
 		return result;
 	}
 

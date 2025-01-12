@@ -30,7 +30,7 @@ import io.swagger.v3.core.converter.ModelConverters;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * the type is enclosed in an ignored wrapper.  We test this by setting up a model converter which
  * adds "stringy" to the "required" property of a schema's parent, when the sub schema is a String.
  */
-public class SpringDocApp157Test extends AbstractSpringDocV31Test {
+public class SpringDocApp157Test extends AbstractSpringDocTest {
 
 	/**
 	 * The Converters.

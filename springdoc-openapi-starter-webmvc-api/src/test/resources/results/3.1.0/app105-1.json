@@ -23,53 +23,6 @@
     }
   ],
   "paths": {
-    "/store/order": {
-      "post": {
-        "tags": [
-          "store"
-        ],
-        "summary": "Place an order for a pet",
-        "operationId": "placeOrder",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Order"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Invalid Order",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {}
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/Order"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Order"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/store/order/{orderId}": {
       "get": {
         "tags": [
@@ -84,10 +37,10 @@
             "description": "ID of pet that needs to be fetched",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64",
               "maximum": 5,
-              "minimum": 1
+              "minimum": 1,
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],
@@ -98,13 +51,15 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type": "object"
+                  }
                 }
               }
             }
           },
-          "404": {
-            "description": "Order not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -118,8 +73,8 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "Order not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -159,13 +114,64 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type": "object"
+                  }
                 }
               }
             }
           },
           "404": {
             "description": "Order not found"
+          }
+        }
+      }
+    },
+    "/store/order": {
+      "post": {
+        "tags": [
+          "store"
+        ],
+        "summary": "Place an order for a pet",
+        "operationId": "placeOrder",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid Order",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
           }
         }
       }
@@ -185,7 +191,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type": "object"
+                  }
                 }
               }
             }
@@ -196,7 +204,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {}
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }

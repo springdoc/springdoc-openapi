@@ -1,6 +1,6 @@
 {
   "configUrl": "/application/swagger-ui/swagger-config",
-  "oauth2RedirectUrl": "http://localhost:9293/application/swagger-ui/oauth2-redirect.html",
+  "oauth2RedirectUrl": "http://localhost:9393/application/swagger-ui/oauth2-redirect.html",
   "urls": [
     {
       "url": "/application/openapi/users",

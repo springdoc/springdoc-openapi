@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +48,7 @@ import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.GenericResponseService;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.util.CollectionUtils;
 
 /**
  * The type Spring doc utils.
@@ -441,6 +444,63 @@ public class SpringDocUtils {
 		}
 		// Convert the list to an array and return
 		return resultAnnotations.toArray(new Annotation[0]);
+	}
+
+	/**
+	 * Gets parent type name.
+	 *
+	 * @param type the type
+	 * @param cls  the cls
+	 * @return the parent type name
+	 */
+	@NotNull
+	public static String getParentTypeName(AnnotatedType type, Class<?> cls) {
+		return cls.getSimpleName() + StringUtils.capitalize(type.getParent().getType() != null ? type.getParent().getType() : "object");
+	}
+
+	/**
+	 * Is composed schema boolean.
+	 *
+	 * @param referencedSchema the referenced schema
+	 * @return the boolean
+	 */
+	public static boolean isComposedSchema(Schema referencedSchema) {
+		return referencedSchema.getOneOf() != null || referencedSchema.getAllOf() != null || referencedSchema.getAnyOf() != null;
+	}
+
+	/**
+	 * Handle schema types.
+	 *
+	 * @param schema the schema
+	 */
+	public static void handleSchemaTypes(Schema<?> schema) {
+		if (schema != null) {
+			if (schema.getType() != null && CollectionUtils.isEmpty(schema.getTypes())) {
+				schema.addType(schema.getType());
+			}
+			else if (schema.getItems() != null && schema.getItems().getType() != null
+					&& CollectionUtils.isEmpty(schema.getItems().getTypes())) {
+				schema.getItems().addType(schema.getItems().getType());
+			}
+			if(schema.getProperties() != null){
+				schema.getProperties().forEach((key, value) -> handleSchemaTypes(value));
+			}
+		}
+	}
+
+	/**
+	 * Handle schema types.
+	 *
+	 * @param content the content
+	 */
+	public static void handleSchemaTypes(Content content) {
+		if(content !=null){
+			content.values().forEach(mediaType -> {
+				if (mediaType.getSchema() != null) {
+					handleSchemaTypes(mediaType.getSchema());
+				}
+			});
+		}
 	}
 }
 

@@ -1,0 +1,161 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/test2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test 2.",
+        "description": "Test 2.",
+        "operationId": "test2",
+        "requestBody": {
+          "description": "Details of the Item to be created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "An example request with the minimum required fields to create.": {
+                  "summary": "Minimal request",
+                  "description": "An example request with the minimum required fields to create.",
+                  "value": "min"
+                },
+                "An example request with all fields provided with example values.": {
+                  "summary": "Full request",
+                  "description": "An example request with all fields provided with example values.",
+                  "value": "full"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/test": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test 1.",
+        "description": "Test 1.",
+        "operationId": "test1",
+        "parameters": [
+          {
+            "name": "hello",
+            "in": "query",
+            "description": "the hello",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "500": {
+                    "$ref": "#/components/examples/http500Example"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "description": "User",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The Id.",
+            "example": 10
+          },
+          "username": {
+            "type": "string",
+            "description": "The Username.",
+            "example": "theUser"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The First name.",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The Last name.",
+            "example": "James"
+          },
+          "email": {
+            "type": "string",
+            "description": "The Email.",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "The Password.",
+            "example": 12345
+          },
+          "phone": {
+            "type": "string",
+            "description": "The Phone.",
+            "example": 12345
+          },
+          "userStatus": {
+            "type": "integer",
+            "format": "int32",
+            "description": "User Status",
+            "example": 1
+          }
+        }
+      }
+    },
+    "examples": {
+      "http500Example": {
+        "summary": "HTTP 500 JSON Body response example",
+        "description": "An example of HTTP response in case an error occurs on server side. instance attribute reference a traceId to ease server side analysis.",
+        "value": "{\"500\":{\"$ref\":\"#/components/examples/http500Example\"}}"
+      }
+    }
+  }
+}

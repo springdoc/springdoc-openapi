@@ -23,7 +23,7 @@
  */
 package test.org.springdoc.api.v31.app139;
 
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
@@ -33,7 +33,7 @@ import org.springframework.test.context.TestPropertySource;
  * Tests Spring meta-annotations as method parameters
  */
 @TestPropertySource(properties = { "test.name=text", "test.value=text", "test.default-value=default-text" })
-public class SpringDocApp139Test extends AbstractSpringDocV31Test {
+public class SpringDocApp139Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}

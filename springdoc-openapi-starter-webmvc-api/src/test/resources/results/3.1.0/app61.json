@@ -46,7 +46,9 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {}
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -57,12 +59,13 @@
             "description": "createdRange",
             "required": true,
             "schema": {
+              "maxItems": 2,
+              "minItems": 2,
               "type": "array",
               "items": {
+                "type": "string",
                 "format": "date"
-              },
-              "maxItems": 2,
-              "minItems": 2
+              }
             }
           }
         ],

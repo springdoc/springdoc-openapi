@@ -1,0 +1,80 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/design": {
+      "get": {
+        "tags": [
+          "design"
+        ],
+        "description": "Receive a list of objects",
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Design"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/design/{id}": {
+      "get": {
+        "tags": [
+          "design"
+        ],
+        "description": "Get single object",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id to get.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the t",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Design"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Design": {
+        "type": "object",
+        "description": "The type Design."
+      }
+    }
+  }
+}

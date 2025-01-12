@@ -1,0 +1,133 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/test1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Say hello response entity.",
+        "description": "Say hello response entity.",
+        "operationId": "sayHello_1",
+        "parameters": [
+          {
+            "name": "primitiveConcreteField",
+            "in": "query",
+            "description": "The Primitive concrete field.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "primitiveBaseField",
+            "in": "query",
+            "description": "The Primitive base field.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "genericField",
+            "in": "query",
+            "description": "The Generic field.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ONE",
+                "TWO"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Say hello response entity.",
+        "description": "Say hello response entity.",
+        "operationId": "sayHello",
+        "parameters": [
+          {
+            "name": "primitiveConcreteField",
+            "in": "query",
+            "description": "The Primitive concrete field.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "primitiveBaseField",
+            "in": "query",
+            "description": "The Primitive base field.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "genericField",
+            "in": "query",
+            "description": "The Generic field.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

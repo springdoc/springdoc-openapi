@@ -1,0 +1,109 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/person2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Gets person 2.",
+        "description": "Gets person 2.",
+        "operationId": "getPerson2",
+        "parameters": [
+          {
+            "name": "str",
+            "in": "query",
+            "description": "the str",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the person 2",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/person1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Gets person 1.",
+        "description": "Gets person 1.",
+        "operationId": "getPerson1",
+        "parameters": [
+          {
+            "name": "str",
+            "in": "query",
+            "description": "the str",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the person 1",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PersonDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The Email."
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The First name."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The Last name."
+          }
+        },
+        "description": "The type Person dto."
+      }
+    }
+  }
+}

@@ -29,12 +29,12 @@ import java.math.BigDecimal;
 import javax.money.MonetaryAmount;
 
 import org.springdoc.core.utils.SpringDocUtils;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-public class SpringDocApp114Test extends AbstractSpringDocV31Test {
+public class SpringDocApp114Test extends AbstractSpringDocTest {
 
 	static {
 		SpringDocUtils.getConfig()

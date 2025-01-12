@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.service;
@@ -53,7 +53,6 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
@@ -74,6 +73,7 @@ import org.springdoc.core.providers.WebConversionServiceProvider;
 import org.springdoc.core.utils.Constants;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
+import org.springdoc.core.utils.SpringDocUtils;
 
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;
@@ -89,6 +89,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import static org.springdoc.core.utils.Constants.DOT;
 import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
+import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
 
 /**
  * The type Generic parameter builder.
@@ -299,6 +300,8 @@ public class GenericParameterService {
 
 		if (parameterDoc.content().length > 0) {
 			Optional<Content> optionalContent = AnnotationsUtils.getContent(parameterDoc.content(), null, null, null, components, jsonView, propertyResolverUtils.isOpenapi31());
+			if (propertyResolverUtils.isOpenapi31())
+				optionalContent.ifPresent(SpringDocUtils::handleSchemaTypes);
 			optionalContent.ifPresent(parameter::setContent);
 		}
 		else
@@ -350,6 +353,8 @@ public class GenericParameterService {
 					schema.setDefault(defaultValue);
 				}
 			}
+			if (isOpenapi31())
+				handleSchemaTypes(schema);
 			parameter.setSchema(schema);
 		}
 	}
@@ -427,7 +432,7 @@ public class GenericParameterService {
 			requestBodyInfo.getMergedSchema().addProperty(paramName, schemaN);
 			schemaN = requestBodyInfo.getMergedSchema();
 		}
-		else if (parameterInfo.isRequestPart() || schemaN instanceof FileSchema || schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
+		else if (parameterInfo.isRequestPart() || schemaN instanceof FileSchema || (schemaN!=null && schemaN.getItems() instanceof FileSchema)) {
 			schemaN = new ObjectSchema().addProperty(paramName, schemaN);
 			requestBodyInfo.setMergedSchema(schemaN);
 		}
@@ -470,7 +475,7 @@ public class GenericParameterService {
 	 * @param parameter    the parameter
 	 * @param locale       the locale
 	 */
-	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter, Locale locale)  {
+	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter, Locale locale) {
 		if (parameterDoc.extensions().length > 0) {
 			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), parameterDoc.extensions());
 			if (propertyResolverUtils.isResolveExtensionsProperties()) {
@@ -537,7 +542,7 @@ public class GenericParameterService {
 	 * @return the boolean
 	 */
 	public boolean isFile(MethodParameter methodParameter) {
-		if (methodParameter.getGenericParameterType() instanceof ParameterizedType ) {
+		if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
 			return isFile(parameterizedType);
 		}

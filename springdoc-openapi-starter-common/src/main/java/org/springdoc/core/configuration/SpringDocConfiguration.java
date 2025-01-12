@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 
@@ -52,6 +52,7 @@ import org.springdoc.core.configurer.SpringdocBeanFactoryConfigurer;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.FileSupportConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
+import org.springdoc.core.converters.OAS31ModelConverter;
 import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
@@ -597,14 +598,14 @@ public class SpringDocConfiguration {
 			Optional<Set<OperationCustomizer>> operationCustomizers,
 			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers,
 			Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
-			Optional<Set<OpenApiMethodFilter>> methodFilters, Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers, 
+			Optional<Set<OpenApiMethodFilter>> methodFilters, Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers,
 			Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
-			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters){
+			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
 		return new SpringDocCustomizers(openApiCustomizers,
 				operationCustomizers,
-				 routerOperationCustomizers,
-				 dataRestRouterOperationCustomizers,
-				 methodFilters, globalOpenApiCustomizers, globalOperationCustomizers, globalOpenApiMethodFilters);
+				routerOperationCustomizers,
+				dataRestRouterOperationCustomizers,
+				methodFilters, globalOpenApiCustomizers, globalOperationCustomizers, globalOpenApiMethodFilters);
 	}
 
 	/**
@@ -657,5 +658,18 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	GlobalOpenApiCustomizer globalOpenApiCustomizer() {
 		return new OperationIdCustomizer();
+	}
+
+	/**
+	 * Oas 31 model converter oas 31 model converter.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the oas 31 model converter
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	OAS31ModelConverter oas31ModelConverter(SpringDocConfigProperties springDocConfigProperties) {
+		return springDocConfigProperties.isOpenapi31() ? new OAS31ModelConverter() : null;
 	}
 }

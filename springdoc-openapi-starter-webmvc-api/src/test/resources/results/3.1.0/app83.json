@@ -31,20 +31,21 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "configuration",
+                  "file"
+                ],
                 "type": "object",
                 "properties": {
                   "configuration": {
+                    "type": "string",
                     "format": "binary"
                   },
                   "file": {
                     "type": "string",
                     "format": "binary"
                   }
-                },
-                "required": [
-                  "configuration",
-                  "file"
-                ]
+                }
               }
             }
           }
@@ -54,7 +55,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "object"
+                }
               }
             }
           }
@@ -71,14 +74,16 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "properties": {
-                  "file": {
-                    "format": "binary"
-                  }
-                },
                 "required": [
                   "file"
-                ]
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
           }
@@ -88,7 +93,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "object"
+                }
               }
             }
           }

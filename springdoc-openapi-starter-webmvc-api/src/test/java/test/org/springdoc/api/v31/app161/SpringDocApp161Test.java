@@ -27,11 +27,11 @@ package test.org.springdoc.api.v31.app161;
 import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class SpringDocApp161Test extends AbstractSpringDocV31Test {
+public class SpringDocApp161Test extends AbstractSpringDocTest {
 
 	@Test
 	protected void testApp() throws Exception {

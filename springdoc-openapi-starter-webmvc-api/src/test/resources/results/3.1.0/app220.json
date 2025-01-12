@@ -1,1 +1,128 @@
-{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost","description":"Generated server url"}],"paths":{"/parent":{"post":{"tags":["hello-controller"],"operationId":"parentEndpoint","requestBody":{"content":{"application/json":{"schema":{"oneOf":[{"$ref":"#/components/schemas/Superclass"},{"$ref":"#/components/schemas/IntermediateClass"},{"$ref":"#/components/schemas/Image"},{"$ref":"#/components/schemas/Mail"},{"$ref":"#/components/schemas/Home"}]}}},"required":true},"responses":{"200":{"description":"OK"}}}}},"components":{"schemas":{"Home":{"allOf":[{"$ref":"#/components/schemas/Mail"}]},"Image":{"allOf":[{"$ref":"#/components/schemas/IntermediateClass"}]},"IntermediateClass":{"allOf":[{"$ref":"#/components/schemas/Superclass"},{"type":"object","properties":{"@type":{"type":"string"}}}],"discriminator":{"propertyName":"@type"},"required":["@type"]},"Mail":{"allOf":[{"$ref":"#/components/schemas/IntermediateClass"},{"type":"object","properties":{"@type":{"type":"string"}}}],"discriminator":{"propertyName":"@type"},"required":["@type"]},"Superclass":{"type":"object","discriminator":{"propertyName":"@type"},"properties":{"@type":{"type":"string"}},"required":["@type"]}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/parent": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "parentEndpoint",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Superclass"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IntermediateClass"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Image"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Mail"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Home"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Home": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Mail"
+          }
+        ]
+      },
+      "Image": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/IntermediateClass"
+          }
+        ]
+      },
+      "IntermediateClass": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Superclass"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "@type": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "discriminator": {
+          "propertyName": "@type"
+        },
+        "required": [
+          "@type"
+        ]
+      },
+      "Mail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/IntermediateClass"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "@type": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "discriminator": {
+          "propertyName": "@type"
+        },
+        "required": [
+          "@type"
+        ]
+      },
+      "Superclass": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "@type"
+        },
+        "properties": {
+          "@type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "@type"
+        ]
+      }
+    }
+  }
+}

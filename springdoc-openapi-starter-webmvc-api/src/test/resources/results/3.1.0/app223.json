@@ -1,1 +1,224 @@
-{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost","description":"Generated server url"}],"paths":{"/parent":{"post":{"tags":["a-rest-controller"],"operationId":"parentEndpoint","requestBody":{"content":{"application/json":{"schema":{"oneOf":[{"$ref":"#/components/schemas/ParentType1"},{"$ref":"#/components/schemas/ParentType2"}]}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/Response"}}}}}}},"/child":{"post":{"tags":["a-rest-controller"],"operationId":"childEndpoint","requestBody":{"content":{"application/json":{"schema":{"oneOf":[{"$ref":"#/components/schemas/ChildType1"},{"$ref":"#/components/schemas/ChildType2"}]}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/Response"}}}}}}}},"components":{"schemas":{"AbstractChild":{"type":"object","discriminator":{"propertyName":"type"},"properties":{"id":{"type":"integer","format":"int32"},"type":{"type":"string"}},"required":["type"]},"AbstractParent":{"type":"object","discriminator":{"propertyName":"type"},"properties":{"id":{"type":"integer","format":"int32"},"type":{"type":"string"}},"required":["type"]},"ChildType1":{"allOf":[{"$ref":"#/components/schemas/AbstractChild"},{"type":"object","properties":{"childType1Param":{"type":"string"}}}]},"ChildType2":{"allOf":[{"$ref":"#/components/schemas/AbstractChild"},{"type":"object","properties":{"childType2Param":{"type":"string"}}}]},"ParentType1":{"allOf":[{"$ref":"#/components/schemas/AbstractParent"},{"type":"object","properties":{"parentType1Param":{"type":"string"},"abstractChild":{"oneOf":[{"$ref":"#/components/schemas/ChildType1"},{"$ref":"#/components/schemas/ChildType2"}]}}}]},"ParentType2":{"allOf":[{"$ref":"#/components/schemas/AbstractParent"},{"type":"object","properties":{"parentType2Param":{"type":"string"}}}]},"Response":{"type":"object","properties":{"abstractParent":{"oneOf":[{"$ref":"#/components/schemas/ParentType1"},{"$ref":"#/components/schemas/ParentType2"}]},"abstractChild":{"oneOf":[{"$ref":"#/components/schemas/ChildType1"},{"$ref":"#/components/schemas/ChildType2"}]}}}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/parent": {
+      "post": {
+        "tags": [
+          "a-rest-controller"
+        ],
+        "operationId": "parentEndpoint",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ParentType1"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ParentType2"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/child": {
+      "post": {
+        "tags": [
+          "a-rest-controller"
+        ],
+        "operationId": "childEndpoint",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ChildType1"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ChildType2"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AbstractChild": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "type"
+        },
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "AbstractParent": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "type"
+        },
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "ChildType1": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AbstractChild"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "childType1Param": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ChildType2": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AbstractChild"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "childType2Param": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ParentType1": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AbstractParent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "parentType1Param": {
+                "type": "string"
+              },
+              "abstractChild": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ChildType1"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ChildType2"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ParentType2": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AbstractParent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "parentType2Param": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "abstractParent": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ParentType1"
+              },
+              {
+                "$ref": "#/components/schemas/ParentType2"
+              }
+            ]
+          },
+          "abstractChild": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ChildType1"
+              },
+              {
+                "$ref": "#/components/schemas/ChildType2"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

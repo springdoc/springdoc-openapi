@@ -1,0 +1,87 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/post-entity": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Post entity",
+        "operationId": "postEntity",
+        "requestBody": {
+          "description": "the post entity",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrackerData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TrackerData"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TrackerData": {
+        "required": [
+          "timestamp",
+          "trackerId",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "trackerId": {
+            "type": "string",
+            "description": "The Tracker id.",
+            "example": "the-tracker-id"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "The Timestamp.",
+            "format": "date-time",
+            "example": "2018-01-01T00:00:00Z"
+          },
+          "value": {
+            "type": "number",
+            "description": "The data value",
+            "format": "double",
+            "example": 19.0
+          }
+        },
+        "description": "The type Tracker data."
+      }
+    }
+  }
+}

@@ -1,1 +1,104 @@
-{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost","description":"Generated server url"}],"paths":{"/test":{"get":{"tags":["hello-controller"],"operationId":"test","responses":{"200":{"description":"OK"},"5xx":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ErrorResponse"}}}}}}},"/example/{fooBar}":{"get":{"tags":["hello-controller"],"operationId":"getFooBar","parameters":[{"name":"fooBar","in":"path","required":true,"schema":{"type":"string","enum":["foo","bar"]}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"string"}}}},"5xx":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ErrorResponse"}}}}}}}},"components":{"schemas":{"ErrorResponse":{"properties":{"timestamp":{"type":"string","format":"date-time","example":"2022-05-09T00:00:00Z"},"data":{"type":"object","additionalProperties":{"type":"object","example":{"param1":"val1","param2":"val2"}},"example":{"param1":"val1","param2":"val2"}}}}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "5xx": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/example/{fooBar}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getFooBar",
+        "parameters": [
+          {
+            "name": "fooBar",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "foo",
+                "bar"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "5xx": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-05-09T00:00:00.000Z"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            },
+            "example": {
+              "param1": "val1",
+              "param2": "val2"
+            }
+          }
+        }
+      }
+    }
+  }
+}

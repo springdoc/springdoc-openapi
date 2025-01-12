@@ -45,6 +45,11 @@
   "components": {
     "schemas": {
       "test.org.springdoc.api.v31.app4.TrackerData": {
+        "required": [
+          "timestamp",
+          "trackerId",
+          "value"
+        ],
         "type": "object",
         "properties": {
           "trackerId": {
@@ -58,16 +63,11 @@
           },
           "value": {
             "type": "number",
-            "format": "double",
             "description": "The data value",
+            "format": "double",
             "example": 19.0
           }
-        },
-        "required": [
-          "timestamp",
-          "trackerId",
-          "value"
-        ]
+        }
       }
     }
   }

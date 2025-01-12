@@ -37,22 +37,26 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Not here"
-          },
           "502": {
             "description": "Bad Gateway",
             "content": {
               "*/*": {
-                "schema": {}
+                "schema": {
+                  "type": "object"
+                }
               }
             }
+          },
+          "404": {
+            "description": "Not here"
           },
           "418": {
             "description": "I'm a teapot",
             "content": {
               "*/*": {
-                "schema": {}
+                "schema": {
+                  "type": "object"
+                }
               }
             }
           }

@@ -33,7 +33,7 @@ import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.MapSchema;
-import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 
@@ -68,7 +68,7 @@ public class OpenApiHateoasLinksCustomizer extends SpecFilter implements GlobalO
 				.schema("Link", resolvedLinkSchema.schema)
 				.schema("Links", new MapSchema()
 						.additionalProperties(new StringSchema())
-						.additionalProperties(new ObjectSchema().$ref(AnnotationsUtils.COMPONENTS_REF + "Link")));
+						.additionalProperties(new Schema<>().$ref(AnnotationsUtils.COMPONENTS_REF + "Link")));
 		if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 			this.removeBrokenReferenceDefinitions(openApi);
 	}

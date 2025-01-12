@@ -4,7 +4,15 @@
     "title": "MKMTestWS (Test Microservice API)",
     "description": "This API exposes endpoints for testing anything",
     "termsOfService": "https://www.test.ca/terms",
-    "version": "1.0"
+    "version": "1.0",
+    "x-amazon-apigateway-integration": {
+      "passthroughBehavior": "when_no_match",
+      "connectionId": "1rqafw",
+      "type": "http_proxy",
+      "httpMethod": "GET",
+      "uri": "http://my-vpc/nlb-link/testcontroller/getTest",
+      "connectionType": "VPC_LINK"
+    }
   },
   "servers": [
     {

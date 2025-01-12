@@ -27,7 +27,7 @@
 package test.org.springdoc.api.v31.app232;
 
 import org.springdoc.core.customizers.OperationCustomizer;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * @author bnasslahsen
  */
-public class SpringDocApp232Test extends AbstractSpringDocV31Test {
+public class SpringDocApp232Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {

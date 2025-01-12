@@ -48,7 +48,9 @@
             "name": "someText",
             "in": "query",
             "description": "Second decs",
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

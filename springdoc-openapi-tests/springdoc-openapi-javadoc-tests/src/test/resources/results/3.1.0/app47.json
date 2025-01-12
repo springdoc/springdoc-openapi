@@ -1,0 +1,55 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/documents/{locale}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Gets documents with locale.",
+        "description": "Gets documents with locale.",
+        "operationId": "getDocumentsWithLocale",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "path",
+            "description": "the locale",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the documents with locale",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

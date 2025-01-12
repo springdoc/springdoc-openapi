@@ -1,0 +1,67 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tweet API",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://springdoc.org"
+    },
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "https://customized.url",
+      "description": "customized description"
+    }
+  ],
+  "paths": {
+    "/parse-resume": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Parse Resume",
+        "operationId": "parse",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "resumeFile"
+                ],
+                "type": "object",
+                "properties": {
+                  "resumeFile": {
+                    "type": "string",
+                    "description": "Resume file to be parsed",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicScheme": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

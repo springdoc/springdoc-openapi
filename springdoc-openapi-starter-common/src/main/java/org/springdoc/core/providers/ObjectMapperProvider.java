@@ -59,11 +59,17 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 	private final ObjectMapper yamlMapper;
 
 	/**
+	 * The Spring doc config properties.
+	 */
+	private final SpringDocConfigProperties springDocConfigProperties;
+
+	/**
 	 * Instantiates a new Spring doc object mapper.
 	 *
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
 	public ObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
+		this.springDocConfigProperties = springDocConfigProperties;
 		OpenApiVersion openApiVersion = springDocConfigProperties.getApiDocs().getVersion();
 		if (openApiVersion == OpenApiVersion.OPENAPI_3_1) {
 			jsonMapper = Json31.mapper();
@@ -132,4 +138,12 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 		return yamlMapper;
 	}
 
+	/**
+	 * Is openapi 31 boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isOpenapi31() {
+		return springDocConfigProperties.isOpenapi31();
+	}
 }

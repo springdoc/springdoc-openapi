@@ -28,19 +28,23 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "An unknown error occurred",
-            "content": {
-              "*/*": {
-                "schema": {}
-              }
-            }
-          },
           "400": {
             "description": "The request is malformed or information is missing.",
             "content": {
               "*/*": {
-                "schema": {}
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
               }
             }
           },
@@ -74,19 +78,23 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "An unknown error occurred",
-            "content": {
-              "*/*": {
-                "schema": {}
-              }
-            }
-          },
           "400": {
             "description": "The request is malformed or information is missing.",
             "content": {
               "*/*": {
-                "schema": {}
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
               }
             }
           },
@@ -111,19 +119,23 @@
         ],
         "operationId": "test",
         "responses": {
-          "500": {
-            "description": "An unknown error occurred",
-            "content": {
-              "*/*": {
-                "schema": {}
-              }
-            }
-          },
           "400": {
             "description": "The request is malformed or information is missing.",
             "content": {
               "*/*": {
-                "schema": {}
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
               }
             }
           },
@@ -141,19 +153,23 @@
         ],
         "operationId": "test_1",
         "responses": {
-          "500": {
-            "description": "An unknown error occurred",
-            "content": {
-              "*/*": {
-                "schema": {}
-              }
-            }
-          },
           "400": {
             "description": "The request is malformed or information is missing.",
             "content": {
               "*/*": {
-                "schema": {}
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
               }
             }
           },
@@ -168,15 +184,15 @@
   "components": {
     "schemas": {
       "HelloBody": {
+        "required": [
+          "helloValue"
+        ],
         "type": "object",
         "properties": {
           "helloValue": {
             "type": "string"
           }
-        },
-        "required": [
-          "helloValue"
-        ]
+        }
       }
     }
   }

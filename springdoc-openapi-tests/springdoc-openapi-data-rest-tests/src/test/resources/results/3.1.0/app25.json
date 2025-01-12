@@ -1,0 +1,2718 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/clinics": {
+      "get": {
+        "tags": [
+          "clinic-entity-controller"
+        ],
+        "description": "get-clinic",
+        "operationId": "getCollectionResource-clinic-get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelClinic"
+                }
+              },
+              "application/x-spring-data-compact+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelClinic"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "clinic-entity-controller"
+        ],
+        "description": "create-clinic",
+        "operationId": "postCollectionResource-clinic-post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClinicRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelClinic"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clinics/{id}": {
+      "get": {
+        "tags": [
+          "clinic-entity-controller"
+        ],
+        "description": "get-clinic",
+        "operationId": "getItemResource-clinic-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelClinic"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "clinic-entity-controller"
+        ],
+        "description": "update-clinic",
+        "operationId": "putItemResource-clinic-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClinicRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelClinic"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelClinic"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "clinic-entity-controller"
+        ],
+        "description": "delete-clinic",
+        "operationId": "deleteItemResource-clinic-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "clinic-entity-controller"
+        ],
+        "description": "patch-clinic",
+        "operationId": "patchItemResource-clinic-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClinicRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelClinic"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/doctors": {
+      "get": {
+        "tags": [
+          "doctor-entity-controller"
+        ],
+        "description": "get-doctor",
+        "operationId": "getCollectionResource-doctor-get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelDoctor"
+                }
+              },
+              "application/x-spring-data-compact+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelDoctor"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "doctor-entity-controller"
+        ],
+        "description": "create-doctor",
+        "operationId": "postCollectionResource-doctor-post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoctorRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelDoctor"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/doctors/search/findByClinicsContains": {
+      "get": {
+        "tags": [
+          "doctor-search-controller"
+        ],
+        "operationId": "executeSearch-doctor-get",
+        "parameters": [
+          {
+            "name": "clinic",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Clinic"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelDoctor"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/doctors/{id}": {
+      "get": {
+        "tags": [
+          "doctor-entity-controller"
+        ],
+        "description": "get-doctor",
+        "operationId": "getItemResource-doctor-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelDoctor"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "doctor-entity-controller"
+        ],
+        "description": "update-doctor",
+        "operationId": "putItemResource-doctor-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoctorRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelDoctor"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelDoctor"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "doctor-entity-controller"
+        ],
+        "description": "delete-doctor",
+        "operationId": "deleteItemResource-doctor-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "doctor-entity-controller"
+        ],
+        "description": "patch-doctor",
+        "operationId": "patchItemResource-doctor-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoctorRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelDoctor"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/doctors/{id}/clinics": {
+      "get": {
+        "tags": [
+          "doctor-property-reference-controller"
+        ],
+        "description": "get-clinic-by-doctor-Id",
+        "operationId": "followPropertyReference-doctor-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelClinic"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "doctor-property-reference-controller"
+        ],
+        "description": "update-clinic-by-doctor-Id",
+        "operationId": "createPropertyReference-doctor-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelClinic"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelClinic"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "doctor-property-reference-controller"
+        ],
+        "description": "delete-clinic-by-doctor-Id",
+        "operationId": "deletePropertyReference-doctor-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "doctor-property-reference-controller"
+        ],
+        "description": "patch-clinic-by-doctor-Id",
+        "operationId": "createPropertyReference-doctor-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelClinic"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/doctors/{id}/clinics/{propertyId}": {
+      "get": {
+        "tags": [
+          "doctor-property-reference-controller"
+        ],
+        "description": "get-clinic-by-doctor-Id",
+        "operationId": "followPropertyReference-doctor-get_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelClinic"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "doctor-property-reference-controller"
+        ],
+        "description": "delete-clinic-by-doctor-Id",
+        "operationId": "deletePropertyReferenceId-doctor-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/owners": {
+      "get": {
+        "tags": [
+          "owner-entity-controller"
+        ],
+        "description": "get-owner",
+        "operationId": "getCollectionResource-owner-get",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelEntityModelOwner"
+                }
+              },
+              "application/x-spring-data-compact+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelEntityModelOwner"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "owner-entity-controller"
+        ],
+        "description": "create-owner",
+        "operationId": "postCollectionResource-owner-post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OwnerRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/owners/{id}": {
+      "get": {
+        "tags": [
+          "owner-entity-controller"
+        ],
+        "description": "get-owner",
+        "operationId": "getItemResource-owner-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "owner-entity-controller"
+        ],
+        "description": "update-owner",
+        "operationId": "putItemResource-owner-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OwnerRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "owner-entity-controller"
+        ],
+        "description": "delete-owner",
+        "operationId": "deleteItemResource-owner-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "owner-entity-controller"
+        ],
+        "description": "patch-owner",
+        "operationId": "patchItemResource-owner-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OwnerRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/owners/{id}/pets": {
+      "get": {
+        "tags": [
+          "owner-property-reference-controller"
+        ],
+        "description": "get-pet-by-owner-Id",
+        "operationId": "followPropertyReference-owner-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelPet"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "owner-property-reference-controller"
+        ],
+        "description": "update-pet-by-owner-Id",
+        "operationId": "createPropertyReference-owner-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelPet"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelPet"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "owner-property-reference-controller"
+        ],
+        "description": "delete-pet-by-owner-Id",
+        "operationId": "deletePropertyReference-owner-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "owner-property-reference-controller"
+        ],
+        "description": "patch-pet-by-owner-Id",
+        "operationId": "createPropertyReference-owner-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelPet"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/owners/{id}/pets/{propertyId}": {
+      "get": {
+        "tags": [
+          "owner-property-reference-controller"
+        ],
+        "description": "get-pet-by-owner-Id",
+        "operationId": "followPropertyReference-owner-get_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelPet"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "owner-property-reference-controller"
+        ],
+        "description": "delete-pet-by-owner-Id",
+        "operationId": "deletePropertyReferenceId-owner-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/pets": {
+      "get": {
+        "tags": [
+          "pet-entity-controller"
+        ],
+        "description": "get-pet",
+        "operationId": "getCollectionResource-pet-get",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelEntityModelPet"
+                }
+              },
+              "application/x-spring-data-compact+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelEntityModelPet"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "pet-entity-controller"
+        ],
+        "description": "create-pet",
+        "operationId": "postCollectionResource-pet-post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PetRequestBody"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CatRequestBody"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DogRequestBody"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPet"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets/{id}": {
+      "get": {
+        "tags": [
+          "pet-entity-controller"
+        ],
+        "description": "get-pet",
+        "operationId": "getItemResource-pet-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPet"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "pet-entity-controller"
+        ],
+        "description": "update-pet",
+        "operationId": "putItemResource-pet-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PetRequestBody"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CatRequestBody"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DogRequestBody"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPet"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPet"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "pet-entity-controller"
+        ],
+        "description": "delete-pet",
+        "operationId": "deleteItemResource-pet-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "pet-entity-controller"
+        ],
+        "description": "patch-pet",
+        "operationId": "patchItemResource-pet-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PetRequestBody"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CatRequestBody"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DogRequestBody"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelPet"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/pets/{id}/owner": {
+      "get": {
+        "tags": [
+          "pet-property-reference-controller"
+        ],
+        "description": "get-owner-by-pet-Id",
+        "operationId": "followPropertyReference-pet-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "pet-property-reference-controller"
+        ],
+        "description": "update-owner-by-pet-Id",
+        "operationId": "createPropertyReference-pet-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "pet-property-reference-controller"
+        ],
+        "description": "delete-owner-by-pet-Id",
+        "operationId": "deletePropertyReference-pet-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "pet-property-reference-controller"
+        ],
+        "description": "patch-owner-by-pet-Id",
+        "operationId": "createPropertyReference-pet-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/pets/{id}/owner/{propertyId}": {
+      "get": {
+        "tags": [
+          "pet-property-reference-controller"
+        ],
+        "description": "get-owner-by-pet-Id",
+        "operationId": "followPropertyReference-pet-get_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "pet-property-reference-controller"
+        ],
+        "description": "delete-owner-by-pet-Id",
+        "operationId": "deletePropertyReferenceId-pet-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "listAllFormsOfMetadata",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile/clinics": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "descriptor",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/alps+json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/schema+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile/doctors": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "descriptor_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/alps+json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/schema+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile/owners": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "descriptor_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/alps+json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/schema+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile/pets": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "descriptor_3",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/alps+json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/schema+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AbstractJsonSchemaPropertyObject": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "readOnly": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AbstractJsonSchemaPropertyObject"
+            }
+          },
+          "requiredProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "JsonSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AbstractJsonSchemaPropertyObject"
+            }
+          },
+          "requiredProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "definitions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Item"
+            }
+          },
+          "type": {
+            "type": "string"
+          },
+          "$schema": {
+            "type": "string"
+          }
+        }
+      },
+      "RepresentationModelObject": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "zipcode": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "EntityModelOwner": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "addresses": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "required": [
+          "addresses",
+          "lastname"
+        ]
+      },
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PagedModelEntityModelOwner": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "owners": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelOwner"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "CollectionModelPet": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "pets": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PetResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CatResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DogResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "Clinic": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            },
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "EntityModelDoctor": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "specialty": {
+            "type": "string",
+            "enum": [
+              "ALLERGY_AND_IMMUNOLOGY",
+              "ADOLESCENT_MEDICINE",
+              "ANESTHESIOLOGY",
+              "AEROSPACE_MEDICINE",
+              "BARIATRICS",
+              "CARDIOLOGY",
+              "CARDIOTHORACIC_SURGERY",
+              "CHILD_AND_ADOLESCENT_PSYCHIATRY",
+              "CLINICAL_NEUROPHYSIOLOGY",
+              "COLORECTAL_SURGERY",
+              "DERMATOLOGY",
+              "DEVELOPMENTAL_PEDIATRICS",
+              "EMERGENCY_MEDICINE",
+              "ENDOCRINOLOGY",
+              "FAMILY_MEDICINE",
+              "FORENSIC_PATHOLOGY",
+              "FORENSIC_PSYCHIATRY",
+              "GASTROENTEROLOGY",
+              "GENERAL_SURGERY",
+              "GENERAL_SURGICAL_ONCOLOGY",
+              "GERIATRICS",
+              "GERIATRIC_PSYCHIATRY",
+              "GYNECOLOGIC_ONCOLOGY",
+              "HEMATOLOGY",
+              "HEMATOLOGIC_PATHOLOGY",
+              "INFECTIOUS_DISEASE",
+              "INTERNAL_MEDICINE",
+              "INTERVENTIONAL_RADIOLOGY",
+              "INTENSIVE_CARE_MEDICINE",
+              "MATERNAL_FETAL_MEDICINE",
+              "MEDICAL_BIOCHEMISTRY",
+              "MEDICAL_GENETICS",
+              "MEDICAL_ONCOLOGY",
+              "NEONATOLOGY",
+              "NEPHROLOGY",
+              "NEUROLOGY",
+              "NEUROPATHOLOGY",
+              "NEUROSURGERY",
+              "NUCLEAR_MEDICINE",
+              "OBSTETRICS_AND_GYNECOLOGY",
+              "OCCUPATIONAL_MEDICINE",
+              "OPHTHALMOLOGY",
+              "ORTHOPEDIC_SURGERY",
+              "ORAL_AND_MAXILLOFACIAL_SURGERY",
+              "OTORHINOLARYNGOLOGY",
+              "PALLIATIVE_CARE",
+              "PATHOLOGY",
+              "PEDIATRICS",
+              "PEDIATRIC_ALLERGY_AND_IMMUNOLOGY",
+              "PEDIATRIC_CARDIOLOGY",
+              "PEDIATRIC_EMERGENCY_MEDICINE",
+              "PEDIATRIC_ENDOCRINOLOGY",
+              "PEDIATRIC_GASTROENTEROLOGY",
+              "PEDIATRIC_HEMATOLOGY_AND_ONCOLOGY",
+              "PEDIATRIC_INFECTIOUS_DISEASE",
+              "PEDIATRIC_NEPHROLOGY",
+              "PEDIATRIC_RESPIRATORY_MEDICINE",
+              "PEDIATRIC_RHEUMATOLOGY",
+              "PEDIATRIC_SURGERY",
+              "PHYSICAL_MEDICINE_AND_REHABILITATION",
+              "PLASTIC_RECONSTRUCTIVE_AND_AESTHETIC_SURGERY",
+              "PSYCHIATRY",
+              "PUBLIC_HEALTH",
+              "RADIATION_ONCOLOGY",
+              "RADIOLOGY",
+              "REPRODUCTIVE_ENDOCRINOLOGY_AND_INFERTILITY",
+              "RESPIRATORY_MEDICINE",
+              "RHEUMATOLOGY",
+              "SPORTS_MEDICINE",
+              "THORACIC_SURGERY",
+              "NEURORADIOLOGY",
+              "UROLOGY",
+              "VASCULAR_SURGERY"
+            ]
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "required": [
+          "firstname",
+          "lastname"
+        ]
+      },
+      "CollectionModelEntityModelDoctor": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "doctors": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelDoctor"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelClinic": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "clinics": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ClinicResponse"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelClinic": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            },
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CollectionModelEntityModelClinic": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "clinics": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelClinic"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelPet": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "_type": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "required": [
+          "_type",
+          "name"
+        ]
+      },
+      "PagedModelEntityModelPet": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "pets": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelPet"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "ClinicRequestBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            },
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "DoctorRequestBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "specialty": {
+            "type": "string",
+            "enum": [
+              "ALLERGY_AND_IMMUNOLOGY",
+              "ADOLESCENT_MEDICINE",
+              "ANESTHESIOLOGY",
+              "AEROSPACE_MEDICINE",
+              "BARIATRICS",
+              "CARDIOLOGY",
+              "CARDIOTHORACIC_SURGERY",
+              "CHILD_AND_ADOLESCENT_PSYCHIATRY",
+              "CLINICAL_NEUROPHYSIOLOGY",
+              "COLORECTAL_SURGERY",
+              "DERMATOLOGY",
+              "DEVELOPMENTAL_PEDIATRICS",
+              "EMERGENCY_MEDICINE",
+              "ENDOCRINOLOGY",
+              "FAMILY_MEDICINE",
+              "FORENSIC_PATHOLOGY",
+              "FORENSIC_PSYCHIATRY",
+              "GASTROENTEROLOGY",
+              "GENERAL_SURGERY",
+              "GENERAL_SURGICAL_ONCOLOGY",
+              "GERIATRICS",
+              "GERIATRIC_PSYCHIATRY",
+              "GYNECOLOGIC_ONCOLOGY",
+              "HEMATOLOGY",
+              "HEMATOLOGIC_PATHOLOGY",
+              "INFECTIOUS_DISEASE",
+              "INTERNAL_MEDICINE",
+              "INTERVENTIONAL_RADIOLOGY",
+              "INTENSIVE_CARE_MEDICINE",
+              "MATERNAL_FETAL_MEDICINE",
+              "MEDICAL_BIOCHEMISTRY",
+              "MEDICAL_GENETICS",
+              "MEDICAL_ONCOLOGY",
+              "NEONATOLOGY",
+              "NEPHROLOGY",
+              "NEUROLOGY",
+              "NEUROPATHOLOGY",
+              "NEUROSURGERY",
+              "NUCLEAR_MEDICINE",
+              "OBSTETRICS_AND_GYNECOLOGY",
+              "OCCUPATIONAL_MEDICINE",
+              "OPHTHALMOLOGY",
+              "ORTHOPEDIC_SURGERY",
+              "ORAL_AND_MAXILLOFACIAL_SURGERY",
+              "OTORHINOLARYNGOLOGY",
+              "PALLIATIVE_CARE",
+              "PATHOLOGY",
+              "PEDIATRICS",
+              "PEDIATRIC_ALLERGY_AND_IMMUNOLOGY",
+              "PEDIATRIC_CARDIOLOGY",
+              "PEDIATRIC_EMERGENCY_MEDICINE",
+              "PEDIATRIC_ENDOCRINOLOGY",
+              "PEDIATRIC_GASTROENTEROLOGY",
+              "PEDIATRIC_HEMATOLOGY_AND_ONCOLOGY",
+              "PEDIATRIC_INFECTIOUS_DISEASE",
+              "PEDIATRIC_NEPHROLOGY",
+              "PEDIATRIC_RESPIRATORY_MEDICINE",
+              "PEDIATRIC_RHEUMATOLOGY",
+              "PEDIATRIC_SURGERY",
+              "PHYSICAL_MEDICINE_AND_REHABILITATION",
+              "PLASTIC_RECONSTRUCTIVE_AND_AESTHETIC_SURGERY",
+              "PSYCHIATRY",
+              "PUBLIC_HEALTH",
+              "RADIATION_ONCOLOGY",
+              "RADIOLOGY",
+              "REPRODUCTIVE_ENDOCRINOLOGY_AND_INFERTILITY",
+              "RESPIRATORY_MEDICINE",
+              "RHEUMATOLOGY",
+              "SPORTS_MEDICINE",
+              "THORACIC_SURGERY",
+              "NEURORADIOLOGY",
+              "UROLOGY",
+              "VASCULAR_SURGERY"
+            ]
+          },
+          "clinics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "firstname",
+          "lastname"
+        ]
+      },
+      "ClinicResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            },
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CatRequestBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PetRequestBody"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "coat": {
+                "type": "string",
+                "enum": [
+                  "TABBY",
+                  "TOROISE",
+                  "COLORPOINT",
+                  "BICOLOR",
+                  "TRICOLOR",
+                  "SOLID"
+                ]
+              }
+            }
+          }
+        ],
+        "required": [
+          "name"
+        ]
+      },
+      "DogRequestBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PetRequestBody"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "coat": {
+                "type": "string",
+                "enum": [
+                  "SMOOTH",
+                  "SHORT",
+                  "COMBINATION",
+                  "DOUBLE",
+                  "HEAVY",
+                  "SILKY",
+                  "LONG",
+                  "CURLY",
+                  "WIRE",
+                  "HAIRLESS"
+                ]
+              }
+            }
+          }
+        ],
+        "required": [
+          "name"
+        ]
+      },
+      "OwnerRequestBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "addresses": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "pets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "addresses",
+          "lastname"
+        ]
+      },
+      "PetRequestBody": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "_type"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_type",
+          "name"
+        ]
+      },
+      "CatResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PetResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "coat": {
+                "type": "string",
+                "enum": [
+                  "TABBY",
+                  "TOROISE",
+                  "COLORPOINT",
+                  "BICOLOR",
+                  "TRICOLOR",
+                  "SOLID"
+                ]
+              }
+            }
+          }
+        ],
+        "required": [
+          "name"
+        ]
+      },
+      "DogResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PetResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "coat": {
+                "type": "string",
+                "enum": [
+                  "SMOOTH",
+                  "SHORT",
+                  "COMBINATION",
+                  "DOUBLE",
+                  "HEAVY",
+                  "SILKY",
+                  "LONG",
+                  "CURLY",
+                  "WIRE",
+                  "HAIRLESS"
+                ]
+              }
+            }
+          }
+        ],
+        "required": [
+          "name"
+        ]
+      },
+      "PetResponse": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "_type"
+        },
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_type",
+          "name"
+        ]
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "hreflang": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "deprecation": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
+        }
+      }
+    }
+  }
+}

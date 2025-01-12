@@ -68,7 +68,7 @@ public class HelloController {
 				api.getComponents(),
 				ErrorResponse.class,
 				null,
-				null, SpecVersion.V30
+				null, SpecVersion.V31
 		);
 
 		ApiResponse errorApiResponse = new ApiResponse().content(new Content().addMediaType(

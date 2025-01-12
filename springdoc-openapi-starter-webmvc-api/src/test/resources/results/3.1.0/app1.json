@@ -87,6 +87,10 @@
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
+                "required": [
+                  "firstName",
+                  "lastName"
+                ],
                 "type": "object",
                 "properties": {
                   "firstName": {
@@ -97,11 +101,7 @@
                     "type": "string",
                     "description": "Last Name"
                   }
-                },
-                "required": [
-                  "firstName",
-                  "lastName"
-                ]
+                }
               }
             }
           }
@@ -210,9 +210,9 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string",
               "maxLength": 6,
-              "minLength": 4
+              "minLength": 4,
+              "type": "string"
             }
           },
           {
@@ -220,10 +220,10 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32",
               "maximum": 6,
-              "minimum": 4
+              "minimum": 4,
+              "type": "integer",
+              "format": "int32"
             }
           },
           {
@@ -231,6 +231,7 @@
             "in": "query",
             "required": false,
             "schema": {
+              "type": "string",
               "format": "date-time",
               "example": "1970-01-01T00:00:00.000Z"
             }
@@ -242,7 +243,9 @@
             "explode": false,
             "schema": {
               "type": "array",
-              "items": {}
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -337,9 +340,9 @@
             "description": "number of records to skip for pagination",
             "required": true,
             "schema": {
+              "minimum": 0,
               "type": "integer",
-              "format": "int32",
-              "minimum": 0
+              "format": "int32"
             }
           },
           {
@@ -348,10 +351,10 @@
             "description": "maximum number of records to return",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32",
               "maximum": 50,
-              "minimum": 0
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -564,6 +567,12 @@
         }
       },
       "InventoryItem": {
+        "required": [
+          "id",
+          "manufacturer",
+          "name",
+          "releaseDate"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -582,15 +591,12 @@
           "manufacturer": {
             "$ref": "#/components/schemas/Manufacturer"
           }
-        },
-        "required": [
-          "id",
-          "manufacturer",
-          "name",
-          "releaseDate"
-        ]
+        }
       },
       "Manufacturer": {
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -605,10 +611,7 @@
             "type": "string",
             "example": "408-867-5309"
           }
-        },
-        "required": [
-          "name"
-        ]
+        }
       },
       "ItemDTO": {
         "type": "object",

@@ -48,7 +48,9 @@
             "description": "OK",
             "content": {
               "*/*": {
-                "schema": {}
+                "schema": {
+                  "type": "object"
+                }
               }
             }
           }

@@ -1,0 +1,45 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/api/v2/timeout": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Timeouts duration.",
+        "description": "Timeouts duration.",
+        "operationId": "timeouts",
+        "responses": {
+          "200": {
+            "description": "the duration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

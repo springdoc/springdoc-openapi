@@ -1,0 +1,37 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/persons": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Persons.",
+        "description": "Persons.",
+        "operationId": "persons",
+        "responses": {
+          "202": {
+            "description": "Description of api response 202"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

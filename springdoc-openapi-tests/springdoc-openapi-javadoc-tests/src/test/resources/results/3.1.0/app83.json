@@ -1,0 +1,80 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/{config}": {
+      "put": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Put response entity.",
+        "description": "Put response entity.",
+        "operationId": "put",
+        "parameters": [
+          {
+            "name": "config",
+            "in": "path",
+            "description": "the config",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "configuration",
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "configuration": {
+                    "type": "string",
+                    "description": "the configuration",
+                    "format": "binary"
+                  },
+                  "file": {
+                    "type": "string",
+                    "description": "the a file",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the response entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

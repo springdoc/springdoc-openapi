@@ -1,0 +1,178 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/test3/{uuid}": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Example api that realize an ECHO operation",
+        "description": "The result of the echo is the input value of the api",
+        "operationId": "postMyRequestBody3",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "Is the identification of the document",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "other possible response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2/{uuid}": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Example api that realize an ECHO operation",
+        "description": "The result of the echo is the input value of the api",
+        "operationId": "postMyRequestBody2",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "Is the identification of the document",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "other possible response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test1/{uuid}": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Example api that realize an ECHO operation",
+        "description": "The result of the echo is the input value of the api",
+        "operationId": "postMyRequestBody1",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "Is the identification of the document",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "other possible response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PersonDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The Email."
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The First name."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The Last name."
+          }
+        },
+        "description": "The type Person dto."
+      }
+    }
+  }
+}

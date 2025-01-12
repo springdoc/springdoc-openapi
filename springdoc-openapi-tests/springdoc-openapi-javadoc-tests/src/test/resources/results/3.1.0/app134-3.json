@@ -1,0 +1,72 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/{id}": {
+      "get": {
+        "tags": [
+          "The sample resource"
+        ],
+        "description": "Get the sample by its id.",
+        "operationId": "getSampleV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The sample's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-API-VERSION",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the sample v 1",
+            "content": {
+              "application/vnd.samples.v1+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SampleV1"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SampleV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The Id."
+          }
+        },
+        "description": "The type Sample v 1."
+      }
+    }
+  }
+}

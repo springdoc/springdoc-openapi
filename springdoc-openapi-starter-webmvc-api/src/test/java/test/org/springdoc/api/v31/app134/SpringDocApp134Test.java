@@ -25,7 +25,7 @@ package test.org.springdoc.api.v31.app134;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Tests Spring meta-annotations as method parameters
  */
-public class SpringDocApp134Test extends AbstractSpringDocV31Test {
+public class SpringDocApp134Test extends AbstractSpringDocTest {
 
 	@Test
 	protected void testApp() throws Exception {

@@ -1,0 +1,69 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/example/{test}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation, customized operation!",
+        "operationId": "test",
+        "parameters": [
+          {
+            "name": "test",
+            "in": "path",
+            "description": "Parameter description, customized parameter!",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the api type",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiType"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiType": {
+        "type": "object",
+        "description": "The type Api type.",
+        "properties": {
+          "someProperty": {
+            "type": "string",
+            "format": "duration",
+            "description": "Test description",
+            "properties": {}
+          }
+        }
+      }
+    }
+  }
+}

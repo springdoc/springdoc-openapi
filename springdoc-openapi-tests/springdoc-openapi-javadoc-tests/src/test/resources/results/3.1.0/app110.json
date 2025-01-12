@@ -1,0 +1,310 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "sample application API",
+    "description": "description",
+    "termsOfService": "http://swagger.io/terms/",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://springdoc.org"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "person-controller",
+      "description": "The type Person controller."
+    },
+    {
+      "name": "person-controller-2",
+      "description": "The type Person controller 2."
+    }
+  ],
+  "paths": {
+    "/person": {
+      "post": {
+        "tags": [
+          "person-controller"
+        ],
+        "summary": "Person person.",
+        "description": "Person person.",
+        "operationId": "person",
+        "requestBody": {
+          "description": "the person",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "the person",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/person2": {
+      "post": {
+        "tags": [
+          "person-controller-2"
+        ],
+        "summary": "Person person.",
+        "description": "Person person.",
+        "operationId": "person_1",
+        "requestBody": {
+          "description": "the person",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the person",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/personByLastName": {
+      "get": {
+        "tags": [
+          "person-controller"
+        ],
+        "summary": "Find by last name list.",
+        "description": "Find by last name list.",
+        "operationId": "findByLastName",
+        "parameters": [
+          {
+            "name": "lastName",
+            "in": "query",
+            "description": "the last name",
+            "required": true,
+            "schema": {
+              "maxLength": 10,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "the list",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/personByLastName2": {
+      "get": {
+        "tags": [
+          "person-controller-2"
+        ],
+        "summary": "Find by last name list.",
+        "description": "Find by last name list.",
+        "operationId": "findByLastName_1",
+        "parameters": [
+          {
+            "name": "lastName",
+            "in": "query",
+            "description": "the last name",
+            "required": true,
+            "schema": {
+              "maxLength": 10,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the list",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "logRef": {
+            "type": "string",
+            "description": "The Log ref."
+          },
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          }
+        },
+        "description": "The type Problem."
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": "The Errors.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "The type Error message."
+      },
+      "Person": {
+        "required": [
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int64"
+          },
+          "firstName": {
+            "maxLength": 2147483647,
+            "minLength": 2,
+            "type": "string",
+            "description": "The First name."
+          },
+          "lastName": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "The Last name."
+          },
+          "email": {
+            "pattern": ".+@.+\\..+",
+            "type": "string",
+            "description": "The Email."
+          },
+          "email1": {
+            "type": "string",
+            "description": "The Email 1."
+          },
+          "age": {
+            "maximum": 30,
+            "minimum": 18,
+            "type": "integer",
+            "description": "The Age.",
+            "format": "int32"
+          },
+          "creditCardNumber": {
+            "type": "string",
+            "description": "The Credit card number."
+          }
+        },
+        "description": "The type Person."
+      }
+    }
+  }
+}

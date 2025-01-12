@@ -18,6 +18,9 @@
         ],
         "operationId": "index",
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -34,13 +37,12 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type": "object"
+                  }
                 }
               }
             }
-          },
-          "200": {
-            "description": "OK"
           }
         }
       }
@@ -52,6 +54,9 @@
         ],
         "operationId": "index_1",
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -68,13 +73,12 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type": "object"
+                  }
                 }
               }
             }
-          },
-          "200": {
-            "description": "OK"
           }
         }
       }

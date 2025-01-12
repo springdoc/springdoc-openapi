@@ -35,11 +35,12 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
-import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.core.ResolvableType;
 import org.springframework.data.web.PagedModel;
+
+import static org.springdoc.core.utils.SpringDocUtils.getParentTypeName;
 
 /**
  * The Spring Data Page type model converter.
@@ -95,7 +96,7 @@ public class PageOpenAPIConverter implements ModelConverter {
 				if (!type.isSchemaProperty())
 					type = resolvePagedModelType(type);
 				else
-					type.name(cls.getSimpleName() + StringUtils.capitalize(type.getParent().getType()));
+					type.name(getParentTypeName(type, cls));
 			}
 		}
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;

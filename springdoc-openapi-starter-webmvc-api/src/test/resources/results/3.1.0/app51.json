@@ -22,7 +22,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": {}
+                "additionalProperties": {
+                  "type": "object"
+                }
               }
             }
           },
@@ -35,7 +37,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type": "object"
+                  }
                 }
               }
             }
@@ -55,6 +59,7 @@
             "in": "header",
             "required": true,
             "schema": {
+              "type": "string",
               "example": "rherherherherh"
             }
           },
@@ -64,6 +69,7 @@
             "description": "desc1",
             "required": true,
             "schema": {
+              "type": "string",
               "example": "something"
             }
           }
@@ -94,6 +100,7 @@
             "in": "header",
             "required": true,
             "schema": {
+              "type": "string",
               "example": "rherherherherh"
             }
           },
@@ -132,6 +139,7 @@
             "in": "header",
             "required": true,
             "schema": {
+              "type": "string",
               "example": "rherherherherh"
             }
           }

@@ -1,0 +1,206 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/test3": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Create test 3 string.",
+        "description": "Create test 3 string.",
+        "operationId": "createTest3",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "test": {
+                    "$ref": "#/components/schemas/MyTestDto",
+                    "description": "the test"
+                  },
+                  "doc": {
+                    "type": "array",
+                    "description": "the multipart files",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "required": [
+                  "doc",
+                  "test"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2/{username}": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Create test 2 string.",
+        "description": "Create test 2 string.",
+        "operationId": "createTest2",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "the username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "the image file"
+                  },
+                  "test": {
+                    "$ref": "#/components/schemas/MyTestDto",
+                    "description": "the test"
+                  }
+                },
+                "required": [
+                  "image",
+                  "test"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test1/{username}": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Create test 1 string.",
+        "description": "Create test 1 string.",
+        "operationId": "createTest1",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "the username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "test": {
+                    "$ref": "#/components/schemas/MyTestDto",
+                    "description": "the test"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "the image file"
+                  }
+                },
+                "required": [
+                  "image",
+                  "test"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MyTestDto": {
+        "type": "object",
+        "description": "The type My test dto.",
+        "properties": {
+          "object1": {
+            "type": "string",
+            "description": "The Object 1."
+          },
+          "object2": {
+            "type": "string",
+            "description": "The Object 2."
+          },
+          "object3": {
+            "type": "string",
+            "description": "The Object 3."
+          }
+        }
+      }
+    }
+  }
+}

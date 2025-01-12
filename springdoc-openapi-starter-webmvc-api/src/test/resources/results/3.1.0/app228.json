@@ -74,35 +74,11 @@
           }
         ]
       },
-      "Child3": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Parent"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "childProperty3": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      },
       "MyRequest": {
         "type": "object",
         "properties": {
           "parent": {
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/Child1"
-              },
-              {
-                "$ref": "#/components/schemas/Child2"
-              },
-              {
-                "$ref": "#/components/schemas/Child3"
-              },
               {
                 "$ref": "#/components/schemas/Child1"
               },

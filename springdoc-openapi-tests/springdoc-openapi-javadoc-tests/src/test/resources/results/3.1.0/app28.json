@@ -1,0 +1,69 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/upload2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Upload 2 string.",
+        "description": "Upload 2 string.",
+        "operationId": "upload2",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "one",
+                  "two"
+                ],
+                "type": "object",
+                "properties": {
+                  "one": {
+                    "type": "string",
+                    "description": "the one",
+                    "format": "binary"
+                  },
+                  "two": {
+                    "type": "string",
+                    "description": "the two",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

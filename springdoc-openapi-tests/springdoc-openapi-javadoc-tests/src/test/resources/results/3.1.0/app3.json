@@ -1,0 +1,113 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Echo playing card.",
+        "description": "Echo playing card.",
+        "operationId": "echo",
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto baby",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "the card baby",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayingCard"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the playing card baby",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PlayingCard": {
+        "type": "object",
+        "properties": {
+          "suit": {
+            "type": "string",
+            "description": "The Suit.",
+            "enum": [
+              "Hearts",
+              "Diamonds",
+              "Clubs",
+              "Spades"
+            ]
+          },
+          "value": {
+            "type": "integer",
+            "description": "The Value.",
+            "format": "int32"
+          },
+          "toto": {
+            "type": "string",
+            "description": "The Toto.",
+            "format": "date-time"
+          }
+        },
+        "description": "The type Playing card."
+      },
+      "PersonDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The firstName"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The lastName"
+          }
+        },
+        "description": "The type Person dto."
+      }
+    }
+  }
+}

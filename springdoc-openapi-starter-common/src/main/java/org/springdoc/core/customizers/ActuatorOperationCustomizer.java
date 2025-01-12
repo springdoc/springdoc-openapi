@@ -54,6 +54,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.providers.ActuatorProvider.getTag;
+import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
 
 /**
  * The type Actuator operation customizer.
@@ -240,7 +241,9 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	 * @return the schema
 	 */
 	private Schema<?> resolveSchema(Parameter parameter) {
-		return AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null, springDocConfigProperties.isOpenapi31());
+		Schema schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null, springDocConfigProperties.isOpenapi31());
+		if(springDocConfigProperties.isOpenapi31()) handleSchemaTypes(schema);
+		return schema;
 	}
 
 	/**

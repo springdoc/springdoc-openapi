@@ -1,0 +1,76 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/search": {
+      "get": {
+        "tags": [
+          "hello-ap1",
+          "hello-ap2"
+        ],
+        "summary": "Gets all pets.",
+        "description": "Gets all pets.",
+        "operationId": "getAllPets",
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the all pets",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PersonDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The Email."
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The First name."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The Last name."
+          }
+        },
+        "description": "The type Person dto."
+      }
+    }
+  }
+}

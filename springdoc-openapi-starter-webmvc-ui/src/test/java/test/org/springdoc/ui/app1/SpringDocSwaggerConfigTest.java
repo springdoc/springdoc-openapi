@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = { "spring.jackson.property-naming-strategy=UPPER_CAMEL_CASE", "springdoc.show-actuator=true",
 				"management.endpoints.web.base-path=/management",
-				"server.servlet.context-path=/demo/api", "management.server.port=9201", "management.server.base-path=/demo/api" })
+				"server.servlet.context-path=/demo/api", "management.server.port=9301", "management.server.base-path=/demo/api" })
 public class SpringDocSwaggerConfigTest extends AbstractSpringDocActuatorTest {
 
 	@Test
