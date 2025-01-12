@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - #2846 - ClassCastException with spring-data-rest and openapi version 3.1 bug
-- #2844 - PageableObject and SortObject are called Pageablenull and Sortnull i
+- #2844 - PageableObject and SortObject are called Pageablenull and Sortnull
 
 ## [2.8.1] - 2025-01-06
 
