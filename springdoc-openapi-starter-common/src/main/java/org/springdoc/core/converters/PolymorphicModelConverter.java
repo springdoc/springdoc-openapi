@@ -44,6 +44,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
@@ -68,7 +69,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 * The constant PARENT_TYPES_TO_IGNORE.
 	 */
 	private static final List<String> TYPES_TO_SKIP = Collections.synchronizedList(new ArrayList<>());
-	
+
 	static {
 		PARENT_TYPES_TO_IGNORE.add("JsonSchema");
 		PARENT_TYPES_TO_IGNORE.add("Pageable");
@@ -121,7 +122,10 @@ public class PolymorphicModelConverter implements ModelConverter {
 					PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getSimpleName());
 				}
 				else if (field.isAnnotationPresent(io.swagger.v3.oas.annotations.media.Schema.class)) {
-					TYPES_TO_SKIP.add(field.getType().getSimpleName());
+					io.swagger.v3.oas.annotations.media.Schema declaredSchema = field.getDeclaredAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+					if (ArrayUtils.isNotEmpty(declaredSchema.oneOf()) || ArrayUtils.isNotEmpty(declaredSchema.allOf())) {
+						TYPES_TO_SKIP.add(field.getType().getSimpleName());
+					}
 				}
 			}
 			if (chain.hasNext()) {
@@ -133,7 +137,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 				if (resolvedSchema == null || resolvedSchema.get$ref() == null) {
 					return resolvedSchema;
 				}
-				if(resolvedSchema.get$ref().contains(Components.COMPONENTS_SCHEMAS_REF)) {
+				if (resolvedSchema.get$ref().contains(Components.COMPONENTS_SCHEMAS_REF)) {
 					String schemaName = resolvedSchema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 					Schema existingSchema = context.getDefinedModels().get(schemaName);
 					if (existingSchema != null && (existingSchema.getOneOf() != null || existingSchema.getAllOf() != null)) {
@@ -162,7 +166,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 		if (isConcreteClass(type)) result.addOneOfItem(schema);
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		Class<?> clazz = javaType.getRawClass();
-		if(TYPES_TO_SKIP.stream().noneMatch(typeToSkip -> typeToSkip.equals(clazz.getSimpleName())))
+		if (TYPES_TO_SKIP.stream().noneMatch(typeToSkip -> typeToSkip.equals(clazz.getSimpleName())))
 			composedSchemas.forEach(result::addOneOfItem);
 		return result;
 	}
