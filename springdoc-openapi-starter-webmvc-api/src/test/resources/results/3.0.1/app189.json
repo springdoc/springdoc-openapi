@@ -31,9 +31,11 @@
                     "format": "binary"
                   },
                   "title": {
+                    "type": "string",
                     "description": "title"
                   },
                   "content": {
+                    "type": "string",
                     "description": "content"
                   }
                 }
