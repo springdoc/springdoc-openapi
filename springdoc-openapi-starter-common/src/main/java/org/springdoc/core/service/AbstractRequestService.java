@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.service;
@@ -333,7 +333,7 @@ public abstract class AbstractRequestService {
 			if (!isParamToIgnore(methodParameter)) {
 				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes, openAPI.getOpenapi());
 				List<Annotation> parameterAnnotations = List.of(getParameterAnnotations(methodParameter));
-				if (isValidParameter(parameter,methodAttributes)) {
+				if (isValidParameter(parameter, methodAttributes)) {
 					// Merge with the operation parameters
 					parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 					// Add param javadoc
@@ -368,12 +368,20 @@ public abstract class AbstractRequestService {
 				Parameter parameter = entry.getValue();
 				if (!ParameterIn.PATH.toString().equals(parameter.getIn()) && !ParameterIn.HEADER.toString().equals(parameter.getIn())
 						&& !ParameterIn.COOKIE.toString().equals(parameter.getIn())) {
-					Schema<?> itemSchema = new Schema<>();
-					itemSchema.setName(entry.getKey().getpName());
-					itemSchema.setDescription(parameter.getDescription());
-					itemSchema.setDeprecated(parameter.getDeprecated());
+					Schema<?> itemSchema;
+					if (parameter.getSchema() != null) {
+						itemSchema = parameter.getSchema();
+					}
+					else {
+						itemSchema = new Schema<>();
+						itemSchema.setName(entry.getKey().getpName());
+					}
+					if (StringUtils.isNotEmpty(parameter.getDescription()))
+						itemSchema.setDescription(parameter.getDescription());
 					if (parameter.getExample() != null)
 						itemSchema.setExample(parameter.getExample());
+					if (parameter.getDeprecated() != null)
+						itemSchema.setDeprecated(parameter.getDeprecated());
 					requestBodyInfo.addProperties(entry.getKey().getpName(), itemSchema);
 					it.remove();
 				}
@@ -525,7 +533,7 @@ public abstract class AbstractRequestService {
 	 * @param methodAttributes the method attributes
 	 * @return the boolean
 	 */
-	public boolean isValidParameter(Parameter parameter, MethodAttributes methodAttributes ) {
+	public boolean isValidParameter(Parameter parameter, MethodAttributes methodAttributes) {
 		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null) && !(Arrays.asList(methodAttributes.getMethodConsumes()).contains(APPLICATION_FORM_URLENCODED_VALUE) && ParameterIn.QUERY.toString().equals(parameter.getIn()));
 	}
 
@@ -842,14 +850,14 @@ public abstract class AbstractRequestService {
 		return false;
 	}
 
-    /**
-     * Check if the parameter has any of the annotations that make it non-optional
-     *
-     * @param annotationSimpleNames the annotation simple class named, e.g. NotNull
-     * @return whether any of the known NotNull annotations are present
-     */
-    public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
-        return Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annotationSimpleNames::contains);
-    }
-	
+	/**
+	 * Check if the parameter has any of the annotations that make it non-optional
+	 *
+	 * @param annotationSimpleNames the annotation simple class named, e.g. NotNull
+	 * @return whether any of the known NotNull annotations are present
+	 */
+	public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
+		return Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annotationSimpleNames::contains);
+	}
+
 }

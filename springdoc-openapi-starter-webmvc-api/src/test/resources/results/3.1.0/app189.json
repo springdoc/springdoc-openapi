@@ -21,9 +21,6 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "file"
-                ],
                 "type": "object",
                 "properties": {
                   "file": {
@@ -31,12 +28,17 @@
                     "format": "binary"
                   },
                   "title": {
+                    "type": "string",
                     "description": "title"
                   },
                   "content": {
+                    "type": "string",
                     "description": "content"
                   }
-                }
+                },
+                "required": [
+                  "file"
+                ]
               }
             }
           }
