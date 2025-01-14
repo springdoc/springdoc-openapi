@@ -1,0 +1,78 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "DEV",
+    "version": "local"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "unwrapped-controller"
+        ],
+        "summary": "Simple get task",
+        "operationId": "exampleGet",
+        "responses": {
+          "200": {
+            "description": "Task has been started",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/test.org.springdoc.api.v30.app237.dto.Example"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Task was not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/test.org.springdoc.api.v30.app237.dto.Example"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Task is already running",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/test.org.springdoc.api.v30.app237.dto.Example"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "test.org.springdoc.api.v30.app237.dto.Example": {
+        "required": [
+          "number",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Some description of value"
+          },
+          "number": {
+            "type": "integer",
+            "description": "Some description",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  }
+}
