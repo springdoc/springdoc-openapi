@@ -31,14 +31,17 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.ComposedSchema;
@@ -63,12 +66,12 @@ public class PolymorphicModelConverter implements ModelConverter {
 	/**
 	 * The constant PARENT_TYPES_TO_IGNORE.
 	 */
-	private static final List<String> PARENT_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+	private static final Set<String> PARENT_TYPES_TO_IGNORE = Collections.synchronizedSet(new HashSet<>());
 
 	/**
 	 * The constant PARENT_TYPES_TO_IGNORE.
 	 */
-	private static final List<String> TYPES_TO_SKIP = Collections.synchronizedList(new ArrayList<>());
+	private static final Set<String> TYPES_TO_SKIP = Collections.synchronizedSet(new HashSet<>());
 
 	static {
 		PARENT_TYPES_TO_IGNORE.add("JsonSchema");
@@ -119,7 +122,10 @@ public class PolymorphicModelConverter implements ModelConverter {
 		if (javaType != null) {
 			for (Field field : FieldUtils.getAllFields(javaType.getRawClass())) {
 				if (field.isAnnotationPresent(JsonUnwrapped.class)) {
-					PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getSimpleName());
+					if (!TypeNameResolver.std.getUseFqn())
+						PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getSimpleName());
+					else
+						PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getName());
 				}
 				else if (field.isAnnotationPresent(io.swagger.v3.oas.annotations.media.Schema.class)) {
 					io.swagger.v3.oas.annotations.media.Schema declaredSchema = field.getDeclaredAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
