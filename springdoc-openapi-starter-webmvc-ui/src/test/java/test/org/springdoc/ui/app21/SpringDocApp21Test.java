@@ -19,9 +19,8 @@
 package test.org.springdoc.ui.app21;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

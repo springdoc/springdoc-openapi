@@ -27,7 +27,6 @@ import org.springdoc.core.properties.SwaggerUiOAuthProperties;
 import org.springdoc.core.utils.Constants;
 import org.springdoc.webflux.core.configuration.SpringDocWebFluxConfiguration;
 import org.springdoc.webflux.ui.SwaggerConfig;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 		SwaggerConfig.class, SwaggerUiOAuthProperties.class, SpringDocUIConfiguration.class })
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
-	private static final String DEFAULT_SWAGGER_INITIALIZER_URL = Constants.DEFAULT_WEB_JARS_PREFIX_URL + Constants.SWAGGER_INITIALIZER_URL;
+	private static final String DEFAULT_SWAGGER_INITIALIZER_URL = Constants.SWAGGER_INITIALIZER_URL;
 
 	@Autowired
 	protected WebTestClient webTestClient;

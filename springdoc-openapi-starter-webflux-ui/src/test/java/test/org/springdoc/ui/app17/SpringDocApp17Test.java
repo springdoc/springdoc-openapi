@@ -19,11 +19,10 @@
 package test.org.springdoc.ui.app17;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
+import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -38,7 +37,7 @@ class SpringDocApp17Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testIndex() {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars/swagger-ui/index.html")
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/swagger-ui/index.html")
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody().returnResult();
