@@ -19,11 +19,10 @@
 package test.org.springdoc.ui.app32;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,13 +43,13 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
 				.expectStatus().isFound()
-				.expectHeader().location("/path/prefix/foo/documentation/webjars/swagger-ui/index.html");
+				.expectHeader().location("/path/prefix/foo/documentation/swagger-ui/index.html");
 	}
 
 	@Test
 	void shouldReturnCorrectInitializerJS() {
 		webTestClient
-				.get().uri("/foo/documentation/webjars/swagger-ui/swagger-initializer.js")
+				.get().uri("/foo/documentation/swagger-ui/swagger-initializer.js")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
 				.expectStatus().isOk()

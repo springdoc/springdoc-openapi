@@ -26,9 +26,6 @@ package test.org.springdoc.ui.app18;
 
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-import test.org.springdoc.ui.AbstractCommonTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -36,6 +33,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import test.org.springdoc.ui.AbstractCommonTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -45,8 +44,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 		properties = { "spring.webflux.base-path=/test",
 				"server.port=9218",
 				"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
-				"springdoc.api-docs.path=/documentation/v3/api-docs",
-				"springdoc.webjars.prefix= /webjars-pref" })
+                "springdoc.api-docs.path=/documentation/v3/api-docs"})
 class SpringDocApp18Test extends AbstractCommonTest {
 
 	@LocalServerPort
@@ -66,7 +64,7 @@ class SpringDocApp18Test extends AbstractCommonTest {
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
-		httpStatusMono = webClient.get().uri("/test/documentation/webjars-pref/swagger-ui/index.html")
+        httpStatusMono = webClient.get().uri("/test/documentation/swagger-ui/index.html")
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);
 
