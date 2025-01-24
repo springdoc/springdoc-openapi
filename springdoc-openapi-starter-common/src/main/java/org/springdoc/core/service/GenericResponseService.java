@@ -145,14 +145,14 @@ public class GenericResponseService implements ApplicationContextAware {
 	private final Lock reentrantLock = new ReentrantLock();
 
 	/**
-	 * The Context.
-	 */
-	private ApplicationContext applicationContext;
-
-	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
+
+	/**
+	 * A list of all beans annotated with {@code @ControllerAdvice}
+	 */
+	private List<ControllerAdviceBean> controllerAdviceBeans;
 
 	/**
 	 * Instantiates a new Generic response builder.
@@ -702,8 +702,6 @@ public class GenericResponseService implements ApplicationContextAware {
 					.map(ControllerAdviceInfo::getApiResponseMap)
 					.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
 
-			List<ControllerAdviceBean> controllerAdviceBeans = ControllerAdviceBean.findAnnotatedBeans(applicationContext);
-			
 			List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
 					.filter(controllerAdviceInfo -> 
 							getControllerAdviceBean(controllerAdviceBeans, controllerAdviceInfo.getControllerAdvice())
@@ -834,6 +832,6 @@ public class GenericResponseService implements ApplicationContextAware {
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
+		controllerAdviceBeans = ControllerAdviceBean.findAnnotatedBeans(applicationContext);
 	}
 }
