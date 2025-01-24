@@ -102,8 +102,8 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	@GetMapping(value = SWAGGER_CONFIG_ACTUATOR_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Override
-	public Map<String, Object> openapiJson(ServerHttpRequest request) {
-		return super.openapiJson(request);
+	public Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
+		return super.getSwaggerUiConfig(request);
 	}
 
 	@Override

@@ -33,6 +33,7 @@ import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.core.utils.SpringDocUtils;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -106,11 +107,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	protected String buildUrlWithContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl) {
 		if (swaggerUiConfigParameters.getPathPrefix() == null)
 			swaggerUiConfigParameters.setPathPrefix(springWebProvider.findPathPrefix(springDocConfigProperties));
-		if (swaggerUiUrl.startsWith(swaggerUiConfigParameters.getPathPrefix())) {
-			return buildUrl(swaggerUiConfigParameters.getContextPath(), swaggerUiUrl);
-		} else {
-			return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
-		}
+		return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
 	}
 	
 	@Override

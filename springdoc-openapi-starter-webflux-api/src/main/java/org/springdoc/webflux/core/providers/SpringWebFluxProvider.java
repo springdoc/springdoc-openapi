@@ -25,10 +25,17 @@
  */
 package org.springdoc.webflux.core.providers;
 
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
-import org.springdoc.core.utils.Constants;
+
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
@@ -36,13 +43,6 @@ import org.springframework.web.reactive.result.method.AbstractHandlerMethodMappi
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.util.pattern.PathPattern;
-
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 /**
@@ -66,8 +66,8 @@ public class SpringWebFluxProvider extends SpringWebProvider {
 			Set<String> patterns = getActivePatterns(requestMappingInfo);
 			if (!CollectionUtils.isEmpty(patterns)) {
 				for (String operationPath : patterns) {
-					if (operationPath.endsWith(Constants.DEFAULT_API_DOCS_URL))
-						return operationPath.replace(Constants.DEFAULT_API_DOCS_URL, StringUtils.EMPTY);
+					if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
+						return operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
 				}
 			}
 		}
