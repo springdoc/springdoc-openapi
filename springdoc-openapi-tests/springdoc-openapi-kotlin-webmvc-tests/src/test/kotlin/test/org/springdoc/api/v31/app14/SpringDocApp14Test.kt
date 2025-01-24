@@ -19,7 +19,7 @@
 package test.org.springdoc.api.v31.app14
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import test.org.springdoc.api.v30.AbstractKotlinSpringDocMVCTest
+import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 class SpringDocApp14Test : AbstractKotlinSpringDocMVCTest() {
 

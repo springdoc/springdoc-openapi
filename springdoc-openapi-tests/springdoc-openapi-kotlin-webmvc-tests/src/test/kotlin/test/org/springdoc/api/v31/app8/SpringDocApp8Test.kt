@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.test.context.TestPropertySource
-import test.org.springdoc.api.v30.AbstractKotlinSpringDocMVCTest
+import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 @TestPropertySource(properties =  [Constants.SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED+"=false"])
 class SpringDocApp8Test : AbstractKotlinSpringDocMVCTest() {

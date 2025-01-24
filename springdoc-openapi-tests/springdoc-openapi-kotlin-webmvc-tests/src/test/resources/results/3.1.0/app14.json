@@ -38,43 +38,47 @@
   "components": {
     "schemas": {
       "KeyValue": {
+        "type": "object",
+        "description": "Generic description",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
         "required": [
           "key",
           "value"
-        ],
-        "type": "object",
-        "description": "Generic description",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/KeyValue"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "key": {
-                "type": "string"
-              },
-              "value": {
-                "type": "string"
-              }
-            }
-          }
         ]
       },
       "SomeDTO": {
-        "required": [
-          "field_a",
-          "field_b"
-        ],
         "type": "object",
         "properties": {
           "field_a": {
-            "$ref": "#/components/schemas/KeyValue"
+            "$ref": "#/components/schemas/KeyValue",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/KeyValue"
+              }
+            ],
+            "description": "Description A"
           },
           "field_b": {
-            "$ref": "#/components/schemas/KeyValue"
+            "$ref": "#/components/schemas/KeyValue",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/KeyValue"
+              }
+            ],
+            "description": "Description B"
           }
-        }
+        },
+        "required": [
+          "field_a",
+          "field_b"
+        ]
       }
     }
   }

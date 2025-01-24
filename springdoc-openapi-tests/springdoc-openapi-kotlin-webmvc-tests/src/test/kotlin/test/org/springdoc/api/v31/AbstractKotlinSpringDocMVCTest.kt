@@ -44,7 +44,6 @@ import java.nio.file.Paths
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@TestPropertySource(properties = ["springdoc.api-docs.version=openapi_3_0"])
 abstract class AbstractKotlinSpringDocMVCTest {
 
     @Autowired
