@@ -26,19 +26,22 @@
 
 package org.springdoc.webflux.ui;
 
+import java.net.URI;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
+import reactor.core.publisher.Mono;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.util.UriComponentsBuilder;
-import reactor.core.publisher.Mono;
 
-import java.net.URI;
-import java.util.Map;
+import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 
 /**
  * The type Swagger welcome common.
@@ -68,35 +71,33 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	protected Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
 		buildFromCurrentContextPath(swaggerUiConfigParameters, request);
-		String sbUrl = swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getUiRootPath() + getSwaggerUiUrl();
+		String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
+		String additionalPrefix = DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix) ? "" : webjarsPrefix;
+		String sbUrl = swaggerUiConfigParameters.getContextPath()
+				+ swaggerUiConfigParameters.getUiRootPath()
+				+ additionalPrefix
+				+ getSwaggerUiUrl();
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(swaggerUiConfigParameters, sbUrl);
-
 		// forward all queryParams from original request
 		request.getQueryParams().forEach(uriBuilder::queryParam);
-
 		response.setStatusCode(HttpStatus.FOUND);
 		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
 		return response.setComplete();
 	}
 
-	/**
-	 * Openapi json map.
-	 *
-	 * @param request the request
-	 * @return the map
-	 */
-	protected Map<String, Object> openapiJson(ServerHttpRequest request) {
-		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
-		buildFromCurrentContextPath(swaggerUiConfigParameters, request);
-		return swaggerUiConfigParameters.getConfigParameters();
-	}
-
 	@Override
 	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
 		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder
-					.path(swaggerUiConfigParameters.getUiRootPath())
-					.path(getOauth2RedirectUrl()).build().toString());
+			String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
+			String additionalPath = DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix) ? "" : webjarsPrefix;
+			swaggerUiConfigParameters.setOauth2RedirectUrl(
+					uriComponentsBuilder
+							.path(swaggerUiConfigParameters.getUiRootPath())
+							.path(additionalPath)
+							.path(getOauth2RedirectUrl())
+							.build()
+							.toString()
+			);
 		}
 	}
 

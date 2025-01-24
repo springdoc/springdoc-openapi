@@ -20,14 +20,16 @@ package test.org.springdoc.ui.app3;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import test.org.springdoc.ui.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import test.org.springdoc.ui.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
-		"springdoc.api-docs.path=/documentation/v3/api-docs"
+		"springdoc.api-docs.path=/documentation/v3/api-docs",
+		"springdoc.webjars.prefix= /webjars-pref"
 })
 public class SpringDocApp3RedirectWithPrefixTest extends AbstractSpringDocTest {
 
@@ -36,8 +38,8 @@ public class SpringDocApp3RedirectWithPrefixTest extends AbstractSpringDocTest {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/documentation/swagger-ui.html").exchange()
 				.expectStatus().isFound();
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/documentation/swagger-ui/index.html"));
-		webTestClient.get().uri("/documentation/swagger-ui/index.html").exchange()
+				.value("Location", Matchers.is("/documentation/webjars-pref/swagger-ui/index.html"));
+		webTestClient.get().uri("/documentation/webjars-pref/swagger-ui/index.html").exchange()
 				.expectStatus().isOk();
 		webTestClient.get().uri("/documentation/v3/api-docs/swagger-config").exchange()
 				.expectStatus().isOk().expectBody().jsonPath("$.validatorUrl").isEqualTo("");

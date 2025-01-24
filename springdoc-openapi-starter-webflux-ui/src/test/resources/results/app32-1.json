@@ -1,6 +1,6 @@
 {
   "configUrl": "/path/prefix/documentation/v3/api-docs/swagger-config",
-  "oauth2RedirectUrl": "http://localhost:9318/path/prefix/documentation/swagger-ui/oauth2-redirect.html",
+  "oauth2RedirectUrl": "http://localhost:9318/path/prefix/documentation/webjars-pref/swagger-ui/oauth2-redirect.html",
   "url": "/path/prefix/documentation/v3/api-docs",
   "validatorUrl": ""
 }

@@ -175,7 +175,7 @@ public final class Constants {
 	/**
 	 * The constant DEFAULT_WEB_JARS_PREFIX_URL.
 	 */
-	public static final String DEFAULT_WEB_JARS_PREFIX_URL = "/webjars/swagger-ui/5.18.2";
+	public static final String DEFAULT_WEB_JARS_PREFIX_URL = "/webjars";
 
 	/**
 	 * The constant CLASSPATH_RESOURCE_LOCATION.
