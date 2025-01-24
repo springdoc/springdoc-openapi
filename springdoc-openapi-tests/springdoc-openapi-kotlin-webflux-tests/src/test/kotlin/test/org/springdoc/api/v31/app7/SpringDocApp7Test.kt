@@ -23,7 +23,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.support.GenericApplicationContext
-import test.org.springdoc.api.v30.AbstractKotlinSpringDocTest
+import test.org.springdoc.api.v31.AbstractKotlinSpringDocTest
 
 class SpringDocApp7Test : AbstractKotlinSpringDocTest() {
 
