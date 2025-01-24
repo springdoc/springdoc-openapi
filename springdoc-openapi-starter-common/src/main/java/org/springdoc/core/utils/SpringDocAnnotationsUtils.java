@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.utils;
@@ -128,6 +128,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * @return the schema
 	 */
 	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations, SpecVersion specVersion) {
+		if (returnType == null) return null;
 		Schema schemaN = null;
 		ResolvedSchema resolvedSchema;
 		boolean openapi31 = SpecVersion.V31 == specVersion;
@@ -161,9 +162,9 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 						else if (componentSchemas.containsKey(entry.getKey()) && schemaMap.containsKey(entry.getKey())) {
 							// Check to merge polymorphic types
 							Set<Schema> existingAllOf = new LinkedHashSet<>();
-							if(existingSchema.getAllOf() != null)
+							if (existingSchema.getAllOf() != null)
 								existingAllOf.addAll(existingSchema.getAllOf());
-							if (schemaMap.get(entry.getKey()).getAllOf() != null){
+							if (schemaMap.get(entry.getKey()).getAllOf() != null) {
 								existingAllOf.addAll(schemaMap.get(entry.getKey()).getAllOf());
 								existingSchema.setAllOf(new ArrayList<>(existingAllOf));
 							}
@@ -179,9 +180,9 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 					schemaN = resolvedSchema.schema;
 			}
 		}
-		if(openapi31)
+		if (openapi31)
 			handleSchemaTypes(schemaN);
-		
+
 		return schemaN;
 	}
 
