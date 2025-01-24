@@ -49,16 +49,16 @@
           "example-controller-2"
         ],
         "operationId": "readFoo_1",
-        "parameters": [
-          {
-            "name": "request",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/foo request"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/foo request"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -77,36 +77,33 @@
   "components": {
     "schemas": {
       "FooResponse": {
-        "required": [
-          "name"
-        ],
         "type": "object",
         "properties": {
           "name": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "foo request": {
-        "required": [
-          "age"
-        ],
         "type": "object",
+        "description": "\nfoo request class description\nwith kotlin indent\n",
         "properties": {
           "age": {
             "type": "integer",
-            "description": "\nfoo request field with kotlin indent\n",
-            "format": "int32"
+            "format": "int32",
+            "description": "\nfoo request field with kotlin indent\n"
           }
         },
-        "description": "\nfoo request class description\nwith kotlin indent\n"
+        "required": [
+          "age"
+        ]
       },
       "foo response": {
-        "required": [
-          "name",
-          "subFoo"
-        ],
         "type": "object",
+        "description": "\nfoo response class description\nwith kotlin indent\n",
         "properties": {
           "name": {
             "type": "string",
@@ -116,20 +113,23 @@
             "$ref": "#/components/schemas/sub foo response"
           }
         },
-        "description": "\nfoo response class description\nwith kotlin indent\n"
+        "required": [
+          "name",
+          "subFoo"
+        ]
       },
       "sub foo response": {
-        "required": [
-          "subName"
-        ],
         "type": "object",
+        "description": "\nsub foo response class description\nwith kotlin indent\n",
         "properties": {
           "subName": {
             "type": "string",
             "description": "\nsub foo response fields with kotlin indent\n"
           }
         },
-        "description": "\nsub foo response class description\nwith kotlin indent\n"
+        "required": [
+          "subName"
+        ]
       }
     }
   }

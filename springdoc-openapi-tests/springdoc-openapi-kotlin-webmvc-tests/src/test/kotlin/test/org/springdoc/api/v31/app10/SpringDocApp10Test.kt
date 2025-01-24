@@ -20,7 +20,7 @@ package test.org.springdoc.api.v31.app10
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.ComponentScan
-import test.org.springdoc.api.v30.AbstractKotlinSpringDocMVCTest
+import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 class SpringDocApp10Test : AbstractKotlinSpringDocMVCTest() {
 

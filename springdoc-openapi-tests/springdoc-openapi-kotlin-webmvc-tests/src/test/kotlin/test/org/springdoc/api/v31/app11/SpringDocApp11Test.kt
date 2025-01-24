@@ -21,7 +21,7 @@ package test.org.springdoc.api.v31.app11
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.test.context.TestPropertySource
-import test.org.springdoc.api.v30.AbstractKotlinSpringDocMVCTest
+import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 @TestPropertySource(properties = ["springdoc.trim-kotlin-indent=true"])
 class SpringDocApp11Test : AbstractKotlinSpringDocMVCTest() {

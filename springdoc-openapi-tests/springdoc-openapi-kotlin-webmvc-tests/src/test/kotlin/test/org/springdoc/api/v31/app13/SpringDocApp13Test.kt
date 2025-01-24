@@ -20,7 +20,7 @@ package test.org.springdoc.api.v31.app13
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.test.context.TestPropertySource
-import test.org.springdoc.api.v30.AbstractKotlinSpringDocMVCTest
+import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 @TestPropertySource(properties = ["springdoc.api-docs.version=openapi_3_1"])
 class SpringDocApp13Test : AbstractKotlinSpringDocMVCTest() {
