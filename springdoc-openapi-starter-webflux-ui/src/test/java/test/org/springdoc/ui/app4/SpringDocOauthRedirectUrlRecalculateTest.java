@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app4;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 @TestPropertySource(properties = { "server.forward-headers-strategy=framework" })
 public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocTest {
@@ -36,7 +35,7 @@ public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocT
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody()
-				.jsonPath("$.oauth2RedirectUrl").isEqualTo("https://host1/webjars/swagger-ui/oauth2-redirect.html");
+                .jsonPath("$.oauth2RedirectUrl").isEqualTo("https://host1/swagger-ui/oauth2-redirect.html");
 
 
 		webTestClient.get().uri("/v3/api-docs/swagger-config")
@@ -45,7 +44,7 @@ public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocT
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody()
-				.jsonPath("$.oauth2RedirectUrl").isEqualTo("http://host2:8080/webjars/swagger-ui/oauth2-redirect.html");
+                .jsonPath("$.oauth2RedirectUrl").isEqualTo("http://host2:8080/swagger-ui/oauth2-redirect.html");
 
 	}
 

@@ -26,8 +26,6 @@
 
 package org.springdoc.webflux.ui;
 
-import java.util.Optional;
-
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
@@ -36,7 +34,6 @@ import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.webflux.core.providers.SpringWebFluxProvider;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -53,6 +50,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -131,7 +130,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
 			SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer,
 			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
-		return new SwaggerWebFluxConfigurer(swaggerUiConfigProperties,springDocConfigProperties, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
+		return new SwaggerWebFluxConfigurer(swaggerUiConfigProperties, springDocConfigProperties, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
 	}
 
 	/**
@@ -199,15 +198,14 @@ public class SwaggerConfig implements WebFluxConfigurer {
 		 * @param swaggerUiConfig            the swagger ui config
 		 * @param springDocConfigProperties  the spring doc config properties
 		 * @param webEndpointProperties      the web endpoint properties
-		 * @param managementServerProperties the management server properties
 		 * @return the swagger welcome actuator
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
 		SwaggerWelcomeActuator swaggerActuatorWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
-				WebEndpointProperties webEndpointProperties, ManagementServerProperties managementServerProperties) {
-			return new SwaggerWelcomeActuator(swaggerUiConfig, springDocConfigProperties, webEndpointProperties, managementServerProperties);
+				WebEndpointProperties webEndpointProperties) {
+			return new SwaggerWelcomeActuator(swaggerUiConfig, springDocConfigProperties, webEndpointProperties);
 		}
 	}
 }

@@ -21,10 +21,9 @@ package test.org.springdoc.ui.app1;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,8 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = {
 		"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
-		"springdoc.api-docs.path=/documentation/v3/api-docs",
-		"springdoc.webjars.prefix= /webjars-pref"
+		"springdoc.api-docs.path=/documentation/v3/api-docs"
 })
 public class SpringDocAppRedirectWithPrefixTest extends AbstractSpringDocTest {
 

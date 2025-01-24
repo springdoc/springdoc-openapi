@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.ui;
@@ -29,6 +29,7 @@ package org.springdoc.webflux.ui;
 import java.net.URI;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
@@ -38,8 +39,9 @@ import reactor.core.publisher.Mono;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 
 /**
  * The type Swagger welcome common.
@@ -47,11 +49,6 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author bnasslashen
  */
 public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
-
-	/**
-	 * The Web jars prefix url.
-	 */
-	protected String webJarsPrefixUrl;
 
 
 	/**
@@ -62,7 +59,6 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 */
 	protected SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
-		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 	}
 
 	/**
@@ -74,12 +70,35 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 */
 	protected Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
-		this.buildFromCurrentContextPath(swaggerUiConfigParameters, request);
-		String sbUrl = this.buildUrl(swaggerUiConfigParameters.getContextPath(), swaggerUiConfigParameters.getUiRootPath() + springDocConfigProperties.getWebjars().getPrefix() + getSwaggerUiUrl());
+		buildFromCurrentContextPath(swaggerUiConfigParameters, request);
+		String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
+		String additionalPrefix = DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix) ? "" : webjarsPrefix;
+		String sbUrl = swaggerUiConfigParameters.getContextPath()
+				+ swaggerUiConfigParameters.getUiRootPath()
+				+ additionalPrefix
+				+ getSwaggerUiUrl();
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(swaggerUiConfigParameters, sbUrl);
+		// forward all queryParams from original request
+		request.getQueryParams().forEach(uriBuilder::queryParam);
 		response.setStatusCode(HttpStatus.FOUND);
 		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
 		return response.setComplete();
+	}
+
+	@Override
+	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
+		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
+			String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
+			String additionalPath = DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix) ? "" : webjarsPrefix;
+			swaggerUiConfigParameters.setOauth2RedirectUrl(
+					uriComponentsBuilder
+							.path(swaggerUiConfigParameters.getUiRootPath())
+							.path(additionalPath)
+							.path(getOauth2RedirectUrl())
+							.build()
+							.toString()
+			);
+		}
 	}
 
 	/**
@@ -105,8 +124,13 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 		super.init(swaggerUiConfigParameters);
 		swaggerUiConfigParameters.setContextPath(request.getPath().contextPath().value());
 		String url = UriComponentsBuilder.fromHttpRequest(request).toUriString();
-		if (!AntPathMatcher.DEFAULT_PATH_SEPARATOR.equals(request.getPath().toString()))
+		String target = UriComponentsBuilder.fromPath(request.getPath().contextPath().value()).toUriString();
+		int endIndex = url.indexOf(target) + target.length();
+		if (endIndex > 0) {
+			url = url.substring(0, endIndex);
+		} else {
 			url = url.replace(request.getPath().toString(), "");
+		}
 		buildConfigUrl(swaggerUiConfigParameters, UriComponentsBuilder.fromUriString(url));
 	}
 

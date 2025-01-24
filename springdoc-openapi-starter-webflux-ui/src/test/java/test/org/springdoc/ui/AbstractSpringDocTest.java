@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 		SwaggerConfig.class, SwaggerUiOAuthProperties.class, SpringDocUIConfiguration.class })
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
-	private static final String DEFAULT_SWAGGER_INITIALIZER_URL = Constants.DEFAULT_WEB_JARS_PREFIX_URL + Constants.SWAGGER_INITIALIZER_URL;
+	private static final String DEFAULT_SWAGGER_INITIALIZER_URL = Constants.SWAGGER_INITIALIZER_URL;
 
 	@Autowired
 	protected WebTestClient webTestClient;
