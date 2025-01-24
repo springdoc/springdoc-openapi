@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app4;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.swagger-ui.path=/test/swagger.html"
@@ -30,13 +29,13 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocOauthServletPathsTest extends AbstractSpringDocTest {
 
 	@Test
-	void should_display_oauth2_redirect_page() throws Exception {
-		webTestClient.get().uri("/test/webjars/swagger-ui/oauth2-redirect.html").exchange()
+	void should_display_oauth2_redirect_page() {
+		webTestClient.get().uri("/test/swagger-ui/oauth2-redirect.html").exchange()
 				.expectStatus().isOk();
 	}
 
 	@Test
-	void oauth2_redirect_url_calculated_with_context_path_and_servlet_path() throws Exception {
+	void oauth2_redirect_url_calculated_with_context_path_and_servlet_path() {
 		webTestClient.get().uri("/v3/api-docs/swagger-config").exchange()
 				.expectStatus().isOk();
 	}

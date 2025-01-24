@@ -25,18 +25,17 @@ package test.org.springdoc.ui.app7;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 @TestPropertySource(properties = "springdoc.swagger-ui.disable-swagger-default-url=true")
 public class SpringDocApp7Test extends AbstractSpringDocTest {
 
 	@Test
 	void transformed_index_with_oauth() throws Exception {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars" + Constants.SWAGGER_INITIALIZER_URL)
+        EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.SWAGGER_INITIALIZER_URL)
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody().returnResult();

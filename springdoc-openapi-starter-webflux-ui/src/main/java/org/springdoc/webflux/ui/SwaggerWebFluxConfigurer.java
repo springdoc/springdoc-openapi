@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.ui;
@@ -38,6 +38,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 import static org.springdoc.core.utils.Constants.CLASSPATH_RESOURCE_LOCATION;
 import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
+import static org.springdoc.core.utils.Constants.SWAGGER_UI_PREFIX;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -100,8 +101,20 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
 		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
 			uiRootPath.append(actuatorProvider.get().getBasePath());
-		registry.addResourceHandler(uiRootPath + springDocConfigProperties.getWebjars().getPrefix() + ALL_PATTERN)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
+
+		String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
+		String resourcePath,swaggerUiPrefix;
+
+		if (DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix)) {
+			swaggerUiPrefix = SWAGGER_UI_PREFIX;
+			resourcePath = webjarsPrefix + SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigProperties.getVersion();
+		} else {
+			swaggerUiPrefix = webjarsPrefix;
+			resourcePath = DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR;
+		}
+
+		registry.addResourceHandler(uiRootPath + swaggerUiPrefix + ALL_PATTERN)
+				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
 				.resourceChain(false)
 				.addResolver(swaggerResourceResolver)
 				.addTransformer(swaggerIndexTransformer);

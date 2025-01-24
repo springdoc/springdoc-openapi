@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app3;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
@@ -34,7 +33,7 @@ public class SpringDocApp3Test extends AbstractSpringDocTest {
 	void shouldDisplaySwaggerUiPage() {
 		webTestClient.get().uri("/documentation/swagger-ui.html").exchange()
 				.expectStatus().isFound();
-		webTestClient.get().uri("/documentation/webjars/swagger-ui/index.html").exchange()
+        webTestClient.get().uri("/documentation/swagger-ui/index.html").exchange()
 				.expectStatus().isOk();
 	}
 

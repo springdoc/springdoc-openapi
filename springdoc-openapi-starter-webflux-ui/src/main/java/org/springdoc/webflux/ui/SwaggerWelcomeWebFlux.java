@@ -27,18 +27,15 @@
 package org.springdoc.webflux.ui;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Mono;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_FILE;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_PATH;
@@ -91,14 +88,6 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	}
 
 	@Override
-	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
-		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			UriComponentsBuilder oauthPrefix = uriComponentsBuilder.path(swaggerUiConfigParameters.getContextPath()).path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
-			swaggerUiConfigParameters.setOauth2RedirectUrl(oauthPrefix.path(getOauth2RedirectUrl()).build().toString());
-		}
-	}
-
-	@Override
 	protected void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		swaggerUiConfigParameters.setApiDocsUrl(buildUrlWithContextPath(swaggerUiConfigParameters, springDocConfigProperties.getApiDocs().getPath()));
 	}
@@ -107,7 +96,11 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	protected String buildUrlWithContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl) {
 		if (swaggerUiConfigParameters.getPathPrefix() == null)
 			swaggerUiConfigParameters.setPathPrefix(springWebProvider.findPathPrefix(springDocConfigProperties));
-		return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
+		if (swaggerUiUrl.startsWith(swaggerUiConfigParameters.getPathPrefix())) {
+			return buildUrl(swaggerUiConfigParameters.getContextPath(), swaggerUiUrl);
+		} else {
+			return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
+		}
 	}
 
 	@Override
