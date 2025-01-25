@@ -20,9 +20,10 @@ package test.org.springdoc.ui.app1;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import test.org.springdoc.ui.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import test.org.springdoc.ui.AbstractSpringDocTest;
 
 
 public class SpringDocApp1RedirectDefaultTest extends AbstractSpringDocTest {

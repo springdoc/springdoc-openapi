@@ -43,6 +43,11 @@ public final class Constants {
 	public static final String SPRINGDOC_PREFIX = "springdoc";
 
 	/**
+	 * The constant SPRINGDOC_SWAGGER_PREFIX.
+	 */
+	public static final String SPRINGDOC_SWAGGER_PREFIX =SPRINGDOC_PREFIX+".swagger-ui";
+	
+	/**
 	 * The constant DEFAULT_API_DOCS_URL.
 	 */
 	public static final String DEFAULT_API_DOCS_URL = "/v3/api-docs";

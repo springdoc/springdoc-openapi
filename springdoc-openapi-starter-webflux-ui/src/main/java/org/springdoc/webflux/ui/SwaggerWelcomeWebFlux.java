@@ -31,11 +31,12 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
+import reactor.core.publisher.Mono;
+
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import reactor.core.publisher.Mono;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_FILE;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_PATH;

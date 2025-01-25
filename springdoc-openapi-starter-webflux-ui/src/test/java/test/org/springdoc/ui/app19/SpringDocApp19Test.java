@@ -26,6 +26,9 @@ package test.org.springdoc.ui.app19;
 
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+import test.org.springdoc.ui.AbstractCommonTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -33,8 +36,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import test.org.springdoc.ui.AbstractCommonTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;

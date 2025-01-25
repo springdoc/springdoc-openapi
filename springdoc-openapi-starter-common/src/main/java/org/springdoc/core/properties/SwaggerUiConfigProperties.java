@@ -26,6 +26,8 @@
 
 package org.springdoc.core.properties;
 
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,13 +35,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.utils.Constants;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
+import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_PREFIX;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 
 /**
@@ -49,16 +57,15 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
-@ConfigurationProperties(prefix = "springdoc.swagger-ui")
+@ConfigurationProperties(prefix = SPRINGDOC_SWAGGER_PREFIX)
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
-public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties {
+public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties implements InitializingBean {
 
 	/**
 	 * The Disable swagger default url.
 	 */
 	private boolean disableSwaggerDefaultUrl;
-
 
 	/**
 	 * The Swagger ui version.
@@ -85,6 +92,30 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 */
 	private boolean useRootPath;
 
+	/**
+	 * The constant SPRINGDOC_SWAGGERUI_VERSION.
+	 */
+	private static final String SPRINGDOC_SWAGGER_VERSION = SPRINGDOC_SWAGGER_PREFIX+".version";
+	
+	/**
+	 * The constant SPRINGDOC_CONFIG_PROPERTIES.
+	 */
+	public static final String SPRINGDOC_CONFIG_PROPERTIES = "springdoc.config.properties";
+
+
+	@Override
+	public void afterPropertiesSet() {
+		if (StringUtils.isEmpty(version)) {
+			try {
+				Resource resource = new ClassPathResource(DEFAULT_PATH_SEPARATOR + SPRINGDOC_CONFIG_PROPERTIES);
+				Properties props = PropertiesLoaderUtils.loadProperties(resource);
+				setVersion(props.getProperty(SPRINGDOC_SWAGGER_VERSION));
+			}
+			catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 	/**
 	 * Gets swagger ui version.
 	 *

@@ -78,8 +78,8 @@ import io.swagger.v3.oas.models.parameters.QueryParameter;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.servers.ServerVariables;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.springdoc.core.configuration.SpringDocUIConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties.ModelConverters;
+import org.springdoc.core.properties.SwaggerUiConfigProperties;
 
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
@@ -206,7 +206,7 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 		//springdoc
 		hints.reflection().registerField(FieldUtils.getDeclaredField(io.swagger.v3.core.converter.ModelConverters.class, "converters", true));
 		hints.reflection().registerType(org.springdoc.core.utils.Constants.class, hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS));
-		hints.resources().registerPattern(SpringDocUIConfiguration.SPRINGDOC_CONFIG_PROPERTIES)
+		hints.resources().registerPattern(SwaggerUiConfigProperties.SPRINGDOC_CONFIG_PROPERTIES)
 				.registerResourceBundle("sun.util.resources.LocaleNames");
 	}
 

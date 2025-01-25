@@ -19,10 +19,11 @@
 package test.org.springdoc.ui.app17;
 
 import org.junit.jupiter.api.Test;
+import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
-import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
