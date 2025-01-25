@@ -28,6 +28,7 @@ package org.springdoc.core.configuration.hints;
 
 import java.util.Arrays;
 
+import com.fasterxml.jackson.databind.BeanDescription;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.jackson.ApiResponsesSerializer;
@@ -38,6 +39,7 @@ import io.swagger.v3.core.jackson.mixin.DateSchemaMixin;
 import io.swagger.v3.core.jackson.mixin.Discriminator31Mixin;
 import io.swagger.v3.core.jackson.mixin.ExampleMixin;
 import io.swagger.v3.core.jackson.mixin.ExtensionsMixin;
+import io.swagger.v3.core.jackson.mixin.Info31Mixin;
 import io.swagger.v3.core.jackson.mixin.MediaTypeMixin;
 import io.swagger.v3.core.jackson.mixin.OpenAPI31Mixin;
 import io.swagger.v3.core.jackson.mixin.OpenAPIMixin;
@@ -60,6 +62,7 @@ import io.swagger.v3.oas.models.media.EmailSchema;
 import io.swagger.v3.oas.models.media.EncodingProperty;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.JsonSchema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.NumberSchema;
@@ -129,10 +132,6 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 			OpenAPIMixin.class,
 			OperationMixin.class,
 			SchemaMixin.class,
-			Schema31Mixin.class,
-			Components31Mixin.class,
-			OpenAPI31Mixin.class,
-			Discriminator31Mixin.class,
 			Paths.class,
 			XML.class,
 			UUIDSchema.class,
@@ -165,12 +164,22 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 			DateSchemaMixin.class,
 			ExampleMixin.class,
 			MediaTypeMixin.class,
+			//oas 3.1
+			Schema31Mixin.class,
+			Components31Mixin.class,
+			OpenAPI31Mixin.class,
+			Discriminator31Mixin.class,
+			Info31Mixin.class,
+			Schema31Mixin.TypeSerializer.class,
+			JsonSchema.class,
 			//springdoc classes
 			org.springdoc.core.annotations.ParameterObject.class,
 			org.springdoc.core.converters.models.Pageable.class,
 			org.springdoc.core.extractor.DelegatingMethodParameter.class,
 			// spring
-			org.springframework.core.MethodParameter.class
+			org.springframework.core.MethodParameter.class,
+			// jackson
+			BeanDescription.class,
 	};
 
 	@Override
