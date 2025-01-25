@@ -185,6 +185,11 @@ public class SpringDocConfigProperties {
 	private boolean useManagementPort;
 
 	/**
+	 * Allowed locales for i18n.
+	 */
+	private List<String> allowedLocales;
+
+	/**
 	 * The Disable i18n.
 	 */
 	private boolean disableI18n;
@@ -983,6 +988,24 @@ public class SpringDocConfigProperties {
 	 */
 	public void setWriterWithDefaultPrettyPrinter(boolean writerWithDefaultPrettyPrinter) {
 		this.writerWithDefaultPrettyPrinter = writerWithDefaultPrettyPrinter;
+	}
+
+	/**
+	 * List of allowed locales for i18n.
+	 *
+	 * @return the allowed locales
+	 */
+	public List<String> getAllowedLocales() {
+		return allowedLocales;
+	}
+
+	/**
+	 * Sets allowed locales for i18n.
+	 *
+	 * @param allowedLocales the allowed locales
+	 */
+	public void setAllowedLocales(List<String> allowedLocales) {
+		this.allowedLocales = allowedLocales;
 	}
 
 	/**
