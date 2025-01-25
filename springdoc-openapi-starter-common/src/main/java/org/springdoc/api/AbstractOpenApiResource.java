@@ -333,7 +333,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Gets open api.
 	 */
 	private void getOpenApi() {
-		this.getOpenApi(selectLocale(Locale.getDefault()));
+		this.getOpenApi(Locale.getDefault());
 	}
 
 	/**
