@@ -21,10 +21,11 @@ package test.org.springdoc.ui.app3;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
+import test.org.springdoc.ui.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import test.org.springdoc.ui.AbstractSpringDocTest;
 
 
 @TestPropertySource(properties = {

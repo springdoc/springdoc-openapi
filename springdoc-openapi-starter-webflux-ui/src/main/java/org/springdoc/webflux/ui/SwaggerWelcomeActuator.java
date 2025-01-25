@@ -26,10 +26,14 @@
 
 package org.springdoc.webflux.ui;
 
+import java.util.Map;
+
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
+import reactor.core.publisher.Mono;
+
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.http.MediaType;
@@ -37,9 +41,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import reactor.core.publisher.Mono;
-
-import java.util.Map;
 
 import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 import static org.springdoc.core.utils.Constants.DEFAULT_SWAGGER_UI_ACTUATOR_PATH;

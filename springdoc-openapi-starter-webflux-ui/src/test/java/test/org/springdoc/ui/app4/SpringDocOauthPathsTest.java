@@ -19,8 +19,9 @@
 package test.org.springdoc.ui.app4;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.ui.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocOauthPathsTest extends AbstractSpringDocTest {
 

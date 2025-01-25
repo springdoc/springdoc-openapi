@@ -19,10 +19,11 @@
 package test.org.springdoc.ui.app32;
 
 import org.junit.jupiter.api.Test;
+import test.org.springdoc.ui.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
-import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

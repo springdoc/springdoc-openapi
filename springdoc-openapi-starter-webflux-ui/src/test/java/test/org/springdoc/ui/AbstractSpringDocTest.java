@@ -19,7 +19,6 @@
 package test.org.springdoc.ui;
 
 import org.springdoc.core.configuration.SpringDocConfiguration;
-import org.springdoc.core.configuration.SpringDocUIConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
@@ -41,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @WebFluxTest
 @ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class,
 		SpringDocWebFluxConfiguration.class, SwaggerUiConfigParameters.class, SwaggerUiConfigProperties.class,
-		SwaggerConfig.class, SwaggerUiOAuthProperties.class, SpringDocUIConfiguration.class })
+		SwaggerConfig.class, SwaggerUiOAuthProperties.class })
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	private static final String DEFAULT_SWAGGER_INITIALIZER_URL = Constants.SWAGGER_INITIALIZER_URL;

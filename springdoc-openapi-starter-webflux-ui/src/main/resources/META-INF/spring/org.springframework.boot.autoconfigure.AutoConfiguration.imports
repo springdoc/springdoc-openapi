@@ -1,4 +1,3 @@
 org.springdoc.webflux.ui.SwaggerConfig
 org.springdoc.core.properties.SwaggerUiConfigProperties
 org.springdoc.core.properties.SwaggerUiOAuthProperties
-org.springdoc.core.configuration.SpringDocUIConfiguration

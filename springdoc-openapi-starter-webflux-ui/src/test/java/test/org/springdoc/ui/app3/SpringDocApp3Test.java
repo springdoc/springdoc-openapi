@@ -19,9 +19,10 @@
 package test.org.springdoc.ui.app3;
 
 import org.junit.jupiter.api.Test;
+import test.org.springdoc.ui.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import test.org.springdoc.ui.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.swagger-ui.path=/documentation/swagger-ui.html",

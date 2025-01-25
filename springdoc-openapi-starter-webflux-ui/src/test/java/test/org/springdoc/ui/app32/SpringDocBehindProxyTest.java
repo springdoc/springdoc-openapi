@@ -18,14 +18,15 @@
 
 package test.org.springdoc.ui.app32;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
+
 import org.junit.jupiter.api.Test;
+import test.org.springdoc.ui.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

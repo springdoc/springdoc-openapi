@@ -25,13 +25,14 @@
 package test.org.springdoc.ui.app15;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
-import reactor.core.publisher.Mono;
-import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
