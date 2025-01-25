@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.4] - 2025-01-25
+
+### Added
+- #2873 - Improve performance of getGenericMapResponse
+- #2836 - Provide option to set allowed locales 
+- 2862 - Align Swagger-UI Prefix Path with Swagger-WebMvc Behavior
+
+### Changed
+- Upgrade spring-boot to 3.4.2
+- Upgrade spring-cloud-function to 4.2.1
+- Upgrade swagger-core to 2.2.28
+
+### Fixed 
+- #2870 - Springdoc 2.8.x + Spring Boot 3.4.1 breaks native image support
+- #2869 - Exception logged when generating schema for delete method of Spring Data repository.
+- #2856 - @JsonUnwrapped is ignored in new version of lib.
+- #2852 - @Schema(types = "xxx") does not work for multipart param with enabled springdoc.default-support-form-data config option.
+
 ## [2.8.3] - 2025-01-12
 
 ### Added
