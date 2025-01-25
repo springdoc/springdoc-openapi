@@ -346,7 +346,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.reentrantLock.lock();
 		try {
 			final OpenAPI openAPI;
-			final Locale finalLocale = locale == null ? Locale.getDefault() : locale;
+			final Locale finalLocale = selectLocale(locale);
 			if (openAPIService.getCachedOpenAPI(finalLocale) == null || springDocConfigProperties.isCacheDisabled()) {
 				Instant start = Instant.now();
 				openAPI = openAPIService.build(finalLocale);
@@ -420,6 +420,20 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		finally {
 			this.reentrantLock.unlock();
 		}
+	}
+
+	private Locale selectLocale(Locale inputLocale) {
+		List<String> allowedLocales = springDocConfigProperties.getAllowedLocales();
+		if (!CollectionUtils.isEmpty(allowedLocales)) {
+			Locale bestMatchingAllowedLocale = Locale.lookup(
+				Locale.LanguageRange.parse(inputLocale.toLanguageTag()),
+				allowedLocales.stream().map(Locale::forLanguageTag).collect(Collectors.toList())
+			);
+
+			return bestMatchingAllowedLocale == null ? Locale.forLanguageTag(allowedLocales.get(0)) : bestMatchingAllowedLocale;
+		}
+
+		return inputLocale == null ? Locale.getDefault() : inputLocale;
 	}
 
 	/**
@@ -1361,7 +1375,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param locale the locale
 	 */
 	protected void initOpenAPIBuilder(Locale locale) {
-		locale = locale == null ? Locale.getDefault() : locale;
+		locale = selectLocale(locale);
 		if (openAPIService.getCachedOpenAPI(locale) != null && springDocConfigProperties.isCacheDisabled()) {
 			openAPIService = openAPIBuilderObjectFactory.getObject();
 		}
