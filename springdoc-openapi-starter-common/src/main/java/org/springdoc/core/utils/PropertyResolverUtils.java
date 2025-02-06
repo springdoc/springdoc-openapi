@@ -115,9 +115,11 @@ public class PropertyResolverUtils {
 	 * Returns a string where all leading indentation has been removed from each line.
 	 * It detects the smallest common indentation of all the lines in the input string,
 	 * and removes it.
+	 * If the input text is {@code null}, the method returns {@code null}.
 	 *
-	 * @param text The original string with possible leading indentation.
-	 * @return The string with leading indentation removed from each line.
+	 *	@param text The original string with possible leading indentation.
+	 *	@return The string with the smallest common leading indentation removed from each line,
+	 *          or {@code null} if the input text is {@code null}.
 	 */
 	public String trimIndent(String text) {
 		if (text == null) {
