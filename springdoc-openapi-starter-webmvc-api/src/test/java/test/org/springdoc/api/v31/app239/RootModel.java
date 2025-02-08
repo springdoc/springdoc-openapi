@@ -1,4 +1,4 @@
-package test.org.springdoc.api.v31.app224;
+package test.org.springdoc.api.v31.app239;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
@@ -6,6 +6,7 @@ public class RootModel {
 
     private Integer rootProperty;
 
+    @JsonUnwrapped
     private UnwrappedModel unwrappedModel;
 
     public Integer getRootProperty() {
@@ -16,7 +17,6 @@ public class RootModel {
         this.rootProperty = rootProperty;
     }
 
-    @JsonUnwrapped
     public UnwrappedModel getUnwrappedModel() {
         return unwrappedModel;
     }
