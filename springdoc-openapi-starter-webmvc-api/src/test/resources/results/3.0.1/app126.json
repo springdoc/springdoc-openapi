@@ -20,12 +20,6 @@
         "description": "Get all currencies",
         "operationId": "getAllCurrencies",
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/http401NoToken"
-          },
-          "403": {
-            "$ref": "#/components/responses/http403"
-          },
           "200": {
             "description": "All currencies returned",
             "content": {
@@ -38,6 +32,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/http401BadToken"
+          },
+          "403": {
+            "$ref": "#/components/responses/http403"
           }
         }
       }
