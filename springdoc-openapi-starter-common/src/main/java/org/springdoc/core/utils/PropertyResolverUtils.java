@@ -32,7 +32,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.swagger.v3.oas.models.SpecVersion;
-import org.apache.commons.lang3.StringUtils;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -114,23 +115,24 @@ public class PropertyResolverUtils {
 	 * Returns a string where all leading indentation has been removed from each line.
 	 * It detects the smallest common indentation of all the lines in the input string,
 	 * and removes it.
+	 * If the input text is {@code null}, the method returns {@code null}.
 	 *
-	 * @param text The original string with possible leading indentation.
-	 * @return The string with leading indentation removed from each line.
+	 *	@param text The original string with possible leading indentation.
+	 *	@return The string with the smallest common leading indentation removed from each line,
+	 *          or {@code null} if the input text is {@code null}.
 	 */
 	public String trimIndent(String text) {
+		if (text == null) {
+			return null;
+		}
+		final String newLine = "\n";
+		String[] lines = text.split("\\r?\\n");
+		int minIndent = resolveMinIndent(lines);
 		try {
-			if (text == null) {
-				return null;
-			}
-			final String newLine = "\n";
-			String[] lines = text.split(newLine);
-			int minIndent = resolveMinIndent(lines);
 			return Arrays.stream(lines)
-				.map(line -> line.substring(Math.min(line.length(), minIndent)))
-				.reduce((a, b) -> a + newLine + b)
-				.orElse(StringUtils.EMPTY);
-		} catch (Exception ex){
+					.map(line -> line.substring(Math.min(line.length(), minIndent)))
+					.collect(Collectors.joining(newLine));
+		} catch (Exception ex) {
 			LOGGER.warn(ex.getMessage());
 			return text;
 		}
