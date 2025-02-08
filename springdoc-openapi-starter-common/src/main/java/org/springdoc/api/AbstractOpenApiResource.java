@@ -661,8 +661,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 			
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
-			if (!StringUtils.contains(operationPath, "**"))
-				paths.addPathItem(operationPath, pathItemObject);
+			paths.addPathItem(operationPath, pathItemObject);
 		}
 	}
 
