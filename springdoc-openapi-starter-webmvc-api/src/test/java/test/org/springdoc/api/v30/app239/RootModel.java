@@ -1,4 +1,4 @@
-package test.org.springdoc.api.v31.app224;
+package test.org.springdoc.api.v30.app239;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
