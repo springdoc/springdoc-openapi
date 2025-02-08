@@ -64,6 +64,9 @@ import org.springframework.data.web.SortDefault;
 
 /**
  * The type Data rest delegating method parameter customizer.
+ *
+ *  @author bnasslahsen
+ *  @author pheyken
  */
 public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMethodParameterCustomizer {
 
@@ -1131,8 +1134,13 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 					defaultValue = defaultSchemaVal;
 				break;
 			case "page":
-				if (pageableDefault != null)
-					defaultValue = String.valueOf(pageableDefault.page());
+				if (pageableDefault != null) {
+					if (isSpringDataWebPropertiesPresent() && optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters()) {
+						defaultValue = String.valueOf(pageableDefault.page() + 1);
+					} else {
+						defaultValue = String.valueOf(pageableDefault.page());
+					}
+				}
 				else if (isSpringDataWebPropertiesPresent() && optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters())
 					defaultValue = "1";
 				else
