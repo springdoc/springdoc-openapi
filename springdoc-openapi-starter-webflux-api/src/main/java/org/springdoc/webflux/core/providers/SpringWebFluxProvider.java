@@ -27,6 +27,7 @@ package org.springdoc.webflux.core.providers;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -84,7 +85,7 @@ public class SpringWebFluxProvider extends SpringWebProvider {
 		RequestMappingInfo requestMappingInfo = (RequestMappingInfo) requestMapping;
 		PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
 		return patternsRequestCondition.getPatterns().stream()
-				.map(PathPattern::getPatternString).collect(Collectors.toSet());
+				.map(PathPattern::getPatternString).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 

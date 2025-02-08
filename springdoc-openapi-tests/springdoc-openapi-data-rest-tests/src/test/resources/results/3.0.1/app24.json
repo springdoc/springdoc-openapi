@@ -27,14 +27,14 @@
             }
           },
           {
-            "name": "name",
+            "name": "email",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "email",
+            "name": "name",
             "in": "query",
             "schema": {
               "type": "string"
@@ -90,6 +90,12 @@
             "type": "integer",
             "format": "int64"
           },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "size": {
             "type": "integer",
             "format": "int32"
@@ -107,14 +113,8 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "last": {
-            "type": "boolean"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
-          },
-          "first": {
-            "type": "boolean"
           },
           "numberOfElements": {
             "type": "integer",
@@ -135,6 +135,12 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "unpaged": {
+            "type": "boolean"
+          },
+          "paged": {
+            "type": "boolean"
+          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -142,12 +148,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
           }
         }
       },
@@ -157,10 +157,10 @@
           "empty": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           }
         }

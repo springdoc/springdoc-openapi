@@ -19,14 +19,14 @@
         "operationId": "testQueryDslAndSpringDoc",
         "parameters": [
           {
-            "name": "name",
+            "name": "email",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "email",
+            "name": "name",
             "in": "query",
             "schema": {
               "type": "string"

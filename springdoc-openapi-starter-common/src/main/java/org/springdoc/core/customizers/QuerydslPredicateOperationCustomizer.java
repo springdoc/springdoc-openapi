@@ -32,6 +32,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -112,7 +113,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 
 			QuerydslBindings bindings = extractQdslBindings(predicate);
 
-			Set<String> fieldsToAdd = Arrays.stream(predicate.root().getDeclaredFields()).filter(field -> !Modifier.isStatic(field.getModifiers())).map(Field::getName).collect(Collectors.toSet());
+			Set<String> fieldsToAdd = Arrays.stream(predicate.root().getDeclaredFields()).filter(field -> !Modifier.isStatic(field.getModifiers())).map(Field::getName).collect(Collectors.toCollection(LinkedHashSet::new));
 
 			Map<String, Object> pathSpecMap = getPathSpec(bindings, "pathSpecs");
 			//remove blacklisted fields

@@ -27,6 +27,7 @@
 package org.springdoc.core.properties;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -239,7 +240,7 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 * @return the set
 	 */
 	public Set<SwaggerUrl> cloneUrls() {
-		return this.urls.stream().map(swaggerUrl -> new SwaggerUrl(swaggerUrl.getName(), swaggerUrl.getUrl(), swaggerUrl.getDisplayName())).collect(Collectors.toSet());
+		return this.urls.stream().map(swaggerUrl -> new SwaggerUrl(swaggerUrl.getName(), swaggerUrl.getUrl(), swaggerUrl.getDisplayName())).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	/**

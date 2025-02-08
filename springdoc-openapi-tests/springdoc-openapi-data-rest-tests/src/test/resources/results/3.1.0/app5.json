@@ -34,10 +34,11 @@
             }
           },
           {
-            "name": "code",
+            "name": "id",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int64"
             }
           },
           {
@@ -45,21 +46,6 @@
             "in": "query",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "postCode",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int64"
             }
           },
           {
@@ -78,6 +64,20 @@
                 "ACTIVE",
                 "INACTIVE"
               ]
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "postCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],

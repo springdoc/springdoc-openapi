@@ -27,6 +27,7 @@
 package test.org.springdoc.api.v31.app233;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -167,7 +168,7 @@ class SpringDocApp233Test extends AbstractSpringDocTest {
                             .stream()
                             .flatMap(Collection::stream)
                             .map(field -> field.getObjectName() + "." + field.getField())
-                            .collect(Collectors.toSet());
+                            .collect(Collectors.toCollection(LinkedHashSet::new));
 
 
                     assertThat(errorFields).containsExactlyElementsOf(expectedErrorFields);
