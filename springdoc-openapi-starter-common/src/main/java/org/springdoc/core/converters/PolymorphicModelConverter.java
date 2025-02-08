@@ -37,7 +37,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
@@ -120,17 +122,28 @@ public class PolymorphicModelConverter implements ModelConverter {
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
-			for (Field field : FieldUtils.getAllFields(javaType.getRawClass())) {
-				if (field.isAnnotationPresent(JsonUnwrapped.class)) {
+			BeanDescription javaTypeIntrospection = springDocObjectMapper.jsonMapper().getDeserializationConfig().introspect(javaType);
+			for (BeanPropertyDefinition property : javaTypeIntrospection.findProperties()) {
+				boolean isUnwrapped = (property.getField() != null && property.getField().hasAnnotation(JsonUnwrapped.class)) ||
+						(property.getGetter() != null && property.getGetter().hasAnnotation(JsonUnwrapped.class));
+
+				if (isUnwrapped) {
 					if (!TypeNameResolver.std.getUseFqn())
 						PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getSimpleName());
 					else
 						PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getName());
 				}
-				else if (field.isAnnotationPresent(io.swagger.v3.oas.annotations.media.Schema.class)) {
-					io.swagger.v3.oas.annotations.media.Schema declaredSchema = field.getDeclaredAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
-					if (ArrayUtils.isNotEmpty(declaredSchema.oneOf()) || ArrayUtils.isNotEmpty(declaredSchema.allOf())) {
-						TYPES_TO_SKIP.add(field.getType().getSimpleName());
+				else {
+					io.swagger.v3.oas.annotations.media.Schema declaredSchema = null;
+					if (property.getField() != null) {
+						declaredSchema = property.getField().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+					} else if (property.getGetter() != null) {
+						declaredSchema = property.getGetter().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+					}
+
+					if (declaredSchema != null &&
+							(ArrayUtils.isNotEmpty(declaredSchema.oneOf()) || ArrayUtils.isNotEmpty(declaredSchema.allOf()))) {
+						TYPES_TO_SKIP.add(property.getPrimaryType().getRawClass().getSimpleName());
 					}
 				}
 			}
