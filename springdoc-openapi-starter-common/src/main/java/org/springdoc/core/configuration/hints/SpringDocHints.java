@@ -113,6 +113,7 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 			io.swagger.v3.oas.models.media.Schema.class,
 			io.swagger.v3.oas.models.media.Content.class,
 			io.swagger.v3.oas.models.media.ArraySchema.class,
+			io.swagger.v3.oas.models.media.JsonSchema.class,
 			io.swagger.v3.oas.models.responses.ApiResponse.class,
 			io.swagger.v3.oas.models.responses.ApiResponses.class,
 			io.swagger.v3.oas.models.ExternalDocumentation.class,
@@ -122,6 +123,7 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 			io.swagger.v3.oas.models.Operation.class,
 			io.swagger.v3.oas.models.headers.Header.class,
 			ModelConverter.class,
+			io.swagger.v3.core.converter.ModelConverterContextImpl.class,
 			ModelConverters.class,
 			SpecFilter.class,
 			MediaType.class,
@@ -166,6 +168,7 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 			MediaTypeMixin.class,
 			//oas 3.1
 			Schema31Mixin.class,
+			Schema31Mixin.TypeSerializer.class,
 			Components31Mixin.class,
 			OpenAPI31Mixin.class,
 			Discriminator31Mixin.class,
