@@ -167,6 +167,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
 			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
 				Map<RequestMappingInfo, HandlerMethod> actuatorMap = actuatorProviderOptional.get().getMethods();
+				List<RequestMappingInfo> globMatchActuators = actuatorMap.keySet().stream()
+					.filter(requestMappingInfo -> requestMappingInfo.getPatternValues().stream()
+						.anyMatch(patternValues -> patternValues.contains("**")))
+					.toList();
+				globMatchActuators.forEach(actuatorMap::remove);
 				this.openAPIService.addTag(new HashSet<>(actuatorMap.values()), getTag());
 				map.putAll(actuatorMap);
 			}
