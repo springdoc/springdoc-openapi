@@ -407,7 +407,12 @@ public final class Constants {
 	/**
 	 * The constant LINKS_SCHEMA_CUSTOMISER.
 	 */
-	public static final String LINKS_SCHEMA_CUSTOMISER = "linksSchemaCustomizer";
+	public static final String LINKS_SCHEMA_CUSTOMIZER = "linksSchemaCustomizer";
+
+	/**
+	 * The constant GLOBAL_OPEN_API_CUSTOMIZER.
+	 */
+	public static final String GLOBAL_OPEN_API_CUSTOMIZER = "globalOpenApiCustomizer";
 
 	/**
 	 * The constant SPRINGDOC_SORT_CONVERTER_ENABLED.

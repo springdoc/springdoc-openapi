@@ -12,7 +12,7 @@ import org.springframework.hateoas.config.HateoasConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.springdoc.core.utils.Constants.LINKS_SCHEMA_CUSTOMISER;
+import static org.springdoc.core.utils.Constants.LINKS_SCHEMA_CUSTOMIZER;
 
 class SpringDocHateoasConfigurationTest {
 
@@ -33,8 +33,8 @@ class SpringDocHateoasConfigurationTest {
                 .run(context -> {
                     assertThat(context).getBeanNames(GlobalOpenApiCustomizer.class)
                         .hasSize(2)
-						.contains(LINKS_SCHEMA_CUSTOMISER);
-                    assertThat(context.getBean(LINKS_SCHEMA_CUSTOMISER)).isExactlyInstanceOf(OpenApiHateoasLinksCustomizer.class);
+						.contains(LINKS_SCHEMA_CUSTOMIZER);
+                    assertThat(context.getBean(LINKS_SCHEMA_CUSTOMIZER)).isExactlyInstanceOf(OpenApiHateoasLinksCustomizer.class);
                 });
     }
 
@@ -56,7 +56,7 @@ class SpringDocHateoasConfigurationTest {
                 .run(context -> {
                     assertThat(context).getBeanNames(GlobalOpenApiCustomizer.class)
                             .hasSize(2)
-                            .containsExactlyInAnyOrder(LINKS_SCHEMA_CUSTOMISER, "globalOpenApiCustomizer");
+                            .containsExactlyInAnyOrder(LINKS_SCHEMA_CUSTOMIZER, "globalOpenApiCustomizer");
                 });
     }
 
@@ -74,12 +74,12 @@ class SpringDocHateoasConfigurationTest {
                         SpringDocConfigProperties.class,
                         SpringDocHateoasConfiguration.class
                 ))
-                .withBean(LINKS_SCHEMA_CUSTOMISER, GlobalOpenApiCustomizer.class, () -> mock(GlobalOpenApiCustomizer.class))
+                .withBean(LINKS_SCHEMA_CUSTOMIZER, GlobalOpenApiCustomizer.class, () -> mock(GlobalOpenApiCustomizer.class))
                 .run(context -> {
                     assertThat(context).getBeanNames(GlobalOpenApiCustomizer.class)
-                            .hasSize(1)
-                            .containsExactly(LINKS_SCHEMA_CUSTOMISER);
-                    assertThat(context.getBean(LINKS_SCHEMA_CUSTOMISER)).isNotExactlyInstanceOf(OpenApiHateoasLinksCustomizer.class);
+                            .hasSize(2)
+							.contains(LINKS_SCHEMA_CUSTOMIZER);
+                    assertThat(context.getBean(LINKS_SCHEMA_CUSTOMIZER)).isNotExactlyInstanceOf(OpenApiHateoasLinksCustomizer.class);
                 });
     }
 }
