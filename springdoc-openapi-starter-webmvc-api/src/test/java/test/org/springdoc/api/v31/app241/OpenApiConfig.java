@@ -24,16 +24,36 @@
  *  
  */
 
-package test.org.springdoc.api.v31.app240;
+package test.org.springdoc.api.v31.app241;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpRequest;
 
-@TestPropertySource(properties = "springdoc.api-docs.resolve-schema-properties=true" )
-public class SpringDocApp240Test extends AbstractSpringDocTest {
+@Configuration
+public class OpenApiConfig {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+  @Bean
+  public OpenApiCustomizer openApiCustomiser() {
+    return openApi -> {
+
+    };
+  }
+
+  @Bean
+  ServerBaseUrlCustomizer serverBaseUrlCustomizer() {
+    return new ServerBaseUrlCustomizer() {
+
+      @Override
+      public String customize(final String serverBaseUrl,
+          final HttpRequest request) {
+        // TODO Auto-generated method stub
+        return null;
+      }
+      
+    };
+  }
 }

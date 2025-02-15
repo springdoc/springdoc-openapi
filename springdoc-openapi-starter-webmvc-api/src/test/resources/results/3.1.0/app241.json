@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "openapi": "3.1.0",
   "info": {
     "title": "OpenAPI definition",
@@ -149,3 +150,41 @@
   },
   "components": {}
 }
+=======
+	"openapi": "3.1.0",
+	"info": {
+		"title": "OpenAPI definition",
+		"version": "v0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost",
+			"description": "Generated server url"
+		}
+	],
+	"paths": {
+		"/**": {
+			"post": {
+				"tags": [
+					"wildcard-controller"
+				],
+				"summary": "My Wildcard Operation",
+				"operationId": "getItem",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {}
+}
+>>>>>>> origin/main
