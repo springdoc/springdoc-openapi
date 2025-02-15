@@ -101,8 +101,8 @@ public class SpringDocHateoasConfiguration {
 	 * @return the open api customizer
 	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
-	@Bean(Constants.LINKS_SCHEMA_CUSTOMISER)
-	@ConditionalOnMissingBean(name = Constants.LINKS_SCHEMA_CUSTOMISER)
+	@Bean(Constants.LINKS_SCHEMA_CUSTOMIZER)
+	@ConditionalOnMissingBean(name = Constants.LINKS_SCHEMA_CUSTOMIZER)
 	@Lazy(false)
 	GlobalOpenApiCustomizer linksSchemaCustomizer(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties) {
 		if (!halProvider.isHalEnabled()) {

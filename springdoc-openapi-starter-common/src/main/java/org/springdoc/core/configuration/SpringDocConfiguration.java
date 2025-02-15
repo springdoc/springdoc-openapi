@@ -126,6 +126,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import static org.springdoc.core.utils.Constants.GLOBAL_OPEN_API_CUSTOMIZER;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED;
@@ -654,7 +655,7 @@ public class SpringDocConfiguration {
 	 * @return the global open api customizer
 	 */
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name = GLOBAL_OPEN_API_CUSTOMIZER)
 	@Lazy(false)
 	GlobalOpenApiCustomizer globalOpenApiCustomizer() {
 		return new OperationIdCustomizer();

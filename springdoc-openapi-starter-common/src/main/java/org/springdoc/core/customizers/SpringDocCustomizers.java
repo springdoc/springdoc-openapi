@@ -39,7 +39,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.CollectionUtils;
 
-import static org.springdoc.core.utils.Constants.LINKS_SCHEMA_CUSTOMISER;
+import static org.springdoc.core.utils.Constants.LINKS_SCHEMA_CUSTOMIZER;
 
 /**
  * The type Spring doc customizers.
@@ -223,7 +223,7 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	public void afterPropertiesSet() {
 		//add the default customizers
 		Map<String, OpenApiCustomizer> existingOpenApiCustomizers = context.getBeansOfType(OpenApiCustomizer.class);
-		if (!CollectionUtils.isEmpty(existingOpenApiCustomizers) && existingOpenApiCustomizers.containsKey(LINKS_SCHEMA_CUSTOMISER))
-			this.openApiCustomizers.ifPresent(openApiCustomizersList -> openApiCustomizersList.add(existingOpenApiCustomizers.get(LINKS_SCHEMA_CUSTOMISER)));
+		if (!CollectionUtils.isEmpty(existingOpenApiCustomizers) && existingOpenApiCustomizers.containsKey(LINKS_SCHEMA_CUSTOMIZER))
+			this.openApiCustomizers.ifPresent(openApiCustomizersList -> openApiCustomizersList.add(existingOpenApiCustomizers.get(LINKS_SCHEMA_CUSTOMIZER)));
 	}
 }
