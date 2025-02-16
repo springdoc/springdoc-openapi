@@ -22,13 +22,14 @@
 
 package org.springdoc.core.configuration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.swagger.v3.core.jackson.SwaggerAnnotationIntrospector;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * The type Spring doc sealed class module.
@@ -51,7 +52,10 @@ public class SpringDocSealedClassModule extends SimpleModule {
 		public List<NamedType> findSubtypes(Annotated annotated) {
 			ArrayList<NamedType> subTypes = new ArrayList<>();
 
-			if (annotated.getAnnotated() instanceof Class<?> clazz && clazz.isSealed()) {
+			if (annotated.getAnnotated() instanceof Class<?> clazz 
+					&& clazz.isSealed()
+					&& !clazz.getPackage().getName().startsWith("java")
+			) {
 				Class<?>[] permittedSubClasses = clazz.getPermittedSubclasses();
 				if (permittedSubClasses.length > 0) {
 					Arrays.stream(permittedSubClasses).map(NamedType::new).forEach(subTypes::add);
