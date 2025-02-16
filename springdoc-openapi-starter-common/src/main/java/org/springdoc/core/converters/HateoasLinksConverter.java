@@ -28,6 +28,7 @@ package org.springdoc.core.converters;
 
 
 import java.util.Iterator;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -43,7 +44,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 /**
  * The type Hateoas links converter.
- * 
+ *
  * @author bnasslahsen
  */
 public class HateoasLinksConverter implements ModelConverter {
@@ -70,19 +71,30 @@ public class HateoasLinksConverter implements ModelConverter {
 	) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null && RepresentationModel.class.isAssignableFrom(javaType.getRawClass())) {
-				Schema<?> schema = chain.next().resolve(type, context, chain);
-				String schemaName = schema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
-				Schema original = context.getDefinedModels().get(schemaName);
-				Object links = original.getProperties().get("_links");
-				if(links instanceof JsonSchema jsonSchema) {
-					jsonSchema.set$ref(AnnotationsUtils.COMPONENTS_REF + "Links");
-					jsonSchema.setType(null);
-					jsonSchema.setItems(null);
-					jsonSchema.setTypes(null);
-				} else if (links instanceof ArraySchema arraySchema){
-					arraySchema.set$ref(AnnotationsUtils.COMPONENTS_REF + "Links");
+			Schema<?> schema = chain.next().resolve(type, context, chain);
+			if (schema != null) {
+				String schemaName = Optional.ofNullable(schema.get$ref())
+						.filter(ref -> ref.startsWith(Components.COMPONENTS_SCHEMAS_REF))
+						.map(ref -> ref.substring(Components.COMPONENTS_SCHEMAS_REF.length()))
+						.orElse(schema.getName());
+				if(schemaName != null) {
+					Schema original = context.getDefinedModels().get(schemaName);
+					if (original == null || original.getProperties() == null) {
+						return schema;
+					}
+					Object links = original.getProperties().get("_links");
+					if (links instanceof JsonSchema jsonSchema) {
+						jsonSchema.set$ref(AnnotationsUtils.COMPONENTS_REF + "Links");
+						jsonSchema.setType(null);
+						jsonSchema.setItems(null);
+						jsonSchema.setTypes(null);
+					}
+					else if (links instanceof ArraySchema arraySchema) {
+						arraySchema.set$ref(AnnotationsUtils.COMPONENTS_REF + "Links");
+					}
 				}
-				return schema;
+			}
+			return schema;
 		}
 		return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;
 	}
