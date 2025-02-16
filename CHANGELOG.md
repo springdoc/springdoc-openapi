@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.5] - 2025-02-16
+
+### Added
+- #2696 - Do not require JsonSubType annotation for sealed classes
+- #2898 - add needed runtime reflection hints for native image 
+- #2891 - Refactor trimIndent Method
+
+### Changed
+- Upgrade swagger-ui to v5.18.3
+
+### Fixed
+- #2902 - Schema replaced by String when using @ApiResponse with RepresentationModel (Hateoas links)
+- #2876 - Restentpoints with same name get mix up
+- #2895 - Only filter out actuator endpoints with double asterisks.
+- #2894 - respect @JsonUnwrapped & @Schema on props not fields only
+- #2881 - fix defaultValue when using @PageableDefault together with one-indexed-parameters
+- #2888 - Provide a better consistency for parameters and responses order.
+
 ## [2.8.4] - 2025-01-25
 
 ### Added
