@@ -227,31 +227,33 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 */
 	private List<BeanPropertyBiDefinition> introspectBeanProperties(JavaType javaType) {
 		Map<String, BeanPropertyDefinition> forSerializationProps =
-				springDocObjectMapper.jsonMapper()
-						.getSerializationConfig()
-						.introspect(javaType)
-						.findProperties()
-						.stream()
-						.collect(toMap(BeanPropertyDefinition::getName, identity()));
+			springDocObjectMapper.jsonMapper()
+				.getSerializationConfig()
+				.introspect(javaType)
+				.findProperties()
+				.stream()
+				.collect(toMap(BeanPropertyDefinition::getName, identity()));
 		Map<String, BeanPropertyDefinition> forDeserializationProps =
-				springDocObjectMapper.jsonMapper()
-						.getDeserializationConfig()
-						.introspect(javaType)
-						.findProperties()
-						.stream()
-						.collect(toMap(BeanPropertyDefinition::getName, identity()));
+			springDocObjectMapper.jsonMapper()
+				.getDeserializationConfig()
+				.introspect(javaType)
+				.findProperties()
+				.stream()
+				.collect(toMap(BeanPropertyDefinition::getName, identity()));
 
 		return forSerializationProps.keySet().stream()
-				.map(key -> new BeanPropertyBiDefinition(forSerializationProps.get(key), forDeserializationProps.get(key)))
-				.toList();
+			.map(key -> new BeanPropertyBiDefinition(forSerializationProps.get(key), forDeserializationProps.get(key)))
+			.toList();
 	}
 
 	/**
 	 * A record representing the bi-definition of a bean property, combining both
 	 * serialization and deserialization property views.
 	 */
-	private record BeanPropertyBiDefinition(BeanPropertyDefinition forSerialization,
-											BeanPropertyDefinition forDeserialization) {
+	private record BeanPropertyBiDefinition(
+		BeanPropertyDefinition forSerialization,
+		BeanPropertyDefinition forDeserialization
+	) {
 
 		/**
 		 * Retrieves an annotation of the specified type from either the serialization or
@@ -278,17 +280,17 @@ public class PolymorphicModelConverter implements ModelConverter {
 		public JavaType getPrimaryType() {
 			JavaType forSerializationType = null;
 			if (forSerialization != null) {
-                forSerializationType = forSerialization.getPrimaryType();
-            }
+				forSerializationType = forSerialization.getPrimaryType();
+			}
 
 			JavaType forDeserializationType = null;
 			if (forDeserialization != null) {
-                forDeserializationType = forDeserialization.getPrimaryType();
-            }
+				forDeserializationType = forDeserialization.getPrimaryType();
+			}
 
 			if (forSerializationType != null && forDeserializationType != null && forSerializationType != forDeserializationType) {
 				throw new IllegalStateException("The property " + forSerialization.getName() + " has different types for serialization and deserialization: "
-						+ forSerializationType + " and " + forDeserializationType);
+					+ forSerializationType + " and " + forDeserializationType);
 			}
 
 			return forSerializationType != null ? forSerializationType : forDeserializationType;
@@ -296,18 +298,18 @@ public class PolymorphicModelConverter implements ModelConverter {
 
 		private <A extends Annotation> A getAnyAnnotation(BeanPropertyDefinition prop, Class<A> acls) {
 			if (prop == null) {
-                return null;
-            }
+				return null;
+			}
 
 			if (prop.getField() != null) {
-                return prop.getField().getAnnotation(acls);
-            }
+				return prop.getField().getAnnotation(acls);
+			}
 			if (prop.getGetter() != null) {
-                return prop.getGetter().getAnnotation(acls);
-            }
+				return prop.getGetter().getAnnotation(acls);
+			}
 			if (prop.getSetter() != null) {
-                return prop.getSetter().getAnnotation(acls);
-            }
+				return prop.getSetter().getAnnotation(acls);
+			}
 
 			return null;
 		}
