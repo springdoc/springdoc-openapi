@@ -33,7 +33,7 @@ This project is sponsored by
  <a href="https://www.lvm.de/" target="_blank">
    <img src="https://springdoc.org/img/LVM_Versicherung_2010_logo.svg.png" height="10%" width="25%" />
   </a>
- <a href=""https://gdnext.com/" target="_blank">
+ <a href="https://gdnext.com/" target="_blank">
    <img src="https://springdoc.org/img/gdnext.png" height="10%" width="10%" />
   </a>
 </p>
