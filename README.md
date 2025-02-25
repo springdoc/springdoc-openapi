@@ -11,8 +11,7 @@ project is now available for organizations that need support beyond 2023.
 
 For more details, feel free to reach out: [sales@springdoc.org](mailto:sales@springdoc.org)
 
-``springdoc-openapi`` is on [Open Collective](https://opencollective.com/springdoc). If you ❤️ this project consider becoming
-a [sponsor](https://github.com/sponsors/springdoc).
+``springdoc-openapi`` is on [Open Collective](https://opencollective.com/springdoc). If you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
 
 This project is sponsored by
 
