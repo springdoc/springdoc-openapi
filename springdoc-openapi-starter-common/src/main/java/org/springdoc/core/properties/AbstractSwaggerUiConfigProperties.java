@@ -88,7 +88,7 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	 *
 	 * @see <a href="https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/deep-linking.md">deep-linking.md</a>
 	 */
-	protected Boolean deepLinking;
+	protected Boolean deepLinking = Constants.DEFAULT_DEEPLINKING;
 
 	/**
 	 * Controls the display of operationId in operations list.

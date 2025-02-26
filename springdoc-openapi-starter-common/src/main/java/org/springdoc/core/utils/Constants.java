@@ -234,6 +234,11 @@ public final class Constants {
 	public static final String DEFAULT_SWAGGER_UI_PATH = DEFAULT_PATH_SEPARATOR + "swagger-ui.html";
 
 	/**
+	 * The constant DEFAULT_DEEPLINKING.
+	 */
+	public static final boolean DEFAULT_DEEPLINKING = true;
+
+	/**
 	 * The constant SWAGGER_UI_PATH.
 	 */
 	public static final String SWAGGER_UI_PATH = "${springdoc.swagger-ui.path:#{T(org.springdoc.core.utils.Constants).DEFAULT_SWAGGER_UI_PATH}}";
