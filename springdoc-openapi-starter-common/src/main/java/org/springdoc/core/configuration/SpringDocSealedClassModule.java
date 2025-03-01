@@ -26,10 +26,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.swagger.v3.core.jackson.SwaggerAnnotationIntrospector;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The type Spring doc sealed class module.
@@ -56,6 +58,18 @@ public class SpringDocSealedClassModule extends SimpleModule {
 					&& clazz.isSealed()
 					&& !clazz.getPackage().getName().startsWith("java")
 			) {
+
+				Schema schema = clazz.getAnnotation(Schema.class);
+				if (schema != null && schema.oneOf().length > 0) {
+					return new ArrayList<>();
+				}
+
+				JsonSubTypes jsonSubTypes = clazz.getAnnotation(JsonSubTypes.class);
+				if (jsonSubTypes != null && jsonSubTypes.value().length > 0) {
+					return new ArrayList<>();
+				}
+
+
 				Class<?>[] permittedSubClasses = clazz.getPermittedSubclasses();
 				if (permittedSubClasses.length > 0) {
 					Arrays.stream(permittedSubClasses).map(NamedType::new).forEach(subTypes::add);
