@@ -427,7 +427,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (!CollectionUtils.isEmpty(allowedLocales)) {
 			Locale bestMatchingAllowedLocale = Locale.lookup(
 				Locale.LanguageRange.parse(inputLocale.toLanguageTag()),
-				allowedLocales.stream().map(Locale::forLanguageTag).collect(Collectors.toList())
+				allowedLocales.stream().map(Locale::forLanguageTag).toList()
 			);
 
 			return bestMatchingAllowedLocale == null ? Locale.forLanguageTag(allowedLocales.get(0)) : bestMatchingAllowedLocale;
