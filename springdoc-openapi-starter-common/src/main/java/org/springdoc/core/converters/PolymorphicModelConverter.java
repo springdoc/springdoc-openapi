@@ -134,10 +134,10 @@ public class PolymorphicModelConverter implements ModelConverter {
 				else {
 					io.swagger.v3.oas.annotations.media.Schema declaredSchema = propertyDef.getAnyAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
 					if (declaredSchema != null &&
-							(ArrayUtils.isNotEmpty(declaredSchema.oneOf()) || ArrayUtils.isNotEmpty(declaredSchema.allOf()))) {
-						if (propertyDef.getPrimaryType() != null && propertyDef.getPrimaryType().getRawClass() != null) {
-							TYPES_TO_SKIP.add(propertyDef.getPrimaryType().getRawClass().getSimpleName());
-						}
+							(ArrayUtils.isNotEmpty(declaredSchema.oneOf()) || ArrayUtils.isNotEmpty(declaredSchema.allOf())) &&
+							propertyDef.getPrimaryType() != null &&
+							propertyDef.getPrimaryType().getRawClass() != null) {
+						TYPES_TO_SKIP.add(propertyDef.getPrimaryType().getRawClass().getSimpleName());
 					}
 				}
 			}
