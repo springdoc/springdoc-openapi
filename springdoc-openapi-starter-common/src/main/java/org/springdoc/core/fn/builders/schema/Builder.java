@@ -838,6 +838,50 @@ public class Builder {
 	}
 
 	/**
+	 * Dependent required map builder.
+	 *
+	 * @param dependentRequiredMap the dependent required map
+	 * @return the builder
+	 */
+	public Builder dependentRequiredMap(DependentRequired[] dependentRequiredMap) {
+		this.dependentRequiredMap = dependentRequiredMap;
+		return this;
+	}
+
+	/**
+	 * Dependent schemas builder.
+	 *
+	 * @param dependentSchemas the dependent schemas
+	 * @return the builder
+	 */
+	public Builder dependentSchemas(StringToClassMapItem[] dependentSchemas) {
+		this.dependentSchemas = dependentSchemas;
+		return this;
+	}
+
+	/**
+	 * Pattern properties builder.
+	 *
+	 * @param patternProperties the pattern properties
+	 * @return the builder
+	 */
+	public Builder patternProperties(StringToClassMapItem[] patternProperties) {
+		this.patternProperties = patternProperties;
+		return this;
+	}
+
+	/**
+	 * Properties builder.
+	 *
+	 * @param properties the properties
+	 * @return the builder
+	 */
+	public Builder properties(StringToClassMapItem[] properties) {
+		this.properties = properties;
+		return this;
+	}
+
+	/**
 	 * Additional properties builder.
 	 *
 	 * @param additionalProperties the additional properties
