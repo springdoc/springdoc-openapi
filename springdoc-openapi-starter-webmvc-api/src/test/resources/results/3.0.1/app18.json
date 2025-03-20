@@ -11,12 +11,43 @@
     }
   ],
   "paths": {
-    "/persons3": {
+    "/persons": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons3",
+        "operationId": "persons",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons6": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "persons6",
         "parameters": [
           {
             "name": "name",
@@ -24,6 +55,7 @@
             "description": "persons name",
             "required": true,
             "schema": {
+              "minLength": 1,
               "type": "string"
             }
           }
@@ -106,6 +138,38 @@
         }
       }
     },
+    "/persons3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "persons3",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "persons name",
+            "required": true,
+            "schema": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/persons2": {
       "get": {
         "tags": [
@@ -119,67 +183,7 @@
             "description": "persons name",
             "required": true,
             "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons6": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "persons6",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "description": "persons name",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "persons",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "required": true,
-            "schema": {
+              "minLength": 1,
               "type": "string"
             }
           }

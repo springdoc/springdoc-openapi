@@ -32,6 +32,7 @@
             "description": "the name",
             "required": true,
             "schema": {
+              "minLength": 1,
               "type": "string"
             }
           }

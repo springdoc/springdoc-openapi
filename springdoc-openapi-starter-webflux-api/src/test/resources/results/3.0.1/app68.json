@@ -23,8 +23,8 @@
         "description": "Tweets are Sent to the client as Server Sent Events",
         "operationId": "streamAllTweets",
         "responses": {
-          "404": {
-            "description": "Not Found",
+          "409": {
+            "description": "Conflict",
             "content": {
               "*/*": {
                 "schema": {
@@ -33,8 +33,8 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "404": {
+            "description": "Not Found",
             "content": {
               "*/*": {
                 "schema": {
@@ -64,8 +64,7 @@
     "schemas": {
       "TweetDTO": {
         "required": [
-          "createdAt",
-          "text"
+          "createdAt"
         ],
         "type": "object",
         "properties": {

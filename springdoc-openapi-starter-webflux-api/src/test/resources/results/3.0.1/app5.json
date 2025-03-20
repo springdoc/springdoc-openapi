@@ -15,26 +15,6 @@
     }
   ],
   "paths": {
-    "/test": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "demo2",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/tweets/does-not-work": {
       "post": {
         "tags": [
@@ -64,14 +44,33 @@
           }
         }
       }
+    },
+    "/test": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "demo2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
       "Tweet": {
         "required": [
-          "createdAt",
-          "text"
+          "createdAt"
         ],
         "type": "object",
         "properties": {

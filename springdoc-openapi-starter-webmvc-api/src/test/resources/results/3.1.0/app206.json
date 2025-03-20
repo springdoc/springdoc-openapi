@@ -40,9 +40,9 @@
             "in": "query",
             "required": true,
             "schema": {
+              "type": "string",
               "maxLength": 10,
-              "minLength": 0,
-              "type": "string"
+              "minLength": 0
             }
           },
           {
@@ -81,12 +81,6 @@
   "components": {
     "schemas": {
       "PersonResponse": {
-        "required": [
-          "age",
-          "email",
-          "firstName",
-          "lastName"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -94,9 +88,9 @@
             "format": "int64"
           },
           "firstName": {
+            "type": "string",
             "maxLength": 10,
-            "minLength": 0,
-            "type": "string"
+            "minLength": 0
           },
           "lastName": {
             "type": "string"
@@ -108,7 +102,12 @@
             "type": "integer",
             "format": "int32"
           }
-        }
+        },
+        "required": [
+          "age",
+          "email",
+          "lastName"
+        ]
       }
     }
   }

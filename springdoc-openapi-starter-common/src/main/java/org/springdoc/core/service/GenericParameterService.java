@@ -715,6 +715,11 @@ public class GenericParameterService {
 			public String ref() {
 				return schema.ref();
 			}
+
+			@Override
+			public Class<?>[] validationGroups() {
+				return new Class[0];
+			}
 		};
 	}
 
