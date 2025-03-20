@@ -23,15 +23,12 @@
         "description": "Tweets are Sent to the client as Server Sent Events",
         "operationId": "streamAllTweets",
         "responses": {
-          "200": {
-            "description": "stream All Tweets",
+          "409": {
+            "description": "Conflict",
             "content": {
-              "text/event-stream": {
+              "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TweetDTO"
-                  }
+                  "type": "string"
                 }
               }
             }
@@ -46,12 +43,15 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "200": {
+            "description": "stream All Tweets",
             "content": {
-              "*/*": {
+              "text/event-stream": {
                 "schema": {
-                  "type": "string"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TweetDTO"
+                  }
                 }
               }
             }
@@ -64,8 +64,7 @@
     "schemas": {
       "TweetDTO": {
         "required": [
-          "createdAt",
-          "text"
+          "createdAt"
         ],
         "type": "object",
         "properties": {

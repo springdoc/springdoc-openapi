@@ -132,6 +132,11 @@ public class Builder {
 	 */
 	private String ref = "";
 
+	/**
+	 * The Validation groups.
+	 */
+	private Class<?>[] validationGroups = {};
+
 
 	/**
 	 * Instantiates a new Parameter builder.
@@ -453,6 +458,11 @@ public class Builder {
 			@Override
 			public String ref() {
 				return ref;
+			}
+
+			@Override
+			public Class<?>[] validationGroups() {
+				return validationGroups;
 			}
 		};
 	}

@@ -38,14 +38,12 @@
             "description": "the name",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "400": {
             "description": "the map",
             "content": {
@@ -58,6 +56,9 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -75,8 +76,8 @@
           "implicit": {
             "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
             "scopes": {
-              "read:pets": "read your pets",
-              "write:pets": "modify pets in your account"
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
             }
           }
         }

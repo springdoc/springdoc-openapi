@@ -25,6 +25,7 @@
             "description": "Description for abc",
             "required": true,
             "schema": {
+              "minLength": 1,
               "type": "string"
             },
             "example": "def"
@@ -69,6 +70,7 @@
             "description": "Description for abc",
             "required": true,
             "schema": {
+              "minLength": 1,
               "type": "string"
             },
             "example": "def"
@@ -104,12 +106,12 @@
     "schemas": {
       "HelloWorldModel": {
         "required": [
-          "abc",
           "thisDate"
         ],
         "type": "object",
         "properties": {
           "abc": {
+            "minLength": 1,
             "type": "string"
           },
           "thisDate": {

@@ -41,7 +41,8 @@
             "description": "parameter from child of RequestParams",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1
             }
           },
           {
@@ -143,6 +144,7 @@
     "schemas": {
       "Nested": {
         "type": "object",
+        "description": "The type Nested.",
         "properties": {
           "param1": {
             "type": "string",
@@ -152,8 +154,7 @@
             "type": "integer",
             "description": "The Param 2."
           }
-        },
-        "description": "The type Nested."
+        }
       }
     }
   }

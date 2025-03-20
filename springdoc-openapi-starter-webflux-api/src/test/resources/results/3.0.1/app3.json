@@ -15,97 +15,6 @@
     }
   ],
   "paths": {
-    "/tweets": {
-      "get": {
-        "tags": [
-          "tweet-controller"
-        ],
-        "operationId": "getAllTweets",
-        "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "get All Tweets",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TweetDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "tweet-controller"
-        ],
-        "operationId": "createTweets",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TweetDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "create Tweets",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/TweetDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/tweets/{id}": {
       "get": {
         "tags": [
@@ -123,8 +32,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "tweet not found",
+          "409": {
+            "description": "Conflict",
             "content": {
               "*/*": {
                 "schema": {
@@ -133,8 +42,8 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "404": {
+            "description": "tweet not found",
             "content": {
               "*/*": {
                 "schema": {
@@ -181,8 +90,8 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "tweet not found",
+          "409": {
+            "description": "Conflict",
             "content": {
               "*/*": {
                 "schema": {
@@ -191,8 +100,8 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "404": {
+            "description": "tweet not found",
             "content": {
               "*/*": {
                 "schema": {
@@ -229,8 +138,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "tweet not found",
+          "409": {
+            "description": "Conflict",
             "content": {
               "*/*": {
                 "schema": {
@@ -239,8 +148,8 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "404": {
+            "description": "tweet not found",
             "content": {
               "*/*": {
                 "schema": {
@@ -255,14 +164,23 @@
         }
       }
     },
-    "/stream/tweets": {
+    "/tweets": {
       "get": {
         "tags": [
           "tweet-controller"
         ],
-        "description": "Tweets are Sent to the client as Server Sent Events",
-        "operationId": "streamAllTweets",
+        "operationId": "getAllTweets",
         "responses": {
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -273,8 +191,90 @@
               }
             }
           },
+          "200": {
+            "description": "get All Tweets",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TweetDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tweet-controller"
+        ],
+        "operationId": "createTweets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TweetDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
           "409": {
             "description": "Conflict",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "create Tweets",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TweetDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stream/tweets": {
+      "get": {
+        "tags": [
+          "tweet-controller"
+        ],
+        "description": "Tweets are Sent to the client as Server Sent Events",
+        "operationId": "streamAllTweets",
+        "responses": {
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "*/*": {
                 "schema": {
@@ -304,8 +304,7 @@
     "schemas": {
       "TweetDTO": {
         "required": [
-          "createdAt",
-          "text"
+          "createdAt"
         ],
         "type": "object",
         "properties": {

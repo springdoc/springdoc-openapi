@@ -11,6 +11,36 @@
     }
   ],
   "paths": {
+    "/persons": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "persons",
+        "requestBody": {
+          "description": "requestBody description as parameter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/persons3": {
       "post": {
         "tags": [
@@ -22,7 +52,8 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
               }
             }
           },
@@ -50,36 +81,6 @@
         "operationId": "persons2",
         "requestBody": {
           "description": "requestBody description outside",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "persons",
-        "requestBody": {
-          "description": "requestBody description as parameter",
           "content": {
             "application/json": {
               "schema": {

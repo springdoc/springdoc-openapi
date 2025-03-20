@@ -32,6 +32,7 @@
             "description": "parameter from child of RequestParams",
             "required": true,
             "schema": {
+              "minLength": 1,
               "type": "string"
             }
           },
@@ -147,9 +148,6 @@
         }
       },
       "InheritedRequestParams": {
-        "required": [
-          "childParam"
-        ],
         "type": "object",
         "properties": {
           "stringParam": {
@@ -182,6 +180,7 @@
             }
           },
           "childParam": {
+            "minLength": 1,
             "type": "string"
           }
         }

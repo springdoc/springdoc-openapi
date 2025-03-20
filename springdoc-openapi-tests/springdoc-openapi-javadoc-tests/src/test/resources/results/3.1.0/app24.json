@@ -38,7 +38,8 @@
             "description": "the name",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1
             }
           }
         ],
@@ -74,15 +75,15 @@
       }
     },
     "securitySchemes": {
-      "basicScheme": {
-        "type": "http",
-        "scheme": "basic"
-      },
       "Authorization": {
         "type": "apiKey",
         "description": "A core-auth Bearer token",
         "name": "Authorization",
         "in": "header"
+      },
+      "basicScheme": {
+        "type": "http",
+        "scheme": "basic"
       }
     }
   }

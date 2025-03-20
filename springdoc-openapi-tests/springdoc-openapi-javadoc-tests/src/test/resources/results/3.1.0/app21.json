@@ -26,7 +26,8 @@
             "description": "the name",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1
             }
           }
         ],
@@ -54,8 +55,8 @@
           "implicit": {
             "authorizationUrl": "http://personstore.swagger.io/oauth/dialog",
             "scopes": {
-              "write:persons": "modify persons in your account",
-              "read:persons": "read your persons"
+              "read:persons": "read your persons",
+              "write:persons": "modify persons in your account"
             }
           }
         }

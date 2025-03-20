@@ -41,6 +41,7 @@
             "description": "parameter from child of RequestParams",
             "required": true,
             "schema": {
+              "minLength": 1,
               "type": "string"
             }
           },
@@ -148,38 +149,13 @@
   },
   "components": {
     "schemas": {
-      "Nested": {
-        "type": "object",
-        "properties": {
-          "param1": {
-            "type": "string",
-            "description": "The Param 1."
-          },
-          "param2": {
-            "type": "integer",
-            "description": "The Param 2."
-          }
-        },
-        "description": "The type Nested."
-      },
       "InheritedRequestParams": {
-        "required": [
-          "childParam"
-        ],
         "type": "object",
         "properties": {
-          "stringParam": {
+          "childParam": {
+            "minLength": 1,
             "type": "string",
-            "description": "The String param."
-          },
-          "stringParam1": {
-            "type": "string",
-            "description": "The String param 1.",
-            "deprecated": true
-          },
-          "stringParam2": {
-            "type": "string",
-            "description": "The String param 2."
+            "description": "parameter from child of RequestParams"
           },
           "intParam": {
             "type": "integer",
@@ -204,12 +180,35 @@
               "$ref": "#/components/schemas/Nested"
             }
           },
-          "childParam": {
+          "stringParam": {
             "type": "string",
-            "description": "parameter from child of RequestParams"
+            "description": "The String param."
+          },
+          "stringParam1": {
+            "type": "string",
+            "description": "The String param 1.",
+            "deprecated": true
+          },
+          "stringParam2": {
+            "type": "string",
+            "description": "The String param 2."
           }
         },
         "description": "The type Inherited request params."
+      },
+      "Nested": {
+        "type": "object",
+        "properties": {
+          "param1": {
+            "type": "string",
+            "description": "The Param 1."
+          },
+          "param2": {
+            "type": "integer",
+            "description": "The Param 2."
+          }
+        },
+        "description": "The type Nested."
       }
     }
   }

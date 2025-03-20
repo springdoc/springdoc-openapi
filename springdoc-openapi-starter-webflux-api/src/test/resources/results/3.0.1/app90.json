@@ -549,8 +549,7 @@
       },
       "Position": {
         "required": [
-          "createdAt",
-          "positionName"
+          "createdAt"
         ],
         "type": "object",
         "properties": {

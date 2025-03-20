@@ -548,19 +548,15 @@
         }
       },
       "Position": {
-        "required": [
-          "createdAt",
-          "positionName"
-        ],
         "type": "object",
         "properties": {
           "id": {
             "type": "string"
           },
           "positionName": {
+            "type": "string",
             "maxLength": 140,
-            "minLength": 0,
-            "type": "string"
+            "minLength": 0
           },
           "description": {
             "type": "string"
@@ -569,7 +565,10 @@
             "type": "string",
             "format": "date-time"
           }
-        }
+        },
+        "required": [
+          "createdAt"
+        ]
       },
       "Quote": {
         "type": "object",

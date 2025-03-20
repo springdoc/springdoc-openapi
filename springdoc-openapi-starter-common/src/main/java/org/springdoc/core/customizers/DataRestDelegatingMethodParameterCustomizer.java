@@ -1029,6 +1029,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				public String ref() {
 					return parameter.ref();
 				}
+
+				@Override
+				public Class<?>[] validationGroups() {
+					return new Class[0];
+				}
 			};
 			return Optional.of(parameterNew);
 		}

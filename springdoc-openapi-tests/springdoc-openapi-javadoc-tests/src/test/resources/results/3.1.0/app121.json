@@ -41,7 +41,8 @@
             "description": "parameter from child of RequestParams",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1
             }
           },
           {
@@ -154,7 +155,8 @@
         "properties": {
           "childParam": {
             "type": "string",
-            "description": "parameter from child of RequestParams"
+            "description": "parameter from child of RequestParams",
+            "minLength": 1
           },
           "intParam": {
             "type": "integer",
@@ -193,10 +195,7 @@
             "type": "string",
             "description": "The String param 2."
           }
-        },
-        "required": [
-          "childParam"
-        ]
+        }
       },
       "Nested": {
         "type": "object",
