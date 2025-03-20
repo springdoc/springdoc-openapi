@@ -86,6 +86,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
+import org.springdoc.core.customizers.GlobalOperationComponentsCustomizer;
 import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.RouterOperationCustomizer;
@@ -649,7 +650,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			buildCallbacks(openAPI, methodAttributes, operation, apiCallbacks);
 
 			// allow for customisation
-			operation = customizeOperation(operation, handlerMethod);
+			operation = customizeOperation(operation, components, handlerMethod);
 
 			if (StringUtils.contains(operationPath, "*")) {
 				Matcher matcher = pathPattern.matcher(operationPath);
@@ -1011,15 +1012,20 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Customise operation.
 	 *
 	 * @param operation     the operation
+	 * @param components
 	 * @param handlerMethod the handler method
 	 * @return the operation
 	 */
-	protected Operation customizeOperation(Operation operation, HandlerMethod handlerMethod) {
+	protected Operation customizeOperation(Operation operation, Components components, HandlerMethod handlerMethod) {
 		Optional<Set<OperationCustomizer>> optionalOperationCustomizers = springDocCustomizers.getOperationCustomizers();
 		if (optionalOperationCustomizers.isPresent()) {
 			Set<OperationCustomizer> operationCustomizerList = optionalOperationCustomizers.get();
-			for (OperationCustomizer operationCustomizer : operationCustomizerList)
-				operation = operationCustomizer.customize(operation, handlerMethod);
+			for (OperationCustomizer operationCustomizer : operationCustomizerList) {
+				if (operationCustomizer instanceof GlobalOperationComponentsCustomizer globalOperationComponentsCustomizer)
+					operation = globalOperationComponentsCustomizer.customize(operation, components, handlerMethod);
+				else
+					operation = operationCustomizer.customize(operation, handlerMethod);
+			}
 		}
 		return operation;
 	}

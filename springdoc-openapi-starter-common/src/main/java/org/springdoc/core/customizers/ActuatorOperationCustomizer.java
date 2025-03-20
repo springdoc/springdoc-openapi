@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.customizers;
@@ -31,6 +31,7 @@ import java.lang.reflect.Parameter;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
@@ -61,7 +62,7 @@ import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
  *
  * @author bnasslahsen
  */
-public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
+public class ActuatorOperationCustomizer implements GlobalOperationComponentsCustomizer {
 
 	/**
 	 * The constant OPERATION.
@@ -94,11 +95,11 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	}
 
 	@Override
-	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
+	public Operation customize(Operation operation, Components components, HandlerMethod handlerMethod) {
 		if (operationHasValidTag(operation)) {
 			Field operationField = FieldUtils.getDeclaredField(handlerMethod.getBean().getClass(), OPERATION,true);
 			if (operationField != null) {
-				processOperationField(handlerMethod, operation, operationField);
+				processOperationField(handlerMethod, operation, components, operationField);
 			}
 			setOperationSummary(operation, handlerMethod);
 		}
@@ -120,16 +121,17 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	 *
 	 * @param handlerMethod  the handler method
 	 * @param operation      the operation
+	 * @param components     the components
 	 * @param operationField the operation field
 	 */
-	private void processOperationField(HandlerMethod handlerMethod, Operation operation, Field operationField) {
+	private void processOperationField(HandlerMethod handlerMethod, Operation operation, Components components, Field operationField) {
 		try {
 			Object actuatorOperation = operationField.get(handlerMethod.getBean());
 			Field actuatorOperationField = FieldUtils.getDeclaredField(actuatorOperation.getClass(), OPERATION, true);
 			if (actuatorOperationField != null) {
 				AbstractDiscoveredOperation discoveredOperation =
 						(AbstractDiscoveredOperation) actuatorOperationField.get(actuatorOperation);
-				handleOperationMethod(discoveredOperation.getOperationMethod(), operation);
+				handleOperationMethod(discoveredOperation.getOperationMethod(), components, operation);
 			}
 		}
 		catch (IllegalAccessException e) {
@@ -141,25 +143,26 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	 * Handle operation method.
 	 *
 	 * @param operationMethod the operation method
+	 * @param components      the components
 	 * @param operation       the operation
 	 */
-	private void handleOperationMethod(OperationMethod operationMethod, Operation operation) {
+	private void handleOperationMethod(OperationMethod operationMethod, Components components, Operation operation) {
 		String operationId = operationMethod.getMethod().getName();
 		operation.setOperationId(operationId);
 
 		switch (operationMethod.getOperationType()) {
 			case READ:
-				addParameters(operationMethod, operation, ParameterIn.QUERY);
+				addParameters(operationMethod, operation, components, ParameterIn.QUERY);
 				break;
 			case WRITE:
-				addWriteParameters(operationMethod, operation);
+				addWriteParameters(operationMethod,components, operation);
 				operation.setResponses(new ApiResponses()
 						.addApiResponse(String.valueOf(HttpStatus.NO_CONTENT.value()), new ApiResponse().description(HttpStatus.NO_CONTENT.getReasonPhrase()))
 						.addApiResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), new ApiResponse().description(HttpStatus.BAD_REQUEST.getReasonPhrase())));
 				break;
 			case DELETE:
 				operation.setResponses(new ApiResponses().addApiResponse(String.valueOf(HttpStatus.NO_CONTENT.value()), new ApiResponse().description(HttpStatus.NO_CONTENT.getReasonPhrase())));
-				addParameters(operationMethod, operation, ParameterIn.QUERY);
+				addParameters(operationMethod, operation, components, ParameterIn.QUERY);
 				break;
 			default:
 				break;
@@ -171,13 +174,14 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	 *
 	 * @param operationMethod the operation method
 	 * @param operation       the operation
+	 * @param components      the components
 	 * @param parameterIn     the parameter in
 	 */
-	private void addParameters(OperationMethod operationMethod, Operation operation, ParameterIn parameterIn) {
+	private void addParameters(OperationMethod operationMethod, Operation operation, Components components, ParameterIn parameterIn) {
 		for (OperationParameter operationParameter : operationMethod.getParameters()) {
 			Parameter parameter = getParameterFromField(operationParameter);
 			if(parameter == null) continue;
-			Schema<?> schema = resolveSchema(parameter);
+			Schema<?> schema = resolveSchema(parameter, components);
 			if (parameter.getAnnotation(Selector.class) != null) {
 				operation.addParametersItem(new io.swagger.v3.oas.models.parameters.PathParameter()
 						.name(parameter.getName())
@@ -197,13 +201,14 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	 * Add write parameters.
 	 *
 	 * @param operationMethod the operation method
+	 * @param components      the components
 	 * @param operation       the operation
 	 */
-	private void addWriteParameters(OperationMethod operationMethod, Operation operation) {
+	private void addWriteParameters(OperationMethod operationMethod, Components components, Operation operation) {
 		for (OperationParameter operationParameter : operationMethod.getParameters()) {
 			Parameter parameter = getParameterFromField(operationParameter);
 			if(parameter == null) continue;
-			Schema<?> schema = resolveSchema(parameter);
+			Schema<?> schema = resolveSchema(parameter, components);
 			if (parameter.getAnnotation(Selector.class) != null) {
 				operation.addParametersItem(new io.swagger.v3.oas.models.parameters.PathParameter()
 						.name(parameter.getName())
@@ -237,11 +242,12 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	/**
 	 * Resolve schema schema.
 	 *
-	 * @param parameter the parameter
+	 * @param parameter  the parameter
+	 * @param components
 	 * @return the schema
 	 */
-	private Schema<?> resolveSchema(Parameter parameter) {
-		Schema schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null, springDocConfigProperties.isOpenapi31());
+	private Schema<?> resolveSchema(Parameter parameter, Components components) {
+		Schema schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), components, null, springDocConfigProperties.isOpenapi31());
 		if(springDocConfigProperties.isOpenapi31()) handleSchemaTypes(schema);
 		return schema;
 	}
@@ -271,4 +277,8 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 		}
 	}
 
+	@Override
+	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
+		return this.customize(operation, null, handlerMethod);
+	}
 }
