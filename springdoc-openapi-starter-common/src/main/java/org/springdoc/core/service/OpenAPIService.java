@@ -175,11 +175,6 @@ public class OpenAPIService implements ApplicationContextAware {
 	private boolean isServersPresent;
 
 	/**
-	 * The Server base url.
-	 */
-	private String serverBaseUrl;
-
-	/**
 	 * Instantiates a new Open api builder.
 	 *
 	 * @param openAPI                   the open api
@@ -296,9 +291,10 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * Update servers open api.
 	 *
-	 * @param openAPI the open api
+	 * @param serverBaseUrl the server base url
+	 * @param openAPI       the open api
 	 */
-	public void updateServers(OpenAPI openAPI) {
+	public void updateServers(String serverBaseUrl, OpenAPI openAPI) {
 		if (!isServersPresent && serverBaseUrl != null)        // default server value
 		{
 			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
@@ -493,18 +489,17 @@ public class OpenAPIService implements ApplicationContextAware {
 	 *
 	 * @param serverBaseUrl the server base url
 	 * @param httpRequest   the http request
+	 * @return the string
 	 */
-	public void setServerBaseUrl(String serverBaseUrl, HttpRequest httpRequest) {
+	public String calculateServerBaseUrl(String serverBaseUrl, HttpRequest httpRequest) {
 		String customServerBaseUrl = serverBaseUrl;
-
 		if (serverBaseUrlCustomizers.isPresent()) {
 			for (ServerBaseUrlCustomizer customizer : serverBaseUrlCustomizers.get()) {
 				customServerBaseUrl = customizer.customize(customServerBaseUrl, httpRequest);
 			}
 		}
 
-		this.serverBaseUrl = customServerBaseUrl;
-
+		return customServerBaseUrl;
 	}
 
 	/**

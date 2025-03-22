@@ -123,8 +123,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	public byte[] openapiJson(HttpServletRequest request,
 			String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		calculateServerUrl(request, apiDocsUrl, locale);
-		OpenAPI openAPI = this.getOpenApi(locale);
+		String serverBaseUrl=calculateServerUrl(request, apiDocsUrl, locale);
+		OpenAPI openAPI = this.getOpenApi(serverBaseUrl,locale);
 		return writeJsonValue(openAPI);
 	}
 
@@ -140,8 +140,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	public byte[] openapiYaml(HttpServletRequest request,
 			String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		calculateServerUrl(request, apiDocsUrl, locale);
-		OpenAPI openAPI = this.getOpenApi(locale);
+		String serverBaseUrl=calculateServerUrl(request, apiDocsUrl, locale);
+		OpenAPI openAPI = this.getOpenApi(serverBaseUrl, locale);
 		return writeYamlValue(openAPI);
 	}
 
@@ -248,12 +248,13 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param request    the request
 	 * @param apiDocsUrl the api docs url
 	 * @param locale     the locale
+	 * @return the string
 	 */
-	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl, Locale locale) {
+	protected String calculateServerUrl(HttpServletRequest request, String apiDocsUrl, Locale locale) {
 		super.initOpenAPIBuilder(locale);
 		String calculatedUrl = getServerUrl(request, apiDocsUrl);
 		ServletServerHttpRequest serverRequest = request != null ? new ServletServerHttpRequest(request) : null;
-		openAPIService.setServerBaseUrl(calculatedUrl, serverRequest);
+		return openAPIService.calculateServerBaseUrl(calculatedUrl, serverRequest);
 	}
 
 	/**

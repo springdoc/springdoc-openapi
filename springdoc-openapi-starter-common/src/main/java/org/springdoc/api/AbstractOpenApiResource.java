@@ -256,7 +256,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 			else {
 				for (String locale : springDocConfigProperties.getPreLoadingLocales()) {
-					Executors.newSingleThreadExecutor().execute(() -> this.getOpenApi(Locale.forLanguageTag(locale)));
+					Executors.newSingleThreadExecutor().execute(() -> this.getOpenApi(null, Locale.forLanguageTag(locale)));
 				}
 			}
 		}
@@ -334,7 +334,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Gets open api.
 	 */
 	private void getOpenApi() {
-		this.getOpenApi(Locale.getDefault());
+		this.getOpenApi(null, Locale.getDefault());
 	}
 
 	/**
@@ -343,7 +343,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param locale the locale
 	 * @return the open api
 	 */
-	protected OpenAPI getOpenApi(Locale locale) {
+	protected OpenAPI getOpenApi(String serverBaseUrl, Locale locale) {
 		this.reentrantLock.lock();
 		try {
 			final OpenAPI openAPI;
@@ -384,7 +384,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					openAPIService.setServersPresent(true);
 				else
 					openAPIService.setServersPresent(false);
-				openAPIService.updateServers(openAPI);
+				openAPIService.updateServers(serverBaseUrl, openAPI);
 
 				if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 					this.removeBrokenReferenceDefinitions(openAPI);
@@ -413,9 +413,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			else {
 				LOGGER.debug("Fetching openApi document from cache");
 				openAPI = openAPIService.getCachedOpenAPI(finalLocale);
-				openAPIService.updateServers(openAPI);
+				openAPIService.updateServers(serverBaseUrl, openAPI);
 			}
-			openAPIService.updateServers(openAPI);
 			return openAPI;
 		}
 		finally {
