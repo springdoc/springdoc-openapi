@@ -99,6 +99,6 @@ public class ModelConverterRegistrar {
 		// comparing by the converter type
 		Class<? extends ModelConverter> modelConverter1Class = modelConverter1.getClass();
 		Class<? extends ModelConverter> modelConverter2Class = modelConverter2.getClass();
-		return modelConverter1Class.equals(modelConverter2Class);
+		return modelConverter1Class.getName().equals(modelConverter2Class.getName());
 	}
 }
