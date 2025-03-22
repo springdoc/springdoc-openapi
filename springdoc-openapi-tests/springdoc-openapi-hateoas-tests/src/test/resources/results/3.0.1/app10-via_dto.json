@@ -91,6 +91,26 @@
         }
       }
     },
+    "/page-simple-response": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "pageSimpleResponse",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelUserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/page-raw": {
       "get": {
         "tags": [
@@ -205,6 +225,31 @@
           },
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PagedModelUserDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDto"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
           }
         }
       }
