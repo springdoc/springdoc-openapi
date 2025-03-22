@@ -26,7 +26,6 @@
 
 package org.springdoc.core.converters;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Iterator;
 
@@ -94,7 +93,7 @@ public class PageOpenAPIConverter implements ModelConverter {
 			Class<?> cls = javaType.getRawClass();
 			if (replacePageWithPagedModel && PAGE_TO_REPLACE.equals(cls.getCanonicalName())) {
 				if (!type.isSchemaProperty())
-					type = resolvePagedModelType(type);
+					type = resolvePagedModelType(javaType);
 				else
 					type.name(getParentTypeName(type, cls));
 			}
@@ -108,13 +107,12 @@ public class PageOpenAPIConverter implements ModelConverter {
 	 * @param type the type
 	 * @return the annotated type
 	 */
-	private AnnotatedType resolvePagedModelType(AnnotatedType type) {
-		Type pageType = type.getType();
-		if (pageType instanceof ParameterizedType) {
-			Type argumentType = ((ParameterizedType) type.getType()).getActualTypeArguments()[0];
+	private AnnotatedType resolvePagedModelType(JavaType type) {
+		if(type.hasGenericTypes()){
+			JavaType innerType = type.containedType(0);
 			Type pagedModelType = ResolvableType
-				.forClassWithGenerics(PagedModel.class, ResolvableType.forType(argumentType))
-				.getType();
+					.forClassWithGenerics(PagedModel.class, ResolvableType.forType(innerType))
+					.getType();
 			return new AnnotatedType(pagedModelType).resolveAsRef(true);
 		}
 		else {

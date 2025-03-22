@@ -31,6 +31,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.web.PagedModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,6 +44,11 @@ public class HelloController {
 		return pageImpl("test");
 	}
 
+	@GetMapping("/page-simple-response")
+	public ResponseEntity<Page<UserDto>> pageSimpleResponse() {
+		return null;
+	}
+	
 	@GetMapping("/paged-model-simple")
 	public PagedModel<String> pagedModelSimple() {
 		return pagedModel("test");
@@ -76,4 +82,8 @@ public class HelloController {
 		return new PageImpl<>(List.of(value));
 	}
 
+	public record UserDto(
+			String id,
+			String email
+	) {}
 }
