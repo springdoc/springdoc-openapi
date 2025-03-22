@@ -56,6 +56,52 @@
           }
         }
       }
+    },
+    "/api/test2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "update2",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "registrationId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualReturnedEntity"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResponseActualReturnedEntity"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

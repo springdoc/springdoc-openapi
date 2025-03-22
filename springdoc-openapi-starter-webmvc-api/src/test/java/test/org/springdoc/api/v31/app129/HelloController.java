@@ -24,6 +24,8 @@
 
 package test.org.springdoc.api.v31.app129;
 
+import java.util.concurrent.CompletableFuture;
+
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
@@ -40,6 +42,13 @@ public class HelloController {
 	@PostMapping("/test")
 	@ApiResponses({ @ApiResponse(responseCode = "200") })
 	public DeferredResult<OperationResponse<ActualReturnedEntity>> update(
+			@RequestBody ActualReturnedEntity entity) throws Exception {
+		return null;
+	}
+
+	@PostMapping("/test2")
+	@ApiResponses({ @ApiResponse(responseCode = "200") })
+	public CompletableFuture<OperationResponse<ActualReturnedEntity>> update2(
 			@RequestBody ActualReturnedEntity entity) throws Exception {
 		return null;
 	}
