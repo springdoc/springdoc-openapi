@@ -30,10 +30,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import io.swagger.v3.oas.models.SpecVersion;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.models.SpecVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.properties.SpringDocConfigProperties;

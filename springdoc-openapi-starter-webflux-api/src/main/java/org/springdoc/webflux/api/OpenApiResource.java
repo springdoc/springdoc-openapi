@@ -119,8 +119,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected Mono<byte[]> openapiJson(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		calculateServerUrl(serverHttpRequest, apiDocsUrl, locale);
-		OpenAPI openAPI = this.getOpenApi(locale);
+		String serverBaseUrl= calculateServerUrl(serverHttpRequest, apiDocsUrl, locale);
+		OpenAPI openAPI = this.getOpenApi(serverBaseUrl, locale);
 		return Mono.just(writeJsonValue(openAPI));
 	}
 
@@ -135,8 +135,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected Mono<byte[]> openapiYaml(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		calculateServerUrl(serverHttpRequest, apiDocsUrl, locale);
-		OpenAPI openAPI = this.getOpenApi(locale);
+		String serverBaseUrl = calculateServerUrl(serverHttpRequest, apiDocsUrl, locale);
+		OpenAPI openAPI = this.getOpenApi(serverBaseUrl, locale);
 		return Mono.just(writeYamlValue(openAPI));
 	}
 
@@ -233,10 +233,10 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param apiDocsUrl        the api docs url
 	 * @param locale            the locale
 	 */
-	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale) {
+	protected String calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale) {
 		initOpenAPIBuilder(locale);
 		String serverUrl = getServerUrl(serverHttpRequest, apiDocsUrl);
-		openAPIService.setServerBaseUrl(serverUrl, serverHttpRequest);
+		return openAPIService.calculateServerBaseUrl(serverUrl, serverHttpRequest);
 	}
 
 	/**
