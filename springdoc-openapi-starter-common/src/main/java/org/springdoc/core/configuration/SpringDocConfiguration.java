@@ -34,6 +34,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.querydsl.core.types.Predicate;
@@ -153,7 +154,8 @@ public class SpringDocConfiguration {
 	static {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema())
 				.replaceWithClass(Charset.class, String.class)
-				.addResponseWrapperToIgnore(DeferredResult.class);
+				.addResponseWrapperToIgnore(DeferredResult.class) 
+				.addResponseWrapperToIgnore(Future.class);
 	}
 
 	/**
