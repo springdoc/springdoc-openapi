@@ -27,13 +27,26 @@
 package org.springdoc.core.utils;
 
 import java.lang.annotation.Annotation;
+import java.nio.charset.Charset;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.MonthDay;
+import java.time.OffsetTime;
+import java.time.Period;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.function.Predicate;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -357,6 +370,19 @@ public class SpringDocUtils {
 	}
 
 	/**
+	 * Remove from schema map spring doc utils.
+	 *
+	 * @param classes the clazz
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils removeFromSchemaMap(Class<?>... classes) {
+		for (Class<?> aClass : classes) {
+			AdditionalModelsConverter.removeFromSchemaMap(aClass);
+		}
+		return this;
+	}
+
+	/**
 	 * Remove from schema class spring doc utils.
 	 *
 	 * @param clazz the clazz
@@ -501,6 +527,37 @@ public class SpringDocUtils {
 				}
 			});
 		}
+	}
+
+	/**
+	 * Init extra schemas.
+	 */
+	public SpringDocUtils initExtraSchemas() {
+		replaceWithSchema(LocalTime.class, new StringSchema().example("14:30:00"));
+		replaceWithSchema(YearMonth.class, new StringSchema().example("2025-03"));
+		replaceWithSchema(MonthDay.class, new StringSchema().example("--03-22"));
+		replaceWithSchema(Year.class, new StringSchema().example("2025"));
+		replaceWithSchema(Duration.class, new StringSchema().example("PT2H30M"));
+		replaceWithSchema(Period.class, new StringSchema().example("P2Y3M"));
+		replaceWithSchema(OffsetTime.class, new StringSchema().example("14:30:00+01:00"));
+		replaceWithSchema(ZoneId.class, new StringSchema().example("Europe/Paris"));
+		replaceWithSchema(ZoneOffset.class, new StringSchema().example("+01:00"));
+		replaceWithSchema(TimeZone.class, new StringSchema().example("GMT"));
+		replaceWithSchema(Charset.class, new StringSchema().example("UTF-8"));
+		replaceWithSchema(Locale.class, new StringSchema().example("en-US"));
+		return this;
+	}
+
+	/**
+	 * Reset extra schemas spring doc utils.
+	 *
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils resetExtraSchemas() {
+		SpringDocUtils.getConfig().removeFromSchemaMap(LocalTime.class,YearMonth.class,
+				MonthDay.class, Year.class, Duration.class, Period.class, OffsetTime.class,
+				ZoneId.class, ZoneOffset.class, TimeZone.class, Charset.class, Locale.class);
+		return this;
 	}
 }
 

@@ -24,13 +24,30 @@
 
 package test.org.springdoc.api.v31.app115;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
+import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLE_EXTRA_SCHEMAS;
+import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
+@TestPropertySource(properties = SPRINGDOC_ENABLE_EXTRA_SCHEMAS + "=false")
 public class SpringDocApp115Test extends AbstractSpringDocTest {
 
+	@BeforeAll
+	public static void clear() {
+		getConfig().resetExtraSchemas();
+	}
+
+	@AfterAll
+	public static void restore() {
+		getConfig().initExtraSchemas();
+	}
+
+	
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 

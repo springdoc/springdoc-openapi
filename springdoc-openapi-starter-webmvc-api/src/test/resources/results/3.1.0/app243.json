@@ -1,0 +1,78 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/time1": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "postTime1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TimeDtoNoAnnotations"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeDtoNoAnnotations"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TimeDtoNoAnnotations": {
+        "type": "object",
+        "properties": {
+          "localDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "localDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "localTime": {
+            "type": "string",
+            "example": "14:30:00"
+          },
+          "yearMonth": {
+            "type": "string",
+            "example": "2025-03"
+          },
+          "monthDay": {
+            "type": "string",
+            "example": "--03-22"
+          },
+          "year": {
+            "type": "string",
+            "example": "2025"
+          }
+        }
+      }
+    }
+  }
+}
