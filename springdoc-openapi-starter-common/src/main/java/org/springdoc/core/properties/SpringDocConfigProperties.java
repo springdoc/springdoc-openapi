@@ -275,6 +275,29 @@ public class SpringDocConfigProperties {
 	private OpenAPI OpenApi;
 
 	/**
+	 * The Enable extra schemas resolution.
+	 */
+	private boolean enableExtraSchemas;
+
+	/**
+	 * Is enable additional schemas resolution boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableExtraSchemas() {
+		return enableExtraSchemas;
+	}
+
+	/**
+	 * Sets enable additional schemas resolution.
+	 *
+	 * @param enableExtraSchemas the enable additional schemas resolution
+	 */
+	public void setEnableExtraSchemas(boolean enableExtraSchemas) {
+		this.enableExtraSchemas = enableExtraSchemas;
+	}
+
+	/**
 	 * Gets open api.
 	 *
 	 * @return the open api

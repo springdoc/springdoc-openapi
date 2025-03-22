@@ -130,6 +130,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import static org.springdoc.core.utils.Constants.GLOBAL_OPEN_API_CUSTOMIZER;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLE_EXTRA_SCHEMAS;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SHOW_ACTUATOR;
@@ -158,6 +159,14 @@ public class SpringDocConfiguration {
 				.addResponseWrapperToIgnore(Future.class);
 	}
 
+	@Bean
+	@Lazy(false)
+	@ConditionalOnProperty(name = SPRINGDOC_ENABLE_EXTRA_SCHEMAS, matchIfMissing = true)
+	Object initExtraSchemas() {
+		getConfig().initExtraSchemas();
+		return null;
+	}
+	
 	/**
 	 * Springdoc bean factory post processor bean factory post processor.
 	 *

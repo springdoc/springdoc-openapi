@@ -425,6 +425,11 @@ public final class Constants {
 	public static final String SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED = "springdoc.nullable-request-parameter-enabled";
 
 	/**
+	 * The constant SPRINGDOC_ENABLE_ADDITIONAL_SCHEMAS_RESOLUTION.
+	 */
+	public static final String SPRINGDOC_ENABLE_EXTRA_SCHEMAS = "springdoc.enable-extra-schemas";
+	
+	/**
 	 * Instantiates a new Constants.
 	 */
 	private Constants() {

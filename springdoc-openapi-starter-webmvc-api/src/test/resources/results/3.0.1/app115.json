@@ -24,7 +24,7 @@
               "application/json": {
                 "schema": {
                   "type": "string",
-                  "properties": {}
+                  "example": "PT2H30M"
                 }
               }
             }
