@@ -5,12 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.6] - 2025-03-23
+
+### Added
+- #2909 - Check both SerDe BeanPropertyDefinition for @JsonUnwrapped/@Schema 
+- #2927 - Bail sealed class subtype introspection on Schema 
+- #2917 - Add Future to ignored response wrappers
+- #2938 - Add out of the box support for LocalTime, YearMonth, MonthDay
+
+### Changed
+- Upgrade swagger-ui to v5.20.1
+- Upgrade swagger-core to 2.2.29
+- Upgrade spring-cloud-function to 4.2.2
+- Upgrade spring-boot to version 3.4.4
+
+### Fixed
+- #2928 - Add missing builder methods in SchemaBuilder
+- #2905 - ModelResolver.enumAsRef = true result in invalid openapi with actuator using enum param
+- #2939 - Duplicate ModelConverter registration with Spring Boot DevTools
+- #2941 - SpringBoot native fails /v3/api-docs when using a Map as an http entity field
+
 ## [2.8.5] - 2025-02-16
 
 ### Added
 - #2696 - Do not require JsonSubType annotation for sealed classes
 - #2898 - add needed runtime reflection hints for native image 
 - #2891 - Refactor trimIndent Method
+- #2931 - OpenAPIService serverBaseUrl is not thread safe
+- #2933 - Wrong schema generation with PagedModel generated VIA_DTO and wrapped in ResponseEntity
 
 ### Changed
 - Upgrade swagger-ui to v5.18.3
