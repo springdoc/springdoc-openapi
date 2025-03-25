@@ -107,7 +107,7 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 
 		if (DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix)) {
 			swaggerUiPrefix = SWAGGER_UI_PREFIX;
-			resourcePath = webjarsPrefix + SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigProperties.getVersion();
+			resourcePath = webjarsPrefix + SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigProperties.getVersion() + DEFAULT_PATH_SEPARATOR;
 		} else {
 			swaggerUiPrefix = webjarsPrefix;
 			resourcePath = DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR;
