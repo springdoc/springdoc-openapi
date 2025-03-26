@@ -69,6 +69,10 @@
 					<compilerPlugins>
 						<plugin>spring</plugin>
 					</compilerPlugins>
+					<args>
+						<arg>-java-parameters</arg> <!-- Get correct parameter names in jqwik reporting -->
+						<arg>-Xemit-jvm-type-annotations</arg> <!-- Enable annotations on type variables -->
+					</args>
 				</configuration>
 				<dependencies>
 					<dependency>

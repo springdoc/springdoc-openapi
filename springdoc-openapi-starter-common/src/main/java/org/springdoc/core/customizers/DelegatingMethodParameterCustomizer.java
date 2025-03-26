@@ -27,12 +27,27 @@
 package org.springdoc.core.customizers;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.Nullable;
+
+import java.util.List;
 
 /**
  * The interface Delegating method parameter customizer.
  */
 @FunctionalInterface
 public interface DelegatingMethodParameterCustomizer {
+	/**
+	 * Customize.
+	 * tip: parameters include the parent fields, you can choose how to deal with the methodParameters
+	 *
+	 * @param originalParameter  the original parameter
+	 * @param methodParameters the exploded parameters
+	 * @return the list
+	 */
+	@Nullable
+	default void customizeList(MethodParameter originalParameter, List<MethodParameter> methodParameters) {
+		methodParameters.forEach(parameter -> customize(originalParameter, parameter));
+	}
 
 	/**
 	 * Customize.
