@@ -11,8 +11,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
-      "description": "Generated server url"
+      "url": "https://user.example.com",
+      "description": "user Server"
     }
   ],
   "paths": {

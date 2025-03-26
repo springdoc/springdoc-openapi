@@ -13,6 +13,9 @@ springdoc:
           termsOfService: http://localhost:8080/
           license:
             name: Apache 2.0
+        servers:
+          - url: "https://demo.example.com"
+            description: "demo Server"
         components:
           schemas:
             PersonDTO:
@@ -34,6 +37,9 @@ springdoc:
           termsOfService: http://localhost:8080/
           license:
             name: Apache 2.0
+        servers:
+          - url: "https://user.example.com"
+            description: "user Server"
         components:
           schemas:
             PersonDTO:
@@ -42,7 +48,12 @@ springdoc:
                 name:
                   description: Description for 'name' property
                   example: Example value for 'name' property
-  open-api: 
+  open-api:
+    servers:
+      - url: "https://api.example.com"
+        description: "Production Server"
+      - url: "https://staging.example.com"
+        description: "Staging Server"
     info:
       title: Api info title
       description: Api info description

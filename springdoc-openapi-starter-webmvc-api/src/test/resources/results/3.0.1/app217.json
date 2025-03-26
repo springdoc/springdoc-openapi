@@ -7,8 +7,12 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
-      "description": "Generated server url"
+      "url": "https://api.example.com",
+      "description": "Production Server"
+    },
+    {
+      "url": "https://staging.example.com",
+      "description": "Staging Server"
     }
   ],
   "paths": {
