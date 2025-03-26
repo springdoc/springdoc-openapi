@@ -26,6 +26,7 @@
 
 package org.springdoc.core.customizers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -143,6 +144,9 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			List<SecurityRequirement> securityRequirementsProperties = openApiProperties.getSecurity();
 			if (!CollectionUtils.isEmpty(securityRequirementsProperties)) {
 				customizeSecurity(openApi, securityRequirementsProperties);
+			}
+			if (!CollectionUtils.isEmpty(openApiProperties.getServers())) {
+				openApi.setServers(new ArrayList<>(openApiProperties.getServers()));
 			}
 		}
 	}
@@ -363,6 +367,5 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			setter.accept(value);
 		}
 	}
-
 
 }

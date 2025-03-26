@@ -7,8 +7,12 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
-      "description": "Generated server url"
+      "url": "https://api.example.com",
+      "description": "Production Server"
+    },
+    {
+      "url": "https://staging.example.com",
+      "description": "Staging Server"
     }
   ],
   "paths": {
@@ -37,14 +41,14 @@
     "schemas": {
       "PersonDTO": {
         "type": "object",
+        "description": "Description for PersonDTO component",
         "properties": {
           "name": {
             "type": "string",
             "description": "Description for 'name' property",
             "example": "Example value for 'name' property"
           }
-        },
-        "description": "Description for PersonDTO component"
+        }
       }
     }
   }

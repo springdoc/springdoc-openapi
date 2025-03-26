@@ -1,5 +1,10 @@
 springdoc:
   open-api:
+    servers:
+      - url: "https://api.example.com"
+        description: "Production Server"
+      - url: "https://staging.example.com"
+        description: "Staging Server"
     info:
       title: Api info title
       description: Api info description
