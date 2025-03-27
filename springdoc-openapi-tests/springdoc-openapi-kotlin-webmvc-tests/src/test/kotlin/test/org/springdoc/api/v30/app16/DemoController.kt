@@ -1,4 +1,4 @@
-package test.org.springdoc.api.v31.app16
+package test.org.springdoc.api.v30.app16
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.web.bind.annotation.GetMapping

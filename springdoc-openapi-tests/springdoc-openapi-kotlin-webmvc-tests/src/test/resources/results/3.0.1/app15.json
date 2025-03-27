@@ -1,5 +1,5 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.1",
   "info": {
     "title": "OpenAPI definition",
     "version": "v0"
@@ -45,6 +45,11 @@
   "components": {
     "schemas": {
       "DemoRequest": {
+        "required": [
+          "field10true",
+          "field11true",
+          "fieldN0true"
+        ],
         "type": "object",
         "properties": {
           "field11true": {
@@ -65,24 +70,19 @@
           "fieldN0true": {
             "type": "string"
           }
-        },
-        "required": [
-          "field10true",
-          "field11true",
-          "fieldN0true"
-        ]
+        }
       },
       "DemoDto": {
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int64"
           }
-        },
-        "required": [
-          "id"
-        ]
+        }
       }
     }
   }
