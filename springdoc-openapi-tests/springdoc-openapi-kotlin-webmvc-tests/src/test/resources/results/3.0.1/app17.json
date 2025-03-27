@@ -1,0 +1,109 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/demo": {
+      "get": {
+        "tags": [
+          "documents-api-controller"
+        ],
+        "operationId": "validOverrideAndOrder",
+        "parameters": [
+          {
+            "name": "fooList",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "expect: list[minItems = 11, maxItems = 21] expect: string[minLength = 31, maxLength = 41]",
+                "maxLength": 41,
+                "minLength": 31
+              },
+              "maxItems": 21,
+              "minItems": 11
+            }
+          },
+          {
+            "name": "barList",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "expect: list[minItems = 12, maxItems = 22] expect: string[minLength = 32, maxLength = 42]",
+                "maxLength": 42,
+                "minLength": 32
+              },
+              "maxItems": 22,
+              "minItems": 12
+            }
+          },
+          {
+            "name": "validOrder1",
+            "in": "query",
+            "description": "expect: minimum = 2",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "description": "expect: minimum = 2",
+              "minimum": 2
+            }
+          },
+          {
+            "name": "validOrder2",
+            "in": "query",
+            "description": "expect: minimum = 1",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "description": "expect: minimum = 1",
+              "minimum": 1.0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DemoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  }
+}
