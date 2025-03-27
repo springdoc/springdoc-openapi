@@ -6,6 +6,7 @@
 		<version>2.8.7-SNAPSHOT</version>
 	</parent>
 	<artifactId>springdoc-openapi-bom</artifactId>
+	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -39,16 +40,31 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<Automatic-Module-Name>org.springdoc.openapi.bom
-							</Automatic-Module-Name>
-						</manifestEntries>
-					</archive>
-				</configuration>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>${flatten-maven-plugin.version}</version>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<!-- Flatten and simplify our own POM for install/deploy -->
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+						<configuration>
+							<updatePomFile>true</updatePomFile>
+							<flattenMode>bom</flattenMode>
+							<pomElements>
+								<properties>remove</properties>
+								<distributionManagement>remove</distributionManagement>
+								<dependencyManagement>keep</dependencyManagement>
+								<repositories>remove</repositories>
+								<issueManagement>remove</issueManagement>
+							</pomElements>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
