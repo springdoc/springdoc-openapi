@@ -1,4 +1,4 @@
-package test.org.springdoc.api.v31.app17
+package test.org.springdoc.api.v30.app17
 
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema

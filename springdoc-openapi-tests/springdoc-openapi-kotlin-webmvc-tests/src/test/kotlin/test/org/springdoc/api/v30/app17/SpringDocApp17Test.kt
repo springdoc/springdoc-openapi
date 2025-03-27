@@ -1,4 +1,4 @@
-package test.org.springdoc.api.v31.app17
+package test.org.springdoc.api.v30.app17
 
 import jakarta.validation.constraints.NotEmpty
 import org.junit.jupiter.api.Assertions
@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.core.MethodParameter
 import org.springframework.test.context.TestPropertySource
-import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
+import test.org.springdoc.api.v30.AbstractKotlinSpringDocMVCTest
 
 @TestPropertySource(properties = ["$SPRINGDOC_DEFAULT_FLAT_PARAM_OBJECT=true"])
 class SpringDocApp17Test : AbstractKotlinSpringDocMVCTest() {

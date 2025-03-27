@@ -31,7 +31,7 @@ class SpringDocApp17Test : AbstractKotlinSpringDocMVCTest() {
                                 val fieldAnnotations = field.annotations
                                 Assertions.assertTrue(fieldAnnotations.any { it is NotEmpty })
                                 // remove parent field
-                                methodParameters.removeAt(index)
+                                // methodParameters.removeAt(index)
                             } else fieldNameSet.add(field.name)
                         }
                     }
