@@ -614,8 +614,9 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply bean validator annotations.
 	 *
-	 * @param parameter         the parameter
-	 * @param annotations       the annotations
+	 * @param methodParameter the method parameter
+	 * @param parameter the parameter
+	 * @param annotations the annotations
 	 * @param isParameterObject the is parameter object
 	 */
 	public void applyBeanValidatorAnnotations(final MethodParameter methodParameter, final Parameter parameter, final List<Annotation> annotations, final boolean isParameterObject) {
@@ -798,7 +799,9 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
-	 * @deprecated use {@link SchemaUtils#hasNotNullAnnotation(Collection)}
+	 * deprecated use {@link SchemaUtils#hasNotNullAnnotation(Collection)}
+	 * @param annotationSimpleNames the annotation simple names
+	 * @return boolean
 	 */
 	@Deprecated(forRemoval = true)
 	public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
