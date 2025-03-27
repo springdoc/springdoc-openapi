@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -89,6 +90,11 @@ public class DelegatingMethodParameter extends MethodParameter {
 	private final boolean isParameterObject;
 
 	/**
+	 * If Is parameter object. then The Field should be not null
+	 */
+	private final Field field;
+
+	/**
 	 * The Method annotations.
 	 */
 	private final Annotation[] methodAnnotations;
@@ -108,9 +114,10 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @param isParameterObject              the is parameter object
 	 * @param isNotRequired                  the is required
 	 */
-	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, Annotation[] methodAnnotations, boolean isParameterObject, boolean isNotRequired) {
+	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, Annotation[] methodAnnotations, boolean isParameterObject, Field field, boolean isNotRequired) {
 		super(delegate);
 		this.delegate = delegate;
+		this.field = field;
 		this.additionalParameterAnnotations = additionalParameterAnnotations;
 		this.parameterName = parameterName;
 		this.isParameterObject = isParameterObject;
@@ -139,14 +146,14 @@ public class DelegatingMethodParameter extends MethodParameter {
 					.anyMatch(annotation -> Arrays.asList(RequestBody.class, RequestPart.class).contains(annotation.annotationType()));
 			if (!MethodParameterPojoExtractor.isSimpleType(paramClass)
 					&& (hasFlatAnnotation || (defaultFlatParamObject && !hasNotFlatAnnotation && !AbstractRequestService.isRequestTypeToIgnore(paramClass)))) {
-				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-					optionalDelegatingMethodParameterCustomizers.ifPresent(delegatingMethodParameterCustomizers -> delegatingMethodParameterCustomizers.forEach(customizer -> customizer.customize(p, methodParameter)));
-					explodedParameters.add(methodParameter);
-				});
+				List<MethodParameter> flatParams = new CopyOnWriteArrayList<>();
+				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(flatParams::add);
+				optionalDelegatingMethodParameterCustomizers.orElseGet(ArrayList::new).forEach(cz -> cz.customizeList(p, flatParams));
+				explodedParameters.addAll(flatParams);
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null, null, false, false));
+				explodedParameters.add(new DelegatingMethodParameter(p, name, null, null, false, null, false));
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);
@@ -297,4 +304,13 @@ public class DelegatingMethodParameter extends MethodParameter {
 		return isParameterObject;
 	}
 
+	/**
+	 * Gets field. If Is parameter object. then The Field should be not null
+	 * @return the field
+	 * @see #isParameterObject
+	 */
+	@Nullable
+	public Field getField() {
+		return field;
+	}
 }
