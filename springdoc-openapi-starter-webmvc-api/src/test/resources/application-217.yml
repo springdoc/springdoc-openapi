@@ -17,13 +17,11 @@ springdoc:
           - url: "https://demo.example.com"
             description: "demo Server"
         components:
-          schemas:
-            PersonDTO:
-              description: Description for PersonDTO component
-              properties:
-                name:
-                  description: Description for 'name' property
-                  example: Example value for 'name' property
+          security-schemes:
+            auth:
+              type: http
+              scheme: bearer
+              bearer-format: JWT
     - group: user
       display-name: User Interfaces
       packages-to-scan:

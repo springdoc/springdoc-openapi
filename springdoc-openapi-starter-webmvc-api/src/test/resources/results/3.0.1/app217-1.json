@@ -50,6 +50,13 @@
         },
         "description": "Description for PersonDTO component"
       }
+    },
+    "securitySchemes": {
+      "auth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
   }
 }
