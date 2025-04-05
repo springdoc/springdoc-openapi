@@ -221,25 +221,25 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 		else {
 			Map<String, Schema> schemaMap = components.getSchemas();
 			schemaMap.forEach((key, schema) -> {
-				Schema schemaProperties = componentsProperties.getSchemas().get(key);
-				if (schemaProperties != null) {
-					resolveString(schema::setDescription, schemaProperties::getDescription);
-					Map<String, Schema> properties = schema.getProperties();
-					if (CollectionUtils.isEmpty(properties)) {
-						return;
-					}
-					properties.forEach((propKey, propSchema) -> {
-						Schema propSchemaProperties = (Schema) schemaProperties.getProperties().get(propKey);
-						if (propSchemaProperties != null) {
-							resolveString(propSchema::description, propSchemaProperties::getDescription);
-							resolveString(propSchema::title, propSchemaProperties::getTitle);
-							resolveString(propSchema::example, propSchemaProperties::getExample);
+				if(!CollectionUtils.isEmpty(componentsProperties.getSchemas())) {
+					Schema schemaProperties = componentsProperties.getSchemas().get(key);
+					if (schemaProperties != null) {
+						resolveString(schema::setDescription, schemaProperties::getDescription);
+						Map<String, Schema> properties = schema.getProperties();
+						if (CollectionUtils.isEmpty(properties)) {
+							return;
 						}
-					});
+						properties.forEach((propKey, propSchema) -> {
+							Schema propSchemaProperties = (Schema) schemaProperties.getProperties().get(propKey);
+							if (propSchemaProperties != null) {
+								resolveString(propSchema::description, propSchemaProperties::getDescription);
+								resolveString(propSchema::title, propSchemaProperties::getTitle);
+								resolveString(propSchema::example, propSchemaProperties::getExample);
+							}
+						});
+					}
 				}
 			});
-
-
 			Map<String, SecurityScheme> securitySchemeMap = components.getSecuritySchemes();
 			if (CollectionUtils.isEmpty(securitySchemeMap)) {
 				components.setSecuritySchemes(componentsProperties.getSecuritySchemes());
