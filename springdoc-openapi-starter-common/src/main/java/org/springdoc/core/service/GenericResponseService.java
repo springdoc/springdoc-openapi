@@ -705,7 +705,7 @@ public class GenericResponseService implements ApplicationContextAware {
 
 			List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
 					.filter(controllerAdviceInfo -> 
-							getControllerAdviceBean(controllerAdviceBeans, controllerAdviceInfo.getControllerAdvice())
+							getControllerAdviceBean(controllerAdviceBeans, controllerAdviceInfo.getControllerAdvice().toString())
 							.isApplicableToBeanType(beanType))
 					.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
 					.toList();
