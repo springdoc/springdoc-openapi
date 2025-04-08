@@ -31,8 +31,9 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -54,22 +55,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
@@ -82,6 +79,7 @@ import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVe
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
+import org.springdoc.core.utils.SchemaUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpMethod;
@@ -104,8 +102,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
 import static org.springdoc.core.service.GenericParameterService.isFile;
-import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
-import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
 import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -121,12 +117,6 @@ public abstract class AbstractRequestService {
 	 * The constant PARAM_TYPES_TO_IGNORE.
 	 */
 	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
-
-	/**
-	 * The constant ANNOTATIONS_FOR_REQUIRED.
-	 */
-// using string litterals to support both validation-api v1 and v2
-	private static final String[] ANNOTATIONS_FOR_REQUIRED = { "NotNull", "NonNull", "NotBlank", "NotEmpty" };
 
 	/**
 	 * The constant POSITIVE_OR_ZERO.
@@ -280,6 +270,9 @@ public abstract class AbstractRequestService {
 	 * @param methodAttributes the method attributes
 	 * @param openAPI          the open api
 	 * @return the operation
+	 * @see org.springdoc.core.customizers.DelegatingMethodParameterCustomizer#customizeList(MethodParameter, List)
+	 * @see ParameterCustomizer#customize(Parameter, MethodParameter)
+	 * @see org.springdoc.core.customizers.PropertyCustomizer#customize(Schema, AnnotatedType)
 	 */
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
@@ -292,6 +285,7 @@ public abstract class AbstractRequestService {
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
+		// Process: DelegatingMethodParameterCustomizer
 		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getOptionalDelegatingMethodParameterCustomizers(), this.defaultFlatParamObject);
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
@@ -343,15 +337,18 @@ public abstract class AbstractRequestService {
 							parameter.setDescription(paramJavadocDescription);
 						}
 					}
-					applyBeanValidatorAnnotations(parameter, parameterAnnotations, parameterInfo.isParameterObject());
+					// Process: applyValidationsToSchema
+					applyBeanValidatorAnnotations(methodParameter, parameter, parameterAnnotations, parameterInfo.isParameterObject());
 				}
 				else if (!RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openAPI.getOpenapi())) {
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
+					// Process: PropertyCustomizer
 					requestBodyService.calculateRequestBodyInfo(components, methodAttributes,
 							parameterInfo, requestBodyInfo);
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 				}
+				// Process: ParameterCustomizer
 				customiseParameter(parameter, parameterInfo, operationParameters);
 			}
 		}
@@ -617,19 +614,30 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply bean validator annotations.
 	 *
-	 * @param parameter         the parameter
-	 * @param annotations       the annotations
+	 * @param methodParameter the method parameter
+	 * @param parameter the parameter
+	 * @param annotations the annotations
 	 * @param isParameterObject the is parameter object
 	 */
-	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations, final boolean isParameterObject) {
-		Map<String, Annotation> annos = new HashMap<>();
-		if (annotations != null)
-			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
-		boolean annotationExists = hasNotNullAnnotation(annos.keySet());
-		if (annotationExists && !isParameterObject)
+	public void applyBeanValidatorAnnotations(final MethodParameter methodParameter, final Parameter parameter, final List<Annotation> annotations, final boolean isParameterObject) {
+		boolean annotatedNotNull = annotations != null && SchemaUtils.annotatedNotNull(annotations);
+		if (annotatedNotNull && !isParameterObject) {
 			parameter.setRequired(true);
-		Schema<?> schema = parameter.getSchema();
-		applyValidationsToSchema(annos, schema);
+		}
+		if (annotations != null) {
+			Schema<?> schema = parameter.getSchema();
+			SchemaUtils.applyValidationsToSchema(schema, annotations);
+			if (schema instanceof ArraySchema && isParameterObject && methodParameter instanceof DelegatingMethodParameter mp) {
+				Field field = mp.getField();
+				if (field != null && field.getAnnotatedType() instanceof AnnotatedParameterizedType paramType) {
+					java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();
+					for (java.lang.reflect.AnnotatedType typeArg : typeArgs) {
+						List<Annotation> genericAnnotations = Arrays.stream(typeArg.getAnnotations()).toList();
+						SchemaUtils.applyValidationsToSchema(schema.getItems(), genericAnnotations);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -652,7 +660,7 @@ public abstract class AbstractRequestService {
 					.filter(annotation -> io.swagger.v3.oas.annotations.parameters.RequestBody.class.equals(annotation.annotationType()))
 					.anyMatch(annotation -> ((io.swagger.v3.oas.annotations.parameters.RequestBody) annotation).required());
 		}
-		boolean validationExists = hasNotNullAnnotation(annos.keySet());
+		boolean validationExists = SchemaUtils.annotatedNotNull(annos.values().stream().toList());
 
 		if (validationExists || (!isOptional && (springRequestBodyRequired || swaggerRequestBodyRequired)))
 			requestBody.setRequired(true);
@@ -686,26 +694,6 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
-	 * Calculate size.
-	 *
-	 * @param annos  the annos
-	 * @param schema the schema
-	 */
-	private void calculateSize(Map<String, Annotation> annos, Schema<?> schema) {
-		if (annos.containsKey(Size.class.getSimpleName())) {
-			Size size = (Size) annos.get(Size.class.getSimpleName());
-			if (OPENAPI_ARRAY_TYPE.equals(schema.getType())) {
-				schema.setMinItems(size.min());
-				schema.setMaxItems(size.max());
-			}
-			else if (OPENAPI_STRING_TYPE.equals(schema.getType())) {
-				schema.setMinLength(size.min());
-				schema.setMaxLength(size.max());
-			}
-		}
-	}
-
-	/**
 	 * Gets api parameters.
 	 *
 	 * @param method the method
@@ -730,46 +718,6 @@ public abstract class AbstractRequestService {
 		apiParametersMap.putAll(apiParameterDocDeclaringClassMap);
 
 		return apiParametersMap;
-	}
-
-	/**
-	 * Apply validations to schema.
-	 *
-	 * @param annos  the annos
-	 * @param schema the schema
-	 */
-	private void applyValidationsToSchema(Map<String, Annotation> annos, Schema<?> schema) {
-		if (annos.containsKey(Min.class.getSimpleName())) {
-			Min min = (Min) annos.get(Min.class.getSimpleName());
-			schema.setMinimum(BigDecimal.valueOf(min.value()));
-		}
-		if (annos.containsKey(Max.class.getSimpleName())) {
-			Max max = (Max) annos.get(Max.class.getSimpleName());
-			schema.setMaximum(BigDecimal.valueOf(max.value()));
-		}
-		calculateSize(annos, schema);
-		if (annos.containsKey(DecimalMin.class.getSimpleName())) {
-			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getSimpleName());
-			if (min.inclusive())
-				schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
-			else
-				schema.setExclusiveMinimum(true);
-		}
-		if (annos.containsKey(DecimalMax.class.getSimpleName())) {
-			DecimalMax max = (DecimalMax) annos.get(DecimalMax.class.getSimpleName());
-			if (max.inclusive())
-				schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
-			else
-				schema.setExclusiveMaximum(true);
-		}
-		if (annos.containsKey(POSITIVE_OR_ZERO))
-			schema.setMinimum(BigDecimal.ZERO);
-		if (annos.containsKey(NEGATIVE_OR_ZERO))
-			schema.setMaximum(BigDecimal.ZERO);
-		if (annos.containsKey(Pattern.class.getSimpleName())) {
-			Pattern pattern = (Pattern) annos.get(Pattern.class.getSimpleName());
-			schema.setPattern(pattern.regexp());
-		}
 	}
 
 	/**
@@ -851,13 +799,13 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
-	 * Check if the parameter has any of the annotations that make it non-optional
-	 *
-	 * @param annotationSimpleNames the annotation simple class named, e.g. NotNull
-	 * @return whether any of the known NotNull annotations are present
+	 * deprecated use {@link SchemaUtils#hasNotNullAnnotation(Collection)}
+	 * @param annotationSimpleNames the annotation simple names
+	 * @return boolean
 	 */
+	@Deprecated(forRemoval = true)
 	public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
-		return Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annotationSimpleNames::contains);
+		return SchemaUtils.hasNotNullAnnotation(annotationSimpleNames);
 	}
 
 }
