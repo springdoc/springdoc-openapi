@@ -103,15 +103,23 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 			uiRootPath.append(actuatorProvider.get().getBasePath());
 
 		String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
-		String resourcePath,swaggerUiPrefix;
+		String resourcePath,swaggerUiPrefix,swaggerUiWebjarsPrefix;
 
 		if (DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix)) {
 			swaggerUiPrefix = SWAGGER_UI_PREFIX;
-			resourcePath = webjarsPrefix + SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigProperties.getVersion() + DEFAULT_PATH_SEPARATOR;
+            resourcePath = webjarsPrefix + SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigProperties.getVersion() + DEFAULT_PATH_SEPARATOR;
+            swaggerUiWebjarsPrefix = webjarsPrefix + swaggerUiPrefix;
 		} else {
 			swaggerUiPrefix = webjarsPrefix;
 			resourcePath = DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR;
+            swaggerUiWebjarsPrefix = swaggerUiPrefix;
 		}
+
+        registry.addResourceHandler(uiRootPath + swaggerUiWebjarsPrefix + ALL_PATTERN)
+                .addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
+                .resourceChain(false)
+                .addResolver(swaggerResourceResolver)
+                .addTransformer(swaggerIndexTransformer);
 
 		registry.addResourceHandler(uiRootPath + swaggerUiPrefix + ALL_PATTERN)
 				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
