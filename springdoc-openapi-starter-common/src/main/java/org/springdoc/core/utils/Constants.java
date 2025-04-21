@@ -428,6 +428,11 @@ public final class Constants {
 	 * The constant SPRINGDOC_ENABLE_ADDITIONAL_SCHEMAS_RESOLUTION.
 	 */
 	public static final String SPRINGDOC_ENABLE_EXTRA_SCHEMAS = "springdoc.enable-extra-schemas";
+
+	/**
+	 * The constant SPRINGDOC_EXPLICIT_OBJECT_SCHEMA.
+	 */
+	public static final String SPRINGDOC_EXPLICIT_OBJECT_SCHEMA = "springdoc.explicit-object-schema";
 	
 	/**
 	 * Instantiates a new Constants.

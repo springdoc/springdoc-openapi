@@ -72,7 +72,6 @@
   "components": {
     "schemas": {
       "Design": {
-        "type": "object",
         "description": "The type Design."
       }
     }

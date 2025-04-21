@@ -65,7 +65,6 @@
         ]
       },
       "SecondHierarchy": {
-        "type": "object",
         "discriminator": {
           "propertyName": "@type"
         },
@@ -91,7 +90,6 @@
         }
       },
       "FirstHierarchy": {
-        "type": "object",
         "discriminator": {
           "propertyName": "@type"
         },

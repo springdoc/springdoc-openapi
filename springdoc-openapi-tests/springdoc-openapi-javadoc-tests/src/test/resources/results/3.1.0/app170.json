@@ -44,7 +44,6 @@
   "components": {
     "schemas": {
       "Animal": {
-        "type": "object",
         "description": "Represents an Animal class."
       },
       "Cat": {

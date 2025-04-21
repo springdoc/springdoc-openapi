@@ -31,9 +31,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "additionalProperties": {
-                  "type": "object"
-                }
+                "additionalProperties": {}
               }
             }
           },
@@ -46,9 +44,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }

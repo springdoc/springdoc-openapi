@@ -98,12 +98,8 @@
   },
   "components": {
     "schemas": {
-      "SysUser": {
-        "type": "object"
-      },
-      "SuperEntityObject": {
-        "type": "object"
-      }
+      "SysUser": {},
+      "SuperEntityObject": {}
     }
   }
 }

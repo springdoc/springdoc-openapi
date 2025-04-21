@@ -58,19 +58,17 @@
           },
           "parameters": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
-          "title": {
-            "type": "string"
-          },
-          "detail": {
-            "type": "string"
+            "additionalProperties": {}
           },
           "status": {
             "type": "integer",
             "format": "int32"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
           }
         }
       }

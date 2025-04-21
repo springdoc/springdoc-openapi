@@ -174,9 +174,7 @@
         "properties": {
           "content": {
             "type": "array",
-            "items": {
-              "type": "object"
-            }
+            "items": {}
           },
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
@@ -286,10 +284,10 @@
           "empty": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           }
         }
@@ -311,9 +309,7 @@
           },
           "content": {
             "type": "array",
-            "items": {
-              "type": "object"
-            }
+            "items": {}
           },
           "number": {
             "type": "integer",

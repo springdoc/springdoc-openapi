@@ -70,7 +70,8 @@
     "schemas": {
       "Tweet": {
         "required": [
-          "createdAt"
+          "createdAt",
+          "text"
         ],
         "type": "object",
         "properties": {

@@ -84,6 +84,7 @@
         "required": [
           "age",
           "email",
+          "firstName",
           "lastName"
         ],
         "type": "object",

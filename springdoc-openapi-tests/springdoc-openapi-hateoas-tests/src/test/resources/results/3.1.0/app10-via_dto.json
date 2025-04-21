@@ -174,9 +174,7 @@
         "properties": {
           "content": {
             "type": "array",
-            "items": {
-              "type": "object"
-            }
+            "items": {}
           },
           "page": {
             "$ref": "#/components/schemas/PageMetadata"

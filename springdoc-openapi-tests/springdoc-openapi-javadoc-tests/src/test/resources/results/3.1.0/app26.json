@@ -78,7 +78,6 @@
         "description": "The type My model.",
         "properties": {
           "thing": {
-            "type": "object",
             "description": "Hello",
             "oneOf": [
               {

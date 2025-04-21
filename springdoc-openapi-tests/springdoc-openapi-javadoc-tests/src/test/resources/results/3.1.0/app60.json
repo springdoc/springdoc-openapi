@@ -61,9 +61,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 }
               }
             }
@@ -106,9 +104,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 }
               }
             }

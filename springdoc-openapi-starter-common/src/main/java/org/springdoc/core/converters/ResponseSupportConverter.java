@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.providers.ObjectMapperProvider;
@@ -73,6 +74,8 @@ public class ResponseSupportConverter implements ModelConverter {
 				JavaType innerType = findResponseEntity(javaType).containedType(0);
 				if (innerType == null)
 					return new StringSchema();
+				if(Object.class.equals(innerType.getRawClass()))
+					return new ObjectSchema();
 				return context.resolve(new AnnotatedType(innerType)
 						.jsonViewAnnotation(type.getJsonViewAnnotation())
 						.ctxAnnotations((type.getCtxAnnotations()))

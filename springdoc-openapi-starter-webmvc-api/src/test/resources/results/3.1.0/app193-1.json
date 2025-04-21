@@ -101,11 +101,9 @@
         "description": "Represents a list of Books."
       },
       "Knowledge": {
-        "type": "object",
         "description": "Represents the knowledge."
       },
       "Animal": {
-        "type": "object",
         "description": "Represents an Animal class."
       },
       "Cat": {

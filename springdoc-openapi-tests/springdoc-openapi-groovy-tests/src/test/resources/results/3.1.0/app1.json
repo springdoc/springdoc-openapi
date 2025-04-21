@@ -99,21 +99,17 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "text": {
             "type": "string"
           },
           "sourcePosition": {
-            "$ref": "#/components/schemas/ASTNode"
+            "writeOnly": true
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -138,19 +134,13 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
-          "instance": {
-            "$ref": "#/components/schemas/AnnotatedNode"
-          },
+          "instance": {},
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
@@ -167,9 +157,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -194,13 +182,9 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
-          "classNode": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "classNode": {},
           "members": {
             "type": "object",
             "additionalProperties": {
@@ -236,9 +220,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -263,9 +245,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "statementLabels": {
             "type": "array",
@@ -298,15 +278,11 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
-      "BytecodeProcessor": {
-        "type": "object"
-      },
+      "BytecodeProcessor": {},
       "CSTNode": {
         "type": "object",
         "properties": {
@@ -320,17 +296,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "description": {
-            "type": "string"
-          },
-          "startLine": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "startColumn": {
-            "type": "integer",
-            "format": "int32"
-          },
           "meaning": {
             "type": "integer",
             "format": "int32"
@@ -340,6 +305,17 @@
           },
           "anExpression": {
             "type": "boolean"
+          },
+          "startLine": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startColumn": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
@@ -364,9 +340,7 @@
               "$ref": "#/components/schemas/CachedMethod"
             }
           },
-          "cachedSuperClass": {
-            "$ref": "#/components/schemas/CachedClass"
-          },
+          "cachedSuperClass": {},
           "hierarchy": {
             "type": "array",
             "items": {
@@ -375,21 +349,15 @@
           },
           "declaredInterfaces": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CachedClass"
-            },
+            "items": {},
             "uniqueItems": true
           },
           "interfaces": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CachedClass"
-            },
+            "items": {},
             "uniqueItems": true
           },
-          "cachedClass": {
-            "$ref": "#/components/schemas/CachedClass"
-          },
+          "cachedClass": {},
           "classInfo": {
             "$ref": "#/components/schemas/ClassInfo"
           },
@@ -430,18 +398,16 @@
           "typeDescription": {
             "type": "string"
           },
-          "superClassDistance": {
-            "type": "integer",
-            "format": "int32"
-          },
           "newMetaMethods": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MetaMethod"
-            }
+            "items": {}
           },
           "callSiteLoader": {
             "$ref": "#/components/schemas/CallSiteClassLoader"
+          },
+          "superClassDistance": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -478,9 +444,7 @@
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "accessible": {
                           "type": "boolean",
@@ -497,9 +461,7 @@
                           "type": "array",
                           "items": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           }
                         },
                         "genericParameterTypes": {
@@ -529,15 +491,11 @@
                           "properties": {
                             "annotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "declaredAnnotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "type": {
                               "type": "object",
@@ -554,15 +512,11 @@
                           "properties": {
                             "annotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "declaredAnnotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "type": {
                               "type": "object",
@@ -581,15 +535,11 @@
                             "properties": {
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "type": {
                                 "type": "object",
@@ -619,30 +569,22 @@
                               },
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "annotatedType": {
                                 "type": "object",
                                 "properties": {
                                   "annotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "declaredAnnotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "type": {
                                     "type": "object",
@@ -683,9 +625,7 @@
                                     "items": {
                                       "type": "object",
                                       "properties": {
-                                        "genericDeclaration": {
-                                          "type": "object"
-                                        },
+                                        "genericDeclaration": {},
                                         "annotatedBounds": {
                                           "type": "array",
                                           "items": {
@@ -693,15 +633,11 @@
                                             "properties": {
                                               "annotations": {
                                                 "type": "array",
-                                                "items": {
-                                                  "type": "object"
-                                                }
+                                                "items": {}
                                               },
                                               "declaredAnnotations": {
                                                 "type": "array",
-                                                "items": {
-                                                  "type": "object"
-                                                }
+                                                "items": {}
                                               },
                                               "type": {
                                                 "type": "object",
@@ -733,15 +669,11 @@
                                         },
                                         "annotations": {
                                           "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
+                                          "items": {}
                                         },
                                         "declaredAnnotations": {
                                           "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
+                                          "items": {}
                                         }
                                       }
                                     }
@@ -751,9 +683,7 @@
                                   },
                                   "declaredAnnotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "varArgs": {
                                     "type": "boolean"
@@ -765,15 +695,11 @@
                                       "properties": {
                                         "annotations": {
                                           "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
+                                          "items": {}
                                         },
                                         "declaredAnnotations": {
                                           "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
+                                          "items": {}
                                         },
                                         "type": {
                                           "type": "object",
@@ -794,9 +720,7 @@
                                     "type": "array",
                                     "items": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     }
                                   },
                                   "genericParameterTypes": {
@@ -826,15 +750,11 @@
                                     "properties": {
                                       "annotations": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "object"
-                                        }
+                                        "items": {}
                                       },
                                       "declaredAnnotations": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "object"
-                                        }
+                                        "items": {}
                                       },
                                       "type": {
                                         "type": "object",
@@ -851,15 +771,11 @@
                                     "properties": {
                                       "annotations": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "object"
-                                        }
+                                        "items": {}
                                       },
                                       "declaredAnnotations": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "object"
-                                        }
+                                        "items": {}
                                       },
                                       "type": {
                                         "type": "object",
@@ -878,15 +794,11 @@
                                       "properties": {
                                         "annotations": {
                                           "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
+                                          "items": {}
                                         },
                                         "declaredAnnotations": {
                                           "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
+                                          "items": {}
                                         },
                                         "type": {
                                           "type": "object",
@@ -901,9 +813,7 @@
                                   },
                                   "annotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "accessible": {
                                     "type": "boolean",
@@ -924,15 +834,11 @@
                             "properties": {
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "type": {
                                 "type": "object",
@@ -947,9 +853,7 @@
                         },
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         }
                       }
                     },
@@ -960,15 +864,11 @@
                         "properties": {
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "type": {
                             "type": "object",
@@ -1000,15 +900,11 @@
                     },
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     }
                   }
                 }
@@ -1018,9 +914,7 @@
               },
               "declaredAnnotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               },
               "accessible": {
                 "type": "boolean",
@@ -1037,9 +931,7 @@
                 "type": "array",
                 "items": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 }
               },
               "genericParameterTypes": {
@@ -1069,15 +961,11 @@
                 "properties": {
                   "annotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "declaredAnnotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "type": {
                     "type": "object",
@@ -1094,15 +982,11 @@
                 "properties": {
                   "annotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "declaredAnnotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "type": {
                     "type": "object",
@@ -1121,15 +1005,11 @@
                   "properties": {
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "type": {
                       "type": "object",
@@ -1159,30 +1039,22 @@
                     },
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "annotatedType": {
                       "type": "object",
                       "properties": {
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "type": {
                           "type": "object",
@@ -1223,9 +1095,7 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "genericDeclaration": {
-                                "type": "object"
-                              },
+                              "genericDeclaration": {},
                               "annotatedBounds": {
                                 "type": "array",
                                 "items": {
@@ -1233,15 +1103,11 @@
                                   "properties": {
                                     "annotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "declaredAnnotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "type": {
                                       "type": "object",
@@ -1273,15 +1139,11 @@
                               },
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               }
                             }
                           }
@@ -1291,9 +1153,7 @@
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "varArgs": {
                           "type": "boolean"
@@ -1305,15 +1165,11 @@
                             "properties": {
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "type": {
                                 "type": "object",
@@ -1334,9 +1190,7 @@
                           "type": "array",
                           "items": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           }
                         },
                         "genericParameterTypes": {
@@ -1366,15 +1220,11 @@
                           "properties": {
                             "annotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "declaredAnnotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "type": {
                               "type": "object",
@@ -1391,15 +1241,11 @@
                           "properties": {
                             "annotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "declaredAnnotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "type": {
                               "type": "object",
@@ -1418,15 +1264,11 @@
                             "properties": {
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "type": {
                                 "type": "object",
@@ -1441,9 +1283,7 @@
                         },
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "accessible": {
                           "type": "boolean",
@@ -1464,15 +1304,11 @@
                   "properties": {
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "type": {
                       "type": "object",
@@ -1487,9 +1323,7 @@
               },
               "annotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               }
             }
           },
@@ -1497,9 +1331,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "cachedClass": {
-            "$ref": "#/components/schemas/CachedClass"
-          },
+          "cachedClass": {},
           "vargsMethod": {
             "type": "boolean"
           }
@@ -1536,9 +1368,7 @@
               },
               "declaredAnnotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               },
               "accessible": {
                 "type": "boolean",
@@ -1560,15 +1390,11 @@
                 "properties": {
                   "annotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "declaredAnnotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "type": {
                     "type": "object",
@@ -1582,9 +1408,7 @@
               },
               "annotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               }
             }
           }
@@ -1599,9 +1423,7 @@
           "mopName": {
             "type": "string"
           },
-          "cachedClass": {
-            "$ref": "#/components/schemas/CachedClass"
-          },
+          "cachedClass": {},
           "cachedMethod": {
             "type": "object",
             "properties": {
@@ -1624,15 +1446,11 @@
                         "properties": {
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "type": {
                             "type": "object",
@@ -1664,15 +1482,11 @@
                     },
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     }
                   }
                 }
@@ -1682,9 +1496,7 @@
               },
               "declaredAnnotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               },
               "accessible": {
                 "type": "boolean",
@@ -1701,9 +1513,7 @@
                 "type": "array",
                 "items": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 }
               },
               "genericParameterTypes": {
@@ -1742,23 +1552,17 @@
               "bridge": {
                 "type": "boolean"
               },
-              "defaultValue": {
-                "type": "object"
-              },
+              "defaultValue": {},
               "annotatedReturnType": {
                 "type": "object",
                 "properties": {
                   "annotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "declaredAnnotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "type": {
                     "type": "object",
@@ -1777,15 +1581,11 @@
                   "properties": {
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "type": {
                       "type": "object",
@@ -1815,30 +1615,22 @@
                     },
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "annotatedType": {
                       "type": "object",
                       "properties": {
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "type": {
                           "type": "object",
@@ -1879,9 +1671,7 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "genericDeclaration": {
-                                "type": "object"
-                              },
+                              "genericDeclaration": {},
                               "annotatedBounds": {
                                 "type": "array",
                                 "items": {
@@ -1889,15 +1679,11 @@
                                   "properties": {
                                     "annotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "declaredAnnotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "type": {
                                       "type": "object",
@@ -1929,15 +1715,11 @@
                               },
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               }
                             }
                           }
@@ -1947,9 +1729,7 @@
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "varArgs": {
                           "type": "boolean"
@@ -1961,15 +1741,11 @@
                             "properties": {
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "type": {
                                 "type": "object",
@@ -1990,9 +1766,7 @@
                           "type": "array",
                           "items": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           }
                         },
                         "genericParameterTypes": {
@@ -2022,15 +1796,11 @@
                           "properties": {
                             "annotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "declaredAnnotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "type": {
                               "type": "object",
@@ -2047,15 +1817,11 @@
                           "properties": {
                             "annotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "declaredAnnotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "type": {
                               "type": "object",
@@ -2074,15 +1840,11 @@
                             "properties": {
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "type": {
                                 "type": "object",
@@ -2097,9 +1859,7 @@
                         },
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "accessible": {
                           "type": "boolean",
@@ -2118,15 +1878,11 @@
                 "properties": {
                   "annotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "declaredAnnotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "type": {
                     "type": "object",
@@ -2145,15 +1901,11 @@
                   "properties": {
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "type": {
                       "type": "object",
@@ -2168,15 +1920,11 @@
               },
               "annotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               }
             }
           },
-          "transformedMethod": {
-            "$ref": "#/components/schemas/CachedMethod"
-          },
+          "transformedMethod": {},
           "name": {
             "type": "string"
           },
@@ -2193,9 +1941,7 @@
           "static": {
             "type": "boolean"
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/CachedClass"
-          },
+          "declaringClass": {},
           "paramsCount": {
             "type": "integer",
             "format": "int32"
@@ -2278,15 +2024,11 @@
                             },
                             "annotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "declaredAnnotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "sealed": {
                               "type": "boolean"
@@ -2334,15 +2076,11 @@
                   },
                   "annotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "declaredAnnotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "packages": {
                     "type": "array",
@@ -2354,9 +2092,7 @@
                   "nativeAccessEnabled": {
                     "type": "boolean"
                   },
-                  "layer": {
-                    "type": "object"
-                  }
+                  "layer": {}
                 }
               },
               "definedPackages": {
@@ -2369,15 +2105,11 @@
                     },
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "sealed": {
                       "type": "boolean"
@@ -2434,15 +2166,11 @@
                         },
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "sealed": {
                           "type": "boolean"
@@ -2490,15 +2218,11 @@
               },
               "annotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               },
               "declaredAnnotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               },
               "packages": {
                 "type": "array",
@@ -2510,9 +2234,7 @@
               "nativeAccessEnabled": {
                 "type": "boolean"
               },
-              "layer": {
-                "type": "object"
-              }
+              "layer": {}
             }
           },
           "definedPackages": {
@@ -2525,15 +2247,11 @@
                 },
                 "annotations": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 },
                 "declaredAnnotations": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 },
                 "sealed": {
                   "type": "boolean"
@@ -2601,15 +2319,13 @@
           "weakMetaClass": {
             "$ref": "#/components/schemas/MetaClass"
           },
-          "cachedClass": {
-            "$ref": "#/components/schemas/CachedClass"
+          "metaClassForClass": {
+            "$ref": "#/components/schemas/MetaClass"
           },
           "modifiedExpando": {
             "$ref": "#/components/schemas/ExpandoMetaClass"
           },
-          "metaClassForClass": {
-            "$ref": "#/components/schemas/MetaClass"
-          }
+          "cachedClass": {}
         }
       },
       "ClassLoaderForClassArtifacts": {
@@ -2664,15 +2380,11 @@
                             },
                             "annotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "declaredAnnotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "sealed": {
                               "type": "boolean"
@@ -2720,15 +2432,11 @@
                   },
                   "annotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "declaredAnnotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "packages": {
                     "type": "array",
@@ -2740,9 +2448,7 @@
                   "nativeAccessEnabled": {
                     "type": "boolean"
                   },
-                  "layer": {
-                    "type": "object"
-                  }
+                  "layer": {}
                 }
               },
               "definedPackages": {
@@ -2755,15 +2461,11 @@
                     },
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "sealed": {
                       "type": "boolean"
@@ -2820,15 +2522,11 @@
                         },
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "sealed": {
                           "type": "boolean"
@@ -2876,15 +2574,11 @@
               },
               "annotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               },
               "declaredAnnotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               },
               "packages": {
                 "type": "array",
@@ -2896,9 +2590,7 @@
               "nativeAccessEnabled": {
                 "type": "boolean"
               },
-              "layer": {
-                "type": "object"
-              }
+              "layer": {}
             }
           },
           "definedPackages": {
@@ -2911,15 +2603,11 @@
                 },
                 "annotations": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 },
                 "declaredAnnotations": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 },
                 "sealed": {
                   "type": "boolean"
@@ -2972,9 +2660,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -2982,9 +2668,7 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
@@ -3000,9 +2684,7 @@
           },
           "interfaces": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "mixins": {
             "type": "array",
@@ -3049,12 +2731,8 @@
           "script": {
             "type": "boolean"
           },
-          "superClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "innerClasses": {
-            "type": "object"
-          },
+          "superClass": {},
+          "innerClasses": {},
           "permittedSubclasses": {
             "type": "array",
             "items": {
@@ -3073,11 +2751,9 @@
               "$ref": "#/components/schemas/RecordComponentNode"
             }
           },
-          "componentType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "componentType": {},
           "redirect": {
-            "$ref": "#/components/schemas/ClassNode"
+            "writeOnly": true
           },
           "annotated": {
             "type": "boolean"
@@ -3130,23 +2806,19 @@
           "text": {
             "type": "string"
           },
+          "unresolvedSuperClass": {},
           "objectInitializerStatements": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Statement"
             }
           },
-          "derivedFromGroovyObject": {
-            "type": "boolean"
-          },
-          "unresolvedSuperClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
           "unresolvedInterfaces": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
+          },
+          "derivedFromGroovyObject": {
+            "type": "boolean"
           },
           "recordComponentNodes": {
             "type": "array",
@@ -3155,34 +2827,10 @@
               "$ref": "#/components/schemas/RecordComponentNode"
             }
           },
-          "outerClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "redirectNode": {
-            "type": "boolean"
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "allInterfaces": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            },
-            "uniqueItems": true
-          },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
           "genericsPlaceHolder": {
             "type": "boolean"
           },
+          "plainNodeReference": {},
           "primaryClassNode": {
             "type": "boolean"
           },
@@ -3197,9 +2845,7 @@
           },
           "outerClasses": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "nameWithoutPackage": {
             "type": "string"
@@ -3207,8 +2853,26 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "type": "array",
+            "items": {},
+            "uniqueItems": true
+          },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "outerClass": {},
+          "redirectNode": {
+            "type": "boolean"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -3226,9 +2890,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -3302,9 +2964,7 @@
                     "signerCertPath": {
                       "type": "object",
                       "properties": {
-                        "encodings": {
-                          "type": "object"
-                        },
+                        "encodings": {},
                         "certificates": {
                           "type": "array",
                           "items": {
@@ -3354,9 +3014,7 @@
                         "signerCertPath": {
                           "type": "object",
                           "properties": {
-                            "encodings": {
-                              "type": "object"
-                            },
+                            "encodings": {},
                             "certificates": {
                               "type": "array",
                               "items": {
@@ -3405,27 +3063,19 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "modules": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ModuleNode"
-            }
+            "items": {}
           },
           "classes": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "classesToCompile": {
             "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "additionalProperties": {}
           },
           "generatedInnerClasses": {
             "type": "object",
@@ -3438,9 +3088,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -3455,7 +3103,6 @@
             "type": "string"
           },
           "output": {
-            "type": "object",
             "deprecated": true
           },
           "targetDirectory": {
@@ -3519,9 +3166,7 @@
           },
           "jointCompilationOptions": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "optimizationOptions": {
             "type": "object",
@@ -3552,9 +3197,6 @@
           "runtimeGroovydocEnabled": {
             "type": "boolean"
           },
-          "indyEnabled": {
-            "type": "boolean"
-          },
           "targetDirectorySafe": {
             "type": "string",
             "writeOnly": true
@@ -3571,6 +3213,9 @@
             "format": "int32"
           },
           "groovydocEnabled": {
+            "type": "boolean"
+          },
+          "indyEnabled": {
             "type": "boolean"
           }
         }
@@ -3596,9 +3241,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -3606,9 +3249,7 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
@@ -3622,9 +3263,7 @@
           "syntheticPublic": {
             "type": "boolean"
           },
-          "returnType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "returnType": {},
           "parameters": {
             "type": "array",
             "items": {
@@ -3642,9 +3281,7 @@
           },
           "exceptions": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "genericsTypes": {
             "type": "array",
@@ -3682,6 +3319,16 @@
           "text": {
             "type": "string"
           },
+          "annotationDefault": {
+            "type": "boolean",
+            "writeOnly": true
+          },
+          "firstStatement": {
+            "$ref": "#/components/schemas/Statement"
+          },
+          "staticConstructor": {
+            "type": "boolean"
+          },
           "voidMethod": {
             "type": "boolean"
           },
@@ -3690,16 +3337,6 @@
           },
           "scriptBody": {
             "type": "boolean"
-          },
-          "firstStatement": {
-            "$ref": "#/components/schemas/Statement"
-          },
-          "staticConstructor": {
-            "type": "boolean"
-          },
-          "annotationDefault": {
-            "type": "boolean",
-            "writeOnly": true
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -3717,9 +3354,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -3741,14 +3376,14 @@
           "configuration": {
             "$ref": "#/components/schemas/CompilerConfiguration"
           },
-          "errorCount": {
+          "warningCount": {
             "type": "integer",
             "format": "int32"
           },
           "lastError": {
             "$ref": "#/components/schemas/Message"
           },
-          "warningCount": {
+          "errorCount": {
             "type": "integer",
             "format": "int32"
           }
@@ -3757,14 +3392,10 @@
       "ExpandoMetaClass": {
         "type": "object",
         "properties": {
-          "theCachedClass": {
-            "$ref": "#/components/schemas/CachedClass"
-          },
+          "theCachedClass": {},
           "additionalMetaMethods": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MetaMethod"
-            }
+            "items": {}
           },
           "registry": {
             "$ref": "#/components/schemas/MetaClassRegistry"
@@ -3787,9 +3418,7 @@
           },
           "expandoSubclassMethods": {
             "type": "array",
-            "items": {
-              "type": "object"
-            }
+            "items": {}
           },
           "expandoProperties": {
             "type": "array",
@@ -3810,12 +3439,6 @@
           "version": {
             "type": "integer",
             "format": "int32"
-          },
-          "classInfo": {
-            "$ref": "#/components/schemas/ClassInfo"
-          },
-          "groovyObject": {
-            "type": "boolean"
           },
           "upProperties": {
             "type": "array",
@@ -3868,15 +3491,11 @@
                               "properties": {
                                 "annotations": {
                                   "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
+                                  "items": {}
                                 },
                                 "declaredAnnotations": {
                                   "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
+                                  "items": {}
                                 },
                                 "type": {
                                   "type": "object",
@@ -3908,15 +3527,11 @@
                           },
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           }
                         }
                       }
@@ -3926,9 +3541,7 @@
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "accessible": {
                       "type": "boolean",
@@ -3945,9 +3558,7 @@
                       "type": "array",
                       "items": {
                         "type": "array",
-                        "items": {
-                          "type": "object"
-                        }
+                        "items": {}
                       }
                     },
                     "genericParameterTypes": {
@@ -3986,23 +3597,17 @@
                     "bridge": {
                       "type": "boolean"
                     },
-                    "defaultValue": {
-                      "type": "object"
-                    },
+                    "defaultValue": {},
                     "annotatedReturnType": {
                       "type": "object",
                       "properties": {
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "type": {
                           "type": "object",
@@ -4021,15 +3626,11 @@
                         "properties": {
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "type": {
                             "type": "object",
@@ -4059,30 +3660,22 @@
                           },
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "annotatedType": {
                             "type": "object",
                             "properties": {
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "type": {
                                 "type": "object",
@@ -4123,9 +3716,7 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
-                                    "genericDeclaration": {
-                                      "type": "object"
-                                    },
+                                    "genericDeclaration": {},
                                     "annotatedBounds": {
                                       "type": "array",
                                       "items": {
@@ -4133,15 +3724,11 @@
                                         "properties": {
                                           "annotations": {
                                             "type": "array",
-                                            "items": {
-                                              "type": "object"
-                                            }
+                                            "items": {}
                                           },
                                           "declaredAnnotations": {
                                             "type": "array",
-                                            "items": {
-                                              "type": "object"
-                                            }
+                                            "items": {}
                                           },
                                           "type": {
                                             "type": "object",
@@ -4173,15 +3760,11 @@
                                     },
                                     "annotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "declaredAnnotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     }
                                   }
                                 }
@@ -4191,9 +3774,7 @@
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "varArgs": {
                                 "type": "boolean"
@@ -4205,15 +3786,11 @@
                                   "properties": {
                                     "annotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "declaredAnnotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "type": {
                                       "type": "object",
@@ -4234,9 +3811,7 @@
                                 "type": "array",
                                 "items": {
                                   "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
+                                  "items": {}
                                 }
                               },
                               "genericParameterTypes": {
@@ -4266,15 +3841,11 @@
                                 "properties": {
                                   "annotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "declaredAnnotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "type": {
                                     "type": "object",
@@ -4291,15 +3862,11 @@
                                 "properties": {
                                   "annotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "declaredAnnotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "type": {
                                     "type": "object",
@@ -4318,15 +3885,11 @@
                                   "properties": {
                                     "annotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "declaredAnnotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "type": {
                                       "type": "object",
@@ -4341,9 +3904,7 @@
                               },
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "accessible": {
                                 "type": "boolean",
@@ -4362,15 +3923,11 @@
                       "properties": {
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "type": {
                           "type": "object",
@@ -4389,15 +3946,11 @@
                         "properties": {
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "type": {
                             "type": "object",
@@ -4412,9 +3965,7 @@
                     },
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     }
                   }
                 },
@@ -4440,15 +3991,11 @@
                               "properties": {
                                 "annotations": {
                                   "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
+                                  "items": {}
                                 },
                                 "declaredAnnotations": {
                                   "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
+                                  "items": {}
                                 },
                                 "type": {
                                   "type": "object",
@@ -4480,15 +4027,11 @@
                           },
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           }
                         }
                       }
@@ -4498,9 +4041,7 @@
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "accessible": {
                       "type": "boolean",
@@ -4517,9 +4058,7 @@
                       "type": "array",
                       "items": {
                         "type": "array",
-                        "items": {
-                          "type": "object"
-                        }
+                        "items": {}
                       }
                     },
                     "genericParameterTypes": {
@@ -4558,23 +4097,17 @@
                     "bridge": {
                       "type": "boolean"
                     },
-                    "defaultValue": {
-                      "type": "object"
-                    },
+                    "defaultValue": {},
                     "annotatedReturnType": {
                       "type": "object",
                       "properties": {
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "type": {
                           "type": "object",
@@ -4593,15 +4126,11 @@
                         "properties": {
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "type": {
                             "type": "object",
@@ -4631,30 +4160,22 @@
                           },
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "annotatedType": {
                             "type": "object",
                             "properties": {
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "type": {
                                 "type": "object",
@@ -4695,9 +4216,7 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
-                                    "genericDeclaration": {
-                                      "type": "object"
-                                    },
+                                    "genericDeclaration": {},
                                     "annotatedBounds": {
                                       "type": "array",
                                       "items": {
@@ -4705,15 +4224,11 @@
                                         "properties": {
                                           "annotations": {
                                             "type": "array",
-                                            "items": {
-                                              "type": "object"
-                                            }
+                                            "items": {}
                                           },
                                           "declaredAnnotations": {
                                             "type": "array",
-                                            "items": {
-                                              "type": "object"
-                                            }
+                                            "items": {}
                                           },
                                           "type": {
                                             "type": "object",
@@ -4745,15 +4260,11 @@
                                     },
                                     "annotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "declaredAnnotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     }
                                   }
                                 }
@@ -4763,9 +4274,7 @@
                               },
                               "declaredAnnotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "varArgs": {
                                 "type": "boolean"
@@ -4777,15 +4286,11 @@
                                   "properties": {
                                     "annotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "declaredAnnotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "type": {
                                       "type": "object",
@@ -4806,9 +4311,7 @@
                                 "type": "array",
                                 "items": {
                                   "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
+                                  "items": {}
                                 }
                               },
                               "genericParameterTypes": {
@@ -4838,15 +4341,11 @@
                                 "properties": {
                                   "annotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "declaredAnnotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "type": {
                                     "type": "object",
@@ -4863,15 +4362,11 @@
                                 "properties": {
                                   "annotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "declaredAnnotations": {
                                     "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
+                                    "items": {}
                                   },
                                   "type": {
                                     "type": "object",
@@ -4890,15 +4385,11 @@
                                   "properties": {
                                     "annotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "declaredAnnotations": {
                                       "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
+                                      "items": {}
                                     },
                                     "type": {
                                       "type": "object",
@@ -4913,9 +4404,7 @@
                               },
                               "annotations": {
                                 "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
+                                "items": {}
                               },
                               "accessible": {
                                 "type": "boolean",
@@ -4934,15 +4423,11 @@
                       "properties": {
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "type": {
                           "type": "object",
@@ -4961,15 +4446,11 @@
                         "properties": {
                           "annotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "declaredAnnotations": {
                             "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
+                            "items": {}
                           },
                           "type": {
                             "type": "object",
@@ -4984,16 +4465,18 @@
                     },
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     }
                   }
                 }
               }
             },
             "writeOnly": true
-          }
+          },
+          "groovyObject": {
+            "type": "boolean"
+          },
+          "classInfo": {}
         }
       },
       "Expression": {
@@ -5017,19 +4500,13 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "type": {},
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
@@ -5049,9 +4526,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -5076,9 +4551,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -5086,9 +4559,7 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
@@ -5099,12 +4570,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "owner": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "type": {},
+          "owner": {},
           "initialValueExpression": {
             "$ref": "#/components/schemas/Expression"
           },
@@ -5114,9 +4581,7 @@
           "holder": {
             "type": "boolean"
           },
-          "originType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "originType": {},
           "enum": {
             "type": "boolean"
           },
@@ -5167,9 +4632,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -5194,24 +4657,16 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "name": {
             "type": "string"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "lowerBound": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "type": {},
+          "lowerBound": {},
           "upperBounds": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "placeholder": {
             "type": "boolean"
@@ -5231,9 +4686,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -5293,15 +4746,11 @@
                             },
                             "annotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "declaredAnnotations": {
                               "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
+                              "items": {}
                             },
                             "sealed": {
                               "type": "boolean"
@@ -5349,15 +4798,11 @@
                   },
                   "annotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "declaredAnnotations": {
                     "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
+                    "items": {}
                   },
                   "packages": {
                     "type": "array",
@@ -5369,9 +4814,7 @@
                   "nativeAccessEnabled": {
                     "type": "boolean"
                   },
-                  "layer": {
-                    "type": "object"
-                  }
+                  "layer": {}
                 }
               },
               "definedPackages": {
@@ -5384,15 +4827,11 @@
                     },
                     "annotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "declaredAnnotations": {
                       "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
+                      "items": {}
                     },
                     "sealed": {
                       "type": "boolean"
@@ -5449,15 +4888,11 @@
                         },
                         "annotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "declaredAnnotations": {
                           "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
+                          "items": {}
                         },
                         "sealed": {
                           "type": "boolean"
@@ -5505,15 +4940,11 @@
               },
               "annotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               },
               "declaredAnnotations": {
                 "type": "array",
-                "items": {
-                  "type": "object"
-                }
+                "items": {}
               },
               "packages": {
                 "type": "array",
@@ -5525,9 +4956,7 @@
               "nativeAccessEnabled": {
                 "type": "boolean"
               },
-              "layer": {
-                "type": "object"
-              }
+              "layer": {}
             }
           },
           "definedPackages": {
@@ -5540,15 +4969,11 @@
                 },
                 "annotations": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 },
                 "declaredAnnotations": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
                 },
                 "sealed": {
                   "type": "boolean"
@@ -5580,9 +5005,7 @@
           }
         }
       },
-      "GroovyResourceLoader": {
-        "type": "object"
-      },
+      "GroovyResourceLoader": {},
       "Groovydoc": {
         "type": "object",
         "properties": {
@@ -5606,12 +5029,8 @@
       "GroovydocHolder": {
         "type": "object",
         "properties": {
-          "instance": {
-            "type": "object"
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          }
+          "instance": {},
+          "groovydoc": {}
         }
       },
       "GroovydocTag": {
@@ -5623,9 +5042,7 @@
           "content": {
             "type": "string"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          }
+          "groovydoc": {}
         }
       },
       "ImportNode": {
@@ -5649,9 +5066,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -5659,15 +5074,11 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "type": {},
           "alias": {
             "type": "string"
           },
@@ -5705,9 +5116,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -5732,9 +5141,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -5742,9 +5149,7 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
@@ -5760,9 +5165,7 @@
           },
           "interfaces": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "methods": {
             "type": "array",
@@ -5788,12 +5191,8 @@
               "$ref": "#/components/schemas/FieldNode"
             }
           },
-          "module": {
-            "$ref": "#/components/schemas/ModuleNode"
-          },
-          "compileUnit": {
-            "$ref": "#/components/schemas/CompileUnit"
-          },
+          "module": {},
+          "compileUnit": {},
           "staticClass": {
             "type": "boolean"
           },
@@ -5803,12 +5202,8 @@
           "script": {
             "type": "boolean"
           },
-          "superClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "innerClasses": {
-            "type": "object"
-          },
+          "superClass": {},
+          "innerClasses": {},
           "permittedSubclasses": {
             "type": "array",
             "items": {
@@ -5827,11 +5222,9 @@
               "$ref": "#/components/schemas/RecordComponentNode"
             }
           },
-          "componentType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "componentType": {},
           "redirect": {
-            "$ref": "#/components/schemas/ClassNode"
+            "writeOnly": true
           },
           "annotated": {
             "type": "boolean"
@@ -5845,15 +5238,11 @@
           "enclosingMethod": {
             "$ref": "#/components/schemas/MethodNode"
           },
-          "outerClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "outerClass": {},
           "anonymous": {
             "type": "boolean"
           },
-          "outerMostClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "outerMostClass": {},
           "variableScope": {
             "$ref": "#/components/schemas/VariableScope"
           },
@@ -5896,23 +5285,19 @@
           "text": {
             "type": "string"
           },
+          "unresolvedSuperClass": {},
           "objectInitializerStatements": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Statement"
             }
           },
-          "derivedFromGroovyObject": {
-            "type": "boolean"
-          },
-          "unresolvedSuperClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
           "unresolvedInterfaces": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
+          },
+          "derivedFromGroovyObject": {
+            "type": "boolean"
           },
           "recordComponentNodes": {
             "type": "array",
@@ -5921,31 +5306,10 @@
               "$ref": "#/components/schemas/RecordComponentNode"
             }
           },
-          "redirectNode": {
-            "type": "boolean"
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "allInterfaces": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            },
-            "uniqueItems": true
-          },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
           "genericsPlaceHolder": {
             "type": "boolean"
           },
+          "plainNodeReference": {},
           "primaryClassNode": {
             "type": "boolean"
           },
@@ -5960,9 +5324,7 @@
           },
           "outerClasses": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "nameWithoutPackage": {
             "type": "string"
@@ -5970,8 +5332,25 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "type": "array",
+            "items": {},
+            "uniqueItems": true
+          },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "redirectNode": {
+            "type": "boolean"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -5989,15 +5368,11 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
-      "Message": {
-        "type": "object"
-      },
+      "Message": {},
       "MetaClass": {
         "type": "object",
         "properties": {
@@ -6035,24 +5410,22 @@
       "MetaClassRegistry": {
         "type": "object",
         "properties": {
+          "metaClassRegistryChangeEventListeners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetaClassRegistryChangeEventListener"
+            }
+          },
           "metaClassCreationHandler": {
             "$ref": "#/components/schemas/MetaClassCreationHandle"
           },
           "metaClassCreationHandle": {
             "$ref": "#/components/schemas/MetaClassCreationHandle",
             "writeOnly": true
-          },
-          "metaClassRegistryChangeEventListeners": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MetaClassRegistryChangeEventListener"
-            }
           }
         }
       },
-      "MetaClassRegistryChangeEventListener": {
-        "type": "object"
-      },
+      "MetaClassRegistryChangeEventListener": {},
       "MetaMethod": {
         "type": "object",
         "properties": {
@@ -6102,15 +5475,15 @@
           "cacheable": {
             "type": "boolean"
           },
-          "vargsMethod": {
-            "type": "boolean"
-          },
           "parametersTypes": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CachedClass"
             },
             "writeOnly": true
+          },
+          "vargsMethod": {
+            "type": "boolean"
           }
         }
       },
@@ -6147,9 +5520,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -6157,9 +5528,7 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
@@ -6173,9 +5542,7 @@
           "syntheticPublic": {
             "type": "boolean"
           },
-          "returnType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "returnType": {},
           "parameters": {
             "type": "array",
             "items": {
@@ -6193,9 +5560,7 @@
           },
           "exceptions": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "genericsTypes": {
             "type": "array",
@@ -6233,6 +5598,16 @@
           "text": {
             "type": "string"
           },
+          "annotationDefault": {
+            "type": "boolean",
+            "writeOnly": true
+          },
+          "firstStatement": {
+            "$ref": "#/components/schemas/Statement"
+          },
+          "staticConstructor": {
+            "type": "boolean"
+          },
           "voidMethod": {
             "type": "boolean"
           },
@@ -6241,16 +5616,6 @@
           },
           "scriptBody": {
             "type": "boolean"
-          },
-          "firstStatement": {
-            "$ref": "#/components/schemas/Statement"
-          },
-          "staticConstructor": {
-            "type": "boolean"
-          },
-          "annotationDefault": {
-            "type": "boolean",
-            "writeOnly": true
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -6268,9 +5633,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -6295,9 +5658,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -6305,9 +5666,7 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
@@ -6323,9 +5682,7 @@
           },
           "interfaces": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "methods": {
             "type": "array",
@@ -6366,12 +5723,8 @@
           "script": {
             "type": "boolean"
           },
-          "superClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "innerClasses": {
-            "type": "object"
-          },
+          "superClass": {},
+          "innerClasses": {},
           "permittedSubclasses": {
             "type": "array",
             "items": {
@@ -6390,11 +5743,9 @@
               "$ref": "#/components/schemas/RecordComponentNode"
             }
           },
-          "componentType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "componentType": {},
           "redirect": {
-            "$ref": "#/components/schemas/ClassNode"
+            "writeOnly": true
           },
           "annotated": {
             "type": "boolean"
@@ -6447,23 +5798,19 @@
           "text": {
             "type": "string"
           },
+          "unresolvedSuperClass": {},
           "objectInitializerStatements": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Statement"
             }
           },
-          "derivedFromGroovyObject": {
-            "type": "boolean"
-          },
-          "unresolvedSuperClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
           "unresolvedInterfaces": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
+          },
+          "derivedFromGroovyObject": {
+            "type": "boolean"
           },
           "recordComponentNodes": {
             "type": "array",
@@ -6472,34 +5819,10 @@
               "$ref": "#/components/schemas/RecordComponentNode"
             }
           },
-          "outerClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "redirectNode": {
-            "type": "boolean"
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "allInterfaces": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            },
-            "uniqueItems": true
-          },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
           "genericsPlaceHolder": {
             "type": "boolean"
           },
+          "plainNodeReference": {},
           "primaryClassNode": {
             "type": "boolean"
           },
@@ -6514,9 +5837,7 @@
           },
           "outerClasses": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "nameWithoutPackage": {
             "type": "string"
@@ -6524,8 +5845,26 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "type": "array",
+            "items": {},
+            "uniqueItems": true
+          },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "outerClass": {},
+          "redirectNode": {
+            "type": "boolean"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -6543,9 +5882,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -6570,15 +5907,11 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "classes": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
+            "items": {}
           },
           "methods": {
             "type": "array",
@@ -6639,11 +5972,9 @@
             "$ref": "#/components/schemas/SourceUnit"
           },
           "scriptBaseClassFromConfig": {
-            "$ref": "#/components/schemas/ClassNode"
+            "writeOnly": true
           },
-          "scriptClassDummy": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "scriptClassDummy": {},
           "text": {
             "type": "string"
           },
@@ -6653,9 +5984,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -6680,9 +6009,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -6690,9 +6017,7 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
@@ -6718,9 +6043,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -6745,9 +6068,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -6755,21 +6076,15 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "type": {},
           "name": {
             "type": "string"
           },
-          "originType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "originType": {},
           "dynamicTyped": {
             "type": "boolean"
           },
@@ -6808,9 +6123,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -6822,9 +6135,7 @@
           }
         }
       },
-      "ParserPluginFactory": {
-        "type": "object"
-      },
+      "ParserPluginFactory": {},
       "PropertyNode": {
         "type": "object",
         "properties": {
@@ -6846,9 +6157,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -6856,9 +6165,7 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
@@ -6881,9 +6188,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "type": {},
           "name": {
             "type": "string"
           },
@@ -6900,12 +6205,6 @@
             "type": "boolean",
             "deprecated": true
           },
-          "dynamicTyped": {
-            "type": "boolean"
-          },
-          "originType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
           "getterNameOrDefault": {
             "type": "string"
           },
@@ -6918,6 +6217,10 @@
           "inStaticContext": {
             "type": "boolean"
           },
+          "dynamicTyped": {
+            "type": "boolean"
+          },
+          "originType": {},
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
@@ -6937,9 +6240,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -6950,9 +6251,7 @@
             "type": "string",
             "format": "uri"
           },
-          "reader": {
-            "type": "object"
-          }
+          "reader": {}
         }
       },
       "RecordComponentNode": {
@@ -6976,9 +6275,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "annotations": {
             "type": "array",
@@ -6986,18 +6283,14 @@
               "$ref": "#/components/schemas/AnnotationNode"
             }
           },
-          "declaringClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "declaringClass": {},
           "synthetic": {
             "type": "boolean"
           },
           "name": {
             "type": "string"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "type": {},
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
@@ -7017,9 +6310,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -7039,7 +6330,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "description": {
+          "meaning": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rootText": {
             "type": "string"
           },
           "startLine": {
@@ -7050,11 +6345,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "meaning": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "rootText": {
+          "description": {
             "type": "string"
           }
         }
@@ -7087,9 +6378,7 @@
           "cst": {
             "$ref": "#/components/schemas/Reduction"
           },
-          "ast": {
-            "$ref": "#/components/schemas/ModuleNode"
-          },
+          "ast": {},
           "phaseDescription": {
             "type": "string"
           }
@@ -7116,9 +6405,7 @@
           },
           "metaDataMap": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           },
           "statementLabels": {
             "type": "array",
@@ -7142,9 +6429,7 @@
           },
           "nodeMetaData": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
+            "additionalProperties": {}
           }
         }
       },
@@ -7170,20 +6455,18 @@
             "type": "integer",
             "format": "int32"
           },
-          "root": {
-            "$ref": "#/components/schemas/Token"
-          },
+          "root": {},
           "rootText": {
             "type": "string"
           },
           "empty": {
             "type": "boolean"
           },
-          "description": {
-            "type": "string"
-          },
           "anExpression": {
             "type": "boolean"
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
@@ -7197,35 +6480,27 @@
             "type": "integer",
             "format": "int32"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "type": {},
           "closureSharedVariable": {
             "type": "boolean"
-          },
-          "dynamicTyped": {
-            "type": "boolean"
-          },
-          "originType": {
-            "$ref": "#/components/schemas/ClassNode"
           },
           "initialExpression": {
             "$ref": "#/components/schemas/Expression"
           },
           "inStaticContext": {
             "type": "boolean"
-          }
+          },
+          "dynamicTyped": {
+            "type": "boolean"
+          },
+          "originType": {}
         }
       },
       "VariableScope": {
         "type": "object",
         "properties": {
-          "parent": {
-            "$ref": "#/components/schemas/VariableScope"
-          },
-          "classScope": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
+          "parent": {},
+          "classScope": {},
           "inStaticContext": {
             "type": "boolean"
           },
@@ -7244,19 +6519,13 @@
           "root": {
             "type": "boolean"
           },
-          "declaredVariablesIterator": {
-            "type": "object"
-          },
           "referencedLocalVariablesCount": {
             "type": "integer",
             "format": "int32"
           },
-          "referencedLocalVariablesIterator": {
-            "type": "object"
-          },
-          "referencedClassVariablesIterator": {
-            "type": "object"
-          }
+          "referencedLocalVariablesIterator": {},
+          "referencedClassVariablesIterator": {},
+          "declaredVariablesIterator": {}
         }
       },
       "WarningMessage": {

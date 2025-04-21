@@ -148,6 +148,9 @@
         }
       },
       "InheritedRequestParams": {
+        "required": [
+          "childParam"
+        ],
         "type": "object",
         "properties": {
           "stringParam": {

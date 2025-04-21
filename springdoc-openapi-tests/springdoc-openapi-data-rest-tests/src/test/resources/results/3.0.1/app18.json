@@ -106,6 +106,7 @@
     "schemas": {
       "HelloWorldModel": {
         "required": [
+          "abc",
           "thisDate"
         ],
         "type": "object",

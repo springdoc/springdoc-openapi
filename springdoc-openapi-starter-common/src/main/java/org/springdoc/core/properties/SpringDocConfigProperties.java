@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.properties;
@@ -278,6 +278,18 @@ public class SpringDocConfigProperties {
 	 * The Enable extra schemas resolution.
 	 */
 	private boolean enableExtraSchemas;
+
+	/**
+	 * Set explicit-object-schema to true to always include type:
+	 * object in the schema, or to false to omit type: object.
+	 */
+	private boolean explicitObjectSchema;
+
+	/**
+	 * When set to true, schemas without a defined type will be deserialized as an ArbitrarySchema (with no type),
+	 * instead of an ObjectSchema with type: object.
+	 */
+	private boolean useArbitrarySchemas;
 
 	/**
 	 * Is enable additional schemas resolution boolean.
@@ -1902,5 +1914,41 @@ public class SpringDocConfigProperties {
 	 */
 	public void setEnableDefaultApiDocs(boolean enableDefaultApiDocs) {
 		this.enableDefaultApiDocs = enableDefaultApiDocs;
+	}
+
+	/**
+	 * Is explicit object schema boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isExplicitObjectSchema() {
+		return explicitObjectSchema;
+	}
+
+	/**
+	 * Sets explicit object schema.
+	 *
+	 * @param explicitObjectSchema the explicit object schema
+	 */
+	public void setExplicitObjectSchema(boolean explicitObjectSchema) {
+		this.explicitObjectSchema = explicitObjectSchema;
+	}
+
+	/**
+	 * Is use arbitrary schemas boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isUseArbitrarySchemas() {
+		return useArbitrarySchemas;
+	}
+
+	/**
+	 * Sets use arbitrary schemas.
+	 *
+	 * @param useArbitrarySchemas the use arbitrary schemas
+	 */
+	public void setUseArbitrarySchemas(boolean useArbitrarySchemas) {
+		this.useArbitrarySchemas = useArbitrarySchemas;
 	}
 }

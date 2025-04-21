@@ -287,7 +287,8 @@
           }
         },
         "required": [
-          "createdAt"
+          "createdAt",
+          "positionName"
         ]
       }
     }

@@ -131,6 +131,7 @@ import static org.springdoc.core.utils.Constants.GLOBAL_OPEN_API_CUSTOMIZER;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLE_EXTRA_SCHEMAS;
+import static org.springdoc.core.utils.Constants.SPRINGDOC_EXPLICIT_OBJECT_SCHEMA;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SHOW_ACTUATOR;
@@ -680,8 +681,9 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_EXPLICIT_OBJECT_SCHEMA, havingValue = "true")
 	@Lazy(false)
 	OAS31ModelConverter oas31ModelConverter(SpringDocConfigProperties springDocConfigProperties) {
-		return springDocConfigProperties.isOpenapi31() ? new OAS31ModelConverter() : null;
+		return  springDocConfigProperties.isOpenapi31()  ? new OAS31ModelConverter() : null;
 	}
 }

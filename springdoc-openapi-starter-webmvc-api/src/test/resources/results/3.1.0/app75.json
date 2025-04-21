@@ -11,14 +11,14 @@
     }
   ],
   "paths": {
-    "/test1/{uuid}": {
+    "/test3/{uuid}": {
       "post": {
         "tags": [
           "hello-controller"
         ],
         "summary": "Example api that realize an ECHO operation",
         "description": "The result of the echo is the input value of the api",
-        "operationId": "postMyRequestBody1",
+        "operationId": "postMyRequestBody3",
         "parameters": [
           {
             "name": "uuid",
@@ -33,11 +33,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Operation",
+            "description": "OK",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PersonDTO"
+                  "type": "array",
+                  "items": {}
                 }
               }
             }
@@ -99,14 +100,14 @@
         }
       }
     },
-    "/test3/{uuid}": {
+    "/test1/{uuid}": {
       "post": {
         "tags": [
           "hello-controller"
         ],
         "summary": "Example api that realize an ECHO operation",
         "description": "The result of the echo is the input value of the api",
-        "operationId": "postMyRequestBody3",
+        "operationId": "postMyRequestBody1",
         "parameters": [
           {
             "name": "uuid",
@@ -121,14 +122,11 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Successful Operation",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "$ref": "#/components/schemas/PersonDTO"
                 }
               }
             }

@@ -55,33 +55,31 @@
     "schemas": {
       "ActionResultVoid": {
         "type": "object",
+        "description": "The type Action result.",
         "properties": {
-          "errorCode": {
-            "type": "string",
-            "description": "The Error code."
-          },
-          "errorValue": {
-            "type": "object",
-            "description": "The Error value."
-          },
-          "message": {
-            "type": "string",
-            "description": "The Message."
+          "value": {
+            "description": "The Value."
           },
           "success": {
             "type": "boolean",
             "description": "The Success."
           },
+          "errorCode": {
+            "type": "string",
+            "description": "The Error code."
+          },
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          },
+          "errorValue": {
+            "description": "The Error value."
+          },
           "targetUrl": {
             "type": "string",
             "description": "The Target url."
-          },
-          "value": {
-            "type": "object",
-            "description": "The Value."
           }
-        },
-        "description": "The type Action result."
+        }
       }
     }
   }
