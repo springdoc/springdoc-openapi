@@ -85,7 +85,8 @@
           }
         },
         "required": [
-          "createdAt"
+          "createdAt",
+          "text"
         ]
       }
     },

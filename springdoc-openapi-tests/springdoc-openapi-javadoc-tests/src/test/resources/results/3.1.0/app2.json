@@ -57,9 +57,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -132,9 +130,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -169,9 +165,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -213,9 +207,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -266,9 +258,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -313,9 +303,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -355,9 +343,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -397,9 +383,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -436,9 +420,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -488,15 +470,13 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
           },
-          "404": {
-            "description": "Pet not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -510,8 +490,8 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "Pet not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -577,9 +557,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -632,9 +610,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -708,9 +684,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -751,9 +725,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -799,9 +771,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -853,15 +823,13 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
           },
-          "404": {
-            "description": "Order not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -875,8 +843,8 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "Order not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -917,9 +885,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -945,9 +911,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -1002,9 +966,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }
@@ -1070,9 +1032,7 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "additionalProperties": {}
                 }
               }
             }

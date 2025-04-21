@@ -64,7 +64,8 @@
     "schemas": {
       "TweetDTO": {
         "required": [
-          "createdAt"
+          "createdAt",
+          "text"
         ],
         "type": "object",
         "properties": {

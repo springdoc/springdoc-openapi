@@ -106,6 +106,7 @@
         "required": [
           "age",
           "email",
+          "firstName",
           "lastName"
         ]
       }

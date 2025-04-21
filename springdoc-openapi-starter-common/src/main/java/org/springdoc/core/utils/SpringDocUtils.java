@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.utils;
@@ -44,6 +44,7 @@ import java.util.TimeZone;
 import java.util.function.Predicate;
 
 import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -433,7 +434,7 @@ public class SpringDocUtils {
 	 * @param parentTypes the parent types
 	 * @return the spring doc utils
 	 */
-	public SpringDocUtils addParentType(String ...parentTypes) {
+	public SpringDocUtils addParentType(String... parentTypes) {
 		PolymorphicModelConverter.addParentType(parentTypes);
 		return this;
 	}
@@ -491,7 +492,7 @@ public class SpringDocUtils {
 	 * @return the boolean
 	 */
 	public static boolean isComposedSchema(Schema referencedSchema) {
-		return referencedSchema.getOneOf() != null || referencedSchema.getAllOf() != null || referencedSchema.getAnyOf() != null;
+		return referencedSchema.getOneOf() != null || referencedSchema.getAllOf() != null || referencedSchema.getAnyOf() != null || referencedSchema instanceof ComposedSchema;
 	}
 
 	/**
@@ -508,8 +509,11 @@ public class SpringDocUtils {
 					&& CollectionUtils.isEmpty(schema.getItems().getTypes())) {
 				schema.getItems().addType(schema.getItems().getType());
 			}
-			if(schema.getProperties() != null){
+			if (schema.getProperties() != null) {
 				schema.getProperties().forEach((key, value) -> handleSchemaTypes(value));
+			}
+			if (schema.getType() == null && schema.getTypes() == null && schema.get$ref() == null &&!isComposedSchema(schema)) {
+				schema.addType("object");
 			}
 		}
 	}
@@ -520,7 +524,7 @@ public class SpringDocUtils {
 	 * @param content the content
 	 */
 	public static void handleSchemaTypes(Content content) {
-		if(content !=null){
+		if (content != null) {
 			content.values().forEach(mediaType -> {
 				if (mediaType.getSchema() != null) {
 					handleSchemaTypes(mediaType.getSchema());
@@ -554,7 +558,7 @@ public class SpringDocUtils {
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils resetExtraSchemas() {
-		SpringDocUtils.getConfig().removeFromSchemaMap(LocalTime.class,YearMonth.class,
+		SpringDocUtils.getConfig().removeFromSchemaMap(LocalTime.class, YearMonth.class,
 				MonthDay.class, Year.class, Duration.class, Period.class, OffsetTime.class,
 				ZoneId.class, ZoneOffset.class, TimeZone.class, Charset.class, Locale.class);
 		return this;

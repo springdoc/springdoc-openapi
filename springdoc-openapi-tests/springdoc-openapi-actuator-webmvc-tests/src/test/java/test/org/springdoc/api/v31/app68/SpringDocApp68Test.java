@@ -26,8 +26,15 @@
 
 package test.org.springdoc.api.v31.app68;
 
+import java.util.Optional;
+
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.oas.models.media.Schema;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.converters.OAS31ModelConverter;
 import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
@@ -37,15 +44,25 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springdoc.core.utils.Constants.SPRINGDOC_EXPLICIT_OBJECT_SCHEMA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = { "management.endpoints.enabled-by-default=true", "springdoc.show-actuator=true" })
+@TestPropertySource(properties = { SPRINGDOC_EXPLICIT_OBJECT_SCHEMA+"=true","management.endpoints.enabled-by-default=true", "springdoc.show-actuator=true" })
 public class SpringDocApp68Test extends AbstractSpringDocTest {
 
-
+	@AfterAll
+	public static void reset() {
+		System.setProperty(Schema.EXPLICIT_OBJECT_SCHEMA_PROPERTY, "false");
+		ModelConverters instance = ModelConverters.getInstance(true);
+		Optional<ModelConverter> oas31ModelConverter =
+				instance.getConverters()
+						.stream().filter(modelConverter -> modelConverter instanceof OAS31ModelConverter).findAny();
+		oas31ModelConverter.ifPresent(instance::removeConverter);
+	}
+	
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/stores"))

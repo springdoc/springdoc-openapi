@@ -17,14 +17,42 @@
     }
   ],
   "paths": {
-    "/test/": {
+    "/test4": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Test.",
-        "description": "Test.",
-        "operationId": "test",
+        "summary": "Test 4.",
+        "description": "Test 4.",
+        "operationId": "test4",
+        "parameters": [
+          {
+            "name": "localDate",
+            "in": "query",
+            "description": "the local date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "default": "2021-03-08"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          }
+        }
+      }
+    },
+    "/test3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Test 3.",
+        "description": "Test 3.",
+        "operationId": "test3",
         "parameters": [
           {
             "name": "toto",
@@ -32,9 +60,14 @@
             "description": "the toto",
             "required": false,
             "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 1
+              "type": "array",
+              "default": [
+                "users",
+                "123"
+              ],
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -72,14 +105,14 @@
         }
       }
     },
-    "/test3": {
+    "/test/": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Test 3.",
-        "description": "Test 3.",
-        "operationId": "test3",
+        "summary": "Test.",
+        "description": "Test.",
+        "operationId": "test",
         "parameters": [
           {
             "name": "toto",
@@ -87,41 +120,9 @@
             "description": "the toto",
             "required": false,
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "default": [
-                "users",
-                "123"
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No content"
-          }
-        }
-      }
-    },
-    "/test4": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Test 4.",
-        "description": "Test 4.",
-        "operationId": "test4",
-        "parameters": [
-          {
-            "name": "localDate",
-            "in": "query",
-            "description": "the local date",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date"
+              "type": "integer",
+              "format": "int32",
+              "default": 1
             }
           }
         ],

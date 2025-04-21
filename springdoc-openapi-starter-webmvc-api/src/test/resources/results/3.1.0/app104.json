@@ -71,9 +71,7 @@
   },
   "components": {
     "schemas": {
-      "Design": {
-        "type": "object"
-      }
+      "Design": {}
     }
   }
 }

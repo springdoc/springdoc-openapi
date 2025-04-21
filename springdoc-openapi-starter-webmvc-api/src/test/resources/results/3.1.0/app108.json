@@ -47,9 +47,7 @@
       "ActionResultVoid": {
         "type": "object",
         "properties": {
-          "value": {
-            "type": "object"
-          },
+          "value": {},
           "success": {
             "type": "boolean"
           },
@@ -59,9 +57,7 @@
           "message": {
             "type": "string"
           },
-          "errorValue": {
-            "type": "object"
-          },
+          "errorValue": {},
           "targetUrl": {
             "type": "string"
           }

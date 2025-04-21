@@ -195,7 +195,10 @@
             "type": "string",
             "description": "The String param 2."
           }
-        }
+        },
+        "required": [
+          "childParam"
+        ]
       },
       "Nested": {
         "type": "object",
@@ -214,3 +217,4 @@
     }
   }
 }
+   

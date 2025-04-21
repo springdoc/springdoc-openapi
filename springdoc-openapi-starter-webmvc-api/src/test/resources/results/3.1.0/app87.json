@@ -200,9 +200,7 @@
   },
   "components": {
     "schemas": {
-      "Item": {
-        "type": "object"
-      }
+      "Item": {}
     }
   }
 }

@@ -24,12 +24,19 @@
 
 package test.org.springdoc.api.v31.app105;
 
+import java.util.Optional;
+
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.converters.OAS31ModelConverter;
 import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
@@ -38,12 +45,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.hamcrest.Matchers.is;
+import static org.springdoc.core.utils.Constants.SPRINGDOC_EXPLICIT_OBJECT_SCHEMA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
+		SPRINGDOC_EXPLICIT_OBJECT_SCHEMA+"=true",
 		"springdoc.group-configs[0].group=stores",
 		"springdoc.group-configs[0].paths-to-match=/store/**",
 		"springdoc.group-configs[1].group=users",
@@ -57,7 +66,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 public class SpringDocApp105Test extends AbstractSpringDocTest {
 
-	public static String className;
+	@AfterAll
+	public static void reset() {
+		System.setProperty(Schema.EXPLICIT_OBJECT_SCHEMA_PROPERTY, "false");
+		ModelConverters instance = ModelConverters.getInstance(true);
+		Optional<ModelConverter> oas31ModelConverter =
+				instance.getConverters()
+						.stream().filter(modelConverter -> modelConverter instanceof OAS31ModelConverter).findAny();
+		oas31ModelConverter.ifPresent(instance::removeConverter);
+	}
 
 	@Test
 	protected void testApp() throws Exception {

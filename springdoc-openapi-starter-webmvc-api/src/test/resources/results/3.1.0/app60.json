@@ -11,50 +11,6 @@
     }
   ],
   "paths": {
-    "/hello1": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "summary1",
-        "operationId": "list1",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The page",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "The size",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/hello2": {
       "get": {
         "tags": [
@@ -98,9 +54,49 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
+                  "items": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "summary1",
+        "operationId": "list1",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {}
                 }
               }
             }

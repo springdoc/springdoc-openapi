@@ -74,7 +74,6 @@
   "components": {
     "schemas": {
       "Item": {
-        "type": "object",
         "description": "The type Item."
       }
     }

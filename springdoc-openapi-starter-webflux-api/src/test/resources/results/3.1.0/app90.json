@@ -567,7 +567,8 @@
           }
         },
         "required": [
-          "createdAt"
+          "createdAt",
+          "positionName"
         ]
       },
       "Quote": {

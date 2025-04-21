@@ -110,7 +110,6 @@
         ]
       },
       "Superclass": {
-        "type": "object",
         "discriminator": {
           "propertyName": "@type"
         },

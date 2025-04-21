@@ -150,6 +150,9 @@
   "components": {
     "schemas": {
       "InheritedRequestParams": {
+        "required": [
+          "childParam"
+        ],
         "type": "object",
         "properties": {
           "childParam": {
