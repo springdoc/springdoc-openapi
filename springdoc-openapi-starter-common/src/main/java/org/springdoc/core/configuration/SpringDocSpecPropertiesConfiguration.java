@@ -91,7 +91,7 @@ public class SpringDocSpecPropertiesConfiguration {
 	/**
 	 * The type Specification string properties customizer bean post processor.
 	 */
-	private static class SpecificationStringPropertiesCustomizerBeanPostProcessor implements BeanPostProcessor {
+	public static class SpecificationStringPropertiesCustomizerBeanPostProcessor implements BeanPostProcessor {
 
 		/**
 		 * The Spring doc config properties.
