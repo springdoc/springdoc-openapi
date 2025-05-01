@@ -56,20 +56,16 @@
             "format": "date"
           },
           "localTime": {
-            "type": "string",
-            "example": "14:30:00"
+            "type": "string"
           },
           "yearMonth": {
-            "type": "string",
-            "example": "2025-03"
+            "type": "string"
           },
           "monthDay": {
-            "type": "string",
-            "example": "--03-22"
+            "type": "string"
           },
           "year": {
-            "type": "string",
-            "example": "2025"
+            "type": "string"
           }
         }
       }
