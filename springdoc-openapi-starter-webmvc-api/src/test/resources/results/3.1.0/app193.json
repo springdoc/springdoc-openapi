@@ -70,8 +70,6 @@
   "components": {
     "schemas": {
       "Books": {
-        "type": "array",
-        "description": "Represents a list of Books.",
         "allOf": [
           {
             "$ref": "#/components/schemas/Knowledge"
@@ -84,7 +82,8 @@
               }
             }
           }
-        ]
+        ],
+        "description": "Represents a list of Books."
       },
       "Knowledge": {
         "type": "object",
@@ -95,8 +94,6 @@
         "description": "Represents an Animal class."
       },
       "Cat": {
-        "type": "object",
-        "description": "Represents a Cat class.",
         "allOf": [
           {
             "$ref": "#/components/schemas/Animal"
@@ -110,11 +107,10 @@
               }
             }
           }
-        ]
+        ],
+        "description": "Represents a Cat class."
       },
       "Dog": {
-        "type": "object",
-        "description": "Represents a Dog class.",
         "allOf": [
           {
             "$ref": "#/components/schemas/Animal"
@@ -131,7 +127,8 @@
               }
             }
           }
-        ]
+        ],
+        "description": "Represents a Dog class."
       }
     }
   }

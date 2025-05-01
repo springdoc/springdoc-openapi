@@ -1,0 +1,89 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/demo": {
+      "get": {
+        "tags": [
+          "documents-api-controller"
+        ],
+        "operationId": "getDocuments",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DemoRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DemoRequest": {
+        "type": "object",
+        "properties": {
+          "field11true": {
+            "type": "string"
+          },
+          "field10true": {
+            "type": "string"
+          },
+          "field01false": {
+            "type": "string"
+          },
+          "field00false": {
+            "type": "string"
+          },
+          "fieldN1false": {
+            "type": "string"
+          },
+          "fieldN0true": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "field10true",
+          "field11true",
+          "fieldN0true"
+        ]
+      },
+      "DemoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  }
+}
