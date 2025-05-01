@@ -37,18 +37,18 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Not here"
+          },
           "502": {
             "description": "Bad Gateway",
             "content": {
-              "*/*": {
+              "application/problem+json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/ProblemDetail"
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not here"
           },
           "418": {
             "description": "I'm a teapot",
@@ -64,5 +64,35 @@
       }
     }
   },
-  "components": {}
+  "components": {
+    "schemas": {
+      "ProblemDetail": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        }
+      }
+    }
+  }
 }
