@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
 	@PostMapping("/time1")
-	public TimeDtoNoAnnotations postTime1(@RequestBody TimeDtoNoAnnotations timeDto) {
+	public TimeDtoNoAnnotations postTime1(
+			@RequestBody TimeDtoNoAnnotations timeDto) {
 		return timeDto;
 	}
 
-	public record TimeDtoNoAnnotations (LocalDateTime localDateTime, 
-										LocalDate localDate, LocalTime localTime,
-										YearMonth yearMonth, MonthDay monthDay, Year year) {
+	public record TimeDtoNoAnnotations(LocalDateTime localDateTime,
+									   LocalDate localDate, LocalTime localTime,
+									   YearMonth yearMonth, MonthDay monthDay,
+									   Year year) {
 	}
 }
