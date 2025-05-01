@@ -1,18 +1,35 @@
 package org.springdoc.core.utils;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.models.media.Schema;
-import jakarta.validation.constraints.*;
-import kotlin.reflect.KProperty;
-import kotlin.reflect.jvm.ReflectJvmMapping;
-import org.springframework.core.KotlinDetector;
-import org.springframework.lang.Nullable;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import io.swagger.v3.oas.models.media.Schema;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NegativeOrZero;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+import kotlin.reflect.KProperty;
+import kotlin.reflect.jvm.ReflectJvmMapping;
+
+import org.springframework.core.KotlinDetector;
+import org.springframework.lang.Nullable;
 
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
@@ -77,7 +94,7 @@ public class SchemaUtils {
 	 * @param schema the schema
 	 * @param parameter the parameter
 	 * @return the boolean or {@code null}
-	 * @see io.swagger.v3.oas.annotations.Parameter#required()
+	 * @see Parameter#required()
 	 * @see io.swagger.v3.oas.annotations.media.Schema#required()
 	 * @see io.swagger.v3.oas.annotations.media.Schema#requiredMode()
 	 */
@@ -89,10 +106,10 @@ public class SchemaUtils {
 		}
 		if (schema != null) {
 			if (schema.required()
-					|| schema.requiredMode() == io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED) {
+					|| schema.requiredMode() == RequiredMode.REQUIRED) {
 				return true;
 			}
-			if (schema.requiredMode() == io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED) {
+			if (schema.requiredMode() == RequiredMode.NOT_REQUIRED) {
 				return false;
 			}
 		}
@@ -146,7 +163,7 @@ public class SchemaUtils {
 	 * @param schema the schema
 	 * @param parameter the parameter
 	 * @return the boolean
-	 * @see io.swagger.v3.oas.annotations.Parameter#required()
+	 * @see Parameter#required()
 	 * @see io.swagger.v3.oas.annotations.media.Schema#required()
 	 * @see io.swagger.v3.oas.annotations.media.Schema#requiredMode()
 	 */
@@ -203,11 +220,14 @@ public class SchemaUtils {
 				}
 			}
 			if (annotationName.equals(Size.class.getSimpleName())) {
-				if (OPENAPI_ARRAY_TYPE.equals(schema.getType())) {
+				String type = schema.getType();
+				if (type == null && schema.getTypes() != null && schema.getTypes().size() == 1) 
+					type = schema.getTypes().iterator().next();
+				if (OPENAPI_ARRAY_TYPE.equals(type)) {
 					schema.setMinItems(((Size) anno).min());
 					schema.setMaxItems(((Size) anno).max());
 				}
-				else if (OPENAPI_STRING_TYPE.equals(schema.getType())) {
+				else if (OPENAPI_STRING_TYPE.equals(type)) {
 					schema.setMinLength(((Size) anno).min());
 					schema.setMaxLength(((Size) anno).max());
 				}
