@@ -46,7 +46,7 @@ public final class Constants {
 	 * The constant SPRINGDOC_SWAGGER_PREFIX.
 	 */
 	public static final String SPRINGDOC_SWAGGER_PREFIX =SPRINGDOC_PREFIX+".swagger-ui";
-	
+
 	/**
 	 * The constant DEFAULT_API_DOCS_URL.
 	 */
@@ -422,8 +422,13 @@ public final class Constants {
 	/**
 	 * The constant SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED.
 	 */
+	@Deprecated(since = "2.8.7")
 	public static final String SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED = "springdoc.nullable-request-parameter-enabled";
 
+	/**
+	 * The constant SPRINGDOC_DEFAULT_FLAT_PARAM_OBJECT.
+	 */
+	public static final String SPRINGDOC_DEFAULT_FLAT_PARAM_OBJECT = "springdoc.default-flat-param-object";
 	/**
 	 * The constant SPRINGDOC_ENABLE_ADDITIONAL_SCHEMAS_RESOLUTION.
 	 */
