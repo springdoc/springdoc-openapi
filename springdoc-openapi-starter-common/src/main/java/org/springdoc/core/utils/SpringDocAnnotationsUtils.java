@@ -53,6 +53,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.SpecVersion;
+import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Content;
@@ -480,5 +481,19 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			}
 		}
 		return defaultValue;
+	}
+
+	public static Optional<Map<String, Header>> getHeaders(io.swagger.v3.oas.annotations.headers.Header[] annotationHeaders, Components components, JsonView jsonViewAnnotation, boolean openapi31) {
+		Optional<Map<String, Header>> headerMap = AnnotationsUtils.getHeaders(annotationHeaders, components, jsonViewAnnotation, openapi31);
+		if(openapi31){
+			headerMap.ifPresent(map -> {
+				for (Entry<String, Header> entry : map.entrySet()) {
+					Header header = entry.getValue();
+					Schema schema = header.getSchema();
+					handleSchemaTypes(schema);
+				}
+			});
+		}
+		return headerMap;
 	}
 }
