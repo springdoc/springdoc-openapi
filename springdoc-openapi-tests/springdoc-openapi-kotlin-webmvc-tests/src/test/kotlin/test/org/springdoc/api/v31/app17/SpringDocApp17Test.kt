@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotEmpty
 import org.junit.jupiter.api.Assertions
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer
 import org.springdoc.core.extractor.DelegatingMethodParameter
+import org.springdoc.core.utils.Constants
 import org.springdoc.core.utils.Constants.SPRINGDOC_DEFAULT_FLAT_PARAM_OBJECT
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
