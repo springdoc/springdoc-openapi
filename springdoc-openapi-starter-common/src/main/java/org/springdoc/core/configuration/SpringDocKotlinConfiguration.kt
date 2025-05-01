@@ -31,6 +31,7 @@ import org.springdoc.core.customizers.KotlinDeprecatedPropertyCustomizer
 import org.springdoc.core.customizers.ParameterCustomizer
 import org.springdoc.core.providers.ObjectMapperProvider
 import org.springdoc.core.utils.Constants
+import org.springdoc.core.utils.SchemaUtils
 import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -75,17 +76,13 @@ class SpringDocKotlinConfiguration() {
 	}
 
 	/**
-	 * Kotlin springdoc-openapi ParameterCustomizer
+	 * Kotlin springdoc-openapi ParameterCustomizer.
+	 * deprecated as not anymore required, use [SchemaUtils.fieldNullable]
 	 *
 	 * @return the nullable Kotlin Request Parameter Customizer
+	 * @see SchemaUtils.fieldNullable()
 	 */
-	@Bean
-	@Lazy(false)
-	@ConditionalOnProperty(
-		name = [Constants.SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED],
-		matchIfMissing = true
-	)
-	@ConditionalOnMissingBean
+	@Deprecated("Deprecated since 2.8.7", level = DeprecationLevel.ERROR)
 	fun nullableKotlinRequestParameterCustomizer(): ParameterCustomizer {
 		return ParameterCustomizer { parameterModel, methodParameter ->
 			if (parameterModel == null) return@ParameterCustomizer null
