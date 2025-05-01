@@ -337,7 +337,7 @@ public class OperationService {
 
 			buildResponseContent(methodAttributes, components, classProduces, methodProduces, apiResponsesOp, response, apiResponseObject);
 
-			AnnotationsUtils.getHeaders(response.headers(), components, null, propertyResolverUtils.isOpenapi31()).ifPresent(apiResponseObject::headers);
+			SpringDocAnnotationsUtils.getHeaders(response.headers(), components, null, propertyResolverUtils.isOpenapi31()).ifPresent(apiResponseObject::headers);
 			// Make schema as string if empty
 			calculateHeader(apiResponseObject);
 			if (isResponseObject(apiResponseObject)) {

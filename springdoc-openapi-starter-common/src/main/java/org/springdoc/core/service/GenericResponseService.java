@@ -408,7 +408,7 @@ public class GenericResponseService implements ApplicationContextAware {
 						apiResponse.extensions(extensions);
 					}
 				}
-				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), components, methodAttributes.getJsonViewAnnotation(), openapi31)
+				SpringDocAnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), components, methodAttributes.getJsonViewAnnotation(), openapi31)
 						.ifPresent(apiResponse::headers);
 				apiResponsesOp.addApiResponse(httpCode, apiResponse);
 			}
