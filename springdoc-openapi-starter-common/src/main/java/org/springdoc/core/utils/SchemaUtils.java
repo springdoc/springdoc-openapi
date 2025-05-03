@@ -50,7 +50,7 @@ public class SchemaUtils {
 	/**
 	 * The constant JAVA_FIELD_NULLABLE_DEFAULT.
 	 */
-	public static Boolean JAVA_FIELD_NULLABLE_DEFAULT = true;
+	public static final Boolean JAVA_FIELD_NULLABLE_DEFAULT = true;
 
 	/**
 	 * The constant OPTIONAL_TYPES.
