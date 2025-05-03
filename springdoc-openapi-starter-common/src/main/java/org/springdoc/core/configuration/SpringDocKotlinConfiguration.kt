@@ -27,6 +27,7 @@
 package org.springdoc.core.configuration
 
 import io.swagger.v3.oas.annotations.Parameter
+import org.springdoc.core.converters.KotlinInlineClassUnwrappingConverter
 import org.springdoc.core.customizers.KotlinDeprecatedPropertyCustomizer
 import org.springdoc.core.customizers.ParameterCustomizer
 import org.springdoc.core.providers.ObjectMapperProvider
@@ -136,4 +137,11 @@ class SpringDocKotlinConfiguration() {
 		}
 	}
 
+	@Bean
+	@Lazy(false)
+	@ConditionalOnMissingBean
+	fun kotlinModelConverter(objectMapperProvider: ObjectMapperProvider): KotlinInlineClassUnwrappingConverter {
+		return KotlinInlineClassUnwrappingConverter(objectMapperProvider)
+	}
+	
 }

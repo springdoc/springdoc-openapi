@@ -77,9 +77,9 @@ import org.springdoc.core.models.ParameterInfo;
 import org.springdoc.core.models.RequestBodyInfo;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.utils.SchemaUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
-import org.springdoc.core.utils.SchemaUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpMethod;
@@ -117,16 +117,6 @@ public abstract class AbstractRequestService {
 	 * The constant PARAM_TYPES_TO_IGNORE.
 	 */
 	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
-
-	/**
-	 * The constant POSITIVE_OR_ZERO.
-	 */
-	private static final String POSITIVE_OR_ZERO = "PositiveOrZero";
-
-	/**
-	 * The constant NEGATIVE_OR_ZERO.
-	 */
-	private static final String NEGATIVE_OR_ZERO = "NegativeOrZero";
 
 	static {
 		PARAM_TYPES_TO_IGNORE.add(WebRequest.class);
