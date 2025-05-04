@@ -234,12 +234,12 @@ The artifacts can be viewed accessed at the following locations:
 
 Releases:
 
-* [https://s01.oss.sonatype.org/content/groups/public/org/springdoc/](https://s01.oss.sonatype.org/content/groups/public/org/springdoc/)
+* [https://central.sonatype.com/search?q=g:org.springdoc)](https://central.sonatype.com/search?q=g:org.springdoc)
   .
 
 Snapshots:
 
-* [https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/)
+* [https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/org/springdoc/](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/org/springdoc/)
   .
 
 # Acknowledgements
