@@ -135,13 +135,13 @@ class SpringDocKotlinConfiguration() {
 		fun kotlinDeprecatedPropertyCustomizer(objectMapperProvider: ObjectMapperProvider): KotlinDeprecatedPropertyCustomizer {
 			return KotlinDeprecatedPropertyCustomizer(objectMapperProvider)
 		}
+
+		@Bean
+		@Lazy(false)
+		@ConditionalOnMissingBean
+		fun kotlinModelConverter(objectMapperProvider: ObjectMapperProvider): KotlinInlineClassUnwrappingConverter {
+			return KotlinInlineClassUnwrappingConverter(objectMapperProvider)
+		}
 	}
 
-	@Bean
-	@Lazy(false)
-	@ConditionalOnMissingBean
-	fun kotlinModelConverter(objectMapperProvider: ObjectMapperProvider): KotlinInlineClassUnwrappingConverter {
-		return KotlinInlineClassUnwrappingConverter(objectMapperProvider)
-	}
-	
 }
