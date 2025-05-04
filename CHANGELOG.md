@@ -5,11 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.7] - 2025-05-04
+
+### Added
+- #2944 - Introducing springdoc-openapi-bom project
+- #2948 - Customize Servers via application.yml
+- #2963 - Set default content type for problem details object to application/problem+jso
+- #2971 - List of value classes in Kotlin
+
+### Changed
+- Upgrade swagger-ui to v5.21.0
+- Upgrade swagger-core to 2.2.30
+- Upgrade spring-boot to version 3.4.5
+- Upgrade spring-security-oauth2-authorization-server to version 1.4.3
+
+### Fixed
+- #2947 - Unexpected warning "Appended trailing slash to static resource location"
+- #2960 - NPE when customizing group's open-api without specifying any schema
+- #2969 -  fix path to register resource handler to work SwaggerIndexPageTransformer considering /webjar path prefix
+- #2964 - Cannot add custom description and example for java.time.Duration since v2.8.6
+- #2972 - @Header(schema = @Schema(type = "string")) generates empty or broken schema in OpenAPI output since 2.8.0
+- #2976, #2967 - Build Failure due to Private Inner Class.
+
 ## [2.8.6] - 2025-03-23
 
 ### Added
-- #2909 - Check both SerDe BeanPropertyDefinition for @JsonUnwrapped/@Schema 
-- #2927 - Bail sealed class subtype introspection on Schema 
+- #2909 - Check both SerDe BeanPropertyDefinition for @JsonUnwrapped/@Schema
+- #2927 - Bail sealed class subtype introspection on Schema
 - #2917 - Add Future to ignored response wrappers
 - #2938 - Add out of the box support for LocalTime, YearMonth, MonthDay
 
@@ -29,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - #2696 - Do not require JsonSubType annotation for sealed classes
-- #2898 - add needed runtime reflection hints for native image 
+- #2898 - add needed runtime reflection hints for native image
 - #2891 - Refactor trimIndent Method
 - #2931 - OpenAPIService serverBaseUrl is not thread safe
 - #2933 - Wrong schema generation with PagedModel generated VIA_DTO and wrapped in ResponseEntity
@@ -49,7 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - #2873 - Improve performance of getGenericMapResponse
-- #2836 - Provide option to set allowed locales 
+- #2836 - Provide option to set allowed locales
 - 2862 - Align Swagger-UI Prefix Path with Swagger-WebMvc Behavior
 
 ### Changed
@@ -57,7 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade spring-cloud-function to 4.2.1
 - Upgrade swagger-core to 2.2.28
 
-### Fixed 
+### Fixed
 - #2870 - Springdoc 2.8.x + Spring Boot 3.4.1 breaks native image support
 - #2869 - Exception logged when generating schema for delete method of Spring Data repository.
 - #2856 - @JsonUnwrapped is ignored in new version of lib.
@@ -80,13 +102,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.8.1] - 2025-01-06
 
 ### Fixed
-- #2834 - java.lang.ClassNotFoundException: kotlin.reflect.full.KClasses when upgrade from 2.7.0 to 2.8.0 
+- #2834 - java.lang.ClassNotFoundException: kotlin.reflect.full.KClasses when upgrade from 2.7.0 to 2.8.0
 
 ## [2.8.0] - 2025-01-03
 
 ### Added
 - #2790 - Moving to OpenAPI 3.1 as the default implementation for springdoc-openapi
-- #2817 - Obey annotations when flattening ParameterObject fields 
+- #2817 - Obey annotations when flattening ParameterObject fields
 - #2826 - Make it possible to mark parameters with @RequestParam annotation to be sent in form instead of query.
 - #2822 - Support returning null in ParameterCustomizer
 - #2830 - Add support for deprecated fields.
@@ -112,7 +134,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - #2777 - Add SortAsQueryParam annotation
-- #2786 - No static resource swagger-ui/index.html error after migration to 2.7.0-RC1 
+- #2786 - No static resource swagger-ui/index.html error after migration to 2.7.0-RC1
 
 ### Changed
 - Upgrade spring-boot to 3.4.0
@@ -124,11 +146,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - #2649 - Add Encoding to multiple files and JSON payloads request test case
 - #2653 - Trim indent apply schema description
-- #2664 - Refactor Replace hardcoded schema prefix length 
+- #2664 - Refactor Replace hardcoded schema prefix length
 - #2509, #2668 - Replace swagger urls in org.springdoc.core.properties.AbstractSwaggerUiConfigProperties#urls only if url is changed
 - #2727 - Display nullable request body with map type
 - #2746 - Readme.md add gradle import
-- #2760 - Added support for RequestBody as a meta-annotation 
+- #2760 - Added support for RequestBody as a meta-annotation
 - #2703 - Display nullable request body with map type
 - #2657 - Add support for OAS v3.1 webhooks
 
@@ -143,7 +165,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #2752 - Swagger doesn't work after custom annotation replacing request parameters
 - #2747 - Move to webjars-locator-lite, in preparation for spring-boot 3.4 GA
 - #2705 - @Schema oneOf config is ignored when generate the api-docs
-- #2744 - SpringDocUI doest add Javadoc into swagger from abstract class 
+- #2744 - SpringDocUI doest add Javadoc into swagger from abstract class
 - #2708 - Spring Boot (Webflux) - Swagger UI - redirect URI does not include Gateway Prefix
 - #2725 - Serialization to openapi of org.springframework.data.domain.Sort is wrong for Spring Boot >2.x
 - #2740 - Swagger-ui ignores property springdoc.swagger-ui.supported-submit-methods
@@ -158,23 +180,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #2640 - @JsonUnwrapped is ignored when PolymorphicConverter is enabled
 - #2638 - Boolean Parameter with @Schema Annotation Changes Type to string in OpenAPI Documentation
 - #2659 - Fix typo in SpringSecurityLoginEndpointCustomizer method name
-- #2660 - Update Response Code 
-- #2442, #2669 - Fix SpringDocApp193Test for Java 21 and above 
+- #2660 - Update Response Code
+- #2442, #2669 - Fix SpringDocApp193Test for Java 21 and above
 - #2671 - Ensure default media type order is preserved using LinkedHashSet in mergeArrays
 - #2711 - Missing descriptions on Kotlin ByteArray fields
-- #2733 - Bad schema return type when created a generic wrapper class for response entity 
+- #2733 - Bad schema return type when created a generic wrapper class for response entity
 
 ## [2.6.0] - 2024-06-30
 
 ### Added
 - #2561 - NPE occurs when outputting an OpenAPI document since 2.5.0
-- #2579 - Add support for leading tab characters with trim-kotlin-indent. 
-- #2589 - Pass HttpRequest to ServerBaseUrlCustomizer 
-- #2596, #2600 - consumes and produces calculation. Fixes 
+- #2579 - Add support for leading tab characters with trim-kotlin-indent.
+- #2589 - Pass HttpRequest to ServerBaseUrlCustomizer
+- #2596, #2600 - consumes and produces calculation. Fixes
 - #2625, #2626 - Replace Page schema with PagedModel when pageSerializationMode is set to VIA_DTO
 - #2627 - Ensure compatibility with previous version of spring data
-- #2576 - GroupedApi orders by displayName instead of name. 
-- #2584 - Dynamically define ApiGroups does not work. 
+- #2576 - GroupedApi orders by displayName instead of name.
+- #2584 - Dynamically define ApiGroups does not work.
 - #2595 - Spring security support of @RegisteredOAuth2AuthorizedClient
 
 ### Changed
@@ -187,7 +209,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - #2577 - Fix missing exception response types in OpenAPI spec
 - #2591 - When an entity class contains fields of Class<?> type, an infinite loop.
-- #2603 - PolymorphicModelConverter only handles direct subtypes and misses indirect. 
+- #2603 - PolymorphicModelConverter only handles direct subtypes and misses indirect.
 - #2606 - Spring Authorization Server Metadata Endpoint not compatible.
 - #2621 - Content-type for POST endpoints with multipart/form-data does not work since v2.4.0.
 - #2622 - Kotlin enums are always marked as required if used in Java controllers.
@@ -243,14 +265,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #2509 - ArrayIndexOutOfBoundsException in SwaggerUiConfigParameters
 - #2484 - JavaDoc integration not working with SnakeCaseStrategy property naming
 - #2483 - Controller advice documents ApiResponse on every operation, even if the operation does not annotate the exception to be thrown
-- #2477 - buildApiResponses ignores produced ContentType in case of many @Operation 
+- #2477 - buildApiResponses ignores produced ContentType in case of many @Operation
 
 ## [2.3.0] - 2023-12-03
 
 ### Added
 - #2340 - Add support OIDC with Spring Authorization Server
-- #2345 - Support Schema added in OpenAPI Specification v3.1 
-- #2387 - Support get javadoc description from getter method 
+- #2345 - Support Schema added in OpenAPI Specification v3.1
+- #2387 - Support get javadoc description from getter method
 - #2404 - Update condition to register links schema customizer
 - #2359 - Update condition to register links schema customizer
 - #2348 - Enhance resource path processing
@@ -264,20 +286,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - #2366 - Fix the failed test due to hardcoded file separators
-- #2370, #2371 - No empty description for polymorphic subtypes 
-- #2373 - SchemaProperty.array Schema is ignored in /api-docs or api-docs.yaml 
+- #2370, #2371 - No empty description for polymorphic subtypes
+- #2373 - SchemaProperty.array Schema is ignored in /api-docs or api-docs.yaml
 - #2366 - Refactoring AbstractSwaggerResourceResolver.findWebJarResourcePath
 - #2320 - javadoc for class attribute ignored when in EntityModel.
 - #2347 - Not working if a property of entity contains generic parameters.
-- #2399 - SpringdocRouteBuilder.onError is overriding last route defined. 
+- #2399 - SpringdocRouteBuilder.onError is overriding last route defined.
 - #2426 -  StackOverflowError when using @ParameterObject on groovy class.
 
 ## [2.2.0] - 2023-08-06
 
 ### Added
-- #2189 - Add support for swagger-ui.url property 
+- #2189 - Add support for swagger-ui.url property
 - #2200 - Support schema.requiredMode() on ParameterObject
-- #2309 - Added function to preload by specifying locale 
+- #2309 - Added function to preload by specifying locale
 - #2332 - Group name cannot be null or empty
 - #2281 - Initial Virtual thread support
 
@@ -289,13 +311,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- #2199 - Fix Schema get condition of ArraySchema. 
-- #2194 - Fix Swagger UI with provided spec 
-- #2213 - Using both generated and configured specs stoped working in 1.6.5 
+- #2199 - Fix Schema get condition of ArraySchema.
+- #2194 - Fix Swagger UI with provided spec
+- #2213 - Using both generated and configured specs stoped working in 1.6.5
 - #2222 - String Index Out of Bounce Exception Fix when deployed on Azure
-- #2243, #2235 - Fix StringIndexOutOfBoundsException when path is same webjar 
-- #2291 - Fix default-flat-param-object doesn't work when using http body 
-- #2310 - Change bean name of objectMapperProvider 
+- #2243, #2235 - Fix StringIndexOutOfBoundsException when path is same webjar
+- #2291 - Fix default-flat-param-object doesn't work when using http body
+- #2310 - Change bean name of objectMapperProvider
 - #2207 - swagger-initializer.js is sent endcoded in the JVM's default charset
 -  #2271, #2280 - Fix loop when response inherits generic class fixes
 - #2312 - Spec for @ParameterObject disappears if building native-images
