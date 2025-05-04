@@ -6,9 +6,6 @@
 		<version>2.8.7-SNAPSHOT</version>
 	</parent>
 	<artifactId>springdoc-openapi-security-tests</artifactId>
-	<properties>
-		<jaxb-impl.version>2.1</jaxb-impl.version>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.security</groupId>

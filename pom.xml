@@ -37,16 +37,6 @@
 		</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 
 	<modules>
 		<module>springdoc-openapi-starter-common</module>
@@ -60,7 +50,8 @@
 	<properties>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
+		<central-publishing-maven-plugin.version>0.7.0
+		</central-publishing-maven-plugin.version>
 		<flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
 		<swagger-api.version>2.2.30</swagger-api.version>
 		<swagger-ui.version>5.21.0</swagger-ui.version>
@@ -68,7 +59,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
 		<spring-cloud-function.version>4.2.2</spring-cloud-function.version>
-		<spring-security-oauth2-authorization-server.version>1.4.0</spring-security-oauth2-authorization-server.version>
+		<spring-security-oauth2-authorization-server.version>1.4.3</spring-security-oauth2-authorization-server.version>
 	</properties>
 
 	<dependencyManagement>
@@ -86,73 +77,23 @@
 				<version>${swagger-ui.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>javax.xml</groupId>
-				<artifactId>jaxb-impl</artifactId>
-				<version>${jaxb-impl.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.jws</groupId>
-				<artifactId>javax.jws-api</artifactId>
-				<version>${javax.jws-api.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
 				<groupId>io.jsonwebtoken</groupId>
 				<artifactId>jjwt</artifactId>
 				<version>${jjwt.version}</version>
-				<scope>test</scope>
 			</dependency>
-			<!-- spring Cloud -->
+			<!-- spring Cloud Function-->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-function-core</artifactId>
+				<artifactId>spring-cloud-function-dependencies</artifactId>
 				<version>${spring-cloud-function.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-function-web</artifactId>
-				<version>${spring-cloud-function.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-function-web</artifactId>
-				<version>${spring-cloud-function.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-function-webflux</artifactId>
-				<version>${spring-cloud-function.version}</version>
-			</dependency>
+			<!-- spring Security Oauth2 Authorization Server-->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-oauth2-authorization-server</artifactId>
 				<version>${spring-security-oauth2-authorization-server.version}</version>
-			</dependency>
-			<!-- SpringDoc -->
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-starter-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-starter-webflux-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -161,24 +102,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 	</dependencies>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.gmavenplus</groupId>
-					<artifactId>gmavenplus-plugin</artifactId>
-					<version>${gmavenplus-plugin.version}</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -270,22 +196,15 @@
 						</executions>
 					</plugin>
 					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>${nexus-staging-maven-plugin}</version>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+						<version>${central-publishing-maven-plugin.version}</version>
 						<extensions>true</extensions>
 						<configuration>
-							<serverId>ossrh</serverId>
-							<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+							<publishingServerId>central</publishingServerId>
+							<autoPublish>true</autoPublish>
+							<waitUntil>published</waitUntil>
 						</configuration>
-						<dependencies>
-							<dependency>
-								<groupId>com.thoughtworks.xstream</groupId>
-								<artifactId>xstream</artifactId>
-								<version>1.4.15</version>
-							</dependency>
-						</dependencies>
 					</plugin>
 					<plugin>
 						<artifactId>maven-release-plugin</artifactId>
@@ -304,32 +223,12 @@
 	</profiles>
 	<repositories>
 		<repository>
-			<id>central</id>
-			<url>https://repo.maven.apache.org/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>spring-release</id>
-			<name>Spring release</name>
-			<url>https://repo.spring.io/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>spring-snapshot</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
 			<url>https://repo.spring.io/milestone</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -337,9 +236,12 @@
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>spring-releases</id>
-			<name>Spring Releases</name>
-			<url>https://repo.spring.io/release</url>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
