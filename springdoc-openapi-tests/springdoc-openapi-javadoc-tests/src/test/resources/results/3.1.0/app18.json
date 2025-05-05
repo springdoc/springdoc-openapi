@@ -222,6 +222,41 @@
           }
         }
       }
+    },
+    "/persons7": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Persons 7 string.",
+        "description": "Persons 7 string.",
+        "operationId": "persons7",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "query",
+            "description": "the age",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {}
