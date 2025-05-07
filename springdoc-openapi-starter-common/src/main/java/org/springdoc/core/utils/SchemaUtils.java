@@ -23,6 +23,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NegativeOrZero;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import kotlin.reflect.KProperty;
@@ -189,6 +190,9 @@ public class SchemaUtils {
 	public static void applyValidationsToSchema(Schema<?> schema, List<Annotation> annotations) {
 		annotations.forEach(anno -> {
 			String annotationName = anno.annotationType().getSimpleName();
+			if (annotationName.equals(Positive.class.getSimpleName())) {
+				schema.setMinimum(BigDecimal.ONE);
+			}
 			if (annotationName.equals(PositiveOrZero.class.getSimpleName())) {
 				schema.setMinimum(BigDecimal.ZERO);
 			}
