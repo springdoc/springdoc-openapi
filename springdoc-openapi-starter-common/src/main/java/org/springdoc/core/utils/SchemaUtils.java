@@ -1,8 +1,5 @@
 package org.springdoc.core.utils;
 
-import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
-import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -16,9 +13,6 @@ import java.util.OptionalInt;
 import java.util.OptionalLong;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.springframework.core.KotlinDetector;
-import org.springframework.lang.Nullable;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -34,6 +28,12 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import kotlin.reflect.KProperty;
 import kotlin.reflect.jvm.ReflectJvmMapping;
+
+import org.springframework.core.KotlinDetector;
+import org.springframework.lang.Nullable;
+
+import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
+import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
 
 /**
  * The type Validation utils.
