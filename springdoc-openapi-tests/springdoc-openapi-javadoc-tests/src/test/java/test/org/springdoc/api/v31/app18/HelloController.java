@@ -30,6 +30,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.NegativeOrZero;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -108,4 +109,14 @@ class HelloController {
 		return "OK";
 	}
 
+	/**
+	 * Persons 7 string.
+	 *
+	 * @param age the age 
+	 * @return the string
+	 */
+	@GetMapping(value = "/persons7")
+	public String persons7(@Positive int age) {
+		return "OK";
+	}
 }
