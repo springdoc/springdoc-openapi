@@ -30,72 +30,17 @@
             "name": "myModel",
             "in": "query",
             "description": "the my model",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/MyModel"
-            }
+            "required": true
           }
         ],
         "responses": {
           "200": {
             "description": "the my model",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MyModel"
-                }
-              }
-            }
+            "content": {}
           }
         }
       }
     }
   },
-  "components": {
-    "schemas": {
-      "Bar": {
-        "type": "object",
-        "description": "The type Bar.",
-        "properties": {
-          "bar": {
-            "type": "string",
-            "description": "The Bar."
-          }
-        }
-      },
-      "Foo": {
-        "type": "object",
-        "description": "The type Foo.",
-        "properties": {
-          "foo": {
-            "type": "string",
-            "description": "The Foo."
-          }
-        }
-      },
-      "MyModel": {
-        "type": "object",
-        "description": "The type My model.",
-        "properties": {
-          "thing": {
-            "description": "Hello",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Foo"
-              },
-              {
-                "$ref": "#/components/schemas/Bar"
-              },
-              {
-                "$ref": "#/components/schemas/Foo"
-              },
-              {
-                "$ref": "#/components/schemas/Bar"
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
+  "components": {}
 }
