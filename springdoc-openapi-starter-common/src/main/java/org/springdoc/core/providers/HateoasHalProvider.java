@@ -26,12 +26,15 @@
 
 package org.springdoc.core.providers;
 
+import java.util.List;
 import java.util.Optional;
 
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
+import org.springframework.lang.NonNull;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * The type Hateoas hal provider.
@@ -79,8 +82,26 @@ public class HateoasHalProvider {
 	 */
 	public boolean isHalEnabled() {
 		return hateoasPropertiesOptional
-				.map(HateoasProperties::getUseHalAsDefaultJsonMediaType)
+				.map(this::isHalEnabled)
 				.orElse(true);
 	}
 
+	private boolean isHalEnabled(@NonNull HateoasProperties hateoasProperties) {
+		// In spring-boot 3.5, the method name was changed from getUseHalAsDefaultJsonMediaType to isUseHalAsDefaultJsonMediaType
+		var possibleMethodNames = List.of("isUseHalAsDefaultJsonMediaType", "getUseHalAsDefaultJsonMediaType");
+
+		for (var methodName : possibleMethodNames) {
+			var method = ReflectionUtils.findMethod(HateoasProperties.class, methodName);
+			if (method != null) {
+				var result = ReflectionUtils.invokeMethod(method, hateoasProperties);
+				if (result instanceof Boolean) {
+					return (boolean) result;
+				}
+
+				throw new IllegalStateException("Method " + methodName + " did not return a boolean value");
+			}
+		}
+
+		throw new IllegalStateException("No suitable method found to determine if HAL is enabled");
+	}
 }
