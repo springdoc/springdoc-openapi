@@ -1,0 +1,72 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/euroMillions": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "euroMillions",
+        "parameters": [
+          {
+            "name": "numbers",
+            "in": "query",
+            "description": "the numbers",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32",
+                "maximum": 50,
+                "minimum": 1
+              },
+              "maxItems": 5,
+              "minItems": 5
+            }
+          },
+          {
+            "name": "stars",
+            "in": "query",
+            "description": "the stars",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32",
+                "maximum": 12,
+                "minimum": 1
+              },
+              "maxItems": 2,
+              "minItems": 2
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
