@@ -617,13 +617,24 @@ public abstract class AbstractRequestService {
 		if (annotations != null) {
 			Schema<?> schema = parameter.getSchema();
 			SchemaUtils.applyValidationsToSchema(schema, annotations);
-			if (schema instanceof ArraySchema && isParameterObject && methodParameter instanceof DelegatingMethodParameter mp) {
-				Field field = mp.getField();
-				if (field != null && field.getAnnotatedType() instanceof AnnotatedParameterizedType paramType) {
-					java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();
-					for (java.lang.reflect.AnnotatedType typeArg : typeArgs) {
-						List<Annotation> genericAnnotations = Arrays.stream(typeArg.getAnnotations()).toList();
-						SchemaUtils.applyValidationsToSchema(schema.getItems(), genericAnnotations);
+			if (schema instanceof ArraySchema && methodParameter instanceof DelegatingMethodParameter mp) {
+				if (isParameterObject) {
+					Field field = mp.getField();
+					if (field != null && field.getAnnotatedType() instanceof AnnotatedParameterizedType paramType) {
+						java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();
+						for (java.lang.reflect.AnnotatedType typeArg : typeArgs) {
+							List<Annotation> genericAnnotations = Arrays.stream(typeArg.getAnnotations()).toList();
+							SchemaUtils.applyValidationsToSchema(schema.getItems(), genericAnnotations);
+						}
+					}
+				} else {
+					java.lang.reflect.Parameter param = mp.getParameter();
+					if (param.getAnnotatedType() instanceof AnnotatedParameterizedType paramType) {
+						java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();
+						for (java.lang.reflect.AnnotatedType typeArg : typeArgs) {
+							List<Annotation> genericAnnotations = Arrays.stream(typeArg.getAnnotations()).toList();
+							SchemaUtils.applyValidationsToSchema(schema.getItems(), genericAnnotations);
+						}
 					}
 				}
 			}
