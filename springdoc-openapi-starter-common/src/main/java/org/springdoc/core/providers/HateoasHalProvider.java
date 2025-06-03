@@ -94,8 +94,8 @@ public class HateoasHalProvider {
 			var method = ReflectionUtils.findMethod(HateoasProperties.class, methodName);
 			if (method != null) {
 				var result = ReflectionUtils.invokeMethod(method, hateoasProperties);
-				if (result instanceof Boolean) {
-					return (boolean) result;
+				if (result instanceof Boolean halEnabled) {
+					return halEnabled;
 				}
 
 				throw new IllegalStateException("Method " + methodName + " did not return a boolean value");
