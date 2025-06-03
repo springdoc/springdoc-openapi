@@ -86,7 +86,7 @@ public class HateoasHalProvider {
 				.orElse(true);
 	}
 
-	private boolean isHalEnabled(@NonNull HateoasProperties hateoasProperties) {
+	private static boolean isHalEnabled(@NonNull HateoasProperties hateoasProperties) {
 		// In spring-boot 3.5, the method name was changed from getUseHalAsDefaultJsonMediaType to isUseHalAsDefaultJsonMediaType
 		var possibleMethodNames = List.of("isUseHalAsDefaultJsonMediaType", "getUseHalAsDefaultJsonMediaType");
 
