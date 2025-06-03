@@ -82,7 +82,7 @@ public class HateoasHalProvider {
 	 */
 	public boolean isHalEnabled() {
 		return hateoasPropertiesOptional
-				.map(HateoasHalProvider ::isHalEnabled)
+				.map(HateoasHalProvider::isHalEnabled)
 				.orElse(true);
 	}
 
