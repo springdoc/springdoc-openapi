@@ -143,6 +143,11 @@
                   "$ref": "#/components/schemas/Person"
                 }
               },
+              "application/vnd.hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Person"
@@ -225,12 +230,6 @@
           "$schema": {
             "type": "string"
           }
-        }
-      },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
         }
       },
       "RepresentationModelObject": {
@@ -336,6 +335,12 @@
           "templated": {
             "type": "boolean"
           }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
         }
       }
     }
