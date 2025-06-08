@@ -618,9 +618,18 @@ public abstract class AbstractRequestService {
 		if (annotations != null) {
 			Schema<?> schema = parameter.getSchema();
 			SchemaUtils.applyValidationsToSchema(schema, annotations, openapiVersion);
-			if (schema instanceof ArraySchema && isParameterObject && methodParameter instanceof DelegatingMethodParameter mp) {
-				Field field = mp.getField();
-				if (field != null && field.getAnnotatedType() instanceof AnnotatedParameterizedType paramType) {
+			if (schema instanceof ArraySchema && methodParameter instanceof DelegatingMethodParameter mp) {
+				java.lang.reflect.AnnotatedType annotatedType = null;
+				if (isParameterObject) {
+					Field field = mp.getField();
+					if (field != null) {
+						annotatedType = field.getAnnotatedType();
+					}
+				} else {
+					java.lang.reflect.Parameter param = mp.getParameter();
+					annotatedType = param.getAnnotatedType();
+				}
+				if (annotatedType instanceof AnnotatedParameterizedType paramType) {
 					java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();
 					for (java.lang.reflect.AnnotatedType typeArg : typeArgs) {
 						List<Annotation> genericAnnotations = Arrays.stream(typeArg.getAnnotations()).toList();
