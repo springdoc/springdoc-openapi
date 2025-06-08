@@ -21,6 +21,7 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Negative;
 import jakarta.validation.constraints.NegativeOrZero;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
@@ -28,6 +29,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import kotlin.reflect.KProperty;
 import kotlin.reflect.jvm.ReflectJvmMapping;
+import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 
 import org.springframework.core.KotlinDetector;
 import org.springframework.lang.Nullable;
@@ -184,20 +186,35 @@ public class SchemaUtils {
 	/**
 	 * Apply validations to schema. the annotation order effects the result of the
 	 * validation.
-	 * @param schema the schema
-	 * @param annotations the annotations
+	 *
+	 * @param schema         the schema
+	 * @param annotations    the annotations
+	 * @param openapiVersion the openapi version
 	 */
-	public static void applyValidationsToSchema(Schema<?> schema, List<Annotation> annotations) {
+	public static void applyValidationsToSchema(Schema<?> schema, List<Annotation> annotations, String openapiVersion) {
 		annotations.forEach(anno -> {
 			String annotationName = anno.annotationType().getSimpleName();
 			if (annotationName.equals(Positive.class.getSimpleName())) {
-				schema.setMinimum(BigDecimal.ONE);
+				if(OpenApiVersion.OPENAPI_3_1.getVersion().equals(openapiVersion)){
+					schema.setExclusiveMinimumValue(BigDecimal.ZERO);
+				} else {
+					schema.setMinimum(BigDecimal.ZERO);
+					schema.setExclusiveMinimum(true);
+				}
 			}
 			if (annotationName.equals(PositiveOrZero.class.getSimpleName())) {
 				schema.setMinimum(BigDecimal.ZERO);
 			}
 			if (annotationName.equals(NegativeOrZero.class.getSimpleName())) {
 				schema.setMaximum(BigDecimal.ZERO);
+			}
+			if (annotationName.equals(Negative.class.getSimpleName())) {
+				if(OpenApiVersion.OPENAPI_3_1.getVersion().equals(openapiVersion)){
+					schema.setExclusiveMaximumValue(BigDecimal.ZERO);
+				} else {
+					schema.setMaximum(BigDecimal.ZERO);
+					schema.setExclusiveMaximum(true);
+				}
 			}
 			if (annotationName.equals(Min.class.getSimpleName())) {
 				schema.setMinimum(BigDecimal.valueOf(((Min) anno).value()));
