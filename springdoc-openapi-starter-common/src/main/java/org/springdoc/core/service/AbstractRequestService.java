@@ -328,7 +328,7 @@ public abstract class AbstractRequestService {
 						}
 					}
 					// Process: applyValidationsToSchema
-					applyBeanValidatorAnnotations(methodParameter, parameter, parameterAnnotations, parameterInfo.isParameterObject());
+					applyBeanValidatorAnnotations(methodParameter, parameter, parameterAnnotations, parameterInfo.isParameterObject(), openAPI.getOpenapi());
 				}
 				else if (!RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openAPI.getOpenapi())) {
 					if (operation.getRequestBody() != null)
@@ -604,26 +604,27 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply bean validator annotations.
 	 *
-	 * @param methodParameter the method parameter
-	 * @param parameter the parameter
-	 * @param annotations the annotations
+	 * @param methodParameter   the method parameter
+	 * @param parameter         the parameter
+	 * @param annotations       the annotations
 	 * @param isParameterObject the is parameter object
+	 * @param openapiVersion    the openapi version
 	 */
-	public void applyBeanValidatorAnnotations(final MethodParameter methodParameter, final Parameter parameter, final List<Annotation> annotations, final boolean isParameterObject) {
+	public void applyBeanValidatorAnnotations(final MethodParameter methodParameter, final Parameter parameter, final List<Annotation> annotations, final boolean isParameterObject, String openapiVersion) {
 		boolean annotatedNotNull = annotations != null && SchemaUtils.annotatedNotNull(annotations);
 		if (annotatedNotNull && !isParameterObject) {
 			parameter.setRequired(true);
 		}
 		if (annotations != null) {
 			Schema<?> schema = parameter.getSchema();
-			SchemaUtils.applyValidationsToSchema(schema, annotations);
+			SchemaUtils.applyValidationsToSchema(schema, annotations, openapiVersion);
 			if (schema instanceof ArraySchema && isParameterObject && methodParameter instanceof DelegatingMethodParameter mp) {
 				Field field = mp.getField();
 				if (field != null && field.getAnnotatedType() instanceof AnnotatedParameterizedType paramType) {
 					java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();
 					for (java.lang.reflect.AnnotatedType typeArg : typeArgs) {
 						List<Annotation> genericAnnotations = Arrays.stream(typeArg.getAnnotations()).toList();
-						SchemaUtils.applyValidationsToSchema(schema.getItems(), genericAnnotations);
+						SchemaUtils.applyValidationsToSchema(schema.getItems(), genericAnnotations, openapiVersion);
 					}
 				}
 			}

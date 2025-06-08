@@ -51,82 +51,14 @@
         }
       }
     },
-    "/persons2": {
+    "/persons7": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Persons 2 string.",
-        "description": "Persons 2 string.",
-        "operationId": "persons2",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "description": "persons name",
-            "required": true,
-            "schema": {
-              "minLength": 1,
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the string",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons3": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Persons 3 string.",
-        "description": "Persons 3 string.",
-        "operationId": "persons3",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "description": "persons name",
-            "required": true,
-            "schema": {
-              "minLength": 1,
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the string",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons4": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Persons 4 string.",
-        "description": "Persons 4 string.",
-        "operationId": "persons4",
+        "summary": "Persons 7 string.",
+        "description": "Persons 7 string.",
+        "operationId": "persons7",
         "parameters": [
           {
             "name": "age",
@@ -135,8 +67,43 @@
             "required": true,
             "schema": {
               "minimum": 0,
+              "exclusiveMinimum": true,
               "type": "integer",
               "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons6": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Persons 6 string.",
+        "description": "Persons 6 string.",
+        "operationId": "persons6",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "persons name",
+            "required": true,
+            "schema": {
+              "minLength": 1,
+              "type": "string"
             }
           }
         ],
@@ -189,14 +156,83 @@
         }
       }
     },
-    "/persons6": {
+    "/persons4": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Persons 6 string.",
-        "description": "Persons 6 string.",
-        "operationId": "persons6",
+        "summary": "Persons 4 string.",
+        "description": "Persons 4 string.",
+        "operationId": "persons4",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "query",
+            "description": "the age",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Persons 3 string.",
+        "description": "Persons 3 string.",
+        "operationId": "persons3",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "persons name",
+            "required": true,
+            "schema": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Persons 2 string.",
+        "description": "Persons 2 string.",
+        "operationId": "persons2",
         "parameters": [
           {
             "name": "name",
