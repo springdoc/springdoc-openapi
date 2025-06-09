@@ -87,10 +87,6 @@
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "required": [
-                  "firstName",
-                  "lastName"
-                ],
                 "type": "object",
                 "properties": {
                   "firstName": {
@@ -101,7 +97,11 @@
                     "type": "string",
                     "description": "Last Name"
                   }
-                }
+                },
+                "required": [
+                  "firstName",
+                  "lastName"
+                ]
               }
             }
           }
@@ -210,9 +210,9 @@
             "in": "query",
             "required": true,
             "schema": {
+              "type": "string",
               "maxLength": 6,
-              "minLength": 4,
-              "type": "string"
+              "minLength": 4
             }
           },
           {
@@ -220,10 +220,10 @@
             "in": "query",
             "required": true,
             "schema": {
-              "maximum": 6,
-              "minimum": 4,
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "maximum": 6,
+              "minimum": 4
             }
           },
           {
@@ -340,9 +340,9 @@
             "description": "number of records to skip for pagination",
             "required": true,
             "schema": {
-              "minimum": 0,
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "minimum": 0
             }
           },
           {
@@ -351,10 +351,10 @@
             "description": "maximum number of records to return",
             "required": true,
             "schema": {
-              "maximum": 50,
-              "minimum": 0,
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "maximum": 50,
+              "minimum": 0
             }
           }
         ],
@@ -435,6 +435,48 @@
           },
           "409": {
             "description": "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/api/test": {
+      "post": {
+        "tags": [
+          "people"
+        ],
+        "operationId": "postSingleParameter",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "test_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "test_id"
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -567,12 +609,6 @@
         }
       },
       "InventoryItem": {
-        "required": [
-          "id",
-          "manufacturer",
-          "name",
-          "releaseDate"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -591,12 +627,15 @@
           "manufacturer": {
             "$ref": "#/components/schemas/Manufacturer"
           }
-        }
+        },
+        "required": [
+          "id",
+          "manufacturer",
+          "name",
+          "releaseDate"
+        ]
       },
       "Manufacturer": {
-        "required": [
-          "name"
-        ],
         "type": "object",
         "properties": {
           "name": {
@@ -611,7 +650,10 @@
             "type": "string",
             "example": "408-867-5309"
           }
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "ItemDTO": {
         "type": "object",
