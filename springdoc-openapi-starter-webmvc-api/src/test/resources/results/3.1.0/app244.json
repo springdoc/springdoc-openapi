@@ -12,6 +12,37 @@
   ],
   "paths": {
     "/test": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "nope",
+        "parameters": [
+          {
+            "name": "x-header",
+            "in": "header",
+            "examples": {
+              "First": {
+                "description": "First",
+                "value": "AAA"
+              },
+              "Second": {
+                "description": "Second",
+                "value": "BBB"
+              },
+              "Third": {
+                "description": "Third",
+                "value": "CCC"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
       "post": {
         "tags": [
           "hello-controller"

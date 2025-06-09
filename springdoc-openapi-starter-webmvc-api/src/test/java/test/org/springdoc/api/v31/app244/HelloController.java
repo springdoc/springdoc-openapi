@@ -26,10 +26,13 @@
 
 package test.org.springdoc.api.v31.app244;
 
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +51,16 @@ public class HelloController {
 	)
 	public void uploadMultipartWithBody(){
 	}
-	
+
+	@GetMapping
+	@io.swagger.v3.oas.annotations.Parameter(
+			in = ParameterIn.HEADER,
+			name = "x-header",
+			examples = {
+					@ExampleObject(value = "AAA", name = "First"),
+					@ExampleObject(value = "BBB", name = "Second"),
+					@ExampleObject(value = "CCC", name = "Third")
+			})
+	void nope() {}
 
 }
