@@ -26,11 +26,13 @@ package test.org.springdoc.api.v31.app124;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
 
 /**
  * Tests Spring meta-annotations as method parameters
  */
+@TestPropertySource(properties = "springdoc.default-produces-media-type=application/json")
 public class SpringDocApp124Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication

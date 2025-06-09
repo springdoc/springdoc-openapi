@@ -448,10 +448,11 @@ public class GenericResponseService implements ApplicationContextAware {
 		if (apiResponse != null) {
 			Content content = apiResponse.getContent();
 			if (content != null) {
-				io.swagger.v3.oas.models.media.MediaType mediaType = content.get(MediaType.ALL_VALUE);
+				String defaultProducesMediaType  = springDocConfigProperties.getDefaultProducesMediaType();
+				io.swagger.v3.oas.models.media.MediaType mediaType = content.get(defaultProducesMediaType);
 				if (mediaType != null && ProblemDetail.class.isAssignableFrom(methodParameter.getParameterType())) {
 					content.addMediaType(MediaType.APPLICATION_PROBLEM_JSON_VALUE, mediaType);
-					content.remove(MediaType.ALL_VALUE);
+					content.remove(defaultProducesMediaType);
 				}
 			}
 		}

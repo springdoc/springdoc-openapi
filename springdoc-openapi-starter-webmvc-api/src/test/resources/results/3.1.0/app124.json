@@ -53,7 +53,7 @@
           "418": {
             "description": "I'm a teapot",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
