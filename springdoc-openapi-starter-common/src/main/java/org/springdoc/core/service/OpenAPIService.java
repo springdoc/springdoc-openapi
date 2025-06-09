@@ -26,6 +26,8 @@
 
 package org.springdoc.core.service;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +53,7 @@ import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Webhook;
 import io.swagger.v3.oas.annotations.Webhooks;
 import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -534,53 +537,54 @@ public class OpenAPIService implements ApplicationContextAware {
 		return Optional.ofNullable(apiDef);
 	}
 
+
 	/**
 	 * Get webhooks webhooks [ ].
 	 *
 	 * @return the webhooks [ ]
 	 */
 	public Webhooks[] getWebhooks() {
-		// List to collect all Webhooks annotations
 		List<Webhooks> allWebhooks = new ArrayList<>();
 
-		// Get beans with @Webhooks annotation managed by Spring
-		Map<String, Object> beansWithWebhooksAnnotation = context.getBeansWithAnnotation(Webhooks.class);
+		// First: scan Spring-managed beans
+		Map<String, Object> beans = context.getBeansWithAnnotation(Webhooks.class);
 
-		// Process Spring-managed beans
-		if (!beansWithWebhooksAnnotation.isEmpty()) {
-			beansWithWebhooksAnnotation.values().forEach(controller -> {
-				// Get the @Webhooks annotation(s) from each bean
-				Webhooks[] webhooksAnnotations = controller.getClass().getAnnotationsByType(Webhooks.class);
-				allWebhooks.addAll(Arrays.asList(webhooksAnnotations));
-			});
+		for (Object bean : beans.values()) {
+			Class<?> beanClass = bean.getClass();
+
+			// Collect @Webhooks or @Webhook on class level
+			collectWebhooksFromElement(beanClass, allWebhooks);
+
+			// Collect from methods
+			for (Method method : beanClass.getDeclaredMethods()) {
+				collectWebhooksFromElement(method, allWebhooks);
+			}
 		}
 
-		// If no beans with @Webhooks annotation found, perform classpath scanning
+		// Fallback: classpath scanning if nothing found
 		if (allWebhooks.isEmpty()) {
-			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
+			ClassPathScanningCandidateComponentProvider scanner =
+					new ClassPathScanningCandidateComponentProvider(false);
 			scanner.addIncludeFilter(new AnnotationTypeFilter(Webhooks.class));
+			scanner.addIncludeFilter(new AnnotationTypeFilter(Webhook.class));
 
-			// Scan base packages if available
 			if (AutoConfigurationPackages.has(context)) {
-				List<String> packagesToScan = AutoConfigurationPackages.get(context);
+				for (String basePackage : AutoConfigurationPackages.get(context)) {
+					Set<BeanDefinition> candidates = scanner.findCandidateComponents(basePackage);
 
-				for (String basePackage : packagesToScan) {
-					// Perform the scan and get candidate components
-					Set<BeanDefinition> components = scanner.findCandidateComponents(basePackage);
-
-					// Loop through the components
-					for (BeanDefinition beanDefinition : components) {
+					for (BeanDefinition bd : candidates) {
 						try {
-							// Get the class name and load the class
-							String className = beanDefinition.getBeanClassName();
-							Class<?> clazz = Class.forName(className);
+							Class<?> clazz = Class.forName(bd.getBeanClassName());
 
-							// Get @Webhooks annotation from the class
-							Webhooks[] webhooksAnnotations = clazz.getAnnotationsByType(Webhooks.class);
-							allWebhooks.addAll(Arrays.asList(webhooksAnnotations));
+							// Class-level annotations
+							collectWebhooksFromElement(clazz, allWebhooks);
+
+							// Method-level annotations
+							for (Method method : clazz.getDeclaredMethods()) {
+								collectWebhooksFromElement(method, allWebhooks);
+							}
 
 						} catch (ClassNotFoundException e) {
-							// Log the error if the class is not found
 							LOGGER.error("Class not found in classpath: {}", e.getMessage());
 						}
 					}
@@ -588,9 +592,40 @@ public class OpenAPIService implements ApplicationContextAware {
 			}
 		}
 
-		// Convert the list of Webhooks annotations to an array and return
 		return allWebhooks.toArray(new Webhooks[0]);
 	}
+
+	/**
+	 * Collect webhooks from element.
+	 *
+	 * @param element   the element
+	 * @param collector the collector
+	 */
+	private void collectWebhooksFromElement(AnnotatedElement element, List<Webhooks> collector) {
+		// If @Webhooks is present (container)
+		Webhooks container = element.getAnnotation(Webhooks.class);
+		if (container != null) {
+			collector.add(container);
+		}
+
+		// If individual @Webhook annotations are present
+		Webhook[] individualWebhooks = element.getAnnotationsByType(Webhook.class);
+		if (individualWebhooks.length > 0) {
+			collector.add(new Webhooks() {
+				@Override
+				public Webhook[] value() {
+					return individualWebhooks;
+				}
+
+				@Override
+				public Class<? extends Annotation> annotationType() {
+					return Webhooks.class;
+				}
+			});
+		}
+	}
+
+
 
 	/**
 	 * Build open api with open api definition.

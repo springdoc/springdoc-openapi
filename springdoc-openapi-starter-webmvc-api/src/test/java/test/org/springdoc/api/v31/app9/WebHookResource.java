@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Webhooks({
 		@Webhook(
-				name = "newPet",
+				name = "newPet1",
 				operation = @Operation(
 						requestBody = @RequestBody(
 								description = "Information about a new pet in the system",
@@ -35,7 +35,38 @@ import org.springframework.stereotype.Component;
 		)
 })
 @Component
-public class WebHookResource {}
+public class WebHookResource {
+
+	@Webhook(
+			name = "newPet",
+			operation = @Operation(
+					requestBody = @RequestBody(
+							description = "Information about a new pet in the system",
+							content = {
+									@Content(
+											mediaType = "application/json",
+											schema = @Schema(
+													description = "Webhook Pet",
+													implementation = RequestDto.class
+											)
+									)
+							}
+					),
+					method = "post",
+					responses = @ApiResponse(
+							responseCode = "200",
+							description = "Return a 200 status to indicate that the data was received successfully"
+					)
+			)
+	)
+	public void newPet(RequestDto requestDto) {
+		// This method is intentionally left empty.
+		// The actual processing of the webhook data would be implemented here.
+		System.out.println("Received new pet with personal number: " + requestDto.getPersonalNumber());
+	}
+	
+	
+}
 
 
 class RequestDto {

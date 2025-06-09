@@ -24,6 +24,26 @@
     }
   },
   "webhooks": {
+    "newPet1": {
+      "post": {
+        "requestBody": {
+          "description": "Information about a new pet in the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestDto",
+                "description": "Webhook Pet"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    },
     "newPet": {
       "post": {
         "requestBody": {
