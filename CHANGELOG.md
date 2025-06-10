@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.9] - 2025-06-10
+
+### Added
+- #2944 - Support for @Positive
+- #3011 - type-use for method parameters
+
+### Changed
+- Upgrade spring-boot to version 3.5.0
+
+### Fixed
+- #2982 - application/problem+json content type is not set for ProblemDetails
+- #2990 - Issues with POST Request, application/x-www-form-urlencoded and only one parameter
+- #2998 - io.swagger.v3.oas.annotations.Webhook does not work when defined on the method level
+- #3012 - Order of examples is (sometimes) not preserved
+
 ## [2.8.8] - 2025-05-04
 
 ### Fixed
