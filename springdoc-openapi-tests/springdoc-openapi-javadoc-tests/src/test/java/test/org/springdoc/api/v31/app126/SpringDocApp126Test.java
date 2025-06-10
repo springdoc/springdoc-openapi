@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 package test.org.springdoc.api.v31.app126;
 
@@ -53,7 +53,7 @@ class SpringDocApp126Test extends AbstractSpringDocTest {
 		/**
 		 * Response registration customizer open api customiser.
 		 *
-		 * @param responsesToRegister the responses to register 
+		 * @param responsesToRegister the responses to register
 		 * @return the open api customiser
 		 */
 		@Bean

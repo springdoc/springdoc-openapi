@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.service;
@@ -476,7 +476,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		if (!CollectionUtils.isEmpty(properties)) {
 			LinkedHashMap<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
 				es.setValue(resolveProperties(es.getValue(), locale));
-				if (es.getValue().getItems() !=null ) {
+				if (es.getValue().getItems() != null) {
 					resolveProperties(es.getValue().getItems(), locale);
 				}
 				return es;
@@ -584,7 +584,8 @@ public class OpenAPIService implements ApplicationContextAware {
 								collectWebhooksFromElement(method, allWebhooks);
 							}
 
-						} catch (ClassNotFoundException e) {
+						}
+						catch (ClassNotFoundException e) {
 							LOGGER.error("Class not found in classpath: {}", e.getMessage());
 						}
 					}
@@ -626,7 +627,6 @@ public class OpenAPIService implements ApplicationContextAware {
 	}
 
 
-
 	/**
 	 * Build open api with open api definition.
 	 *
@@ -638,7 +638,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		boolean isOpenapi3 = propertyResolverUtils.isOpenapi31();
 		Map<String, Object> extensions = AnnotationsUtils.getExtensions(isOpenapi3, apiDef.info().extensions());
 		// info
-		AnnotationsUtils.getInfo(apiDef.info(),true).map(info -> resolveProperties(info, extensions, locale)).ifPresent(openAPI::setInfo);
+		AnnotationsUtils.getInfo(apiDef.info(), true).map(info -> resolveProperties(info, extensions, locale)).ifPresent(openAPI::setInfo);
 		// OpenApiDefinition security requirements
 		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
@@ -702,9 +702,9 @@ public class OpenAPIService implements ApplicationContextAware {
 			resolveProperty(contact::getUrl, contact::url, propertyResolverUtils, locale);
 		}
 
-		if (propertyResolverUtils.isResolveExtensionsProperties() && extensions != null)  {
+		if (propertyResolverUtils.isResolveExtensionsProperties() && extensions != null) {
 			Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
-			if(propertyResolverUtils.isOpenapi31())
+			if (propertyResolverUtils.isOpenapi31())
 				extensionsResolved.forEach(info::addExtension31);
 			else
 				info.setExtensions(extensionsResolved);

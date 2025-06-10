@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app2.model;
@@ -76,6 +76,7 @@ public class Order {
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
+	 *
 	 * @param o the o
 	 * @return the string
 	 */
@@ -295,15 +296,15 @@ public class Order {
 	 */
 	public enum StatusEnum {
 		/**
-		 *Placed status enum.
+		 * Placed status enum.
 		 */
 		PLACED("placed"),
 		/**
-		 *Approved status enum.
+		 * Approved status enum.
 		 */
 		APPROVED("approved"),
 		/**
-		 *Delivered status enum.
+		 * Delivered status enum.
 		 */
 		DELIVERED("delivered");
 

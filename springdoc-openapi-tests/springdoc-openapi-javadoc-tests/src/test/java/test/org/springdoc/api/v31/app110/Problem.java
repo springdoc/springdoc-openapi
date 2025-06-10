@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app110;
@@ -44,7 +44,7 @@ class Problem {
 	/**
 	 * Instantiates a new Problem.
 	 *
-	 * @param logRef the log ref 
+	 * @param logRef  the log ref
 	 * @param message the message
 	 */
 	public Problem(String logRef, String message) {

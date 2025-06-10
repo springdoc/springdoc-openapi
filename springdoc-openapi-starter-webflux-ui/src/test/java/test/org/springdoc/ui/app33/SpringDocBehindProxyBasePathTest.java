@@ -48,6 +48,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
 
 	public static final String WEBFLUX_BASE_PATH = "/test";
+
 	public static final String X_FORWARD_PREFIX = "/path/prefix";
 
 	@LocalServerPort
@@ -63,27 +64,26 @@ public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
 
 	@Test
 	void testIndex() throws Exception {
-		HttpStatusCode httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH+"/documentation/swagger-ui.html")
+		HttpStatusCode httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH + "/documentation/swagger-ui.html")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
-		httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH+"/documentation/webjars-pref/swagger-ui/index.html")
+		httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH + "/documentation/webjars-pref/swagger-ui/index.html")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);
 
-		String contentAsString = webClient.get().uri(WEBFLUX_BASE_PATH+"/documentation/v3/api-docs/swagger-config")
+		String contentAsString = webClient.get().uri(WEBFLUX_BASE_PATH + "/documentation/v3/api-docs/swagger-config")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.retrieve()
 				.bodyToMono(String.class).block();
-		
+
 		String expected = getContent("results/app33.json");
 		assertEquals(expected, contentAsString, true);
 	}
-	
 
-	
+
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 }

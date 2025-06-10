@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app141;
@@ -49,8 +49,8 @@ class Book {
 	/**
 	 * Instantiates a new Book.
 	 *
-	 * @param id the id
-	 * @param title the title
+	 * @param id     the id
+	 * @param title  the title
 	 * @param author the author
 	 */
 	public Book(String id, String title, String author) {

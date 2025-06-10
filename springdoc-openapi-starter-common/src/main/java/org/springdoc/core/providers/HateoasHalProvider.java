@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.providers;
@@ -64,6 +64,25 @@ public class HateoasHalProvider {
 		this.objectMapperProvider = objectMapperProvider;
 	}
 
+	private static boolean isHalEnabled(@NonNull HateoasProperties hateoasProperties) {
+		// In spring-boot 3.5, the method name was changed from getUseHalAsDefaultJsonMediaType to isUseHalAsDefaultJsonMediaType
+		var possibleMethodNames = List.of("isUseHalAsDefaultJsonMediaType", "getUseHalAsDefaultJsonMediaType");
+
+		for (var methodName : possibleMethodNames) {
+			var method = ReflectionUtils.findMethod(HateoasProperties.class, methodName);
+			if (method != null) {
+				var result = ReflectionUtils.invokeMethod(method, hateoasProperties);
+				if (result instanceof Boolean halEnabled) {
+					return halEnabled;
+				}
+
+				throw new IllegalStateException("Method " + methodName + " did not return a boolean value");
+			}
+		}
+
+		throw new IllegalStateException("No suitable method found to determine if HAL is enabled");
+	}
+
 	/**
 	 * Init.
 	 */
@@ -84,24 +103,5 @@ public class HateoasHalProvider {
 		return hateoasPropertiesOptional
 				.map(HateoasHalProvider::isHalEnabled)
 				.orElse(true);
-	}
-
-	private static boolean isHalEnabled(@NonNull HateoasProperties hateoasProperties) {
-		// In spring-boot 3.5, the method name was changed from getUseHalAsDefaultJsonMediaType to isUseHalAsDefaultJsonMediaType
-		var possibleMethodNames = List.of("isUseHalAsDefaultJsonMediaType", "getUseHalAsDefaultJsonMediaType");
-
-		for (var methodName : possibleMethodNames) {
-			var method = ReflectionUtils.findMethod(HateoasProperties.class, methodName);
-			if (method != null) {
-				var result = ReflectionUtils.invokeMethod(method, hateoasProperties);
-				if (result instanceof Boolean halEnabled) {
-					return halEnabled;
-				}
-
-				throw new IllegalStateException("Method " + methodName + " did not return a boolean value");
-			}
-		}
-
-		throw new IllegalStateException("No suitable method found to determine if HAL is enabled");
 	}
 }

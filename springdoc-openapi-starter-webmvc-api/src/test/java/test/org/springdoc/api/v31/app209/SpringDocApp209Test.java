@@ -70,6 +70,23 @@ public class SpringDocApp209Test extends AbstractCommonTest {
 	@Autowired
 	private OpenAPIServiceMock openAPIService;
 
+	@Test
+	void shouldOnlyByCalledOnce() throws Exception {
+		//	assertEquals(1, openAPIService.getNumberOfTimesCalculatePathWasCalled());
+
+		className = getClass().getSimpleName();
+		String testNumber = className.replaceAll("[^0-9]", "");
+		MvcResult mockMvcResult = mockMvc
+				.perform(get(Constants.DEFAULT_API_DOCS_URL).header(HttpHeaders.ACCEPT_LANGUAGE, "ja"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.openapi", is("3.1.0"))).andReturn();
+		String result = mockMvcResult.getResponse().getContentAsString();
+		String expected = getContent("results/3.1.0/app" + testNumber + ".json");
+		JSONAssert.assertEquals(expected, result, true);
+
+		assertEquals(1, openAPIService.getNumberOfTimesCalculatePathWasCalled());
+	}
+
 	@SpringBootApplication
 	static class SpringDocTestApp {
 		@Bean("openAPIService")
@@ -94,22 +111,5 @@ public class SpringDocApp209Test extends AbstractCommonTest {
 		public int getNumberOfTimesCalculatePathWasCalled() {
 			return numberOfTimesCalculatePathWasCalled;
 		}
-	}
-
-	@Test
-	void shouldOnlyByCalledOnce() throws Exception {
-	//	assertEquals(1, openAPIService.getNumberOfTimesCalculatePathWasCalled());
-
-		className = getClass().getSimpleName();
-		String testNumber = className.replaceAll("[^0-9]", "");
-		MvcResult mockMvcResult = mockMvc
-				.perform(get(Constants.DEFAULT_API_DOCS_URL).header(HttpHeaders.ACCEPT_LANGUAGE, "ja"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0"))).andReturn();
-		String result = mockMvcResult.getResponse().getContentAsString();
-		String expected = getContent("results/3.1.0/app" + testNumber + ".json");
-		JSONAssert.assertEquals(expected, result, true);
-
-		assertEquals(1, openAPIService.getNumberOfTimesCalculatePathWasCalled());
 	}
 }

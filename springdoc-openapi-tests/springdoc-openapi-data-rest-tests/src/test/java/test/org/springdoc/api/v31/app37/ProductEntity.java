@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app37;
@@ -54,20 +54,28 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class ProductEntity extends BaseEntity implements Comparable<ProductEntity> {
 
-	/** SVUDI */
+	/**
+	 * SVUDI
+	 */
 	private static final long serialVersionUID = 1L;
 
-	/** 名字. */
+	/**
+	 * 名字.
+	 */
 	@NotNull
 	@Column(nullable = false)
 	private String name;
 
-	/** 单价. */
+	/**
+	 * 单价.
+	 */
 	@NotNull
 	@Column(nullable = false)
 	private BigDecimal price;
 
-	/** 日期. */
+	/**
+	 * 日期.
+	 */
 	@NotNull
 	@Column(nullable = false)
 	private LocalDate date;
@@ -77,7 +85,9 @@ public class ProductEntity extends BaseEntity implements Comparable<ProductEntit
 		return name != null && price != null && date != null;
 	}
 
-	/** 根据日期排序 */
+	/**
+	 * 根据日期排序
+	 */
 	@Override
 	public int compareTo(ProductEntity oProduct) {
 		return this.getDate().compareTo(oProduct.getDate());

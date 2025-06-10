@@ -36,7 +36,7 @@ public class SpringDocApp6Test extends AbstractSpringDocTest {
 
 	@Test
 	void transformed_index_with_oauth() throws Exception {
-        EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.SWAGGER_INITIALIZER_URL)
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.SWAGGER_INITIALIZER_URL)
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody().returnResult();

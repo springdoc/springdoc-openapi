@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@TestPropertySource(properties =  "springdoc.api-docs.version=openapi_3_0" )
+@TestPropertySource(properties = "springdoc.api-docs.version=openapi_3_0")
 public abstract class AbstractCommonTest {
 
 	@Autowired

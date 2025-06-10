@@ -29,31 +29,31 @@ enum class SystemStatus(val status: String) {
 }
 
 data class PersonDTO(
-	@Deprecated ("no-email") val email: String,
+	@Deprecated("no-email") val email: String,
 	val firstName: String,
 	val lastName: String
 )
 
 data class SystemStatusResponse(
-	@Deprecated ("will be removed in next version")
+	@Deprecated("will be removed in next version")
 	val systemStatus: SystemStatus,
 
-	@Deprecated ("")
-    val emptyTest:String,
+	@Deprecated("")
+	val emptyTest: String,
 
-	@Deprecated ("should be ignored")
+	@Deprecated("should be ignored")
 	@Schema(description = "nonEmptyDesc")
-	val nonEmptyDesc:String
+	val nonEmptyDesc: String
 )
 
 @RestController
 @RequestMapping("/status")
 class SystemStatusController {
 	@GetMapping
-	suspend fun index() = SystemStatusResponse(SystemStatus.OK,"","")
+	suspend fun index() = SystemStatusResponse(SystemStatus.OK, "", "")
 
 	@GetMapping("/foo")
 	fun foo(personDTO: PersonDTO) = mono {
-		SystemStatusResponse(SystemStatus.OK,"","")
+		SystemStatusResponse(SystemStatus.OK, "", "")
 	}
 }

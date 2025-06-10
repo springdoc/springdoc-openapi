@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app80;
@@ -46,8 +46,8 @@ class HelloController {
 	/**
 	 * Testpost 1 response entity.
 	 *
-	 * @param dto the dto 
-	 * @return the response entity 
+	 * @param dto the dto
+	 * @return the response entity
 	 * @throws URISyntaxException the uri syntax exception
 	 */
 	@RequestMapping(value = "/testpost1", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,8 +58,8 @@ class HelloController {
 	/**
 	 * Testpost 2 response entity.
 	 *
-	 * @param dto the dto 
-	 * @return the response entity 
+	 * @param dto the dto
+	 * @return the response entity
 	 * @throws URISyntaxException the uri syntax exception
 	 */
 	@RequestMapping(value = "/testpost2", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,7 +70,7 @@ class HelloController {
 	/**
 	 * Hello response entity.
 	 *
-	 * @return the response entity 
+	 * @return the response entity
 	 * @throws URISyntaxException the uri syntax exception
 	 */
 	@RequestMapping(value = "/hello", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

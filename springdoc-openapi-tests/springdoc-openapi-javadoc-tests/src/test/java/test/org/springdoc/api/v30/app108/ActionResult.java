@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app108;
@@ -29,7 +29,7 @@ package test.org.springdoc.api.v30.app108;
 /**
  * The type Action result.
  *
- * @param <T>  the type parameter
+ * @param <T> the type parameter
  */
 class ActionResult<T> {
 

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app62;
@@ -43,7 +43,7 @@ class TestController {
 	/**
 	 * Test string.
 	 *
-	 * @param accept the accept 
+	 * @param accept the accept
 	 * @return the string
 	 */
 	@RequestMapping(value = "/test", method = RequestMethod.GET)

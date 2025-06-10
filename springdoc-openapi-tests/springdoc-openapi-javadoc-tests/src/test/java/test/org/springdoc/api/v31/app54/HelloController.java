@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app54;
@@ -47,7 +47,7 @@ class HelloController {
 	/**
 	 * Gets meal party.
 	 *
-	 * @param mealPartyId the meal party id 
+	 * @param mealPartyId the meal party id
 	 * @return the meal party
 	 */
 	@GetMapping(value = "/parties/{id}")
@@ -61,7 +61,7 @@ class HelloController {
 	/**
 	 * Save meal party response entity.
 	 *
-	 * @param p the p 
+	 * @param p the p
 	 * @return the response entity
 	 */
 	@JsonView(Views.MealPartyAdmin.class)
@@ -73,7 +73,7 @@ class HelloController {
 	/**
 	 * Save meal new party response entity.
 	 *
-	 * @param p the p 
+	 * @param p the p
 	 * @return the response entity
 	 */
 	@JsonView(Views.MealPartyAdmin.class)

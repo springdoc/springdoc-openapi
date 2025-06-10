@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 public class ResponseEntityWrapper<T> extends ResponseEntity<Item<T>> {
-    public ResponseEntityWrapper(Item<T> body, HttpStatusCode status) {
-        super(body, status);
-    }
+	public ResponseEntityWrapper(Item<T> body, HttpStatusCode status) {
+		super(body, status);
+	}
 }

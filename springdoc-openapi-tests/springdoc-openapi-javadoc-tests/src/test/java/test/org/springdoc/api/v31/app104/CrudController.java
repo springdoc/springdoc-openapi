@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app104;
@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * The type Crud controller.
  *
- * @param <T>  the type parameter
+ * @param <T> the type parameter
  */
 @Controller
 @SuppressWarnings("rawtypes")

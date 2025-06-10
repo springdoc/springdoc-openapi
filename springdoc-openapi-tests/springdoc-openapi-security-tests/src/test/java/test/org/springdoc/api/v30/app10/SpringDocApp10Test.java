@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app10;
@@ -38,7 +38,7 @@ import test.org.springdoc.api.v30.AbstractSpringDocTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"springdoc.show-oauth2-endpoints=true",  "springdoc.model-converters.deprecating-converter.enabled=false"})
+@TestPropertySource(properties = { "springdoc.show-oauth2-endpoints=true", "springdoc.model-converters.deprecating-converter.enabled=false" })
 public class SpringDocApp10Test extends AbstractSpringDocTest {
 
 	@BeforeAll

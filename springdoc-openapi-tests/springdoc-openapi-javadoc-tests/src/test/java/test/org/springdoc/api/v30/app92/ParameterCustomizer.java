@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app92;
@@ -40,8 +40,8 @@ class ParameterCustomizer implements org.springdoc.core.customizers.ParameterCus
 	/**
 	 * Customize parameter.
 	 *
-	 * @param parameterModel the parameter model 
-	 * @param methodParameter the method parameter 
+	 * @param parameterModel  the parameter model
+	 * @param methodParameter the method parameter
 	 * @return the parameter
 	 */
 	@Override

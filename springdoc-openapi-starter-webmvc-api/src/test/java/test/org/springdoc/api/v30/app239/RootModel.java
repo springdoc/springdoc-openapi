@@ -4,24 +4,24 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 public class RootModel {
 
-    private Integer rootProperty;
+	private Integer rootProperty;
 
-    private UnwrappedModel unwrappedModel;
+	private UnwrappedModel unwrappedModel;
 
-    public Integer getRootProperty() {
-        return rootProperty;
-    }
+	public Integer getRootProperty() {
+		return rootProperty;
+	}
 
-    public void setRootProperty(Integer rootProperty) {
-        this.rootProperty = rootProperty;
-    }
+	public void setRootProperty(Integer rootProperty) {
+		this.rootProperty = rootProperty;
+	}
 
-    @JsonUnwrapped
-    public UnwrappedModel getUnwrappedModel() {
-        return unwrappedModel;
-    }
+	@JsonUnwrapped
+	public UnwrappedModel getUnwrappedModel() {
+		return unwrappedModel;
+	}
 
-    public void setUnwrappedModel(UnwrappedModel unwrappedModel) {
-        this.unwrappedModel = unwrappedModel;
-    }
+	public void setUnwrappedModel(UnwrappedModel unwrappedModel) {
+		this.unwrappedModel = unwrappedModel;
+	}
 }

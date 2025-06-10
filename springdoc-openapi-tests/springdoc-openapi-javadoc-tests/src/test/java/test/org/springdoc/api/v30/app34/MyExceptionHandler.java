@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app34;
@@ -43,7 +43,7 @@ class MyExceptionHandler extends ResponseEntityExceptionHandler {
 	/**
 	 * Bad object.
 	 *
-	 * @param e the e 
+	 * @param e the e
 	 * @return the object
 	 */
 	@ExceptionHandler(IllegalArgumentException.class)
@@ -55,7 +55,7 @@ class MyExceptionHandler extends ResponseEntityExceptionHandler {
 	/**
 	 * Gateway object.
 	 *
-	 * @param e the e 
+	 * @param e the e
 	 * @return the object
 	 */
 	@ExceptionHandler(RuntimeException.class)

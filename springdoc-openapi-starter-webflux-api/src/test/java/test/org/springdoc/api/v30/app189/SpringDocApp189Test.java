@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app189;
@@ -41,23 +41,24 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 @WebFluxTest
 public class SpringDocApp189Test extends AbstractCommonTest {
 
-    @Test
-    public void testWithDifferentLocales() throws Exception {
-          runTestWithLocale("en-GB");
-          runTestWithLocale("de-DE");
-    }
-    private void runTestWithLocale(String locale) throws JSONException {
-        EntityExchangeResult<byte[]> getResult = webTestClient.mutate().responseTimeout(Duration.ofMinutes(1000)).build()
-                .get().uri(Constants.DEFAULT_API_DOCS_URL)
-                .header("Accept-Language", locale)
-                .exchange()
-                .expectStatus().isOk().expectBody().returnResult();
+	@Test
+	public void testWithDifferentLocales() throws Exception {
+		runTestWithLocale("en-GB");
+		runTestWithLocale("de-DE");
+	}
 
-        String result = new String(getResult.getResponseBody());
-        String className = getClass().getSimpleName();
-        String testNumber = className.replaceAll("[^0-9]", "");
-        String expected = getContent("results/3.0.1/app" + testNumber + ".json");
-        assertEquals(expected, result, true);
-    }
+	private void runTestWithLocale(String locale) throws JSONException {
+		EntityExchangeResult<byte[]> getResult = webTestClient.mutate().responseTimeout(Duration.ofMinutes(1000)).build()
+				.get().uri(Constants.DEFAULT_API_DOCS_URL)
+				.header("Accept-Language", locale)
+				.exchange()
+				.expectStatus().isOk().expectBody().returnResult();
+
+		String result = new String(getResult.getResponseBody());
+		String className = getClass().getSimpleName();
+		String testNumber = className.replaceAll("[^0-9]", "");
+		String expected = getContent("results/3.0.1/app" + testNumber + ".json");
+		assertEquals(expected, result, true);
+	}
 
 }

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webmvc.api;
@@ -90,14 +90,14 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Grouped open api resources.
-	 */
-	private Map<String, OpenApiResource> groupedOpenApiResources;
-
-	/**
 	 * The Spring doc customizers.
 	 */
 	private final SpringDocCustomizers springDocCustomizers;
+
+	/**
+	 * The Grouped open api resources.
+	 */
+	private Map<String, OpenApiResource> groupedOpenApiResources;
 
 	/**
 	 * Instantiates a new Multiple open api resource.

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.ui;
@@ -71,7 +71,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	/**
 	 * Redirect to ui mono.
 	 *
-	 * @param request the request
+	 * @param request  the request
 	 * @param response the response
 	 * @return the mono
 	 */
@@ -85,7 +85,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	@Override
 	protected void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls) {
 		StringBuilder sbUrl = new StringBuilder();
-		calculateUiRootCommon(swaggerUiConfigParameters,sbUrl, sbUrls);
+		calculateUiRootCommon(swaggerUiConfigParameters, sbUrl, sbUrls);
 	}
 
 	@Override
@@ -99,14 +99,15 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 			swaggerUiConfigParameters.setPathPrefix(springWebProvider.findPathPrefix(springDocConfigProperties));
 		if (swaggerUiUrl.startsWith(swaggerUiConfigParameters.getPathPrefix())) {
 			return buildUrl(swaggerUiConfigParameters.getContextPath(), swaggerUiUrl);
-		} else {
+		}
+		else {
 			return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
 		}
 	}
 
 	@Override
 	protected void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getApiDocsUrl()+ DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
+		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getApiDocsUrl() + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
 	}
 
 }

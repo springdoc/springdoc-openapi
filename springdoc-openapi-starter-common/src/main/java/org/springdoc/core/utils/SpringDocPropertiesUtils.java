@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.utils;
@@ -48,7 +48,7 @@ public interface SpringDocPropertiesUtils {
 	 * @param params the params
 	 */
 	static void put(String name, List<String> value, Map<String, Object> params) {
-			params.put(name, value);
+		params.put(name, value);
 	}
 
 	/**

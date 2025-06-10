@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app47;
@@ -44,7 +44,7 @@ class HelloController {
 	/**
 	 * Gets documents with locale.
 	 *
-	 * @param locale the locale 
+	 * @param locale the locale
 	 * @return the documents with locale
 	 */
 	@GetMapping(path = "/documents/{locale}")

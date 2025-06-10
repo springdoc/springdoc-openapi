@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app105.model;
@@ -49,7 +49,8 @@ class Category {
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
-	 * @param o the o 
+	 *
+	 * @param o the o
 	 * @return the string
 	 */
 	private static String toIndentedString(Object o) {
@@ -81,7 +82,7 @@ class Category {
 	/**
 	 * Id category.
 	 *
-	 * @param id the id 
+	 * @param id the id
 	 * @return the category
 	 */
 	public Category id(Long id) {
@@ -111,7 +112,7 @@ class Category {
 	/**
 	 * Name category.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the category
 	 */
 	public Category name(String name) {

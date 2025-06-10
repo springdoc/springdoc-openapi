@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app123;
@@ -55,7 +55,7 @@ class MyExceptionHandler {
 	/**
 	 * Gateway object.
 	 *
-	 * @param e the e 
+	 * @param e the e
 	 * @return the object
 	 */
 	@ExceptionHandler(RuntimeException.class)

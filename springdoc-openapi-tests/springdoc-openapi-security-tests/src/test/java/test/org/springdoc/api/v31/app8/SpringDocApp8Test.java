@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app8;
@@ -38,7 +38,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.show-login-endpoint=true")
 public class SpringDocApp8Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.v31.configuration","test.org.springdoc.api.v31.app8" })
+	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.v31.configuration", "test.org.springdoc.api.v31.app8" })
 	static class SpringDocTestApp {
 		@Bean
 		public OpenAPI customOpenAPI() {

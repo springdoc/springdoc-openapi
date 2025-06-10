@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app142;
@@ -89,10 +89,10 @@ class SimpleFilter extends GenericFilter {
 	/**
 	 * Do filter.
 	 *
-	 * @param req the req
-	 * @param res the res
+	 * @param req         the req
+	 * @param res         the res
 	 * @param filterChain the filter chain
-	 * @throws IOException the io exception
+	 * @throws IOException      the io exception
 	 * @throws ServletException the servlet exception
 	 */
 	@Override
@@ -138,7 +138,7 @@ class PersonHandler {
 	 * @param r the r
 	 * @return the server response
 	 * @throws ServletException the servlet exception
-	 * @throws IOException the io exception
+	 * @throws IOException      the io exception
 	 */
 	ServerResponse handlePostPerson(ServerRequest r) throws ServletException, IOException {
 		Person result = personService.save(new Person(null, r.body(Person.class).getName()));
@@ -250,7 +250,7 @@ class Person {
 	/**
 	 * Instantiates a new Person.
 	 *
-	 * @param id the id
+	 * @param id   the id
 	 * @param name the name
 	 */
 	public Person(Long id, String name) {

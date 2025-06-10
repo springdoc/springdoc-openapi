@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ExampleController {
 
-    @Operation(
-        summary = "foo api",
-        description = """
+	@Operation(
+		summary = "foo api",
+		description = """
         this api is foo
         
         #### Custom exception case
@@ -21,76 +21,76 @@ class ExampleController {
         | 403         | NO_PERMISSION       |This request is only available to administrators.  |            |           |
         | 400         | STORE_NOT_FOUND       |Store not found.   |            |           |
         """
-    )
-    @GetMapping("/foo/trim-kotlin-indent")
-    fun readFoo(@RequestParam name: String?) = FooResponse("Hello ${name ?: "world"}")
+	)
+	@GetMapping("/foo/trim-kotlin-indent")
+	fun readFoo(@RequestParam name: String?) = FooResponse("Hello ${name ?: "world"}")
 
 }
 
 data class FooResponse(
-    val name: String,
+	val name: String,
 )
 
 @RestController
 class ExampleController2 {
 
-    @GetMapping("/foo/trim-kotlin-indent/schema")
-    fun readFoo(
+	@GetMapping("/foo/trim-kotlin-indent/schema")
+	fun readFoo(
 		@RequestBody request: FooRequestWithSchema,
-    ) = FooResponseWithSchema(
-        name = "Hello ${request.age ?: "world"}",
-        subFoo = SubFooResponseWithSchema(subName = "sub foo name"),
-    )
+	) = FooResponseWithSchema(
+		name = "Hello ${request.age ?: "world"}",
+		subFoo = SubFooResponseWithSchema(subName = "sub foo name"),
+	)
 }
 
 @Schema(
-    name = "foo request",
-    description = """
+	name = "foo request",
+	description = """
     foo request class description
     with kotlin indent
     """
 )
 data class FooRequestWithSchema(
-    @Schema(
-        name = "age",
-        description = """
+	@Schema(
+		name = "age",
+		description = """
         foo request field with kotlin indent
         """
-    )
-    val age: Int,
+	)
+	val age: Int,
 )
 
 @Schema(
-    name = "foo response",
-    description = """
+	name = "foo response",
+	description = """
     foo response class description
     with kotlin indent
     """
 )
 data class FooResponseWithSchema(
-    @Schema(
-        name = "name",
-        description = """
+	@Schema(
+		name = "name",
+		description = """
         foo response fields with kotlin indent
         """
-    )
-    val name: String,
-    val subFoo: SubFooResponseWithSchema
+	)
+	val name: String,
+	val subFoo: SubFooResponseWithSchema
 )
 
 @Schema(
-    name = "sub foo response",
-    description = """
+	name = "sub foo response",
+	description = """
     sub foo response class description
     with kotlin indent
     """
 )
 data class SubFooResponseWithSchema(
-    @Schema(
-        name = "subName",
-        description = """
+	@Schema(
+		name = "subName",
+		description = """
         sub foo response fields with kotlin indent
         """
-    )
-    val subName: String,
+	)
+	val subName: String,
 )

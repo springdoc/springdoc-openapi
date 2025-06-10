@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app155;
@@ -29,7 +29,7 @@ package test.org.springdoc.api.v30.app155;
 /**
  * The type Abstract int parameter object.
  *
- * @param <T>  the type parameter
+ * @param <T> the type parameter
  */
 class AbstractIntParameterObject<T extends Integer> {
 

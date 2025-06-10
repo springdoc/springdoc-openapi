@@ -35,7 +35,6 @@ import org.springframework.context.annotation.Configuration;
 /**
  * This class contributes OpenAPI <a href=
  * "https://swagger.io/docs/specification/adding-examples/">examples</a>.
- *
  * Each example is contributed through a bean typed as a map entry
  * (Map.Entry<String, Example>) and referenced through a constant by a resource
  * operation's @ApiResponse.

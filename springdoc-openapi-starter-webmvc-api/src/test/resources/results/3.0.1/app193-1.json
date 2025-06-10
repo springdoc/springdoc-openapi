@@ -69,13 +69,10 @@
   },
   "components": {
     "schemas": {
-      "Book":
-      {
+      "Book": {
         "type": "object",
-        "properties":
-        {
-          "title":
-          {
+        "properties": {
+          "title": {
             "type": "string"
           }
         },
@@ -94,12 +91,10 @@
               "empty": {
                 "type": "boolean"
               },
-              "first":
-              {
+              "first": {
                 "$ref": "#/components/schemas/Book"
               },
-              "last":
-              {
+              "last": {
                 "$ref": "#/components/schemas/Book"
               }
             }

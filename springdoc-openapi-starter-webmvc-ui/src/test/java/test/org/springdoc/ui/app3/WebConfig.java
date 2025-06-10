@@ -21,7 +21,7 @@
 package test.org.springdoc.ui.app3;
 
 /**
- * @author bnasslashen
+ *
  */
 
 import org.springframework.context.annotation.Configuration;

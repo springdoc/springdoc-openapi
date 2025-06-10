@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app57;
@@ -42,7 +42,7 @@ class HelloController {
 	/**
 	 * Gets text.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the text
 	 */
 	@GetMapping("/{name:.+}")

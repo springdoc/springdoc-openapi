@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.converters;
@@ -134,36 +134,6 @@ public class AdditionalModelsConverter implements ModelConverter {
 	}
 
 	/**
-	 * Resolve schema.
-	 *
-	 * @param type the type
-	 * @param context the context
-	 * @param chain the chain
-	 * @return the schema
-	 */
-	@Override
-	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
-		if (javaType != null) {
-			Class<?> cls = javaType.getRawClass();
-			if (modelToSchemaMap.containsKey(cls))
-				try {
-					Schema schema = modelToSchemaMap.get(cls);
-					if(springDocObjectMapper.isOpenapi31())
-						handleSchemaTypes(schema);
-					return springDocObjectMapper.jsonMapper()
-							.readValue(springDocObjectMapper.jsonMapper().writeValueAsString(schema), new TypeReference<Schema>() {});
-				}
-				catch (JsonProcessingException e) {
-					LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
-				}
-			if (modelToClassMap.containsKey(cls))
-				type = new AnnotatedType(modelToClassMap.get(cls)).resolveAsRef(true);
-		}
-		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
-	}
-
-	/**
 	 * Remove from schema map.
 	 *
 	 * @param clazz the clazz
@@ -179,5 +149,35 @@ public class AdditionalModelsConverter implements ModelConverter {
 	 */
 	public static void removeFromClassMap(Class clazz) {
 		modelToClassMap.remove(clazz);
+	}
+
+	/**
+	 * Resolve schema.
+	 *
+	 * @param type    the type
+	 * @param context the context
+	 * @param chain   the chain
+	 * @return the schema
+	 */
+	@Override
+	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
+		if (javaType != null) {
+			Class<?> cls = javaType.getRawClass();
+			if (modelToSchemaMap.containsKey(cls))
+				try {
+					Schema schema = modelToSchemaMap.get(cls);
+					if (springDocObjectMapper.isOpenapi31())
+						handleSchemaTypes(schema);
+					return springDocObjectMapper.jsonMapper()
+							.readValue(springDocObjectMapper.jsonMapper().writeValueAsString(schema), new TypeReference<Schema>() {});
+				}
+				catch (JsonProcessingException e) {
+					LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+				}
+			if (modelToClassMap.containsKey(cls))
+				type = new AnnotatedType(modelToClassMap.get(cls)).resolveAsRef(true);
+		}
+		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
 }

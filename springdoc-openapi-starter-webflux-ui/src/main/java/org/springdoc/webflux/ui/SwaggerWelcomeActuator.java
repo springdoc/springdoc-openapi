@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.ui;
@@ -74,7 +74,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 */
 	public SwaggerWelcomeActuator(SwaggerUiConfigProperties swaggerUiConfig
 			, SpringDocConfigProperties springDocConfigProperties,
-								  WebEndpointProperties webEndpointProperties) {
+			WebEndpointProperties webEndpointProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
 		this.webEndpointProperties = webEndpointProperties;
 	}
@@ -82,7 +82,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	/**
 	 * Redirect to ui mono.
 	 *
-	 * @param request the request
+	 * @param request  the request
 	 * @param response the response
 	 * @return the mono
 	 */

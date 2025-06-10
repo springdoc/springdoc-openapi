@@ -13,13 +13,13 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 @Configuration
 public class WebMvcConfiguration {
 
-    @Bean
-    MappingJackson2HttpMessageConverter getMappingJacksonHttpMessageConverter() {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(List.of(MediaType.APPLICATION_JSON));
-        converter.setObjectMapper(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
-        );
+	@Bean
+	MappingJackson2HttpMessageConverter getMappingJacksonHttpMessageConverter() {
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+		converter.setSupportedMediaTypes(List.of(MediaType.APPLICATION_JSON));
+		converter.setObjectMapper(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
+		);
 
-        return converter;
-    }
+		return converter;
+	}
 }

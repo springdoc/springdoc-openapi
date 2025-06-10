@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app2.model;
@@ -82,6 +82,7 @@ public class Pet {
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
+	 *
 	 * @param o the o
 	 * @return the string
 	 */
@@ -327,15 +328,15 @@ public class Pet {
 	 */
 	public enum StatusEnum {
 		/**
-		 *Available status enum.
+		 * Available status enum.
 		 */
 		AVAILABLE("available"),
 		/**
-		 *Pending status enum.
+		 * Pending status enum.
 		 */
 		PENDING("pending"),
 		/**
-		 *Sold status enum.
+		 * Sold status enum.
 		 */
 		SOLD("sold");
 

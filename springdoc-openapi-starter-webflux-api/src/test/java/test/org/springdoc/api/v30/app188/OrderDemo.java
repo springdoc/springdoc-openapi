@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app188;
@@ -48,7 +48,7 @@ public class OrderDemo {
 			openApi.addTagsItem(new Tag().name("3"));
 		}
 	}
-	
+
 	public static class Customizer1 implements OpenApiCustomizer, GlobalOpenApiCustomizer {
 		public void customise(OpenAPI openApi) {
 			openApi.addTagsItem(new Tag().name("1"));

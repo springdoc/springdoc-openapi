@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app32;
@@ -43,7 +43,7 @@ class HelloController {
 	/**
 	 * Filter post string.
 	 *
-	 * @param filter the filter 
+	 * @param filter the filter
 	 * @return the string
 	 */
 	@RequestMapping(value = "/filter", method = RequestMethod.POST)

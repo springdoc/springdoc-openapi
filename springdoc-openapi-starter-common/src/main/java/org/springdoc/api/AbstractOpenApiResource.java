@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.api;
@@ -179,6 +179,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected final SpringDocProviders springDocProviders;
 
 	/**
+	 * The Spring doc customizers.
+	 */
+	protected final SpringDocCustomizers springDocCustomizers;
+
+	/**
 	 * The open api builder object factory.
 	 */
 	private final ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory;
@@ -204,16 +209,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
 	/**
-	 * The Open api builder.
-	 */
-	protected OpenAPIService openAPIService;
-
-	/**
-	 * The Spring doc customizers.
-	 */
-	protected final SpringDocCustomizers springDocCustomizers;
-
-	/**
 	 * The Reentrant lock.
 	 */
 	private final Lock reentrantLock = new ReentrantLock();
@@ -222,6 +217,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * The Path pattern.
 	 */
 	private final Pattern pathPattern = Pattern.compile("\\{(.*?)}");
+
+	/**
+	 * The Open api builder.
+	 */
+	protected OpenAPIService openAPIService;
 
 
 	/**
@@ -426,8 +426,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		List<String> allowedLocales = springDocConfigProperties.getAllowedLocales();
 		if (!CollectionUtils.isEmpty(allowedLocales)) {
 			Locale bestMatchingAllowedLocale = Locale.lookup(
-				Locale.LanguageRange.parse(inputLocale.toLanguageTag()),
-				allowedLocales.stream().map(Locale::forLanguageTag).toList()
+					Locale.LanguageRange.parse(inputLocale.toLanguageTag()),
+					allowedLocales.stream().map(Locale::forLanguageTag).toList()
 			);
 
 			return bestMatchingAllowedLocale == null ? Locale.forLanguageTag(allowedLocales.get(0)) : bestMatchingAllowedLocale;
@@ -524,7 +524,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected void calculateWebhooks(OpenAPI calculatedOpenAPI, Locale locale) {
 		Webhooks[] webhooksAttr = openAPIService.getWebhooks();
-		if(ArrayUtils.isEmpty(webhooksAttr))
+		if (ArrayUtils.isEmpty(webhooksAttr))
 			return;
 		var webhooks = Arrays.stream(webhooksAttr).map(Webhooks::value).flatMap(Arrays::stream).toArray(Webhook[]::new);
 		Arrays.stream(webhooks).forEach(webhook -> {
@@ -659,7 +659,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					operationPath = operationPath.replace("{" + pathParam + "}", "{" + newPathParam + "}");
 				}
 			}
-			
+
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
 		}

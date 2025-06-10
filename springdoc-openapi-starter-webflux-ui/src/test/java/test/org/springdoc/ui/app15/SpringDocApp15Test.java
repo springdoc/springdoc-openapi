@@ -48,7 +48,7 @@ class SpringDocApp15Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testIndex() {
-        EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/application/swagger-ui/index.html")
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/application/swagger-ui/index.html")
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody().returnResult();

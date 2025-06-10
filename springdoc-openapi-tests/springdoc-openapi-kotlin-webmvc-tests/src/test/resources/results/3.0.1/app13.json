@@ -1,52 +1,59 @@
 {
-  "openapi" : "3.1.0",
-  "info" : {
-    "title" : "OpenAPI definition",
-    "version" : "v0"
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
   },
-  "servers" : [ {
-    "url" : "http://localhost",
-    "description" : "Generated server url"
-  } ],
-  "paths" : {
-    "/test/test" : {
-      "post" : {
-        "tags" : [ "test-controller" ],
-        "operationId" : "create",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/SomeDTO"
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test/test": {
+      "post": {
+        "tags": [
+          "test-controller"
+        ],
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SomeDTO"
               }
             }
           },
-          "required" : true
+          "required": true
         },
-        "responses" : {
-          "200" : {
-            "description" : "OK"
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
     }
   },
-  "components" : {
-    "schemas" : {
-      "KeyValue" : {
-        "required" : [ "key", "value" ],
-        "type" : "object",
-        "description" : "Generic description",
-        "properties" : {
-          "key" : {
-            "type" : "string"
+  "components": {
+    "schemas": {
+      "KeyValue": {
+        "required": [
+          "key",
+          "value"
+        ],
+        "type": "object",
+        "description": "Generic description",
+        "properties": {
+          "key": {
+            "type": "string"
           },
-          "value" : {
-            "type" : "string"
+          "value": {
+            "type": "string"
           }
         }
       },
-      "SomeDTO" : {
+      "SomeDTO": {
         "required": [
           "fieldA",
           "fieldB"

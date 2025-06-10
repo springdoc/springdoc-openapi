@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app1;
@@ -44,7 +44,7 @@ class HelloController {
 	/**
 	 * Index string.
 	 *
-	 * @param numTel the num tel
+	 * @param numTel  the num tel
 	 * @param adresse the adresse
 	 * @return the string
 	 */

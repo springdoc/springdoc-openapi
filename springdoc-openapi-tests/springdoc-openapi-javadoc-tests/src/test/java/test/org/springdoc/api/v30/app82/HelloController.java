@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app82;
@@ -40,9 +40,9 @@ class HelloController {
 	/**
 	 * Put response entity.
 	 *
-	 * @param configuration the configuration 
-	 * @param second the second 
-	 * @param personDTO the person dto 
+	 * @param configuration the configuration
+	 * @param second        the second
+	 * @param personDTO     the person dto
 	 * @return the response entity
 	 */
 	@PutMapping(value = "/test")

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 /**
@@ -181,7 +181,7 @@ public interface UserApi {
 	 * Update user response entity.
 	 *
 	 * @param username the username
-	 * @param user the user
+	 * @param user     the user
 	 * @return the response entity
 	 */
 	@Operation(summary = "Updated user", tags = { "user" })

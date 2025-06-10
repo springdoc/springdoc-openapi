@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.models;
@@ -290,23 +290,27 @@ public class MethodAttributes {
 	 * @param headers  the headers
 	 */
 	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
-        if (ArrayUtils.isNotEmpty(produces)) {
-            methodProduces = mergeArrays(methodProduces, produces);
-        } else if (ArrayUtils.isNotEmpty(classProduces)) {
-            methodProduces = mergeArrays(methodProduces, classProduces);
-        } else if (ArrayUtils.isEmpty(methodProduces)) {
-            methodProduces = new String[] {defaultProducesMediaType};
-        }
+		if (ArrayUtils.isNotEmpty(produces)) {
+			methodProduces = mergeArrays(methodProduces, produces);
+		}
+		else if (ArrayUtils.isNotEmpty(classProduces)) {
+			methodProduces = mergeArrays(methodProduces, classProduces);
+		}
+		else if (ArrayUtils.isEmpty(methodProduces)) {
+			methodProduces = new String[] { defaultProducesMediaType };
+		}
 
-        if (ArrayUtils.isNotEmpty(consumes)) {
-            methodConsumes = mergeArrays(methodConsumes, consumes);
-        } else if (ArrayUtils.isNotEmpty(classConsumes)) {
-            methodConsumes = mergeArrays(methodConsumes, classConsumes);
-        } else if (ArrayUtils.isEmpty(methodConsumes)) {
-            methodConsumes = new String[] {defaultConsumesMediaType};
-        }
+		if (ArrayUtils.isNotEmpty(consumes)) {
+			methodConsumes = mergeArrays(methodConsumes, consumes);
+		}
+		else if (ArrayUtils.isNotEmpty(classConsumes)) {
+			methodConsumes = mergeArrays(methodConsumes, classConsumes);
+		}
+		else if (ArrayUtils.isEmpty(methodConsumes)) {
+			methodConsumes = new String[] { defaultConsumesMediaType };
+		}
 
-        setHeaders(headers);
+		setHeaders(headers);
 	}
 
 	/**

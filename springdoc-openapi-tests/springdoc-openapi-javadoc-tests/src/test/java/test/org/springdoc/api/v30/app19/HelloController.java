@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app19;
@@ -42,7 +42,7 @@ class HelloController {
 	/**
 	 * Persons string.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the string
 	 */
 	@PostMapping(value = "/persons")
@@ -53,7 +53,7 @@ class HelloController {
 	/**
 	 * Persons 2 string.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the string
 	 */
 	@RequestBody(description = "requestBody description outside")
@@ -65,7 +65,7 @@ class HelloController {
 	/**
 	 * Persons 3 string.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the string
 	 */
 	@Operation(requestBody = @RequestBody(description = "requestBody inside operation annotation"))

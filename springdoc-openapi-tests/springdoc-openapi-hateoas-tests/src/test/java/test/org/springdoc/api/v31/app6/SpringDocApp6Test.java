@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app6;
@@ -53,7 +53,7 @@ public class SpringDocApp6Test extends AbstractSpringDocTest {
 
 	@BeforeEach
 	void init() throws IllegalAccessException {
-		SimpleMixInResolver _mixIns = (SimpleMixInResolver) FieldUtils.readDeclaredField(objectMapperProvider.jsonMapper(),"_mixIns", true);
+		SimpleMixInResolver _mixIns = (SimpleMixInResolver) FieldUtils.readDeclaredField(objectMapperProvider.jsonMapper(), "_mixIns", true);
 		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) FieldUtils.readDeclaredField(_mixIns, "_localMixIns", true);
 		Iterator<Entry<ClassKey, Class<?>>> iterator = _localMixIns.entrySet().iterator();
 

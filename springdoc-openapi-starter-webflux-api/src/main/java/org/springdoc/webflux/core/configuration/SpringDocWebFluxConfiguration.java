@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.core.configuration;
@@ -120,7 +120,7 @@ public class SpringDocWebFluxConfiguration {
 	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			Optional<List<ParameterCustomizer>> parameterCustomizers,
 			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		return new RequestService(parameterBuilder, requestBodyService, 
+		return new RequestService(parameterBuilder, requestBodyService,
 				parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 
@@ -162,10 +162,10 @@ public class SpringDocWebFluxConfiguration {
 		/**
 		 * Actuator provider actuator provider.
 		 *
-		 * @param serverProperties                 the server properties
-		 * @param springDocConfigProperties        the spring doc config properties
-		 * @param managementServerProperties       the management server properties
-		 * @param webEndpointProperties            the web endpoint properties
+		 * @param serverProperties           the server properties
+		 * @param springDocConfigProperties  the spring doc config properties
+		 * @param managementServerProperties the management server properties
+		 * @param webEndpointProperties      the web endpoint properties
 		 * @return the actuator provider
 		 */
 		@Bean

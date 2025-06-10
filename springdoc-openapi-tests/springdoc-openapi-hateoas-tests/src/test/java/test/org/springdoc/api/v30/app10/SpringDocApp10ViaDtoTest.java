@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app10;
@@ -45,9 +45,9 @@ public class SpringDocApp10ViaDtoTest extends AbstractSpringDocTest {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.openapi", is("3.0.1")))
-			.andExpect(content().json(getContent("results/3.0.1/app10-via_dto.json"), true));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.openapi", is("3.0.1")))
+				.andExpect(content().json(getContent("results/3.0.1/app10-via_dto.json"), true));
 	}
 
 	@SpringBootApplication

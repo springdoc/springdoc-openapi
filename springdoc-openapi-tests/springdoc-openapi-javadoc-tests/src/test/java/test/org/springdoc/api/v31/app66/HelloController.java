@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app66;
@@ -44,7 +44,7 @@ class HelloController {
 	/**
 	 * Ping response entity.
 	 *
-	 * @param possiblyInjectedByAspect the possibly injected by aspect 
+	 * @param possiblyInjectedByAspect the possibly injected by aspect
 	 * @return the response entity
 	 */
 	@Operation(summary = "Check server status", description = "Check server status, will return 200 with simple string if alive. Do nothing else.")

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app43;
@@ -43,7 +43,7 @@ class HelloController {
 	/**
 	 * Upload documents response entity.
 	 *
-	 * @param multipartFiles the multipart files 
+	 * @param multipartFiles the multipart files
 	 * @return the response entity
 	 */
 	@PostMapping(path = "/documents", consumes = "multipart/form-data")

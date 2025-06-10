@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app135;
@@ -53,7 +53,7 @@ class BookRouter {
 	/**
 	 * Routes router function.
 	 *
-	 * @param br the br 
+	 * @param br the br
 	 * @return the router function
 	 */
 	@Bean
@@ -74,7 +74,7 @@ class BookRouter {
 	/**
 	 * Routes 1 router function.
 	 *
-	 * @param br the br 
+	 * @param br the br
 	 * @return the router function
 	 */
 	@Bean
@@ -93,7 +93,7 @@ class BookRouter {
 	/**
 	 * Routes 3 router function.
 	 *
-	 * @param br the br 
+	 * @param br the br
 	 * @return the router function
 	 */
 	@Bean
@@ -119,7 +119,7 @@ class BookRouter {
 	/**
 	 * Routes 4 router function.
 	 *
-	 * @param br the br 
+	 * @param br the br
 	 * @return the router function
 	 */
 	@Bean

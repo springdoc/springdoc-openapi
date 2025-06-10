@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.configurer;
@@ -73,12 +73,12 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 				.bind(MANAGEMENT_ENDPOINTS_WEB, WebEndpointProperties.class);
 		final BindResult<SpringDocConfigProperties> springDocConfigPropertiesBindResult = Binder.get(environment)
 				.bind(SPRINGDOC_PREFIX, SpringDocConfigProperties.class);
-		
+
 		if (result.isBound() && springDocConfigPropertiesBindResult.isBound()) {
 			WebEndpointProperties webEndpointProperties = result.get();
 			SpringDocConfigProperties springDocConfigProperties = springDocConfigPropertiesBindResult.get();
 			List<GroupedOpenApi> newGroups = new ArrayList<>();
-			
+
 			ActuatorOperationCustomizer actuatorCustomizer = new ActuatorOperationCustomizer(springDocConfigProperties);
 			beanFactory.registerSingleton("actuatorCustomizer", actuatorCustomizer);
 

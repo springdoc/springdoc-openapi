@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app44;
@@ -46,7 +46,7 @@ class HelloController {
 	/**
 	 * Hello response entity.
 	 *
-	 * @param request the request 
+	 * @param request the request
 	 * @return the response entity
 	 */
 	@PostMapping(value = "/helloworld", produces = "application/json", consumes = "application/vnd.v1+json")
@@ -64,7 +64,7 @@ class HelloController {
 	/**
 	 * Hello response entity.
 	 *
-	 * @param request the request 
+	 * @param request the request
 	 * @return the response entity
 	 */
 	@PostMapping(value = "/helloworld", produces = "application/json", consumes = "application/vnd.v2+json")

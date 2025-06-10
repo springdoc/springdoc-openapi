@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webmvc.ui;
@@ -102,10 +102,10 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param request                   the request
 	 */
-	void  buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, HttpServletRequest request) {
+	void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, HttpServletRequest request) {
 		super.init(swaggerUiConfigParameters);
 		swaggerUiConfigParameters.setContextPath(request.getContextPath());
 		buildConfigUrl(swaggerUiConfigParameters, ServletUriComponentsBuilder.fromCurrentContextPath());
 	}
-	
+
 }

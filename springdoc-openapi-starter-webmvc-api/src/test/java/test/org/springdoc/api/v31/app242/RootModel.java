@@ -5,37 +5,37 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 public class RootModel {
 
-    private Integer rootProperty;
+	private Integer rootProperty;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JsonUnwrapped
-    private UnwrappedModelOne unwrappedModelOne;
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonUnwrapped
+	private UnwrappedModelOne unwrappedModelOne;
 
-    private UnwrappedModelTwo unwrappedModelTwo;
+	private UnwrappedModelTwo unwrappedModelTwo;
 
-    public Integer getRootProperty() {
-        return rootProperty;
-    }
+	public Integer getRootProperty() {
+		return rootProperty;
+	}
 
-    public void setRootProperty(Integer rootProperty) {
-        this.rootProperty = rootProperty;
-    }
+	public void setRootProperty(Integer rootProperty) {
+		this.rootProperty = rootProperty;
+	}
 
-    public UnwrappedModelOne getUnwrappedModelOne() {
-        return unwrappedModelOne;
-    }
+	public UnwrappedModelOne getUnwrappedModelOne() {
+		return unwrappedModelOne;
+	}
 
-    public void setUnwrappedModelOne(UnwrappedModelOne unwrappedModelOne) {
-        this.unwrappedModelOne = unwrappedModelOne;
-    }
+	public void setUnwrappedModelOne(UnwrappedModelOne unwrappedModelOne) {
+		this.unwrappedModelOne = unwrappedModelOne;
+	}
 
-    public UnwrappedModelTwo getUnwrappedModelTwo() {
-        return unwrappedModelTwo;
-    }
+	public UnwrappedModelTwo getUnwrappedModelTwo() {
+		return unwrappedModelTwo;
+	}
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JsonUnwrapped
-    public void setUnwrappedModelTwo(UnwrappedModelTwo unwrappedModelTwo) {
-        this.unwrappedModelTwo = unwrappedModelTwo;
-    }
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@JsonUnwrapped
+	public void setUnwrappedModelTwo(UnwrappedModelTwo unwrappedModelTwo) {
+		this.unwrappedModelTwo = unwrappedModelTwo;
+	}
 }

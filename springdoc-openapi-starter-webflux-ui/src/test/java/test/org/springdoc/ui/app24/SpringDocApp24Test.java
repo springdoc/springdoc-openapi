@@ -40,7 +40,7 @@ public class SpringDocApp24Test extends AbstractSpringDocTest {
 				.jsonPath("$.url").isEqualTo("/api-docs/xxx/v1/openapi.yml")
 				.jsonPath("$.configUrl").isEqualTo("/api-docs/swagger-config")
 				.jsonPath("$.validatorUrl").isEqualTo("")
-                .jsonPath("$.oauth2RedirectUrl").isEqualTo("/swagger-ui/oauth2-redirect.html");
+				.jsonPath("$.oauth2RedirectUrl").isEqualTo("/swagger-ui/oauth2-redirect.html");
 	}
 
 	@SpringBootApplication

@@ -49,7 +49,7 @@ public class HelloController {
 					@Header(name = "Location", required = true, schema = @Schema(type = "string"))
 			}
 	)
-	public void uploadMultipartWithBody(){
+	public void uploadMultipartWithBody() {
 	}
 
 	@GetMapping
@@ -61,6 +61,7 @@ public class HelloController {
 					@ExampleObject(value = "BBB", name = "Second"),
 					@ExampleObject(value = "CCC", name = "Third")
 			})
-	void nope() {}
+	void nope() {
+	}
 
 }

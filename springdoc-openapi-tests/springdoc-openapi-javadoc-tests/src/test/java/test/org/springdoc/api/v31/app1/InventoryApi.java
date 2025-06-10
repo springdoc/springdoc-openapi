@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 /**
@@ -74,8 +74,8 @@ public interface InventoryApi {
 	 * Search inventory response entity.
 	 *
 	 * @param searchString the search string
-	 * @param skip the skip
-	 * @param limit the limit
+	 * @param skip         the skip
+	 * @param limit        the limit
 	 * @return the response entity
 	 */
 	@Operation(description = "searches inventory", operationId = "searchInventory", summary = "By passing in the appropriate options, you can search for available inventory in the system ", tags = {

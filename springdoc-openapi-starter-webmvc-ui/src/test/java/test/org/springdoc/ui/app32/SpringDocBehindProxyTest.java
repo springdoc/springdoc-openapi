@@ -92,7 +92,8 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 						.andExpect(content().string(
 								containsString("\"configUrl\" : \"/path/prefix" + i + "/v3/api-docs/swagger-config\",")
 						));
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		})).toArray(CompletableFuture<?>[]::new);
@@ -113,14 +114,15 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 						.andExpect(jsonPath("configUrl",
 								equalTo("/path/prefix" + i + "/v3/api-docs/swagger-config")
 						));
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		})).toArray(CompletableFuture<?>[]::new);
 
 		CompletableFuture.allOf(tasks).join();
 	}
-	
+
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 }

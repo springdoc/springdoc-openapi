@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class TestController {
 
-    @GetMapping
-    public RootModel getRootModel() {
-        return new RootModel();
-    }
+	@GetMapping
+	public RootModel getRootModel() {
+		return new RootModel();
+	}
 }

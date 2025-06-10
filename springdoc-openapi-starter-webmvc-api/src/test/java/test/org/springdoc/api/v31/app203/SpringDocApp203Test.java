@@ -39,14 +39,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = { "springdoc.group-configs[0].group=mygroup", "springdoc.group-configs[0].paths-to-match=/test" })
 public class SpringDocApp203Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	@Import({
-			OrderDemo.Customizer1.class,
-			OrderDemo.Customizer2.class,
-			OrderDemo.Customizer3.class,
-	})
-	static class SpringDocTestApp {}
-
 	@Test
 	void testApp1() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/mygroup"))
@@ -54,4 +46,12 @@ public class SpringDocApp203Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("$.openapi", is("3.1.0")))
 				.andExpect(content().json(getContent("results/3.1.0/app203.json"), true));
 	}
+
+	@SpringBootApplication
+	@Import({
+			OrderDemo.Customizer1.class,
+			OrderDemo.Customizer2.class,
+			OrderDemo.Customizer3.class,
+	})
+	static class SpringDocTestApp {}
 }

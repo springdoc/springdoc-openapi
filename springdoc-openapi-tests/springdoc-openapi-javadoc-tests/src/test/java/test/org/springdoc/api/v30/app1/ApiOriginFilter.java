@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app1;
@@ -42,10 +42,10 @@ class ApiOriginFilter implements jakarta.servlet.Filter {
 	/**
 	 * Do filter.
 	 *
-	 * @param request the request
+	 * @param request  the request
 	 * @param response the response
-	 * @param chain the chain
-	 * @throws IOException the io exception
+	 * @param chain    the chain
+	 * @throws IOException      the io exception
 	 * @throws ServletException the servlet exception
 	 */
 	@Override

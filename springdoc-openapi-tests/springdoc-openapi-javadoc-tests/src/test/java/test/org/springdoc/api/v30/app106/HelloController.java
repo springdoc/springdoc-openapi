@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app106;
@@ -48,7 +48,7 @@ class HelloController {
 	/**
 	 * Find articles response entity.
 	 *
-	 * @param modifiedSince the modified since 
+	 * @param modifiedSince the modified since
 	 * @return the response entity
 	 */
 	@Operation(summary = "find-articles")

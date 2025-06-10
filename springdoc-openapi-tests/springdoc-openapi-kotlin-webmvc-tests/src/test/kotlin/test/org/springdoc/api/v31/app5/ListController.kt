@@ -26,6 +26,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/test")
 class ListController {
 
-    @GetMapping("/")
-    fun foo(): List<Int> = listOf(1, 2, 3)
+	@GetMapping("/")
+	fun foo(): List<Int> = listOf(1, 2, 3)
 }

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.customizers;
@@ -65,8 +65,8 @@ import org.springframework.data.web.SortDefault;
 /**
  * The type Data rest delegating method parameter customizer.
  *
- *  @author bnasslahsen
- *  @author pheyken
+ * @author bnasslahsen
+ * @author pheyken
  */
 public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMethodParameterCustomizer {
 
@@ -192,12 +192,12 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				@Override
 				public Schema schema() {
 					return new Schema() {
+						private Schema parameterSchema = parameter.schema();
+
 						@Override
 						public SchemaResolution schemaResolution() {
 							return parameterSchema.schemaResolution();
 						}
-
-						private Schema parameterSchema = parameter.schema();
 
 						@Override
 						public Class<? extends Annotation> annotationType() {
@@ -1142,7 +1142,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				if (pageableDefault != null) {
 					if (isSpringDataWebPropertiesPresent() && optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters()) {
 						defaultValue = String.valueOf(pageableDefault.page() + 1);
-					} else {
+					}
+					else {
 						defaultValue = String.valueOf(pageableDefault.page());
 					}
 				}

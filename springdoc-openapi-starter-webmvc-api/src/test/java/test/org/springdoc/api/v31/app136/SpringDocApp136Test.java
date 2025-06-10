@@ -52,7 +52,7 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_CACHE_DISABLED;
 /**
  * Tests deterministic creation of operationIds
  */
-@SpringBootTest(properties = { SPRINGDOC_CACHE_DISABLED + "=true", "springdoc.api-docs.version=openapi_3_1"  })
+@SpringBootTest(properties = { SPRINGDOC_CACHE_DISABLED + "=true", "springdoc.api-docs.version=openapi_3_1" })
 public class SpringDocApp136Test extends AbstractCommonTest {
 
 	@Autowired

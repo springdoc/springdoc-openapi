@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app69;
@@ -42,7 +42,7 @@ class HelloController {
 	/**
 	 * Gets tasks.
 	 *
-	 * @param str the str 
+	 * @param str the str
 	 * @return the tasks
 	 */
 	@RequestMapping(value = "/tasks", method = RequestMethod.GET)

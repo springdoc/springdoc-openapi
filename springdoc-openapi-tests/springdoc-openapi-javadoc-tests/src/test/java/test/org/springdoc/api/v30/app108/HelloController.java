@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app108;
@@ -38,7 +38,7 @@ class HelloController {
 	/**
 	 * Update action result.
 	 *
-	 * @param toto the toto 
+	 * @param toto the toto
 	 * @return the action result
 	 */
 	@PostMapping

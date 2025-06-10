@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app153;
@@ -35,11 +35,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(type = "string", allowableValues = { "finished", "new" })
 public enum OrderState {
 	/**
-	 *Finished order state.
+	 * Finished order state.
 	 */
 	FINISHED("finished"),
 	/**
-	 *New order state.
+	 * New order state.
 	 */
 	NEW("new");
 

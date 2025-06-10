@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app9;
@@ -40,7 +40,7 @@ class MyApiController implements MyApi {
 	/**
 	 * Get string.
 	 *
-	 * @param language the language 
+	 * @param language the language
 	 * @return the string
 	 */
 	public String get(String language) {
@@ -51,7 +51,7 @@ class MyApiController implements MyApi {
 	/**
 	 * Gets code.
 	 *
-	 * @param code the code 
+	 * @param code the code
 	 * @return the code
 	 */
 	@Operation(description = "Annotations from class with hidden parameter code")

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app164.rest.util;
@@ -37,14 +37,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * REST exception handlers.
- *
  * This javadoc description is ignored by the REST documentation.
  */
 @RestControllerAdvice
 class RestExceptionHandler {
 	/**
 	 * REST exception handler for {@code NoResultException}.
-	 *
 	 * This javadoc description is ignored by the REST documentation.
 	 *
 	 * @return the {@code return} javadoc for the {@code #handleNotFoundException(NoResultException)} method
@@ -57,7 +55,6 @@ class RestExceptionHandler {
 
 	/**
 	 * REST exception handler for {@code NonUniqueResultException}.
-	 *
 	 * This javadoc description is ignored by the REST documentation.
 	 *
 	 * @return the {@code return} javadoc for the {@code #handleNonUniqueResultException(NonUniqueResultException)} method

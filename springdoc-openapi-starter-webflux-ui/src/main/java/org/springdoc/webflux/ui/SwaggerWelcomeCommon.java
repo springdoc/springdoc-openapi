@@ -128,7 +128,8 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 		int endIndex = url.indexOf(target) + target.length();
 		if (endIndex > 0) {
 			url = url.substring(0, endIndex);
-		} else {
+		}
+		else {
 			url = url.replace(request.getPath().toString(), "");
 		}
 		buildConfigUrl(swaggerUiConfigParameters, UriComponentsBuilder.fromUriString(url));

@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 				"server.servlet.context-path=/demo/api", "management.server.port=9302", "management.server.base-path=/demo/api",
 				"springdoc.swagger-ui.urls[0].url=/api-docs/xxx/v1/openapi.yml",
 				"springdoc.swagger-ui.urls[0].name=toto",
-})
+		})
 public class SpringDocSwaggerConfigWithBothFileGeneratedSpecsTest extends AbstractSpringDocActuatorTest {
 
 	@Test

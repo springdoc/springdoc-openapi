@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.converters;
@@ -81,9 +81,10 @@ public class PageOpenAPIConverter implements ModelConverter {
 
 	/**
 	 * Resolve schema.
-	 * @param type the type
+	 *
+	 * @param type    the type
 	 * @param context the context
-	 * @param chain the chain
+	 * @param chain   the chain
 	 * @return the schema
 	 */
 	@Override
@@ -108,7 +109,7 @@ public class PageOpenAPIConverter implements ModelConverter {
 	 * @return the annotated type
 	 */
 	private AnnotatedType resolvePagedModelType(JavaType type) {
-		if(type.hasGenericTypes()){
+		if (type.hasGenericTypes()) {
 			JavaType innerType = type.containedType(0);
 			Type pagedModelType = ResolvableType
 					.forClassWithGenerics(PagedModel.class, ResolvableType.forType(innerType))

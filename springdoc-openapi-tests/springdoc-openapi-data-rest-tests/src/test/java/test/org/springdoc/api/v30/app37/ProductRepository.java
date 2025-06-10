@@ -21,13 +21,13 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app37;
 
 /**
- * @author bnasslahsen
+ *
  */
 
 import java.math.BigDecimal;
@@ -51,13 +51,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 @RepositoryRestResource(path = "product")
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
-	List<ProductEntity> findByPrice( @Parameter(
+	List<ProductEntity> findByPrice(@Parameter(
 			name = "price",
 			description = "test desc",
 			in = ParameterIn.QUERY,
 			required = true
 	)
 	@Param("price") BigDecimal price);
+
 	/**
 	 * 根据商品名称查询商品信息
 	 *
@@ -110,6 +111,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 	 */
 	List<ProductEntity> findByNameContainingIgnoreCaseAndDateBefore(
 			@Parameter(name = "name2", required = true) String name,
-			@Parameter(name = "end2", required = true) @DateTimeFormat(pattern =  DateTokenConverter.DEFAULT_DATE_PATTERN) @Param("end") LocalDate end);
+			@Parameter(name = "end2", required = true) @DateTimeFormat(pattern = DateTokenConverter.DEFAULT_DATE_PATTERN) @Param("end") LocalDate end);
 
 }

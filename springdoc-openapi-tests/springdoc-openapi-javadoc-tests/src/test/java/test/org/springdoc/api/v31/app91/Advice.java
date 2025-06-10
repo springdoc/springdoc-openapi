@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app91;
@@ -49,8 +49,8 @@ class Advice {
 	/**
 	 * Bad request response entity.
 	 *
-	 * @param req the req 
-	 * @param exception the exception 
+	 * @param req       the req
+	 * @param exception the exception
 	 * @return the response entity
 	 */
 	@ExceptionHandler(TypeMismatchException.class)
@@ -80,8 +80,8 @@ class Advice {
 	/**
 	 * Internal server error response entity.
 	 *
-	 * @param req the req 
-	 * @param exception the exception 
+	 * @param req       the req
+	 * @param exception the exception
 	 * @return the response entity
 	 */
 	@ExceptionHandler(Exception.class)

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app122;
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The type Wrapper.
  *
- * @param <D>  the type parameter
+ * @param <D> the type parameter
  */
 class Wrapper<D> {
 

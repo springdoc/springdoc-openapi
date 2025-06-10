@@ -56,38 +56,38 @@ public class HelloController {
 )
 sealed class SuperClass {
 
+	public static final String SCHEMA_NAME = "SuperClass";
+
+	public String type;
+
 	@Schema(requiredMode = Schema.RequiredMode.REQUIRED)
 	public String getType() {
 		return type;
 	}
-
-	public String type;
-
-	public static final String SCHEMA_NAME = "SuperClass";
 }
 
 @Schema(name = FirstChildClass.SCHEMA_NAME)
 final class FirstChildClass extends SuperClass {
 
+	public static final String SCHEMA_NAME = "Image";
+
+	public String type;
+
 	@Schema(requiredMode = Schema.RequiredMode.REQUIRED)
 	public String getType() {
 		return type;
 	}
-
-	public String type;
-
-	public static final String SCHEMA_NAME = "Image";
 }
 
 @Schema(name = SecondChildClass.SCHEMA_NAME)
 final class SecondChildClass extends SuperClass {
 
+	public static final String SCHEMA_NAME = "Mail";
+
+	public String type;
+
 	@Schema(requiredMode = Schema.RequiredMode.REQUIRED)
 	public String getType() {
 		return type;
 	}
-
-	public String type;
-
-	public static final String SCHEMA_NAME = "Mail";
 }

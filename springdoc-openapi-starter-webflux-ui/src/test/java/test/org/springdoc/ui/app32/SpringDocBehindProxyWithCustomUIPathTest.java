@@ -43,13 +43,13 @@ public class SpringDocBehindProxyWithCustomUIPathTest extends AbstractSpringDocT
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
 				.expectStatus().isFound()
-                .expectHeader().location("/path/prefix/foo/documentation/swagger-ui/index.html");
+				.expectHeader().location("/path/prefix/foo/documentation/swagger-ui/index.html");
 	}
 
 	@Test
 	void shouldReturnCorrectInitializerJS() {
 		webTestClient
-                .get().uri("/foo/documentation/swagger-ui/swagger-initializer.js")
+				.get().uri("/foo/documentation/swagger-ui/swagger-initializer.js")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
 				.expectStatus().isOk()

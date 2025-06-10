@@ -138,7 +138,7 @@ public class SpringDocDataRestUtils {
 			entityInfo.setAssociationsFields(associationsFields);
 			entityInoMap.put(domainType.getSimpleName(), entityInfo);
 		}
-		
+
 		openAPI.getPaths().entrySet().stream()
 				.forEach(stringPathItemEntry -> {
 					PathItem pathItem = stringPathItemEntry.getValue();
@@ -246,7 +246,7 @@ public class SpringDocDataRestUtils {
 				Entry<String, Schema> entry = it.next();
 				String propId = entry.getKey();
 				if (entityInoMap.containsKey(key) && entityInoMap.get(key).getAssociationsFields().contains(propId)) {
-					if (entry.getValue().getItems()!=null)
+					if (entry.getValue().getItems() != null)
 						referencedSchema.addProperty(propId, new ArraySchema().items(new StringSchema()));
 					else
 						referencedSchema.addProperty(propId, new StringSchema());

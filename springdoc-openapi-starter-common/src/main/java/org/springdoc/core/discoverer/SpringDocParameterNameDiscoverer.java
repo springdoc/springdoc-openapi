@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 package org.springdoc.core.discoverer;
 
@@ -50,7 +50,7 @@ public class SpringDocParameterNameDiscoverer extends DefaultParameterNameDiscov
 	@Nullable
 	public String[] getParameterNames(Method method) {
 		String[] params = super.getParameterNames(method);
-		if(ArrayUtils.isEmpty(params) || Objects.requireNonNull(params).length!=method.getParameters().length)
+		if (ArrayUtils.isEmpty(params) || Objects.requireNonNull(params).length != method.getParameters().length)
 			params = standardReflectionParameterNameDiscoverer.getParameterNames(method);
 		return params;
 	}

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.customizers;
@@ -94,8 +94,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	 */
 	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory, SpringDocConfigProperties springDocConfigProperties) {
 		this.querydslBindingsFactory = querydslBindingsFactory;
-		this.springDocConfigProperties= springDocConfigProperties;
-		
+		this.springDocConfigProperties = springDocConfigProperties;
+
 	}
 
 	@Override
@@ -160,7 +160,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	private boolean getFieldValueOfBoolean(QuerydslBindings instance, String fieldName) {
 		try {
 			return (boolean) FieldUtils.readDeclaredField(instance, fieldName, true);
-		} catch (IllegalAccessException e) {
+		}
+		catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
 		}
 		return false;

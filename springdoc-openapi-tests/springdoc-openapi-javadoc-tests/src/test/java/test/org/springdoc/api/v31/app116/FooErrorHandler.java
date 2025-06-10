@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app116;
@@ -40,7 +40,7 @@ class FooErrorHandler {
 	/**
 	 * Store assignment publishing error response entity.
 	 *
-	 * @param e the e 
+	 * @param e the e
 	 * @return the response entity
 	 */
 	@ExceptionHandler

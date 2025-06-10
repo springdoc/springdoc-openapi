@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webmvc.ui;
@@ -74,7 +74,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 			ResourceTransformerChain transformerChain) throws IOException {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
 		swaggerWelcomeCommon.buildFromCurrentContextPath(swaggerUiConfigParameters, request);
-		
+
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
 

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app78;
@@ -43,7 +43,7 @@ class HelloController {
 	/**
 	 * Gets person 1.
 	 *
-	 * @param str the str 
+	 * @param str the str
 	 * @return the person 1
 	 */
 	@RequestMapping(value = "/person1", method = RequestMethod.GET)
@@ -54,7 +54,7 @@ class HelloController {
 	/**
 	 * Gets person 2.
 	 *
-	 * @param str the str 
+	 * @param str the str
 	 * @return the person 2
 	 */
 	@RequestMapping(value = "/person2", method = RequestMethod.GET)

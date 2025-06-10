@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app191.Handler;
@@ -34,12 +34,12 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Component
-public class GetNameHandler extends BaseHandler{
-    @Override
-    protected Mono<ServerResponse> apply(ServerRequest serverRequest) {
-        return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue("Name API is called");
-    }
+public class GetNameHandler extends BaseHandler {
+	@Override
+	protected Mono<ServerResponse> apply(ServerRequest serverRequest) {
+		return ServerResponse.ok()
+				.contentType(MediaType.APPLICATION_JSON)
+				.bodyValue("Name API is called");
+	}
 
 }

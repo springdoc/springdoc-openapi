@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app119;
@@ -45,9 +45,9 @@ class HelloController {
 	/**
 	 * Multi files in multi part string.
 	 *
-	 * @param jsonRequest the json request 
-	 * @param file1 the file 1 
-	 * @param file2 the file 2 
+	 * @param jsonRequest the json request
+	 * @param file1       the file 1
+	 * @param file2       the file 2
 	 * @return the string
 	 */
 	@Operation(summary = "Multiple files and JSON payloads as multi part request")

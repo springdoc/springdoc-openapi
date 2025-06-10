@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.ui;
@@ -64,7 +64,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	 * @param swaggerWelcomeCommon     the swagger welcome common
 	 * @param objectMapperProvider     the object mapper provider
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, 
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,
 			SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
 		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapperProvider);
 		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
@@ -74,7 +74,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	public Mono<Resource> transform(ServerWebExchange serverWebExchange, Resource resource, ResourceTransformerChain resourceTransformerChain) {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
 		swaggerWelcomeCommon.buildFromCurrentContextPath(swaggerUiConfigParameters, serverWebExchange.getRequest());
-		
+
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		try {
 			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());

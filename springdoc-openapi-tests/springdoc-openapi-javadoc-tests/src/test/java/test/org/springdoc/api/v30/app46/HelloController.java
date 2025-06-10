@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app46;
@@ -46,7 +46,7 @@ class HelloController {
 	/**
 	 * Persons string.
 	 *
-	 * @param subscriptionId the subscription id 
+	 * @param subscriptionId the subscription id
 	 * @return the string
 	 */
 	@GetMapping("/persons/{subscriptionId}")

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.configuration;
@@ -60,10 +60,10 @@ public final class SpringDocSecurityOAuth2EndpointUtils<T> {
 	 */
 	public Object findEndpoint(SecurityFilterChain filterChain) {
 		Optional<?> oAuth2EndpointFilterOptional =
-				 filterChain.getFilters().stream()
-				   .filter(((Class <?>) oauth2EndpointFilter)::isInstance)
-				   .map(((Class <?>) oauth2EndpointFilter)::cast)
-				   .findAny();
+				filterChain.getFilters().stream()
+						.filter(((Class<?>) oauth2EndpointFilter)::isInstance)
+						.map(((Class<?>) oauth2EndpointFilter)::cast)
+						.findAny();
 		return oAuth2EndpointFilterOptional.orElse(null);
 	}
 }

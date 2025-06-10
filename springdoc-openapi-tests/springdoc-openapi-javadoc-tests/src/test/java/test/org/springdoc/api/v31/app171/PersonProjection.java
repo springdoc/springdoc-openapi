@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app171;
@@ -32,19 +32,16 @@ package test.org.springdoc.api.v31.app171;
 public interface PersonProjection {
 	/**
 	 * The Email.
-	 *
 	 */
 	String getEmail();
 
 	/**
 	 * The First name.
-	 *
 	 */
 	String getFirstName();
 
 	/**
 	 * The Last name.
-	 *
 	 */
 	String getLastName();
 }

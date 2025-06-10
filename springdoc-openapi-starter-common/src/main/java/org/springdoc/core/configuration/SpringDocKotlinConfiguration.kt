@@ -87,7 +87,10 @@ class SpringDocKotlinConfiguration() {
 	fun nullableKotlinRequestParameterCustomizer(): ParameterCustomizer {
 		return ParameterCustomizer { parameterModel, methodParameter ->
 			if (parameterModel == null) return@ParameterCustomizer null
-			if (KotlinDetector.isKotlinReflectPresent() && KotlinDetector.isKotlinType(methodParameter.parameterType)) {
+			if (KotlinDetector.isKotlinReflectPresent() && KotlinDetector.isKotlinType(
+					methodParameter.parameterType
+				)
+			) {
 				val kParameter = methodParameter.toKParameter()
 				if (kParameter != null) {
 					val parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
@@ -104,10 +107,11 @@ class SpringDocKotlinConfiguration() {
 					// parameter is not required if a default value is provided in @RequestParam
 					else if (requestParam != null && requestParam.defaultValue != ValueConstants.DEFAULT_NONE)
 						parameterModel.required = false
-					else{
-						val isJavaNullableAnnotationPresent = methodParameter.parameterAnnotations.any {
-							it.annotationClass.qualifiedName == "jakarta.annotation.Nullable"
-						}
+					else {
+						val isJavaNullableAnnotationPresent =
+							methodParameter.parameterAnnotations.any {
+								it.annotationClass.qualifiedName == "jakarta.annotation.Nullable"
+							}
 						parameterModel.required =
 							kParameter.type.isMarkedNullable == false && !isJavaNullableAnnotationPresent
 					}

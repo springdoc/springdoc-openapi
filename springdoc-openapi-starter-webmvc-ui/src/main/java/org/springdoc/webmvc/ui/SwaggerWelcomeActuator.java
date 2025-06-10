@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webmvc.ui;
@@ -69,7 +69,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 * @param springDocConfigProperties the swagger ui config parameters
 	 * @param webEndpointProperties     the web endpoint properties
 	 */
-	public SwaggerWelcomeActuator(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,WebEndpointProperties webEndpointProperties) {
+	public SwaggerWelcomeActuator(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, WebEndpointProperties webEndpointProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
 		this.webEndpointProperties = webEndpointProperties;
 	}

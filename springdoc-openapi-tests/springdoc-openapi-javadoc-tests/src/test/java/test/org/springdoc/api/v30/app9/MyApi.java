@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app9;
@@ -44,7 +44,7 @@ public interface MyApi {
 	/**
 	 * Get string.
 	 *
-	 * @param language the language 
+	 * @param language the language
 	 * @return the string
 	 */
 	@Operation(description = "Annotations from interfaces test")

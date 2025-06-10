@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app79;
@@ -42,7 +42,7 @@ class HelloController {
 	/**
 	 * Echo string.
 	 *
-	 * @param text the text 
+	 * @param text the text
 	 * @return the string
 	 */
 	@GetMapping(produces = MediaType.TEXT_PLAIN_VALUE, path = "/test")

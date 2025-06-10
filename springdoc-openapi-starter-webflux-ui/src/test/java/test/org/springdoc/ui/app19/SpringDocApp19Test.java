@@ -63,7 +63,7 @@ class SpringDocApp19Test extends AbstractCommonTest {
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
-        httpStatusMono = webClient.get().uri("/swagger-ui/index.html")
+		httpStatusMono = webClient.get().uri("/swagger-ui/index.html")
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);
 

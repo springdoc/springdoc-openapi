@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.providers;
@@ -120,7 +120,7 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 		Field convertersField = FieldUtils.getDeclaredField(GenericConversionService.class, CONVERTERS, true);
 		if (convertersField != null) {
 			Object converters;
-			if (!AopUtils.isAopProxy(formattingConversionService)){
+			if (!AopUtils.isAopProxy(formattingConversionService)) {
 				try {
 					converters = convertersField.get(formattingConversionService);
 					Map<ConvertiblePair, Object> springConverters = (Map<ConvertiblePair, Object>) FieldUtils.readDeclaredField(converters, CONVERTERS, true);

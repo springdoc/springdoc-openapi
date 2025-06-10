@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30;
@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@TestPropertySource(properties = { "management.endpoints.enabled-by-default=false" ,  "springdoc.api-docs.version=openapi_3_0" })
+@TestPropertySource(properties = { "management.endpoints.enabled-by-default=false", "springdoc.api-docs.version=openapi_3_0" })
 public abstract class AbstractCommonTest {
 
 	@Autowired

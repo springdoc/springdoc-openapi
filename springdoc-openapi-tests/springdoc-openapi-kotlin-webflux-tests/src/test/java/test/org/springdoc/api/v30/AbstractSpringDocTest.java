@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30;
@@ -47,7 +47,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @WebFluxTest
 @ActiveProfiles("test")
-@TestPropertySource(properties =  "springdoc.api-docs.version=openapi_3_0" )
+@TestPropertySource(properties = "springdoc.api-docs.version=openapi_3_0")
 public abstract class AbstractSpringDocTest {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);

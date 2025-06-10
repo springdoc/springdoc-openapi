@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/sysUser")
 public class SysUserController extends SuperController<SysUser> {
 
-	
+
 }

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app89;
@@ -43,7 +43,7 @@ class HelloController {
 	/**
 	 * Gets address.
 	 *
-	 * @param id the id 
+	 * @param id the id
 	 * @return the address
 	 */
 	@Operation(summary = "Get Status")

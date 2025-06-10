@@ -32,7 +32,7 @@ import org.springframework.test.context.TestPropertySource;
 /**
  * In this test, it is checked that the error handler is displayed correctly in the documentation.
  * Exactly, that the local handler takes precedence over the global one
- * */
+ */
 @TestPropertySource(properties = "springdoc.api-docs.resolve-schema-properties=true")
 public class SpringDocApp166Test extends AbstractSpringDocTest {
 

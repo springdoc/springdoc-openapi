@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app118;
@@ -42,7 +42,7 @@ class Controller {
 	/**
 	 * Abstract parent response.
 	 *
-	 * @param payload the payload 
+	 * @param payload the payload
 	 * @return the response
 	 */
 	@PostMapping("abstract-parent")
@@ -53,7 +53,7 @@ class Controller {
 	/**
 	 * Concrete parent response.
 	 *
-	 * @param payload the payload 
+	 * @param payload the payload
 	 * @return the response
 	 */
 	@PostMapping("concrete-parent")

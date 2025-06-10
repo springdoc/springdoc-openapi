@@ -7,6 +7,6 @@ import test.org.springdoc.api.v30.AbstractKotlinSpringDocMVCTest
 
 @TestPropertySource(properties = ["$SPRINGDOC_DEFAULT_FLAT_PARAM_OBJECT=true"])
 class SpringDocApp16Test : AbstractKotlinSpringDocMVCTest() {
-    @SpringBootApplication
-    class DemoApplication
+	@SpringBootApplication
+	class DemoApplication
 }

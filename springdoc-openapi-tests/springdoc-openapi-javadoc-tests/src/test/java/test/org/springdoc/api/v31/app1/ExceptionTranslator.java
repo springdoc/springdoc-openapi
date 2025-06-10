@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app1;
@@ -65,7 +65,7 @@ class ExceptionTranslator {
 	 * Error response entity.
 	 *
 	 * @param status the status
-	 * @param e the e
+	 * @param e      the e
 	 * @return the response entity
 	 */
 	private ResponseEntity<ErrorMessage> error(HttpStatus status, Exception e) {

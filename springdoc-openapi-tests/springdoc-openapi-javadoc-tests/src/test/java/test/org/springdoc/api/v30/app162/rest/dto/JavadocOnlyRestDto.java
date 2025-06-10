@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app162.rest.dto;
@@ -37,7 +37,6 @@ public class JavadocOnlyRestDto {
 
 	/**
 	 * This is the private {@code #inner} field's javadoc.
-	 *
 	 * This javadoc description is ignored by the REST documentation:
 	 * the {@code $ref} can't have a description as any sibling elements of a $ref are ignored.
 	 */

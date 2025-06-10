@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webmvc.api;
@@ -90,7 +90,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			GenericResponseService responseBuilder, OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties,
 			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,  springDocConfigProperties, springDocProviders, springDocCustomizers);
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -123,8 +123,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	public byte[] openapiJson(HttpServletRequest request,
 			String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		String serverBaseUrl=calculateServerUrl(request, apiDocsUrl, locale);
-		OpenAPI openAPI = this.getOpenApi(serverBaseUrl,locale);
+		String serverBaseUrl = calculateServerUrl(request, apiDocsUrl, locale);
+		OpenAPI openAPI = this.getOpenApi(serverBaseUrl, locale);
 		return writeJsonValue(openAPI);
 	}
 
@@ -140,7 +140,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	public byte[] openapiYaml(HttpServletRequest request,
 			String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		String serverBaseUrl=calculateServerUrl(request, apiDocsUrl, locale);
+		String serverBaseUrl = calculateServerUrl(request, apiDocsUrl, locale);
 		OpenAPI openAPI = this.getOpenApi(serverBaseUrl, locale);
 		return writeYamlValue(openAPI);
 	}
@@ -168,9 +168,9 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
 				Map<RequestMappingInfo, HandlerMethod> actuatorMap = actuatorProviderOptional.get().getMethods();
 				List<RequestMappingInfo> globMatchActuators = actuatorMap.keySet().stream()
-					.filter(requestMappingInfo -> requestMappingInfo.getPatternValues().stream()
-						.anyMatch(patternValues -> patternValues.contains("**")))
-					.toList();
+						.filter(requestMappingInfo -> requestMappingInfo.getPatternValues().stream()
+								.anyMatch(patternValues -> patternValues.contains("**")))
+						.toList();
 				globMatchActuators.forEach(actuatorMap::remove);
 				this.openAPIService.addTag(new HashSet<>(actuatorMap.values()), getTag());
 				map.putAll(actuatorMap);

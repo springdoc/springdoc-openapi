@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.fn.builders.arrayschema;
@@ -79,17 +79,17 @@ public class Builder {
 	/**
 	 * The Max contain.
 	 */
-	private int maxContains= 0;
+	private int maxContains = 0;
 
 	/**
 	 * The Min contains.
 	 */
-	private int minContains= 0;
+	private int minContains = 0;
 
 	/**
 	 * The Unevaluated items.
 	 */
-	private Schema unevaluatedItems= org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+	private Schema unevaluatedItems = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * The Prefix items.

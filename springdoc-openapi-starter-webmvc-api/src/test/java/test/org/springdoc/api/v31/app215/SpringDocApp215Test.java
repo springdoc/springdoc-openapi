@@ -30,15 +30,15 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLE_DEFAULT_API_DO
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(properties = SPRINGDOC_ENABLE_DEFAULT_API_DOCS+"=false")
+@WebMvcTest(properties = SPRINGDOC_ENABLE_DEFAULT_API_DOCS + "=false")
 public class SpringDocApp215Test extends AbstractCommonTest {
-
-	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc" })
-	static class SpringDocTestApp {}
 
 	@Test
 	void test_disable_default_api_docs() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isNotFound());
 	}
+
+	@SpringBootApplication
+	@ComponentScan(basePackages = { "org.springdoc" })
+	static class SpringDocTestApp {}
 }

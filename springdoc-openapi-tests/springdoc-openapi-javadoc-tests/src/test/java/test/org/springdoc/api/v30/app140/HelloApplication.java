@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app140;
@@ -68,9 +68,9 @@ class HelloApplication {
 	/**
 	 * Filter server response.
 	 *
-	 * @param serverRequest the server request 
-	 * @param handlerFunction the handler function 
-	 * @return the server response 
+	 * @param serverRequest   the server request
+	 * @param handlerFunction the handler function
+	 * @return the server response
 	 * @throws Exception the exception
 	 */
 	private static ServerResponse filter(ServerRequest serverRequest, HandlerFunction<ServerResponse> handlerFunction) throws Exception {
@@ -80,7 +80,7 @@ class HelloApplication {
 	/**
 	 * Routes router function.
 	 *
-	 * @param ph the ph 
+	 * @param ph the ph
 	 * @return the router function
 	 */
 	@Bean
@@ -107,10 +107,10 @@ class SimpleFilter extends GenericFilter {
 	/**
 	 * Do filter.
 	 *
-	 * @param req the req 
-	 * @param res the res 
-	 * @param filterChain the filter chain 
-	 * @throws IOException the io exception 
+	 * @param req         the req
+	 * @param res         the res
+	 * @param filterChain the filter chain
+	 * @throws IOException      the io exception
 	 * @throws ServletException the servlet exception
 	 */
 	@Override
@@ -143,7 +143,7 @@ class PersonHandler {
 	/**
 	 * Handle get all people server response.
 	 *
-	 * @param serverRequest the server request 
+	 * @param serverRequest the server request
 	 * @return the server response
 	 */
 	ServerResponse handleGetAllPeople(ServerRequest serverRequest) {
@@ -153,10 +153,10 @@ class PersonHandler {
 	/**
 	 * Handle post person server response.
 	 *
-	 * @param r the r 
-	 * @return the server response 
-	 * @throws ServletException the servlet exception 
-	 * @throws IOException the io exception
+	 * @param r the r
+	 * @return the server response
+	 * @throws ServletException the servlet exception
+	 * @throws IOException      the io exception
 	 */
 	ServerResponse handlePostPerson(ServerRequest r) throws ServletException, IOException {
 		Person result = personService.save(new Person(null, r.body(Person.class).getName()));
@@ -167,7 +167,7 @@ class PersonHandler {
 	/**
 	 * Handle get person by id server response.
 	 *
-	 * @param r the r 
+	 * @param r the r
 	 * @return the server response
 	 */
 	ServerResponse handleGetPersonById(ServerRequest r) {
@@ -184,7 +184,7 @@ class GreetingsRestController {
 	/**
 	 * Greet string.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the string
 	 */
 	@GetMapping("/greet/{name}")
@@ -217,7 +217,7 @@ class PersonService {
 	/**
 	 * Save person.
 	 *
-	 * @param p the p 
+	 * @param p the p
 	 * @return the person
 	 */
 	Person save(Person p) {
@@ -238,7 +238,7 @@ class PersonService {
 	/**
 	 * By id person.
 	 *
-	 * @param id the id 
+	 * @param id the id
 	 * @return the person
 	 */
 	Person byId(@Parameter(in = ParameterIn.PATH) Long id) {
@@ -268,7 +268,7 @@ class Person {
 	/**
 	 * Instantiates a new Person.
 	 *
-	 * @param id the id
+	 * @param id   the id
 	 * @param name the name
 	 */
 	public Person(Long id, String name) {

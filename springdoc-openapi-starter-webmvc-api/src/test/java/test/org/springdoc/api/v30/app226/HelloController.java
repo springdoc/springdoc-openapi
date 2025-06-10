@@ -28,7 +28,7 @@ public class HelloController {
 							examples =
 							@ExampleObject(
 									name = "success",
-									value ="..."))
+									value = "..."))
 			}
 	)
 	public Map<String, String> HelloController() {

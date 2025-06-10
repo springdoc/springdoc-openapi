@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 package test.org.springdoc.api.v31.app10;
 
@@ -38,21 +38,18 @@ import com.nimbusds.jose.jwk.RSAKey;
  * @author Joe Grandja
  * @since 0.1.0
  */
-public final class Jwks
-{
-    private Jwks()
-    {
-        //final class constructor should be hidden
-    }
+public final class Jwks {
+	private Jwks() {
+		//final class constructor should be hidden
+	}
 
-    public static RSAKey generateRsa()
-    {
-        KeyPair keyPair = KeyGeneratorUtils.generateRsaKey();
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        return new RSAKey.Builder(publicKey)
-                .privateKey(privateKey)
-                .keyID(UUID.randomUUID().toString())
-                .build();
-    }
+	public static RSAKey generateRsa() {
+		KeyPair keyPair = KeyGeneratorUtils.generateRsaKey();
+		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+		return new RSAKey.Builder(publicKey)
+				.privateKey(privateKey)
+				.keyID(UUID.randomUUID().toString())
+				.build();
+	}
 }

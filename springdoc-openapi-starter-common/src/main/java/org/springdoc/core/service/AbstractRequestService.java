@@ -252,6 +252,17 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
+	 * deprecated use {@link SchemaUtils#hasNotNullAnnotation(Collection)}
+	 *
+	 * @param annotationSimpleNames the annotation simple names
+	 * @return boolean
+	 */
+	@Deprecated(forRemoval = true)
+	public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
+		return SchemaUtils.hasNotNullAnnotation(annotationSimpleNames);
+	}
+
+	/**
 	 * Build operation.
 	 *
 	 * @param handlerMethod    the handler method
@@ -625,7 +636,8 @@ public abstract class AbstractRequestService {
 					if (field != null) {
 						annotatedType = field.getAnnotatedType();
 					}
-				} else {
+				}
+				else {
 					java.lang.reflect.Parameter param = mp.getParameter();
 					annotatedType = param.getAnnotatedType();
 				}
@@ -796,16 +808,6 @@ public abstract class AbstractRequestService {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * deprecated use {@link SchemaUtils#hasNotNullAnnotation(Collection)}
-	 * @param annotationSimpleNames the annotation simple names
-	 * @return boolean
-	 */
-	@Deprecated(forRemoval = true)
-	public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
-		return SchemaUtils.hasNotNullAnnotation(annotationSimpleNames);
 	}
 
 }

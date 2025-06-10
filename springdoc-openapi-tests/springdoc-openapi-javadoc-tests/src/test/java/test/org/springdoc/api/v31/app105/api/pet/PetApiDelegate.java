@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app105.api.pet;
@@ -70,8 +70,8 @@ public interface PetApiDelegate {
 	/**
 	 * Delete pet response entity.
 	 *
-	 * @param petId the pet id 
-	 * @param apiKey the api key 
+	 * @param petId  the pet id
+	 * @param apiKey the api key
 	 * @return the response entity
 	 * @see PetApi#deletePet PetApi#deletePet
 	 */
@@ -84,7 +84,7 @@ public interface PetApiDelegate {
 	/**
 	 * Find pets by status response entity.
 	 *
-	 * @param status the status 
+	 * @param status the status
 	 * @return the response entity
 	 * @see PetApi#findPetsByStatus PetApi#findPetsByStatus
 	 */
@@ -115,7 +115,7 @@ public interface PetApiDelegate {
 	/**
 	 * Find pets by tags response entity.
 	 *
-	 * @param tags the tags 
+	 * @param tags the tags
 	 * @return the response entity
 	 * @see PetApi#findPetsByTags PetApi#findPetsByTags
 	 */
@@ -128,7 +128,7 @@ public interface PetApiDelegate {
 	/**
 	 * Gets pet by id.
 	 *
-	 * @param petId the pet id 
+	 * @param petId the pet id
 	 * @return the pet by id
 	 * @see PetApi#getPetById PetApi#getPetById
 	 */
@@ -141,7 +141,7 @@ public interface PetApiDelegate {
 	/**
 	 * Update pet response entity.
 	 *
-	 * @param pet the pet 
+	 * @param pet the pet
 	 * @return the response entity
 	 * @see PetApi#updatePet PetApi#updatePet
 	 */
@@ -153,9 +153,9 @@ public interface PetApiDelegate {
 	/**
 	 * Update pet with form response entity.
 	 *
-	 * @param petId the pet id 
-	 * @param name the name 
-	 * @param status the status 
+	 * @param petId  the pet id
+	 * @param name   the name
+	 * @param status the status
 	 * @return the response entity
 	 * @see PetApi#updatePetWithForm PetApi#updatePetWithForm
 	 */
@@ -169,9 +169,9 @@ public interface PetApiDelegate {
 	/**
 	 * Upload file response entity.
 	 *
-	 * @param petId the pet id 
-	 * @param additionalMetadata the additional metadata 
-	 * @param file the file 
+	 * @param petId              the pet id
+	 * @param additionalMetadata the additional metadata
+	 * @param file               the file
 	 * @return the response entity
 	 * @see PetApi#uploadFile PetApi#uploadFile
 	 */

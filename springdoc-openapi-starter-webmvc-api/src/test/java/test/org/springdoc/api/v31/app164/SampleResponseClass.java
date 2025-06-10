@@ -39,8 +39,8 @@ public class SampleResponseClass {
 
 	private boolean booleanValueAsFourthParameter;
 
-	@ArraySchema( arraySchema = @Schema( description = "${blahDescription.value}" ),
-			schema = @Schema( description = "${blahDescription.value}" ) )
+	@ArraySchema(arraySchema = @Schema(description = "${blahDescription.value}"),
+			schema = @Schema(description = "${blahDescription.value}"))
 	private List<String> listBlah;
 
 	public List<String> getListBlah() {

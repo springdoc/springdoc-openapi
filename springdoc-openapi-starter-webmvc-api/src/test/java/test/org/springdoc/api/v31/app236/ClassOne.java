@@ -5,8 +5,8 @@ import jakarta.validation.Valid;
 
 public class ClassOne {
 
-    @Valid
-    private ClassTwo description;
+	@Valid
+	private ClassTwo description;
 
 	public @Valid ClassTwo getDescription() {
 		return description;

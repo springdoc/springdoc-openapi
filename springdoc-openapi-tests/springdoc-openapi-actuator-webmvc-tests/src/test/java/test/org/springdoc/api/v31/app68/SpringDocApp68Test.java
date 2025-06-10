@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app68;
@@ -50,7 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = { SPRINGDOC_EXPLICIT_OBJECT_SCHEMA+"=true","management.endpoints.enabled-by-default=true", "springdoc.show-actuator=true" })
+@TestPropertySource(properties = { SPRINGDOC_EXPLICIT_OBJECT_SCHEMA + "=true", "management.endpoints.enabled-by-default=true", "springdoc.show-actuator=true" })
 public class SpringDocApp68Test extends AbstractSpringDocTest {
 
 	@AfterAll
@@ -62,7 +62,7 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 						.stream().filter(modelConverter -> modelConverter instanceof OAS31ModelConverter).findAny();
 		oas31ModelConverter.ifPresent(instance::removeConverter);
 	}
-	
+
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/stores"))

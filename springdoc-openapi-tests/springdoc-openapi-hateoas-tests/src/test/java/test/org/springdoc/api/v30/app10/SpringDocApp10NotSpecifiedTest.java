@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app10;
@@ -54,14 +54,14 @@ public class SpringDocApp10NotSpecifiedTest extends AbstractSpringDocTest {
 						.stream().filter(modelConverter -> modelConverter instanceof PageOpenAPIConverter).findAny();
 		pageOpenAPIConverter.ifPresent(ModelConverters.getInstance()::removeConverter);
 	}
-	
+
 	@Override
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.openapi", is("3.0.1")))
-			.andExpect(content().json(getContent("results/3.0.1/app10-direct.json"), true));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.openapi", is("3.0.1")))
+				.andExpect(content().json(getContent("results/3.0.1/app10-direct.json"), true));
 	}
 
 	@SpringBootApplication

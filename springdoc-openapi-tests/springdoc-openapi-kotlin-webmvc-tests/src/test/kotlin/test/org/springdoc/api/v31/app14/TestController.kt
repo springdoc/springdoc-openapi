@@ -32,8 +32,14 @@ data class KeyValue(
 
 @Schema
 data class SomeDTO(
-	@Schema(description = "Description A", allOf = [KeyValue::class]) val field_a: KeyValue,
-	@Schema(description = "Description B", allOf = [KeyValue::class]) val field_b: KeyValue,
+	@Schema(
+		description = "Description A",
+		allOf = [KeyValue::class]
+	) val field_a: KeyValue,
+	@Schema(
+		description = "Description B",
+		allOf = [KeyValue::class]
+	) val field_b: KeyValue,
 )
 
 @RestController

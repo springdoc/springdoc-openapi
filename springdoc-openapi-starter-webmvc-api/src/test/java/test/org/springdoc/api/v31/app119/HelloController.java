@@ -46,7 +46,7 @@ public class HelloController {
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public String multiFilesInMultiPart(
 			@RequestPart("params")
-			@RequestBody(content = @Content(encoding = @Encoding(name="params", contentType=MediaType.APPLICATION_JSON_VALUE)))
+			@RequestBody(content = @Content(encoding = @Encoding(name = "params", contentType = MediaType.APPLICATION_JSON_VALUE)))
 			@Parameter(
 					description = "This is the configuration",
 					content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)) final JsonRequest jsonRequest,

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app11;
@@ -48,7 +48,7 @@ class HelloController {
 	/**
 	 * Upload documents response entity.
 	 *
-	 * @param multipartFiles the multipart files 
+	 * @param multipartFiles the multipart files
 	 * @return the response entity
 	 */
 	@PostMapping(path = "/documents", consumes = "multipart/form-data")
@@ -59,7 +59,7 @@ class HelloController {
 	/**
 	 * Post track string.
 	 *
-	 * @param file the file 
+	 * @param file the file
 	 * @return the string
 	 */
 	@RequestMapping(value = "/tracks", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })

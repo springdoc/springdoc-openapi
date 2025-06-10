@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app1;
@@ -44,7 +44,7 @@ class ErrorMessage {
 	/**
 	 * Instantiates a new Error message.
 	 *
-	 * @param id the id
+	 * @param id       the id
 	 * @param message2 the message 2
 	 */
 	public ErrorMessage(String id, String message2) {

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app105.api.user;
@@ -57,7 +57,7 @@ public interface UserApiDelegate {
 	/**
 	 * Create user response entity.
 	 *
-	 * @param user the user 
+	 * @param user the user
 	 * @return the response entity
 	 * @see UserApi#createUser UserApi#createUser
 	 */
@@ -69,7 +69,7 @@ public interface UserApiDelegate {
 	/**
 	 * Create users with array input response entity.
 	 *
-	 * @param user the user 
+	 * @param user the user
 	 * @return the response entity
 	 * @see UserApi#createUsersWithArrayInput UserApi#createUsersWithArrayInput
 	 */
@@ -81,7 +81,7 @@ public interface UserApiDelegate {
 	/**
 	 * Create users with list input response entity.
 	 *
-	 * @param user the user 
+	 * @param user the user
 	 * @return the response entity
 	 * @see UserApi#createUsersWithListInput UserApi#createUsersWithListInput
 	 */
@@ -93,7 +93,7 @@ public interface UserApiDelegate {
 	/**
 	 * Delete user response entity.
 	 *
-	 * @param username the username 
+	 * @param username the username
 	 * @return the response entity
 	 * @see UserApi#deleteUser UserApi#deleteUser
 	 */
@@ -105,7 +105,7 @@ public interface UserApiDelegate {
 	/**
 	 * Gets user by name.
 	 *
-	 * @param username the username 
+	 * @param username the username
 	 * @return the user by name
 	 * @see UserApi#getUserByName UserApi#getUserByName
 	 */
@@ -129,8 +129,8 @@ public interface UserApiDelegate {
 	/**
 	 * Login user response entity.
 	 *
-	 * @param username the username 
-	 * @param password the password 
+	 * @param username the username
+	 * @param password the password
 	 * @return the response entity
 	 * @see UserApi#loginUser UserApi#loginUser
 	 */
@@ -154,8 +154,8 @@ public interface UserApiDelegate {
 	/**
 	 * Update user response entity.
 	 *
-	 * @param username the username 
-	 * @param user the user 
+	 * @param username the username
+	 * @param user     the user
 	 * @return the response entity
 	 * @see UserApi#updateUser UserApi#updateUser
 	 */

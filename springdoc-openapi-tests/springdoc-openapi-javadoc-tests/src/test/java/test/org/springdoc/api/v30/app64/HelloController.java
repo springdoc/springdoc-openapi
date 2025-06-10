@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app64;
@@ -49,7 +49,7 @@ class HelloController {
 	/**
 	 * Test 2 string.
 	 *
-	 * @param from the from 
+	 * @param from the from
 	 * @return the string
 	 */
 	@GetMapping(value = "/api/balance/abcd")

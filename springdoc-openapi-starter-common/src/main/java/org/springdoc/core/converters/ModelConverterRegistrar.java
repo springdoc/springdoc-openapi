@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.converters;
@@ -44,14 +44,14 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 public class ModelConverterRegistrar {
 
 	/**
-	 * The constant modelConvertersInstance.
-	 */
-	private final ModelConverters modelConvertersInstance;
-
-	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModelConverterRegistrar.class);
+
+	/**
+	 * The constant modelConvertersInstance.
+	 */
+	private final ModelConverters modelConvertersInstance;
 
 	/**
 	 * Instantiates a new Model converter registrar.

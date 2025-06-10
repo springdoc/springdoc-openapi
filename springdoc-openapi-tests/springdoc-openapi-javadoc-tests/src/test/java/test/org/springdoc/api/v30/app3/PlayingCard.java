@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app3;
@@ -108,19 +108,19 @@ class PlayingCard {
 	 */
 	public enum Suit {
 		/**
-		 *Hearts suit.
+		 * Hearts suit.
 		 */
 		HEARTS("Hearts"),
 		/**
-		 *Diamonds suit.
+		 * Diamonds suit.
 		 */
 		DIAMONDS("Diamonds"),
 		/**
-		 *Clubs suit.
+		 * Clubs suit.
 		 */
 		CLUBS("Clubs"),
 		/**
-		 *Spades suit.
+		 * Spades suit.
 		 */
 		SPADES("Spades");
 

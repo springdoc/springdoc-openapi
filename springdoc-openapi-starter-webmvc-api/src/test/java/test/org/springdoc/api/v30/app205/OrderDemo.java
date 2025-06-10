@@ -1,7 +1,7 @@
 package test.org.springdoc.api.v30.app205;
 
 /**
- * @author bnasslahsen
+ *
  */
 
 import org.springframework.web.bind.annotation.GetMapping;

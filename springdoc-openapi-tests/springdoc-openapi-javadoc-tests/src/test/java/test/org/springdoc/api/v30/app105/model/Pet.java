@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app105.model;
@@ -82,7 +82,8 @@ public class Pet {
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
-	 * @param o the o 
+	 *
+	 * @param o the o
 	 * @return the string
 	 */
 	private static String toIndentedString(Object o) {
@@ -114,7 +115,7 @@ public class Pet {
 	/**
 	 * Id pet.
 	 *
-	 * @param id the id 
+	 * @param id the id
 	 * @return the pet
 	 */
 	public Pet id(Long id) {
@@ -144,7 +145,7 @@ public class Pet {
 	/**
 	 * Category pet.
 	 *
-	 * @param category the category 
+	 * @param category the category
 	 * @return the pet
 	 */
 	public Pet category(Category category) {
@@ -175,7 +176,7 @@ public class Pet {
 	/**
 	 * Name pet.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the pet
 	 */
 	public Pet name(String name) {
@@ -206,7 +207,7 @@ public class Pet {
 	/**
 	 * Photo urls pet.
 	 *
-	 * @param photoUrls the photo urls 
+	 * @param photoUrls the photo urls
 	 * @return the pet
 	 */
 	public Pet photoUrls(List<String> photoUrls) {
@@ -217,7 +218,7 @@ public class Pet {
 	/**
 	 * Add photo urls item pet.
 	 *
-	 * @param photoUrlsItem the photo urls item 
+	 * @param photoUrlsItem the photo urls item
 	 * @return the pet
 	 */
 	public Pet addPhotoUrlsItem(String photoUrlsItem) {
@@ -247,7 +248,7 @@ public class Pet {
 	/**
 	 * Tags pet.
 	 *
-	 * @param tags the tags 
+	 * @param tags the tags
 	 * @return the pet
 	 */
 	public Pet tags(List<Tag> tags) {
@@ -258,7 +259,7 @@ public class Pet {
 	/**
 	 * Add tags item pet.
 	 *
-	 * @param tagsItem the tags item 
+	 * @param tagsItem the tags item
 	 * @return the pet
 	 */
 	public Pet addTagsItem(Tag tagsItem) {
@@ -294,7 +295,7 @@ public class Pet {
 	/**
 	 * Status pet.
 	 *
-	 * @param status the status 
+	 * @param status the status
 	 * @return the pet
 	 */
 	public Pet status(StatusEnum status) {
@@ -327,15 +328,15 @@ public class Pet {
 	 */
 	public enum StatusEnum {
 		/**
-		 *Available status enum.
+		 * Available status enum.
 		 */
 		AVAILABLE("available"),
 		/**
-		 *Pending status enum.
+		 * Pending status enum.
 		 */
 		PENDING("pending"),
 		/**
-		 *Sold status enum.
+		 * Sold status enum.
 		 */
 		SOLD("sold");
 
@@ -356,7 +357,7 @@ public class Pet {
 		/**
 		 * From value status enum.
 		 *
-		 * @param text the text 
+		 * @param text the text
 		 * @return the status enum
 		 */
 		@JsonCreator

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.ui;
@@ -83,7 +83,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
 	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SpringWebProvider springWebProvider) {
-		return new SwaggerWelcomeWebFlux(swaggerUiConfig, springDocConfigProperties,springWebProvider);
+		return new SwaggerWelcomeWebFlux(swaggerUiConfig, springDocConfigProperties, springWebProvider);
 	}
 
 	/**
@@ -195,9 +195,9 @@ public class SwaggerConfig implements WebFluxConfigurer {
 		/**
 		 * Swagger actuator welcome swagger welcome actuator.
 		 *
-		 * @param swaggerUiConfig            the swagger ui config
-		 * @param springDocConfigProperties  the spring doc config properties
-		 * @param webEndpointProperties      the web endpoint properties
+		 * @param swaggerUiConfig           the swagger ui config
+		 * @param springDocConfigProperties the spring doc config properties
+		 * @param webEndpointProperties     the web endpoint properties
 		 * @return the swagger welcome actuator
 		 */
 		@Bean

@@ -23,7 +23,7 @@ import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 class SpringDocApp2Test : AbstractKotlinSpringDocMVCTest() {
 
-    @SpringBootApplication
-    class DemoApplication
+	@SpringBootApplication
+	class DemoApplication
 
 }

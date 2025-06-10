@@ -41,7 +41,7 @@ public class SpringDocApp34Test extends AbstractSpringDocTest {
 
 		super.chekJS();
 	}
-	
+
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 

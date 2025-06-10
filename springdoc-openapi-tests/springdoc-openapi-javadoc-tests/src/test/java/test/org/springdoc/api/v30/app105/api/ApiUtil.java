@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app105.api;
@@ -42,9 +42,9 @@ public class ApiUtil {
 	/**
 	 * Sets example response.
 	 *
-	 * @param req the req 
-	 * @param contentType the content type 
-	 * @param example the example
+	 * @param req         the req
+	 * @param contentType the content type
+	 * @param example     the example
 	 */
 	public static void setExampleResponse(NativeWebRequest req, String contentType, String example) {
 		try {

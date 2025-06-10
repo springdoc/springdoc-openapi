@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app18;
@@ -46,7 +46,7 @@ class HelloController {
 	/**
 	 * Persons string.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the string
 	 */
 	@GetMapping(value = "/persons")
@@ -57,7 +57,7 @@ class HelloController {
 	/**
 	 * Persons 2 string.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the string
 	 */
 	@GetMapping(value = "/persons2")
@@ -68,7 +68,7 @@ class HelloController {
 	/**
 	 * Persons 3 string.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the string
 	 */
 	@GetMapping(value = "/persons3")
@@ -79,7 +79,7 @@ class HelloController {
 	/**
 	 * Persons 4 string.
 	 *
-	 * @param age the age 
+	 * @param age the age
 	 * @return the string
 	 */
 	@GetMapping(value = "/persons4")
@@ -90,7 +90,7 @@ class HelloController {
 	/**
 	 * Persons 5 string.
 	 *
-	 * @param age the age 
+	 * @param age the age
 	 * @return the string
 	 */
 	@GetMapping(value = "/persons5")
@@ -101,7 +101,7 @@ class HelloController {
 	/**
 	 * Persons 6 string.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the string
 	 */
 	@GetMapping(value = "/persons6")
@@ -112,7 +112,7 @@ class HelloController {
 	/**
 	 * Persons 7 string.
 	 *
-	 * @param age the age 
+	 * @param age the age
 	 * @return the string
 	 */
 	@GetMapping(value = "/persons7")

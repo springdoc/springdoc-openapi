@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app1;
@@ -47,7 +47,7 @@ public final class ApiException extends Exception {
 	 * Instantiates a new Api exception.
 	 *
 	 * @param code the code
-	 * @param msg the msg
+	 * @param msg  the msg
 	 */
 	public ApiException(int code, String msg) {
 		super(msg);

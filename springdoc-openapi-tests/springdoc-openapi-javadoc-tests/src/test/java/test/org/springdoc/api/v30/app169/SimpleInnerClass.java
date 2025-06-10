@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app169;
@@ -29,7 +29,7 @@ package test.org.springdoc.api.v30.app169;
 /**
  * simple inner class
  *
- * @param name the boolean name
+ * @param name      the boolean name
  * @param maxNumber the max number
  */
 public record SimpleInnerClass(Boolean name, Integer maxNumber) {

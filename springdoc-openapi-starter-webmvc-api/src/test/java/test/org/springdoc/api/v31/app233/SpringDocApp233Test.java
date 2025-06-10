@@ -57,130 +57,130 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 class SpringDocApp233Test extends AbstractSpringDocTest {
 
-    @CsvSource({"requiredNotNullParameterObject.requiredNotNullField, true",
-            "requiredNotNullParameterObject.requiredNoValidationField, true",
-            "requiredNotNullParameterObject.notRequiredNotNullField, false",
-            "requiredNotNullParameterObject.notRequiredNoValidationField, false",
-            "requiredNotNullParameterObject.noSchemaNotNullField, true",
-            "requiredNotNullParameterObject.noSchemaNoValidationField, false",
-            "requiredNoValidationParameterObject.requiredNotNullField, true",
-            "requiredNoValidationParameterObject.requiredNoValidationField, true",
-            "requiredNoValidationParameterObject.notRequiredNotNullField, false",
-            "requiredNoValidationParameterObject.notRequiredNoValidationField, false",
-            "requiredNoValidationParameterObject.noSchemaNotNullField, true",
-            "requiredNoValidationParameterObject.noSchemaNoValidationField, false",
-            "notRequiredNotNullParameterObject.requiredNotNullField, true",
-            "notRequiredNotNullParameterObject.requiredNoValidationField, true",
-            "notRequiredNotNullParameterObject.notRequiredNotNullField, false",
-            "notRequiredNotNullParameterObject.notRequiredNoValidationField, false",
-            "notRequiredNotNullParameterObject.noSchemaNotNullField, false",
-            "notRequiredNotNullParameterObject.noSchemaNoValidationField, false",
-            "notRequiredNoValidationParameterObject.requiredNotNullField, true",
-            "notRequiredNoValidationParameterObject.requiredNoValidationField, true",
-            "notRequiredNoValidationParameterObject.notRequiredNotNullField, false",
-            "notRequiredNoValidationParameterObject.notRequiredNoValidationField, false",
-            "notRequiredNoValidationParameterObject.noSchemaNotNullField, false",
-            "notRequiredNoValidationParameterObject.noSchemaNoValidationField, false",
-            "noSchemaNotNullParameterObject.requiredNotNullField, true",
-            "noSchemaNotNullParameterObject.requiredNoValidationField, true",
-            "noSchemaNotNullParameterObject.notRequiredNotNullField, false",
-            "noSchemaNotNullParameterObject.notRequiredNoValidationField, false",
-            "noSchemaNotNullParameterObject.noSchemaNotNullField, true",
-            "noSchemaNotNullParameterObject.noSchemaNoValidationField, false",
-            "noSchemaNoValidationParameterObject.requiredNotNullField, true",
-            "noSchemaNoValidationParameterObject.requiredNoValidationField, true",
-            "noSchemaNoValidationParameterObject.notRequiredNotNullField, false",
-            "noSchemaNoValidationParameterObject.notRequiredNoValidationField, false",
-            "noSchemaNoValidationParameterObject.noSchemaNotNullField, false",
-            "noSchemaNoValidationParameterObject.noSchemaNoValidationField, false"})
-    @ParameterizedTest
-    void shouldHaveCorrectRequireStatus(String field, String required) throws Exception {
-        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk()).andReturn();
-        String result = mockMvcResult.getResponse().getContentAsString();
+	@CsvSource({ "requiredNotNullParameterObject.requiredNotNullField, true",
+			"requiredNotNullParameterObject.requiredNoValidationField, true",
+			"requiredNotNullParameterObject.notRequiredNotNullField, false",
+			"requiredNotNullParameterObject.notRequiredNoValidationField, false",
+			"requiredNotNullParameterObject.noSchemaNotNullField, true",
+			"requiredNotNullParameterObject.noSchemaNoValidationField, false",
+			"requiredNoValidationParameterObject.requiredNotNullField, true",
+			"requiredNoValidationParameterObject.requiredNoValidationField, true",
+			"requiredNoValidationParameterObject.notRequiredNotNullField, false",
+			"requiredNoValidationParameterObject.notRequiredNoValidationField, false",
+			"requiredNoValidationParameterObject.noSchemaNotNullField, true",
+			"requiredNoValidationParameterObject.noSchemaNoValidationField, false",
+			"notRequiredNotNullParameterObject.requiredNotNullField, true",
+			"notRequiredNotNullParameterObject.requiredNoValidationField, true",
+			"notRequiredNotNullParameterObject.notRequiredNotNullField, false",
+			"notRequiredNotNullParameterObject.notRequiredNoValidationField, false",
+			"notRequiredNotNullParameterObject.noSchemaNotNullField, false",
+			"notRequiredNotNullParameterObject.noSchemaNoValidationField, false",
+			"notRequiredNoValidationParameterObject.requiredNotNullField, true",
+			"notRequiredNoValidationParameterObject.requiredNoValidationField, true",
+			"notRequiredNoValidationParameterObject.notRequiredNotNullField, false",
+			"notRequiredNoValidationParameterObject.notRequiredNoValidationField, false",
+			"notRequiredNoValidationParameterObject.noSchemaNotNullField, false",
+			"notRequiredNoValidationParameterObject.noSchemaNoValidationField, false",
+			"noSchemaNotNullParameterObject.requiredNotNullField, true",
+			"noSchemaNotNullParameterObject.requiredNoValidationField, true",
+			"noSchemaNotNullParameterObject.notRequiredNotNullField, false",
+			"noSchemaNotNullParameterObject.notRequiredNoValidationField, false",
+			"noSchemaNotNullParameterObject.noSchemaNotNullField, true",
+			"noSchemaNotNullParameterObject.noSchemaNoValidationField, false",
+			"noSchemaNoValidationParameterObject.requiredNotNullField, true",
+			"noSchemaNoValidationParameterObject.requiredNoValidationField, true",
+			"noSchemaNoValidationParameterObject.notRequiredNotNullField, false",
+			"noSchemaNoValidationParameterObject.notRequiredNoValidationField, false",
+			"noSchemaNoValidationParameterObject.noSchemaNotNullField, false",
+			"noSchemaNoValidationParameterObject.noSchemaNoValidationField, false" })
+	@ParameterizedTest
+	void shouldHaveCorrectRequireStatus(String field, String required) throws Exception {
+		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk()).andReturn();
+		String result = mockMvcResult.getResponse().getContentAsString();
 
-        String requiredMode = ((JSONArray) JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.name == '" + field + "')].required")).get(0).toString();
-        assertThat(requiredMode).isEqualTo(required);
-    }
+		String requiredMode = ((JSONArray) JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.name == '" + field + "')].required")).get(0).toString();
+		assertThat(requiredMode).isEqualTo(required);
+	}
 
-    @Test
-    void shouldMatchSwaggerFieldRequirementsMatchJavaValidation() throws Exception {
-        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk()).andReturn();
-        String result = mockMvcResult.getResponse().getContentAsString();
+	@Test
+	void shouldMatchSwaggerFieldRequirementsMatchJavaValidation() throws Exception {
+		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk()).andReturn();
+		String result = mockMvcResult.getResponse().getContentAsString();
 
-        JSONArray allFieldsJsonArray = JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[*].name");
-        List<String> allFields = allFieldsJsonArray.stream().map(Object::toString).toList();
+		JSONArray allFieldsJsonArray = JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[*].name");
+		List<String> allFields = allFieldsJsonArray.stream().map(Object::toString).toList();
 
-        // check we get no validation failures when all mandatory fields are present
-        verifySwaggerFieldRequirementsMatchJavaValidation(allFields, List.of());
+		// check we get no validation failures when all mandatory fields are present
+		verifySwaggerFieldRequirementsMatchJavaValidation(allFields, List.of());
 
-        JSONArray mandatoryFieldsJsonArray = JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.required == true)].name");
-        List<String> mandatoryFields = mandatoryFieldsJsonArray.stream().map(Object::toString).toList();
+		JSONArray mandatoryFieldsJsonArray = JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.required == true)].name");
+		List<String> mandatoryFields = mandatoryFieldsJsonArray.stream().map(Object::toString).toList();
 
-        // check validation failures when each individual mandatory field is missing
-        for (String mandatoryField : mandatoryFields) {
-            List<String> filteredFields = allFields.stream()
-                    .filter(field -> !field.equals(mandatoryField))
-                    .toList();
+		// check validation failures when each individual mandatory field is missing
+		for (String mandatoryField : mandatoryFields) {
+			List<String> filteredFields = allFields.stream()
+					.filter(field -> !field.equals(mandatoryField))
+					.toList();
 
-            List<String> expectedErrors = Stream.of(mandatoryField)
-                    // Fields using Swagger annotations to drive required status but not using Java validation to enforce it so don't cause validation errors
-                    .filter(field -> !field.endsWith("requiredNullableField"))
-                    .filter(field -> !field.endsWith("requiredNoValidationField"))
-                    // the error is returned prefixed with the query parameter name, so add it to the expected error message
-                    .map(field -> "multiFieldParameterObject." + field)
-                    .toList();
-            verifySwaggerFieldRequirementsMatchJavaValidation(filteredFields, expectedErrors);
-        }
-
-
-        JSONArray nonMandatoryFieldsJsonArray = JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.required == false)].name");
-        List<String> nonMandatoryFields = nonMandatoryFieldsJsonArray.stream().map(Object::toString).toList();
-
-        // check validation failures for any individual non-mandatory fields being missed
-        for (String nonMandatoryField : nonMandatoryFields) {
-            List<String> filteredFields = allFields.stream()
-                    .filter(field -> !field.equals(nonMandatoryField))
-                    .toList();
-
-            List<String> expectedErrors = Stream.of(nonMandatoryField)
-                    // Fields that are mandatory but either have nullable parent fields so are excluded in swagger or are marked as not required so do cause validation errors
-                    .filter(field -> field.endsWith("NotNullField"))
-                    // the error is returned prefixed with the query parameter name, so add it to the expected error message
-                    .map(field -> "multiFieldParameterObject." + field)
-                    .toList();
-            verifySwaggerFieldRequirementsMatchJavaValidation(filteredFields, expectedErrors);
-        }
-    }
-
-    private void verifySwaggerFieldRequirementsMatchJavaValidation(Collection<String> requestFields, Collection<String> expectedErrorFields) throws Exception {
-        MockHttpServletRequestBuilder request = get("/optional-parent");
-        for (String mandatoryField : requestFields) {
-            request.queryParam(mandatoryField, mandatoryField + ".value");
-        }
-
-        mockMvc.perform(request)
-                .andExpect(result -> {
-
-                    Set<String> errorFields = Optional.ofNullable(result.getResolvedException())
-                            .map(MethodArgumentNotValidException.class::cast)
-                            .map(MethodArgumentNotValidException::getBindingResult)
-                            .map(BindingResult::getFieldErrors)
-                            .stream()
-                            .flatMap(Collection::stream)
-                            .map(field -> field.getObjectName() + "." + field.getField())
-                            .collect(Collectors.toCollection(LinkedHashSet::new));
+			List<String> expectedErrors = Stream.of(mandatoryField)
+					// Fields using Swagger annotations to drive required status but not using Java validation to enforce it so don't cause validation errors
+					.filter(field -> !field.endsWith("requiredNullableField"))
+					.filter(field -> !field.endsWith("requiredNoValidationField"))
+					// the error is returned prefixed with the query parameter name, so add it to the expected error message
+					.map(field -> "multiFieldParameterObject." + field)
+					.toList();
+			verifySwaggerFieldRequirementsMatchJavaValidation(filteredFields, expectedErrors);
+		}
 
 
-                    assertThat(errorFields).containsExactlyElementsOf(expectedErrorFields);
+		JSONArray nonMandatoryFieldsJsonArray = JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.required == false)].name");
+		List<String> nonMandatoryFields = nonMandatoryFieldsJsonArray.stream().map(Object::toString).toList();
 
-                    assertThat(result.getResponse().getStatus()).isEqualTo(expectedErrorFields.isEmpty() ? 200 : 400);
-                });
-    }
+		// check validation failures for any individual non-mandatory fields being missed
+		for (String nonMandatoryField : nonMandatoryFields) {
+			List<String> filteredFields = allFields.stream()
+					.filter(field -> !field.equals(nonMandatoryField))
+					.toList();
+
+			List<String> expectedErrors = Stream.of(nonMandatoryField)
+					// Fields that are mandatory but either have nullable parent fields so are excluded in swagger or are marked as not required so do cause validation errors
+					.filter(field -> field.endsWith("NotNullField"))
+					// the error is returned prefixed with the query parameter name, so add it to the expected error message
+					.map(field -> "multiFieldParameterObject." + field)
+					.toList();
+			verifySwaggerFieldRequirementsMatchJavaValidation(filteredFields, expectedErrors);
+		}
+	}
+
+	private void verifySwaggerFieldRequirementsMatchJavaValidation(Collection<String> requestFields, Collection<String> expectedErrorFields) throws Exception {
+		MockHttpServletRequestBuilder request = get("/optional-parent");
+		for (String mandatoryField : requestFields) {
+			request.queryParam(mandatoryField, mandatoryField + ".value");
+		}
+
+		mockMvc.perform(request)
+				.andExpect(result -> {
+
+					Set<String> errorFields = Optional.ofNullable(result.getResolvedException())
+							.map(MethodArgumentNotValidException.class::cast)
+							.map(MethodArgumentNotValidException::getBindingResult)
+							.map(BindingResult::getFieldErrors)
+							.stream()
+							.flatMap(Collection::stream)
+							.map(field -> field.getObjectName() + "." + field.getField())
+							.collect(Collectors.toCollection(LinkedHashSet::new));
 
 
-    @SpringBootApplication
-    static class SpringDocTestApp {
+					assertThat(errorFields).containsExactlyElementsOf(expectedErrorFields);
 
-    }
+					assertThat(result.getResponse().getStatus()).isEqualTo(expectedErrorFields.isEmpty() ? 200 : 400);
+				});
+	}
+
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+
+	}
 
 }

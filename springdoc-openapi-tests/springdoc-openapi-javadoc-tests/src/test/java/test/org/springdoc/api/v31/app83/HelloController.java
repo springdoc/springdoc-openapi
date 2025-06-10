@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app83;
@@ -48,9 +48,9 @@ class HelloController {
 	/**
 	 * Put response entity.
 	 *
-	 * @param config the config 
-	 * @param configuration the configuration 
-	 * @param aFile the a file 
+	 * @param config        the config
+	 * @param configuration the configuration
+	 * @param aFile         the a file
 	 * @return the response entity
 	 */
 	@RequestMapping(value = "/{config}",

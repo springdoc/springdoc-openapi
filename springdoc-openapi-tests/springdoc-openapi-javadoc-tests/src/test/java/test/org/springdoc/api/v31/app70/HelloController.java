@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app70;
@@ -45,7 +45,7 @@ class HelloController {
 	/**
 	 * Test api type.
 	 *
-	 * @param test the test 
+	 * @param test the test
 	 * @return the api type
 	 */
 	@CustomizedOperation

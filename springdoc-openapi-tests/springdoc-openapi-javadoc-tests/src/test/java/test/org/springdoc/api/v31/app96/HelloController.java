@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app96;
@@ -43,7 +43,7 @@ class HelloController {
 	/**
 	 * Test 1 string.
 	 *
-	 * @param test the test 
+	 * @param test the test
 	 * @return the string
 	 */
 	@PostMapping("/api1")
@@ -54,7 +54,7 @@ class HelloController {
 	/**
 	 * Test 2 string.
 	 *
-	 * @param test the test 
+	 * @param test the test
 	 * @return the string
 	 */
 	@PostMapping("/api2")
@@ -65,7 +65,7 @@ class HelloController {
 	/**
 	 * Test 3 string.
 	 *
-	 * @param test the test 
+	 * @param test the test
 	 * @return the string
 	 */
 	@PostMapping("/api3")

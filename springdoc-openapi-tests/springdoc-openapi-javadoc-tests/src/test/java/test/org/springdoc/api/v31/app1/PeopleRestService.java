@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app1;
@@ -100,9 +100,9 @@ class PeopleRestService {
 	/**
 	 * Add person response entity.
 	 *
-	 * @param email the email
+	 * @param email     the email
 	 * @param firstName the first name
-	 * @param lastName the last name
+	 * @param lastName  the last name
 	 * @return the response entity
 	 */
 	@PostMapping(value = "/{email}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

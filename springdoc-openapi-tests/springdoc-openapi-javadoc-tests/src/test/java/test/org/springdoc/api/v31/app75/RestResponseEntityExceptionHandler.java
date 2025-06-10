@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app75;
@@ -46,8 +46,8 @@ class RestResponseEntityExceptionHandler
 	/**
 	 * Bad request response entity.
 	 *
-	 * @param req the req 
-	 * @param exception the exception 
+	 * @param req       the req
+	 * @param exception the exception
 	 * @return the response entity
 	 */
 	@ResponseStatus(value = HttpStatus.OK)

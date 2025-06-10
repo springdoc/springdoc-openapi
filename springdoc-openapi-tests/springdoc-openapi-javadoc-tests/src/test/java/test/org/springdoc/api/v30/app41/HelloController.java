@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app41;
@@ -51,7 +51,7 @@ class HelloController {
 	/**
 	 * Gets file.
 	 *
-	 * @param path the path 
+	 * @param path the path
 	 * @return the file
 	 */
 	@Operation(description = "Download file")

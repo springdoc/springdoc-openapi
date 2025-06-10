@@ -54,7 +54,7 @@ public class SpringDocSealedClassModule extends SimpleModule {
 		public List<NamedType> findSubtypes(Annotated annotated) {
 			ArrayList<NamedType> subTypes = new ArrayList<>();
 
-			if (annotated.getAnnotated() instanceof Class<?> clazz 
+			if (annotated.getAnnotated() instanceof Class<?> clazz
 					&& clazz.isSealed()
 					&& !clazz.getPackage().getName().startsWith("java")
 			) {

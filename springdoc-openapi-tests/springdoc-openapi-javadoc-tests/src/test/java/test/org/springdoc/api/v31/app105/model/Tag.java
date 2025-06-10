@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app105.model;
@@ -49,7 +49,8 @@ class Tag {
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
-	 * @param o the o 
+	 *
+	 * @param o the o
 	 * @return the string
 	 */
 	private static String toIndentedString(Object o) {
@@ -81,7 +82,7 @@ class Tag {
 	/**
 	 * Id tag.
 	 *
-	 * @param id the id 
+	 * @param id the id
 	 * @return the tag
 	 */
 	public Tag id(Long id) {
@@ -111,7 +112,7 @@ class Tag {
 	/**
 	 * Name tag.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @return the tag
 	 */
 	public Tag name(String name) {

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app127;
@@ -39,7 +39,7 @@ class ConcreteObjectA extends AbstractObject {
 	/**
 	 * Instantiates a new Concrete object a.
 	 *
-	 * @param name the name 
+	 * @param name        the name
 	 * @param description the description
 	 */
 	public ConcreteObjectA(String name, String description) {

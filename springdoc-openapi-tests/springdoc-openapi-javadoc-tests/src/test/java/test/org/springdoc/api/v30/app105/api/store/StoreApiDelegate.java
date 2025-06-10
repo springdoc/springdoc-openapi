@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app105.api.store;
@@ -57,7 +57,7 @@ public interface StoreApiDelegate {
 	/**
 	 * Delete order response entity.
 	 *
-	 * @param orderId the order id 
+	 * @param orderId the order id
 	 * @return the response entity
 	 * @see StoreApi#deleteOrder StoreApi#deleteOrder
 	 */
@@ -80,7 +80,7 @@ public interface StoreApiDelegate {
 	/**
 	 * Gets order by id.
 	 *
-	 * @param orderId the order id 
+	 * @param orderId the order id
 	 * @return the order by id
 	 * @see StoreApi#getOrderById StoreApi#getOrderById
 	 */
@@ -111,7 +111,7 @@ public interface StoreApiDelegate {
 	/**
 	 * Place order response entity.
 	 *
-	 * @param order the order 
+	 * @param order the order
 	 * @return the response entity
 	 * @see StoreApi#placeOrder StoreApi#placeOrder
 	 */

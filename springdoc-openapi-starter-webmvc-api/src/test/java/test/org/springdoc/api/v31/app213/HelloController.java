@@ -58,7 +58,7 @@ public class HelloController {
 									value = "${api.extensions.properties.uri}/testcontroller/getTest"),
 							@ExtensionProperty(name = "passthroughBehavior", value = "${api.extensions.properties.passthroughBehavior}"),
 							@ExtensionProperty(name = "connectionType", value = "${api.extensions.properties.connectionType}") }) })
-	
+
 	public PersonDTO queryMyDto() {
 		// This return a PageImpl with the data, the method parameter 'query' is a pojo containg filter properties
 		return null;

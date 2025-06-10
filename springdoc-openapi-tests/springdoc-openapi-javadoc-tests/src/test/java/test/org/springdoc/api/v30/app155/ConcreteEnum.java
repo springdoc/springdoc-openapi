@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app155;
@@ -32,11 +32,11 @@ package test.org.springdoc.api.v30.app155;
  */
 enum ConcreteEnum {
 	/**
-	 *One concrete enum.
+	 * One concrete enum.
 	 */
 	ONE,
 	/**
-	 *Two concrete enum.
+	 * Two concrete enum.
 	 */
 	TWO
 

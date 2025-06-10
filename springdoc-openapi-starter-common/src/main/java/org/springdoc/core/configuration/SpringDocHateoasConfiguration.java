@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.configuration;
@@ -122,8 +122,7 @@ public class SpringDocHateoasConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	HateoasLinksConverter hateoasLinksConverter(ObjectMapperProvider springDocObjectMapper) {
-		return new HateoasLinksConverter(springDocObjectMapper) ;
+		return new HateoasLinksConverter(springDocObjectMapper);
 	}
-	
-	
+
 }

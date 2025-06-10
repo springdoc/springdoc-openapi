@@ -40,8 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("217")
 public class SpringDocApp217Test extends AbstractSpringDocV30Test {
-	
-	
+
+
 	@Test
 	void testApp1() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/demo"))
@@ -57,7 +57,7 @@ public class SpringDocApp217Test extends AbstractSpringDocV30Test {
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(content().json(getContent("results/3.0.1/app217-2.json"), true));
 	}
-	
+
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 

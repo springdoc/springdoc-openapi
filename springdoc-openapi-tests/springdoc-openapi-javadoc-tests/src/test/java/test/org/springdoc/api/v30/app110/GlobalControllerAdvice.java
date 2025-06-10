@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app110;
@@ -65,7 +65,7 @@ class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	/**
 	 * Problem response entity.
 	 *
-	 * @param e the e 
+	 * @param e the e
 	 * @return the response entity
 	 */
 	@ExceptionHandler(Throwable.class)
@@ -82,7 +82,7 @@ class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	/**
 	 * Handle method argument not valid response entity.
 	 *
-	 * @param ex the ex 
+	 * @param ex the ex
 	 * @return the response entity
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -110,7 +110,7 @@ class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	/**
 	 * Handle constraint violated exception response entity.
 	 *
-	 * @param ex the ex 
+	 * @param ex the ex
 	 * @return the response entity
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
@@ -135,7 +135,7 @@ class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	/**
 	 * Handle missing servlet request parameter exception response entity.
 	 *
-	 * @param ex the ex 
+	 * @param ex the ex
 	 * @return the response entity
 	 */
 	@ExceptionHandler(MissingServletRequestParameterException.class)
@@ -154,7 +154,7 @@ class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	/**
 	 * Handle http media type not supported response entity.
 	 *
-	 * @param ex the ex 
+	 * @param ex the ex
 	 * @return the response entity
 	 */
 	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
@@ -170,7 +170,7 @@ class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	/**
 	 * Handle http message not readable response entity.
 	 *
-	 * @param ex the ex 
+	 * @param ex the ex
 	 * @return the response entity
 	 */
 	@ExceptionHandler(HttpMessageNotReadableException.class)

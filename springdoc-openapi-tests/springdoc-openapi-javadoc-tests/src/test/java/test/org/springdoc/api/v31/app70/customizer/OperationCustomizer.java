@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app70.customizer;
@@ -39,8 +39,8 @@ class OperationCustomizer implements org.springdoc.core.customizers.OperationCus
 	/**
 	 * Customize operation.
 	 *
-	 * @param operation the operation 
-	 * @param handlerMethod the handler method 
+	 * @param operation     the operation
+	 * @param handlerMethod the handler method
 	 * @return the operation
 	 */
 	@Override

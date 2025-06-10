@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app55;
@@ -47,6 +47,7 @@ class HelloController {
 
 	/**
 	 * Ping endpoint used for health checks.
+	 *
 	 * @return the boolean
 	 */
 	@RequestMapping(value = "/ping", method = RequestMethod.GET)

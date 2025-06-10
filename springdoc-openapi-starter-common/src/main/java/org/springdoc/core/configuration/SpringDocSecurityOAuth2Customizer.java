@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.configuration;
@@ -114,6 +114,21 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 */
 	private ApplicationContext applicationContext;
 
+	/**
+	 * Build o auth 2 error.
+	 *
+	 * @param openAPI      the open api
+	 * @param apiResponses the api responses
+	 * @param httpStatus   the http status
+	 * @param openapi31    the openapi 31
+	 */
+	private static void buildOAuth2Error(OpenAPI openAPI, ApiResponses apiResponses, HttpStatus httpStatus, boolean openapi31) {
+		Schema oAuth2ErrorSchema = AnnotationsUtils.resolveSchemaFromType(OAuth2Error.class, openAPI.getComponents(), null, openapi31);
+		apiResponses.addApiResponse(String.valueOf(httpStatus.value()), new ApiResponse().description(httpStatus.getReasonPhrase()).content(new Content().addMediaType(
+				APPLICATION_JSON_VALUE,
+				new MediaType().schema(oAuth2ErrorSchema))));
+	}
+
 	@Override
 	public void customise(OpenAPI openAPI) {
 		FilterChainProxy filterChainProxy = applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, FilterChainProxy.class);
@@ -196,7 +211,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param openapi31           the openapi 31
 	 */
 	private void getOAuth2AuthorizationServerMetadataEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
-		Class<OAuth2AuthorizationServerMetadataEndpointFilter>authorizationServerMetadataEndpointClass = OAuth2AuthorizationServerMetadataEndpointFilter.class;
+		Class<OAuth2AuthorizationServerMetadataEndpointFilter> authorizationServerMetadataEndpointClass = OAuth2AuthorizationServerMetadataEndpointFilter.class;
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(authorizationServerMetadataEndpointClass).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
@@ -208,11 +223,11 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			if (field != null) {
 				ReflectionUtils.makeAccessible(field);
 				String defaultOauth2MetadataUri = (String) ReflectionUtils.getField(field, null);
-				openAPI.getPaths().addPathItem(defaultOauth2MetadataUri , new PathItem().get(operation));
+				openAPI.getPaths().addPathItem(defaultOauth2MetadataUri, new PathItem().get(operation));
 				operation = buildOperation(apiResponses);
 				operation.addParametersItem(new PathParameter().name("subpath").schema(new StringSchema()));
 				operation.summary("Valid when multiple issuers are allowed");
-				openAPI.getPaths().addPathItem(defaultOauth2MetadataUri+"/{subpath}" , new PathItem().get(operation));
+				openAPI.getPaths().addPathItem(defaultOauth2MetadataUri + "/{subpath}", new PathItem().get(operation));
 			}
 		}
 	}
@@ -340,11 +355,11 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			if (field != null) {
 				ReflectionUtils.makeAccessible(field);
 				String defaultOidcConfigUri = (String) ReflectionUtils.getField(field, null);
-				openAPI.getPaths().addPathItem(defaultOidcConfigUri , new PathItem().get(operation));
+				openAPI.getPaths().addPathItem(defaultOidcConfigUri, new PathItem().get(operation));
 				operation = buildOperation(apiResponses);
 				operation.addParametersItem(new PathParameter().name("subpath").schema(new StringSchema()));
 				operation.summary("Valid when multiple issuers are allowed");
-				openAPI.getPaths().addPathItem("/{subpath}"+defaultOidcConfigUri , new PathItem().get(operation));
+				openAPI.getPaths().addPathItem("/{subpath}" + defaultOidcConfigUri, new PathItem().get(operation));
 			}
 		}
 	}
@@ -382,7 +397,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnCreated(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationResponse.class, openAPI.getComponents(), null,openapi31 ));
+			buildApiResponsesOnCreated(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationResponse.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 			buildOAuth2Error(openAPI, apiResponses, HttpStatus.UNAUTHORIZED, openapi31);
@@ -466,21 +481,6 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	private ApiResponses buildApiResponsesOnBadRequest(ApiResponses apiResponses, OpenAPI openAPI, boolean openapi31) {
 		buildOAuth2Error(openAPI, apiResponses, HttpStatus.BAD_REQUEST, openapi31);
 		return apiResponses;
-	}
-
-	/**
-	 * Build o auth 2 error.
-	 *
-	 * @param openAPI      the open api
-	 * @param apiResponses the api responses
-	 * @param httpStatus   the http status
-	 * @param openapi31    the openapi 31
-	 */
-	private static void buildOAuth2Error(OpenAPI openAPI, ApiResponses apiResponses, HttpStatus httpStatus, boolean openapi31) {
-		Schema oAuth2ErrorSchema = AnnotationsUtils.resolveSchemaFromType(OAuth2Error.class, openAPI.getComponents(), null, openapi31);
-		apiResponses.addApiResponse(String.valueOf(httpStatus.value()), new ApiResponse().description(httpStatus.getReasonPhrase()).content(new Content().addMediaType(
-				APPLICATION_JSON_VALUE,
-				new MediaType().schema(oAuth2ErrorSchema))));
 	}
 
 	/**

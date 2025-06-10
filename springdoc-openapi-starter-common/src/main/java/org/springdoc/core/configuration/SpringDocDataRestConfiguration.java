@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.configuration;
@@ -128,8 +128,8 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(DataRestRouterOperationService dataRestRouterOperationService, 
-				ObjectMapper mapper, 
+		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(DataRestRouterOperationService dataRestRouterOperationService,
+				ObjectMapper mapper,
 				SpringDocDataRestUtils springDocDataRestUtils) {
 			return new SpringRepositoryRestResourceProvider(
 					dataRestRouterOperationService, mapper, springDocDataRestUtils);

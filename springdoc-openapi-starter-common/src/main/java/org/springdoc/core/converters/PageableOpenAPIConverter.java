@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.converters;
@@ -77,9 +77,9 @@ public class PageableOpenAPIConverter implements ModelConverter {
 	/**
 	 * Resolve schema.
 	 *
-	 * @param type the type
+	 * @param type    the type
 	 * @param context the context
-	 * @param chain the chain
+	 * @param chain   the chain
 	 * @return the schema
 	 */
 	@Override

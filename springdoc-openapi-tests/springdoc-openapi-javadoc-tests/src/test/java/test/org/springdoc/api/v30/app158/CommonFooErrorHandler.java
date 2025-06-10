@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app158;
@@ -38,7 +38,7 @@ class CommonFooErrorHandler {
 	/**
 	 * On exception error dto.
 	 *
-	 * @param e the e 
+	 * @param e the e
 	 * @return the error dto
 	 */
 	@ExceptionHandler

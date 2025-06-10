@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @GetMapping(value = "/persons")
-    public PersonDTO persons() {
-        return new PersonDTO("John");
-    }
+	@GetMapping(value = "/persons")
+	public PersonDTO persons() {
+		return new PersonDTO("John");
+	}
 
 }

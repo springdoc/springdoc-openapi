@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.providers;
@@ -97,7 +97,7 @@ public abstract class ActuatorProvider implements ApplicationListener<WebServerI
 	 * The Application context.
 	 */
 	protected ApplicationContext applicationContext;
-	
+
 	/**
 	 * Instantiates a new Actuator provider.
 	 *

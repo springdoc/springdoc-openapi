@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app86.test;
@@ -44,11 +44,11 @@ class HelloController2 {
 	/**
 	 * Test.
 	 *
-	 * @param header the header 
-	 * @param request the request 
-	 * @param response the response 
-	 * @param locale the locale 
-	 * @param hello the hello
+	 * @param header   the header
+	 * @param request  the request
+	 * @param response the response
+	 * @param locale   the locale
+	 * @param hello    the hello
 	 */
 	@GetMapping("/test2")
 	public void test(HttpSession header, HttpServletRequest request, HttpServletResponse response, Locale locale,

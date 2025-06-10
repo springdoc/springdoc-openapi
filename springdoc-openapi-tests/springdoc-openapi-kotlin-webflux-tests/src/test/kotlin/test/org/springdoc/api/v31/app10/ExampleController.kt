@@ -16,5 +16,6 @@ class ExampleController {
 	fun test(@RequestParam name: String) = Greeting("Hello $name")
 
 	@GetMapping("/test-with-default")
-	fun testWithDefault(@RequestParam(defaultValue = "world") name: String) = Greeting("Hello $name")
+	fun testWithDefault(@RequestParam(defaultValue = "world") name: String) =
+		Greeting("Hello $name")
 }

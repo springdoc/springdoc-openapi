@@ -44,7 +44,7 @@ public class SpringDocApp187Test extends AbstractSpringDocTest {
 	static void restore() {
 		io.swagger.v3.core.jackson.ModelResolver.enumsAsRef = false;
 	}
-	
+
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 

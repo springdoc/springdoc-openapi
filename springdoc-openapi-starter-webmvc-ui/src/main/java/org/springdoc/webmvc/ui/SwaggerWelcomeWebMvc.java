@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webmvc.ui;
@@ -75,14 +75,14 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 		super(swaggerUiConfig, springDocConfigProperties);
 		this.springWebProvider = springWebProvider;
 	}
-	
+
 	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
 	@Override
 	public ResponseEntity<Void> redirectToUi(HttpServletRequest request) {
 		return super.redirectToUi(request);
 	}
-	
+
 	@Override
 	protected void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls) {
 		StringBuilder sbUrl = new StringBuilder();
@@ -90,14 +90,14 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 			sbUrl.append(mvcServletPath);
 		calculateUiRootCommon(swaggerUiConfigParameters, sbUrl, sbUrls);
 	}
-	
+
 	@Override
 	protected String buildUrl(String contextPath, final String docsUrl) {
 		if (SpringDocUtils.isValidPath(mvcServletPath))
 			contextPath += mvcServletPath;
 		return super.buildUrl(contextPath, docsUrl);
 	}
-	
+
 	@Override
 	protected void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		swaggerUiConfigParameters.setApiDocsUrl(buildUrlWithContextPath(swaggerUiConfigParameters, springDocConfigProperties.getApiDocs().getPath()));
@@ -109,7 +109,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 			swaggerUiConfigParameters.setPathPrefix(springWebProvider.findPathPrefix(springDocConfigProperties));
 		return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
 	}
-	
+
 	@Override
 	protected void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getApiDocsUrl() + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app10;
@@ -35,7 +35,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  * Repository to manage {@link Account} instances.
- *
  */
 @RepositoryRestResource
 public interface AccountRepository extends CrudRepository<Account, Long> {

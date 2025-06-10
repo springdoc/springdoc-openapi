@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 /**
@@ -74,7 +74,7 @@ public interface UserApi {
 	/**
 	 * Create user response entity.
 	 *
-	 * @param user the user 
+	 * @param user the user
 	 * @return the response entity
 	 */
 	@Operation(summary = "Create user", tags = { "user" })
@@ -88,7 +88,7 @@ public interface UserApi {
 	/**
 	 * Create users with array input response entity.
 	 *
-	 * @param user the user 
+	 * @param user the user
 	 * @return the response entity
 	 */
 	@Operation(summary = "Creates list of users with given input array", tags = { "user" })
@@ -103,7 +103,7 @@ public interface UserApi {
 	/**
 	 * Create users with list input response entity.
 	 *
-	 * @param user the user 
+	 * @param user the user
 	 * @return the response entity
 	 */
 	@Operation(summary = "Creates list of users with given input array", tags = { "user" })
@@ -117,7 +117,7 @@ public interface UserApi {
 	/**
 	 * Delete user response entity.
 	 *
-	 * @param username the username 
+	 * @param username the username
 	 * @return the response entity
 	 */
 	@Operation(summary = "Creates list of users with given input array", tags = { "user" })
@@ -132,7 +132,7 @@ public interface UserApi {
 	/**
 	 * Gets user by name.
 	 *
-	 * @param username the username 
+	 * @param username the username
 	 * @return the user by name
 	 */
 	@Operation(summary = "Get user by user name", tags = { "user" })
@@ -150,8 +150,8 @@ public interface UserApi {
 	/**
 	 * Login user response entity.
 	 *
-	 * @param username the username 
-	 * @param password the password 
+	 * @param username the username
+	 * @param password the password
 	 * @return the response entity
 	 */
 	@Operation(summary = "Logs user into the system", tags = { "user" })
@@ -180,8 +180,8 @@ public interface UserApi {
 	/**
 	 * Update user response entity.
 	 *
-	 * @param username the username 
-	 * @param user the user 
+	 * @param username the username
+	 * @param user     the user
 	 * @return the response entity
 	 */
 	@Operation(summary = "Updated user", tags = { "user" })

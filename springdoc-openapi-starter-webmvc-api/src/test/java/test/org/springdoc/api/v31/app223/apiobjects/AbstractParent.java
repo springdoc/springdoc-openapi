@@ -29,6 +29,7 @@ public abstract class AbstractParent {
 
 class ParentType1 extends AbstractParent {
 	private String parentType1Param;
+
 	private AbstractChild abstractChild;
 
 	public ParentType1(int id, String parentType1Param, AbstractChild abstractChild) {

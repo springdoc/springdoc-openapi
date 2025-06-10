@@ -329,7 +329,7 @@ public class GenericParameterService {
 		else {
 			Schema schema = null;
 			try {
-				if(StringUtils.isNotEmpty(parameterDoc.schema().type()) || !Void.class.equals(parameterDoc.schema().implementation())){
+				if (StringUtils.isNotEmpty(parameterDoc.schema().type()) || !Void.class.equals(parameterDoc.schema().implementation())) {
 					schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView, propertyResolverUtils.isOpenapi31()).orElse(null);
 				}
 				// Cast default value
@@ -374,7 +374,7 @@ public class GenericParameterService {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
-			Type type = GenericTypeResolver.resolveType( methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+			Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
 			if (type instanceof Class && !((Class<?>) type).isEnum() && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
 				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
@@ -432,7 +432,7 @@ public class GenericParameterService {
 			requestBodyInfo.getMergedSchema().addProperty(paramName, schemaN);
 			schemaN = requestBodyInfo.getMergedSchema();
 		}
-		else if (parameterInfo.isRequestPart() || ParameterIn.QUERY.toString().equals(parameterInfo.getParamType()) ||  schemaN instanceof FileSchema || (schemaN!=null && schemaN.getItems() instanceof FileSchema)) {
+		else if (parameterInfo.isRequestPart() || ParameterIn.QUERY.toString().equals(parameterInfo.getParamType()) || schemaN instanceof FileSchema || (schemaN != null && schemaN.getItems() instanceof FileSchema)) {
 			schemaN = new ObjectSchema().addProperty(paramName, schemaN);
 			requestBodyInfo.setMergedSchema(schemaN);
 		}

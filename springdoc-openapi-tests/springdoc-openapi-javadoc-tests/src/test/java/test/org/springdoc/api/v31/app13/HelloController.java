@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app13;
@@ -38,7 +38,7 @@ class HelloController {
 	/**
 	 * Persons string.
 	 *
-	 * @param dto the dto 
+	 * @param dto the dto
 	 * @return the string
 	 */
 	@GetMapping(value = "/persons")

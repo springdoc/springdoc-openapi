@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app87;
@@ -49,7 +49,7 @@ class HelloController {
 	 *
 	 * @param cookie the cookie
 	 * @param itemId the item id
-	 * @param item the item
+	 * @param item   the item
 	 * @return the response entity
 	 */
 	@PutMapping("/{itemId}")

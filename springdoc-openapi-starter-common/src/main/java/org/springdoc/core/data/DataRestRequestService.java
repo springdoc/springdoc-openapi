@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.data;
@@ -226,7 +226,7 @@ public class DataRestRequestService {
 	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation,
 			MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
 		List<Annotation> parameterAnnotations = Arrays.asList(getParameterAnnotations(methodParameter));
-		if (requestBuilder.isValidParameter(parameter,methodAttributes)) {
+		if (requestBuilder.isValidParameter(parameter, methodAttributes)) {
 			requestBuilder.applyBeanValidatorAnnotations(methodParameter, parameter, parameterAnnotations, parameterInfo.isParameterObject(), openAPI.getOpenapi());
 			operation.addParametersItem(parameter);
 		}

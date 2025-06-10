@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app156;
@@ -31,11 +31,11 @@ package test.org.springdoc.api.v30.app156;
  */
 public enum SomeEnum {
 	/**
-	 *First some enum.
+	 * First some enum.
 	 */
 	FIRST,
 	/**
-	 *Second some enum.
+	 * Second some enum.
 	 */
 	SECOND
 }

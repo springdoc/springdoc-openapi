@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app68;
@@ -49,9 +49,6 @@ import org.springframework.web.method.HandlerMethod;
 
 @Configuration
 public class SpringDocConfiguration {
-
-	@SpringBootApplication
-	static class SpringDocTestApp {}
 
 	@Bean
 	public GroupedOpenApi storeOpenApi() {
@@ -111,7 +108,6 @@ public class SpringDocConfiguration {
 				.build();
 	}
 
-
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
@@ -122,4 +118,7 @@ public class SpringDocConfiguration {
 						.termsOfService("http://swagger.io/terms/")
 						.license(new License().name("Apache 2.0").url("http://springdoc.org")));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

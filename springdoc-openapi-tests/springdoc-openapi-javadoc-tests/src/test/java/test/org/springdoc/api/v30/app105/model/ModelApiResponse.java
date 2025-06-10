@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app105.model;
@@ -55,7 +55,8 @@ public class ModelApiResponse {
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
-	 * @param o the o 
+	 *
+	 * @param o the o
 	 * @return the string
 	 */
 	private static String toIndentedString(Object o) {
@@ -87,7 +88,7 @@ public class ModelApiResponse {
 	/**
 	 * Code model api response.
 	 *
-	 * @param code the code 
+	 * @param code the code
 	 * @return the model api response
 	 */
 	public ModelApiResponse code(Integer code) {
@@ -117,7 +118,7 @@ public class ModelApiResponse {
 	/**
 	 * Type model api response.
 	 *
-	 * @param type the type 
+	 * @param type the type
 	 * @return the model api response
 	 */
 	public ModelApiResponse type(String type) {
@@ -147,7 +148,7 @@ public class ModelApiResponse {
 	/**
 	 * Message model api response.
 	 *
-	 * @param message the message 
+	 * @param message the message
 	 * @return the model api response
 	 */
 	public ModelApiResponse message(String message) {

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app16;
@@ -38,7 +38,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  * Repository to manage {@link Account} instances.
- *
  */
 @RepositoryRestResource
 @Tag(name = "The account Repository")

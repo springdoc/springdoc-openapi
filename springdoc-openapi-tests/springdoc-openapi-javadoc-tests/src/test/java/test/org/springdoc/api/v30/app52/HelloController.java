@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app52;
@@ -44,9 +44,9 @@ class HelloController {
 	/**
 	 * Create test 1 string.
 	 *
-	 * @param username the username 
-	 * @param test the test 
-	 * @param imageFile the image file 
+	 * @param username  the username
+	 * @param test      the test
+	 * @param imageFile the image file
 	 * @return the string
 	 */
 	@PostMapping(value = "/test1/{username}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -58,9 +58,9 @@ class HelloController {
 	/**
 	 * Create test 2 string.
 	 *
-	 * @param username the username 
-	 * @param imageFile the image file 
-	 * @param test the test 
+	 * @param username  the username
+	 * @param imageFile the image file
+	 * @param test      the test
 	 * @return the string
 	 */
 	@PostMapping(value = "/test2/{username}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -72,8 +72,8 @@ class HelloController {
 	/**
 	 * Create test 3 string.
 	 *
-	 * @param test the test 
-	 * @param multipartFiles the multipart files 
+	 * @param test           the test
+	 * @param multipartFiles the multipart files
 	 * @return the string
 	 */
 	@PostMapping(value = "/test3", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

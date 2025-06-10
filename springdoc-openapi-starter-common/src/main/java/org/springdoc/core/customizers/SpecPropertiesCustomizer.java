@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.customizers;
@@ -136,7 +136,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			Components componentsProperties = openApiProperties.getComponents();
 			if (componentsProperties != null)
 				customizeComponents(openApi, componentsProperties);
-			
+
 			Paths pathsProperties = openApiProperties.getPaths();
 			if (pathsProperties != null)
 				customizePaths(openApi, pathsProperties);
@@ -154,7 +154,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	/**
 	 * Customize security.
 	 *
-	 * @param openApi              the open api
+	 * @param openApi                        the open api
 	 * @param securityRequirementsProperties the security requirements
 	 */
 	private void customizeSecurity(OpenAPI openApi, List<SecurityRequirement> securityRequirementsProperties) {
@@ -192,8 +192,8 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 					resolveString(pathItem::description, pathItemProperties::getDescription);
 					resolveString(pathItem::summary, pathItemProperties::getSummary);
 
-					Map<HttpMethod, Operation>  operationMap = pathItem.readOperationsMap();
-					Map<HttpMethod, Operation>  operationMapProperties = pathItemProperties.readOperationsMap();
+					Map<HttpMethod, Operation> operationMap = pathItem.readOperationsMap();
+					Map<HttpMethod, Operation> operationMapProperties = pathItemProperties.readOperationsMap();
 
 					operationMapProperties.forEach((httpMethod, operationProperties) -> {
 						Operation operationToCustomize = operationMap.get(httpMethod);
@@ -203,7 +203,8 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 							resolveSet(operationToCustomize::tags, operationProperties::getTags);
 						}
 					});
-				}});
+				}
+			});
 		}
 	}
 
@@ -221,7 +222,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 		else {
 			Map<String, Schema> schemaMap = components.getSchemas();
 			schemaMap.forEach((key, schema) -> {
-				if(!CollectionUtils.isEmpty(componentsProperties.getSchemas())) {
+				if (!CollectionUtils.isEmpty(componentsProperties.getSchemas())) {
 					Schema schemaProperties = componentsProperties.getSchemas().get(key);
 					if (schemaProperties != null) {
 						resolveString(schema::setDescription, schemaProperties::getDescription);
@@ -323,7 +324,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 */
 	private void resolveType(Consumer<Type> setter, Supplier<Object> getter) {
 		Type value = (Type) getter.get();
-		if (value!=null) {
+		if (value != null) {
 			setter.accept(value);
 		}
 	}
@@ -336,7 +337,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 */
 	private void resolveIn(Consumer<In> setter, Supplier<Object> getter) {
 		In value = (In) getter.get();
-		if (value!=null) {
+		if (value != null) {
 			setter.accept(value);
 		}
 	}
@@ -349,12 +350,12 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 */
 	private void resolveOAuthFlows(Consumer<OAuthFlows> setter, Supplier<Object> getter) {
 		OAuthFlows value = (OAuthFlows) getter.get();
-		if (value!=null) {
+		if (value != null) {
 			setter.accept(value);
 		}
 	}
 
-	
+
 	/**
 	 * Resolve set.
 	 *
@@ -362,7 +363,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 * @param getter the getter
 	 */
 	private void resolveSet(Consumer<List> setter, Supplier<List> getter) {
-		List value =  getter.get();
+		List value = getter.get();
 		if (!CollectionUtils.isEmpty(value)) {
 			setter.accept(value);
 		}

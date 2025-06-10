@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app2.api;
@@ -154,7 +154,7 @@ public interface UserApiDelegate {
 	 * Update user response entity.
 	 *
 	 * @param username the username
-	 * @param user the user
+	 * @param user     the user
 	 * @return the response entity
 	 * @see UserApi#updateUser UserApi#updateUser
 	 */

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app31;
@@ -47,8 +47,8 @@ class HelloController {
 	/**
 	 * Subscribe subscription response.
 	 *
-	 * @param token the token 
-	 * @param url the url 
+	 * @param token the token
+	 * @param url   the url
 	 * @return the subscription response
 	 */
 	@PostMapping("/test")

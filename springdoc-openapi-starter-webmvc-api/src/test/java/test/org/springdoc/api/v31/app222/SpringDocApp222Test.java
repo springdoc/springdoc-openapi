@@ -34,9 +34,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp222Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@JsonTypeInfo(use = Id.NAME, property = "@type")
 	@JsonSubTypes(@Type(CommonImplementor.class))
 	interface FirstHierarchy {}
@@ -45,11 +42,15 @@ public class SpringDocApp222Test extends AbstractSpringDocTest {
 	@JsonSubTypes(@Type(CommonImplementor.class))
 	interface SecondHierarchy {}
 
-	class CommonImplementor implements FirstHierarchy, SecondHierarchy {}
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
-	record CommonImplementorUser(FirstHierarchy firstHierarchy, SecondHierarchy secondHierarchy) {}
+	record CommonImplementorUser(FirstHierarchy firstHierarchy,
+								 SecondHierarchy secondHierarchy) {}
 
 	record FirstHierarchyUser(FirstHierarchy firstHierarchy) {}
 
 	record SecondHierarchyUser(SecondHierarchy secondHierarchy) {}
+
+	class CommonImplementor implements FirstHierarchy, SecondHierarchy {}
 }

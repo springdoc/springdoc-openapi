@@ -22,7 +22,7 @@ public class SpringDocConfig {
 
 
 	@Bean
-	public WebFilter rewritePathWebFilter(WebFluxProperties webFluxProperties)  {
+	public WebFilter rewritePathWebFilter(WebFluxProperties webFluxProperties) {
 		return (ServerWebExchange exchange, WebFilterChain chain) -> {
 			try {
 				ServerHttpRequest originalRequest = (ServerHttpRequest) FieldUtils.readDeclaredField(exchange.getRequest(), "originalRequest", true);
@@ -36,7 +36,8 @@ public class SpringDocConfig {
 					return chain.filter(mutatedExchange);
 				}
 
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				LOGGER.error(e.getMessage());
 			}
 			return chain.filter(exchange);

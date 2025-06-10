@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app10;
@@ -45,11 +45,11 @@ class HelloController {
 	/**
 	 * Test.
 	 *
-	 * @param header the header 
-	 * @param request the request 
-	 * @param response the response 
-	 * @param locale the locale 
-	 * @param hello the hello
+	 * @param header   the header
+	 * @param request  the request
+	 * @param response the response
+	 * @param locale   the locale
+	 * @param hello    the hello
 	 */
 	@GetMapping("/test")
 	public void test(HttpSession header, HttpServletRequest request, HttpServletResponse response, Locale locale,
@@ -59,8 +59,8 @@ class HelloController {
 	/**
 	 * Test request attribute.
 	 *
-	 * @param sample the sample 
-	 * @param s the s
+	 * @param sample the sample
+	 * @param s      the s
 	 */
 	@GetMapping("/testreq")
 	public void testRequestAttribute(@RequestAttribute String sample, String s) {

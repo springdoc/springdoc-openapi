@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app155;
@@ -32,7 +32,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * The type Abstract parameter object.
  *
- * @param <T>  the type parameter
+ * @param <T> the type parameter
  */
 class AbstractParameterObject<T extends Enum<T>> {
 

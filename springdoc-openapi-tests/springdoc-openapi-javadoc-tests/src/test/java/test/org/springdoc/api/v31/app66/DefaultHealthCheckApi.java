@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app66;
@@ -46,7 +46,7 @@ class DefaultHealthCheckApi {
 	/**
 	 * Test date echo string.
 	 *
-	 * @param date the date 
+	 * @param date the date
 	 * @return the string
 	 */
 	@GetMapping("/test/date/echo/{date}")

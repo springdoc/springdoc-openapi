@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app27;
@@ -43,8 +43,8 @@ class Advice {
 	/**
 	 * Handle exception foo.
 	 *
-	 * @param ex the ex 
-	 * @param request the request 
+	 * @param ex      the ex
+	 * @param request the request
 	 * @return the foo
 	 */
 	@ExceptionHandler(Exception.class)
@@ -56,8 +56,8 @@ class Advice {
 	/**
 	 * Handle my exception bar.
 	 *
-	 * @param ex the ex 
-	 * @param request the request 
+	 * @param ex      the ex
+	 * @param request the request
 	 * @return the bar
 	 */
 	@ExceptionHandler(MyException.class)
@@ -69,8 +69,8 @@ class Advice {
 	/**
 	 * Handle my exception 2 bar.
 	 *
-	 * @param ex the ex 
-	 * @param request the request 
+	 * @param ex      the ex
+	 * @param request the request
 	 * @return the bar
 	 */
 	@Hidden

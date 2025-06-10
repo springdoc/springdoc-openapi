@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30;
@@ -46,7 +46,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @AutoConfigureWebTestClient(timeout = "3600000")
 @ActiveProfiles("test")
-@TestPropertySource(properties = { "management.endpoints.enabled-by-default=false" ,  "springdoc.api-docs.version=openapi_3_0" })
+@TestPropertySource(properties = { "management.endpoints.enabled-by-default=false", "springdoc.api-docs.version=openapi_3_0" })
 public abstract class AbstractCommonTest {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonTest.class);
@@ -65,10 +65,10 @@ public abstract class AbstractCommonTest {
 		}
 	}
 
-	protected void testApp(String testId, String groupName) throws Exception{
+	protected void testApp(String testId, String groupName) throws Exception {
 		String result = null;
 		try {
-			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL  + "/" + groupName).exchange()
+			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + groupName).exchange()
 					.expectStatus().isOk().expectBody().returnResult();
 			result = new String(getResult.getResponseBody());
 			String expected = getContent("results/3.0.1/app" + testId + ".json");

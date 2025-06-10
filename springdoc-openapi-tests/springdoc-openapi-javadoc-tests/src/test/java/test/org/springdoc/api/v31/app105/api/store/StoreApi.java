@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 /**
@@ -76,7 +76,7 @@ public interface StoreApi {
 	/**
 	 * Delete order response entity.
 	 *
-	 * @param orderId the order id 
+	 * @param orderId the order id
 	 * @return the response entity
 	 */
 	@Operation(summary = "Delete purchase order by ID", tags = { "store" })
@@ -105,7 +105,7 @@ public interface StoreApi {
 	/**
 	 * Gets order by id.
 	 *
-	 * @param orderId the order id 
+	 * @param orderId the order id
 	 * @return the order by id
 	 */
 	@Operation(summary = "Find purchase order by ID", tags = { "store" })
@@ -122,7 +122,7 @@ public interface StoreApi {
 	/**
 	 * Place order response entity.
 	 *
-	 * @param order the order 
+	 * @param order the order
 	 * @return the response entity
 	 */
 	@Operation(summary = "Place an order for a pet", tags = { "store" })

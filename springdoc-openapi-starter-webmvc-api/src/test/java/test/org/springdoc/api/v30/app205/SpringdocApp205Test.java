@@ -1,7 +1,7 @@
 package test.org.springdoc.api.v30.app205;
 
 /**
- * @author bnasslahsen
+ *
  */
 
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;

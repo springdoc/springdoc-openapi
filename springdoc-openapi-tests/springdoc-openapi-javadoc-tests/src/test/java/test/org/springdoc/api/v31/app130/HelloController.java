@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app130;
@@ -39,7 +39,7 @@ class HelloController {
 	/**
 	 * List tracker data.
 	 *
-	 * @param toto the toto 
+	 * @param toto the toto
 	 * @return the tracker data
 	 */
 	@PostMapping(value = "/values/data")
@@ -50,7 +50,7 @@ class HelloController {
 	/**
 	 * Get tracker data.
 	 *
-	 * @param toto the toto 
+	 * @param toto the toto
 	 * @return the tracker data
 	 */
 	@GetMapping(value = "/values/datakk")

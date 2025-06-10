@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 package test.org.springdoc.api.v30.app120;
 
@@ -69,6 +69,7 @@ class MetaAnnotationController {
 	/**
 	 * When there is a top level {@code @Parameter} annotation it has precedence over the meta-annotation
 	 * So the id parameter should have all the defaults, with a name of "id"
+	 *
 	 * @param accountId the account id
 	 * @return the string
 	 */
@@ -90,6 +91,7 @@ class MetaAnnotationController {
 
 	/**
 	 * {@code @AliasFor} in the {@code @AccountId} annotation allows us to override the default it provides.
+	 *
 	 * @param accountId the account id
 	 * @return the string
 	 */
@@ -102,7 +104,7 @@ class MetaAnnotationController {
 	 * Test meta meta annotation string.
 	 *
 	 * @param queryAccountId the query account id
-	 * @param accountId the account id
+	 * @param accountId      the account id
 	 * @return the string
 	 */
 	@GetMapping(value = "/testMetaMetaAnnotation/{accountId}")

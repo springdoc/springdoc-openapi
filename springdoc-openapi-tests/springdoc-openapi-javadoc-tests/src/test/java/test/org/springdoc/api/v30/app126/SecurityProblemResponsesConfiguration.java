@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app126;
@@ -80,7 +80,7 @@ class SecurityProblemResponsesConfiguration {
 	/**
 	 * Http 401 no token response map . entry.
 	 *
-	 * @return the map . entry 
+	 * @return the map . entry
 	 * @throws IOException the io exception
 	 */
 	@Bean
@@ -91,7 +91,7 @@ class SecurityProblemResponsesConfiguration {
 	/**
 	 * Http 401 bad token response map . entry.
 	 *
-	 * @return the map . entry 
+	 * @return the map . entry
 	 * @throws IOException the io exception
 	 */
 	@Bean
@@ -102,7 +102,7 @@ class SecurityProblemResponsesConfiguration {
 	/**
 	 * Http 403 example map . entry.
 	 *
-	 * @return the map . entry 
+	 * @return the map . entry
 	 * @throws IOException the io exception
 	 */
 	@Bean
@@ -113,9 +113,9 @@ class SecurityProblemResponsesConfiguration {
 	/**
 	 * Simple response map . entry.
 	 *
-	 * @param code the code 
-	 * @param description the description 
-	 * @return the map . entry 
+	 * @param code        the code
+	 * @param description the description
+	 * @return the map . entry
 	 * @throws IOException the io exception
 	 */
 	private Map.Entry<String, ApiResponse> simpleResponse(String code, String description) throws IOException {

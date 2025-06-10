@@ -4,14 +4,17 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/springdoc/springdoc-openapi.git/badge.svg)](https://snyk.io/test/github/springdoc/springdoc-openapi.git)
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
 
-IMPORTANT: ``springdoc-openapi v1.8.0`` is the latest Open Source release supporting Spring Boot 2.x and 1.x. 
+IMPORTANT: ``springdoc-openapi v1.8.0`` is the latest Open Source release supporting
+Spring Boot 2.x and 1.x.
 
-An extended support for [*springdoc-openapi v1*](https://springdoc.org/v1) 
-project is now available for organizations that need support beyond 2023. 
+An extended support for [*springdoc-openapi v1*](https://springdoc.org/v1)
+project is now available for organizations that need support beyond 2023.
 
-For more details, feel free to reach out: [sales@springdoc.org](mailto:sales@springdoc.org)
+For more details, feel free to reach
+out: [sales@springdoc.org](mailto:sales@springdoc.org)
 
-``springdoc-openapi`` is on [Open Collective](https://opencollective.com/springdoc). If you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
+``springdoc-openapi`` is on [Open Collective](https://opencollective.com/springdoc). If
+you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
 
 This project is sponsored by
 
@@ -82,9 +85,11 @@ The following video introduces the Library:
 
 * [https://youtu.be/utRxyPfFlDw](https://youtu.be/utRxyPfFlDw)
 
-For *spring-boot v3* support, make sure you use [springdoc-openapi v2](https://springdoc.org/)
+For *spring-boot v3* support, make sure you
+use [springdoc-openapi v2](https://springdoc.org/)
 
-This is a community-based project, not maintained by the Spring Framework Contributors (Pivotal)
+This is a community-based project, not maintained by the Spring Framework Contributors (
+Pivotal)
 
 # **Getting Started**
 
@@ -105,6 +110,7 @@ This is a community-based project, not maintained by the Spring Framework Contri
   additional configuration is needed):
 
 Maven
+
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
@@ -114,6 +120,7 @@ Maven
 ```
 
 Gradle
+
 ```groovy
 implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
 ```
@@ -157,6 +164,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
   is needed)
 
 Maven
+
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
@@ -166,6 +174,7 @@ Maven
 ```
 
 Gradle
+
 ```groovy
 implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
 ```
@@ -208,6 +217,7 @@ and `@SecurityScheme` annotations within a Spring managed bean.
   is needed)
 
 Maven
+
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
@@ -217,6 +227,7 @@ Maven
 ```
 
 Gradle
+
 ```groovy
 implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
 ```

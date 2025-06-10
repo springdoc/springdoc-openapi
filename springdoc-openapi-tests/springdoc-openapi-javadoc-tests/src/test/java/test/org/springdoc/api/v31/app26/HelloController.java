@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app26;
@@ -38,7 +38,7 @@ class HelloController {
 	/**
 	 * Persons my model.
 	 *
-	 * @param myModel the my model 
+	 * @param myModel the my model
 	 * @return the my model
 	 */
 	@PostMapping(value = "/persons")

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app1;
@@ -30,6 +30,7 @@ import java.io.Serializable;
 
 /**
  * The type Item dto.
+ *
  * @author bnasslahsen
  */
 class ItemDTO implements Serializable {
@@ -70,7 +71,7 @@ class ItemDTO implements Serializable {
 	 * Instantiates a new Item dto.
 	 *
 	 * @param description description
-	 * @param price price
+	 * @param price       price
 	 */
 	public ItemDTO(final String description, final int price) {
 		this.description = description;
@@ -80,9 +81,9 @@ class ItemDTO implements Serializable {
 	/**
 	 * Instantiates a new Item dto.
 	 *
-	 * @param itemID itemID
+	 * @param itemID      itemID
 	 * @param description description
-	 * @param price price
+	 * @param price       price
 	 */
 	public ItemDTO(final String itemID, final String description, final int price) {
 		this.itemID = itemID;

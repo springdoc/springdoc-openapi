@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/demo")
 class DocumentsApiController {
 
-    @GetMapping
-    suspend fun getDocuments(
-        request: DemoRequest
-    ): DemoDto = DemoDto(42)
+	@GetMapping
+	suspend fun getDocuments(
+		request: DemoRequest
+	): DemoDto = DemoDto(42)
 }
 
 data class DemoDto(
-    var id: Long,
+	var id: Long,
 )
 
 /**
@@ -30,21 +30,21 @@ field following test cases:
  */
 class DemoRequest(
 
-    @field:Schema(required = true)
-    val field11true: String?,
+	@field:Schema(required = true)
+	val field11true: String?,
 
-    @field:Schema(required = true)
-    val field10true: String,
+	@field:Schema(required = true)
+	val field10true: String,
 
-    @field:Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    val field01false: String?,
+	@field:Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	val field01false: String?,
 
-    @field:Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    val field00false: String,
+	@field:Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	val field00false: String,
 
-    @field:Schema
-    val fieldN1false: String?,
+	@field:Schema
+	val fieldN1false: String?,
 
-    @field:Schema
-    val fieldN0true: String,
+	@field:Schema
+	val fieldN0true: String,
 )

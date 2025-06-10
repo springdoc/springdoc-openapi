@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.properties;
@@ -64,6 +64,16 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties implements InitializingBean {
 
 	/**
+	 * The constant SPRINGDOC_CONFIG_PROPERTIES.
+	 */
+	public static final String SPRINGDOC_CONFIG_PROPERTIES = "springdoc.config.properties";
+
+	/**
+	 * The constant SPRINGDOC_SWAGGERUI_VERSION.
+	 */
+	private static final String SPRINGDOC_SWAGGER_VERSION = SPRINGDOC_SWAGGER_PREFIX + ".version";
+
+	/**
 	 * The Disable swagger default url.
 	 */
 	private boolean disableSwaggerDefaultUrl;
@@ -93,17 +103,6 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 */
 	private boolean useRootPath;
 
-	/**
-	 * The constant SPRINGDOC_SWAGGERUI_VERSION.
-	 */
-	private static final String SPRINGDOC_SWAGGER_VERSION = SPRINGDOC_SWAGGER_PREFIX+".version";
-	
-	/**
-	 * The constant SPRINGDOC_CONFIG_PROPERTIES.
-	 */
-	public static final String SPRINGDOC_CONFIG_PROPERTIES = "springdoc.config.properties";
-
-
 	@Override
 	public void afterPropertiesSet() {
 		if (StringUtils.isEmpty(version)) {
@@ -117,6 +116,7 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 			}
 		}
 	}
+
 	/**
 	 * Gets swagger ui version.
 	 *

@@ -14,39 +14,39 @@ import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 @TestPropertySource(properties = ["$SPRINGDOC_DEFAULT_FLAT_PARAM_OBJECT=true"])
 class SpringDocApp17Test : AbstractKotlinSpringDocMVCTest() {
-    @SpringBootApplication
-    class DemoApplication {
+	@SpringBootApplication
+	class DemoApplication {
 
-        @Bean
-        fun optionalKotlinDelegatingMethodParameterCustomizer(): DelegatingMethodParameterCustomizer {
-            return object : DelegatingMethodParameterCustomizer {
-                override fun customizeList(
-                    originalParameter: MethodParameter,
-                    methodParameters: MutableList<MethodParameter>
-                ) {
-                    val fieldNameSet = mutableSetOf<String>()
-                    methodParameters.forEachIndexed { index, it ->
-                        if (it is DelegatingMethodParameter && it.isParameterObject && it.field != null) {
-                            val field = it.field!!
-                            if (fieldNameSet.contains(field.name)) {
-                                val fieldAnnotations = field.annotations
-                                Assertions.assertTrue(fieldAnnotations.any { it is NotEmpty })
-                                // remove parent field
-                                methodParameters.removeAt(index)
-                            } else fieldNameSet.add(field.name)
-                        }
-                    }
-                    if (methodParameters.size > 1) {
-                        methodParameters.sortBy { it.parameterIndex }
-                    }
-                }
+		@Bean
+		fun optionalKotlinDelegatingMethodParameterCustomizer(): DelegatingMethodParameterCustomizer {
+			return object : DelegatingMethodParameterCustomizer {
+				override fun customizeList(
+					originalParameter: MethodParameter,
+					methodParameters: MutableList<MethodParameter>
+				) {
+					val fieldNameSet = mutableSetOf<String>()
+					methodParameters.forEachIndexed { index, it ->
+						if (it is DelegatingMethodParameter && it.isParameterObject && it.field != null) {
+							val field = it.field!!
+							if (fieldNameSet.contains(field.name)) {
+								val fieldAnnotations = field.annotations
+								Assertions.assertTrue(fieldAnnotations.any { it is NotEmpty })
+								// remove parent field
+								methodParameters.removeAt(index)
+							} else fieldNameSet.add(field.name)
+						}
+					}
+					if (methodParameters.size > 1) {
+						methodParameters.sortBy { it.parameterIndex }
+					}
+				}
 
-                override fun customize(
-                    originalParameter: MethodParameter,
-                    methodParameter: MethodParameter
-                ) {
-                }
-            }
-        }
-    }
+				override fun customize(
+					originalParameter: MethodParameter,
+					methodParameter: MethodParameter
+				) {
+				}
+			}
+		}
+	}
 }

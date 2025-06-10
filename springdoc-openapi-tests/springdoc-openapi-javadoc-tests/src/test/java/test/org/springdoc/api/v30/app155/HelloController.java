@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app155;
@@ -42,7 +42,7 @@ class HelloController {
 	/**
 	 * Say hello response entity.
 	 *
-	 * @param test the test 
+	 * @param test the test
 	 * @return the response entity
 	 */
 	@GetMapping("/test1")
@@ -54,7 +54,7 @@ class HelloController {
 	/**
 	 * Say hello response entity.
 	 *
-	 * @param test the test 
+	 * @param test the test
 	 * @return the response entity
 	 */
 	@GetMapping("/test2")

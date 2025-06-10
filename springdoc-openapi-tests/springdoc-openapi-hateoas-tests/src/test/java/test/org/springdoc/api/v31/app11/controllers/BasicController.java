@@ -17,25 +17,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/")
 public class BasicController {
 
-    @GetMapping("/cat")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "get", description = "Provides an animal.")
-    public String get(Cat cat) {
-        return cat != null ? cat.getName() : "";
-    }
+	@GetMapping("/cat")
+	@ResponseStatus(HttpStatus.OK)
+	@Operation(summary = "get", description = "Provides an animal.")
+	public String get(Cat cat) {
+		return cat != null ? cat.getName() : "";
+	}
 
-    @GetMapping("/test")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "get", description = "Provides a response.")
-    @ApiResponse(content = @Content(mediaType = MediaTypes.HAL_JSON_VALUE,
-        schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = Response.class)),
-        responseCode = "200")
-    public Response get() {
-        return new Response("value");
-    }
+	@GetMapping("/test")
+	@ResponseStatus(HttpStatus.OK)
+	@Operation(summary = "get", description = "Provides a response.")
+	@ApiResponse(content = @Content(mediaType = MediaTypes.HAL_JSON_VALUE,
+			schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = Response.class)),
+			responseCode = "200")
+	public Response get() {
+		return new Response("value");
+	}
 
-    // dummy
-    public static class Response extends RepresentationModel {
-        public Response(String v) {}
-    }
+	// dummy
+	public static class Response extends RepresentationModel {
+		public Response(String v) {
+		}
+	}
 }

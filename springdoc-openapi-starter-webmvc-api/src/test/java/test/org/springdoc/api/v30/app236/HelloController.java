@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @PostMapping(path = "/testOne", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<String> testOne(@ParameterObject @Valid ClassOne test) {
-        return ResponseEntity.ok("ok");
-    }
+	@PostMapping(path = "/testOne", consumes = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<String> testOne(@ParameterObject @Valid ClassOne test) {
+		return ResponseEntity.ok("ok");
+	}
 
-    @PostMapping(path = "/testTwo", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<String> testTwo(@RequestBody ClassOne test) {
-        return ResponseEntity.ok("ok");
-    }
+	@PostMapping(path = "/testTwo", consumes = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<String> testTwo(@RequestBody ClassOne test) {
+		return ResponseEntity.ok("ok");
+	}
 }

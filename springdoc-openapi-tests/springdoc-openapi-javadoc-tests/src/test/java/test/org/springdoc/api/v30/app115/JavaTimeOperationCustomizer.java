@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app115;
@@ -46,8 +46,8 @@ class JavaTimeOperationCustomizer implements OperationCustomizer {
 	/**
 	 * Customize operation.
 	 *
-	 * @param operation the operation 
-	 * @param handlerMethod the handler method 
+	 * @param operation     the operation
+	 * @param handlerMethod the handler method
 	 * @return the operation
 	 */
 	@Override

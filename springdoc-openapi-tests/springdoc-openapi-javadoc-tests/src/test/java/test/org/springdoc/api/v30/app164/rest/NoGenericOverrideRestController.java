@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app164.rest;
@@ -65,7 +65,7 @@ class NoGenericOverrideRestController {
 	 *
 	 * @param prefix the {@code @param prefix} javadoc for the {@code #findStartsBy(String)} method
 	 * @return the {@code @return} javadoc for the {@code #findStartsBy(String)} method
-	 * @throws NoResultException the {@code @throws NoResultException} javadoc for the {@code #findStartsBy(String)} method
+	 * @throws NoResultException        the {@code @throws NoResultException} javadoc for the {@code #findStartsBy(String)} method
 	 * @throws NonUniqueResultException the {@code @throws NonUniqueResultException} javadoc for the {@code #findStartsBy(String)} method
 	 */
 	@GetMapping(path = "startsBy/{prefix}", produces = MediaType.APPLICATION_JSON_VALUE)

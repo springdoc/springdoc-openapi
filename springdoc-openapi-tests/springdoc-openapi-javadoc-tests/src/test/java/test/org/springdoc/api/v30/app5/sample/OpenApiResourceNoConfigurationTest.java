@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app5.sample;
@@ -46,6 +46,7 @@ class OpenApiResourceNoConfigurationTest extends AbstractSpringDocTest {
 	/**
 	 * givenNoConfiguration_whenGetApiJson_returnsDefaultEmptyDocs - should return
 	 * {"openapi":"3.0.1","info":{"title":"OpenAPI definition","version":"v0"},"paths":{},"components":{}}
+	 *
 	 * @throws Exception the exception
 	 */
 	@Test

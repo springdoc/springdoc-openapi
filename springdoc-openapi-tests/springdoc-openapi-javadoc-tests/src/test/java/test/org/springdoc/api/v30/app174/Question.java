@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app174;
@@ -43,6 +43,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 })
 public abstract class Question {
 	private final String question;
+
 	private final String type;
 
 	public Question(String question, String type) {

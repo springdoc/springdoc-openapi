@@ -30,14 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.org.springdoc.ui.app5.SpringDocApp5Test.CONTEXT_PATH;
 
-@TestPropertySource(properties = "server.servlet.context-path="+CONTEXT_PATH)
+@TestPropertySource(properties = "server.servlet.context-path=" + CONTEXT_PATH)
 public class SpringDocApp5Test extends AbstractSpringDocTest {
 
 	public static final String CONTEXT_PATH = "/context-path";
 
 	@Test
 	void oauth2_redirect_url_calculated_with_context_path() throws Exception {
-		mockMvc.perform(get(CONTEXT_PATH+"/v3/api-docs/swagger-config").contextPath("/context-path"))
+		mockMvc.perform(get(CONTEXT_PATH + "/v3/api-docs/swagger-config").contextPath("/context-path"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/context-path/swagger-ui/oauth2-redirect.html")));
 		super.chekJS(CONTEXT_PATH);

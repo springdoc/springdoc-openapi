@@ -6,7 +6,7 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 @Schema(description = "the foo bar", deprecated = true)
 public record FooBar(
-        @Schema(description = "foo", requiredMode = REQUIRED, examples = {"1", "2"})
-        int foo
+		@Schema(description = "foo", requiredMode = REQUIRED, examples = { "1", "2" })
+		int foo
 ) {
 }

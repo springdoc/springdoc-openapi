@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app129;
@@ -45,8 +45,8 @@ class HelloController {
 	/**
 	 * Update deferred result.
 	 *
-	 * @param entity the entity 
-	 * @return the deferred result 
+	 * @param entity the entity
+	 * @return the deferred result
 	 * @throws Exception the exception
 	 */
 	@PostMapping("/test")

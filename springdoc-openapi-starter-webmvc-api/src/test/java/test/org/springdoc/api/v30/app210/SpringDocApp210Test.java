@@ -35,12 +35,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class SpringDocApp210Test extends AbstractCommonTest {
-	
+
 	@Test
-	protected void testApp(){
+	protected void testApp() {
 		assertThrows(IllegalArgumentException.class, () -> GroupedOpenApi.builder().group("").build());
 	}
-	
+
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 

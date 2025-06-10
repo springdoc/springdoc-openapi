@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.configuration;
@@ -168,7 +168,8 @@ public class SpringDocSecurityConfiguration {
 
 							if (requestMatcher instanceof AntPathRequestMatcher) {
 								loginPath = ((AntPathRequestMatcher) requestMatcher).getPattern();
-							} else if (requestMatcher instanceof PathPatternRequestMatcher) {
+							}
+							else if (requestMatcher instanceof PathPatternRequestMatcher) {
 								PathPattern pathPattern = (PathPattern) FieldUtils.readField(
 										requestMatcher,
 										"pattern",
@@ -176,7 +177,7 @@ public class SpringDocSecurityConfiguration {
 								);
 								loginPath = pathPattern.getPatternString();
 							}
-							
+
 							openAPI.getPaths().addPathItem(loginPath, pathItem);
 						}
 						catch (IllegalAccessException |

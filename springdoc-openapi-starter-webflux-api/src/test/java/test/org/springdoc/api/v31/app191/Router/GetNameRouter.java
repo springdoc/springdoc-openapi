@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app191.Router;
@@ -47,17 +47,17 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Configuration
 public class GetNameRouter {
 
-    @Bean
-    @RouterOperations(
-            value = {
-                    @RouterOperation(path = "/v1/name", produces = {MediaType.APPLICATION_JSON_VALUE}, method = RequestMethod.GET,
-                            beanClass = GetNameHandler.class, beanMethod = "handle", operation = @Operation(operationId = "getName",
-                            description = "get name", responses = {@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = String.class)))})
-                    )
-            })
+	@Bean
+	@RouterOperations(
+			value = {
+					@RouterOperation(path = "/v1/name", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET,
+							beanClass = GetNameHandler.class, beanMethod = "handle", operation = @Operation(operationId = "getName",
+							description = "get name", responses = { @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = String.class))) })
+					)
+			})
 
-    public RouterFunction<ServerResponse> routerFunction(GetNameHandler getNameHandler) {
-        return RouterFunctions.route(RequestPredicates.GET("/v1/name"), getNameHandler::handle);
-    }
+	public RouterFunction<ServerResponse> routerFunction(GetNameHandler getNameHandler) {
+		return RouterFunctions.route(RequestPredicates.GET("/v1/name"), getNameHandler::handle);
+	}
 
 }

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.ui;
@@ -137,7 +137,7 @@ public class AbstractSwaggerIndexTransformer {
 	 * @param html the html
 	 * @return modifed html
 	 */
-	protected String setConfiguredApiDocsUrl(String html){
+	protected String setConfiguredApiDocsUrl(String html) {
 		return html.replace(Constants.SWAGGER_UI_DEFAULT_URL, swaggerUiConfig.getUrl());
 	}
 
@@ -174,7 +174,7 @@ public class AbstractSwaggerIndexTransformer {
 		if (swaggerUiConfig.isDisableSwaggerDefaultUrl())
 			html = overwriteSwaggerDefaultUrl(html);
 
-		if(StringUtils.isNotEmpty(swaggerUiConfig.getUrl()) && StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())){
+		if (StringUtils.isNotEmpty(swaggerUiConfig.getUrl()) && StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
 			html = setConfiguredApiDocsUrl(html);
 		}
 

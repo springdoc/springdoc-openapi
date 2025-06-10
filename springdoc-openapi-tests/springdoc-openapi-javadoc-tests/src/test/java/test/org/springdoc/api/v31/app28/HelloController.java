@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app28;
@@ -41,8 +41,8 @@ class HelloController {
 	/**
 	 * Upload 2 string.
 	 *
-	 * @param one the one 
-	 * @param two the two 
+	 * @param one the one
+	 * @param two the two
 	 * @return the string
 	 */
 	@PostMapping(value = "/upload2", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

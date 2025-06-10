@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app33;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * The type Hello controller.
  *
- * @param <T>  the type parameter
+ * @param <T> the type parameter
  */
 @RestController
 class HelloController<T> {
@@ -44,8 +44,8 @@ class HelloController<T> {
 	/**
 	 * Index t.
 	 *
-	 * @param numTel the num tel 
-	 * @param adresse the adresse 
+	 * @param numTel  the num tel
+	 * @param adresse the adresse
 	 * @return the t
 	 */
 	@GetMapping(value = "/hello/{numTelco}")

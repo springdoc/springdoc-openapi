@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 package org.springdoc.core.extractor;
 
@@ -122,7 +122,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 		this.parameterName = parameterName;
 		this.isParameterObject = isParameterObject;
 		this.isNotRequired = isNotRequired;
-		this.methodAnnotations =methodAnnotations;
+		this.methodAnnotations = methodAnnotations;
 	}
 
 	/**
@@ -306,6 +306,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 
 	/**
 	 * Gets field. If Is parameter object. then The Field should be not null
+	 *
 	 * @return the field
 	 * @see #isParameterObject
 	 */

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webmvc.core.configuration;
@@ -112,7 +112,7 @@ public class SpringDocWebMvcConfiguration {
 			SpringDocConfigProperties springDocConfigProperties,
 			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 		return new OpenApiWebMvcResource(openAPIBuilderObjectFactory, requestBuilder,
-				responseBuilder, operationParser,  springDocConfigProperties, springDocProviders, springDocCustomizers);
+				responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -193,10 +193,10 @@ public class SpringDocWebMvcConfiguration {
 		/**
 		 * Actuator provider actuator provider.
 		 *
-		 * @param serverProperties                 the server properties
-		 * @param springDocConfigProperties        the spring doc config properties
-		 * @param managementServerProperties       the management server properties
-		 * @param webEndpointProperties            the web endpoint properties
+		 * @param serverProperties           the server properties
+		 * @param springDocConfigProperties  the spring doc config properties
+		 * @param managementServerProperties the management server properties
+		 * @param webEndpointProperties      the web endpoint properties
 		 * @return the actuator provider
 		 */
 		@Bean
@@ -233,11 +233,11 @@ public class SpringDocWebMvcConfiguration {
 		OpenApiActuatorResource openApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
 				SpringDocConfigProperties springDocConfigProperties,
-				SpringDocProviders springDocProviders,  SpringDocCustomizers springDocCustomizers) {
+				SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory,
 					requestBuilder, responseBuilder,
 					operationParser,
-					springDocConfigProperties, springDocProviders,  springDocCustomizers);
+					springDocConfigProperties, springDocProviders, springDocCustomizers);
 		}
 	}
 }

@@ -21,13 +21,13 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app11;
 
 /**
- * @author bnasslahsen
+ *
  */
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

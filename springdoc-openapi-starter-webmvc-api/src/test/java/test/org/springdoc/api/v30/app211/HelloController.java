@@ -57,5 +57,6 @@ public class HelloController {
 	}
 
 	record PagedObject(long id, String name) {}
+
 	record Paging(int page, int total, int lastPage) {}
 }

@@ -45,45 +45,46 @@ import java.nio.file.Paths
 @ActiveProfiles("test")
 abstract class AbstractKotlinSpringDocMVCTest {
 
-    @Autowired
-    val mockMvc: MockMvc? = null
+	@Autowired
+	val mockMvc: MockMvc? = null
 
-    private val logger = LoggerFactory.getLogger(AbstractKotlinSpringDocMVCTest::class.java)
+	private val logger =
+		LoggerFactory.getLogger(AbstractKotlinSpringDocMVCTest::class.java)
 
-    @Test
-    fun testApp() {
-        var result: String? = null
-        try {
-            val response = mockMvc!!.perform(MockMvcRequestBuilders.get("/v3/api-docs"))
-                    .andExpect(MockMvcResultMatchers.status().isOk).andReturn()
+	@Test
+	fun testApp() {
+		var result: String? = null
+		try {
+			val response = mockMvc!!.perform(MockMvcRequestBuilders.get("/v3/api-docs"))
+				.andExpect(MockMvcResultMatchers.status().isOk).andReturn()
 
-            result = response.response.contentAsString
-            val className = javaClass.simpleName
-            val testNumber = className.replace("[^0-9]".toRegex(), "")
+			result = response.response.contentAsString
+			val className = javaClass.simpleName
+			val testNumber = className.replace("[^0-9]".toRegex(), "")
 
-            val expected = getContent("results/3.1.0/app$testNumber.json")
-            JSONAssert.assertEquals(expected, result, true)
-        } catch (e: AssertionError) {
-            logger.error(result)
-            throw e
-        }
-    }
+			val expected = getContent("results/3.1.0/app$testNumber.json")
+			JSONAssert.assertEquals(expected, result, true)
+		} catch (e: AssertionError) {
+			logger.error(result)
+			throw e
+		}
+	}
 
-    companion object {
-        @Throws(Exception::class)
-        fun getContent(fileName: String): String {
-            try {
-                val path = Paths.get(
-                    AbstractKotlinSpringDocMVCTest::class.java.classLoader.getResource(
-                        fileName
-                    )!!.toURI()
-                )
-                val fileBytes = Files.readAllBytes(path)
-                return String(fileBytes, StandardCharsets.UTF_8)
-            } catch (e: Exception) {
-                throw RuntimeException("Failed to read file: $fileName", e)
-            }
+	companion object {
+		@Throws(Exception::class)
+		fun getContent(fileName: String): String {
+			try {
+				val path = Paths.get(
+					AbstractKotlinSpringDocMVCTest::class.java.classLoader.getResource(
+						fileName
+					)!!.toURI()
+				)
+				val fileBytes = Files.readAllBytes(path)
+				return String(fileBytes, StandardCharsets.UTF_8)
+			} catch (e: Exception) {
+				throw RuntimeException("Failed to read file: $fileName", e)
+			}
 
-        }
-    }
+		}
+	}
 }

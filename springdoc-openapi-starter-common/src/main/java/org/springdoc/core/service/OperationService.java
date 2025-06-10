@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.service;
@@ -562,7 +562,7 @@ public class OperationService {
 	 *
 	 * @return propertyResolverUtils property resolver utils
 	 */
-	public PropertyResolverUtils getPropertyResolverUtils(){
+	public PropertyResolverUtils getPropertyResolverUtils() {
 		return parameterBuilder.getPropertyResolverUtils();
 	}
 }

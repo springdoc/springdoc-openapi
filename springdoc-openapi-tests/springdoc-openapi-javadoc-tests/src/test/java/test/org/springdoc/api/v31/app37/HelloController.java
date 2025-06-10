@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app37;
@@ -44,7 +44,7 @@ class HelloController {
 	/**
 	 * Process foo.
 	 *
-	 * @param a the a 
+	 * @param a the a
 	 * @return the foo
 	 */
 	@PostMapping(path = "/bar/baz", consumes = "application/x.a+json", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -55,7 +55,7 @@ class HelloController {
 	/**
 	 * Process bar.
 	 *
-	 * @param b the b 
+	 * @param b the b
 	 * @return the bar
 	 */
 	@PostMapping(path = "/bar/baz", consumes = "application/x.b+json", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -66,7 +66,7 @@ class HelloController {
 	/**
 	 * Process car.
 	 *
-	 * @param c the c 
+	 * @param c the c
 	 * @return the car
 	 */
 	@PostMapping(path = "/bar/baz", consumes = "application/x.c+json", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,7 +78,7 @@ class HelloController {
 	/**
 	 * Pets post response entity.
 	 *
-	 * @param pet the pet 
+	 * @param pet the pet
 	 * @return the response entity
 	 */
 	@PostMapping(value = "/pets1", consumes = "text/plain")

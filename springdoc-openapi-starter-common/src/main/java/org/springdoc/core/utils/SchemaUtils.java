@@ -45,15 +45,16 @@ import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
 public class SchemaUtils {
 
 	/**
-	 * The constructor.
-	 */
-	private SchemaUtils() {
-	}
-
-	/**
 	 * The constant JAVA_FIELD_NULLABLE_DEFAULT.
 	 */
 	public static final Boolean JAVA_FIELD_NULLABLE_DEFAULT = true;
+
+	/**
+	 * The constant ANNOTATIONS_FOR_REQUIRED.
+	 */
+	// using string litterals to support both validation-api v1 and v2
+	public static final List<String> ANNOTATIONS_FOR_REQUIRED = Arrays.asList("NotNull", "NonNull", "NotBlank",
+			"NotEmpty");
 
 	/**
 	 * The constant OPTIONAL_TYPES.
@@ -68,15 +69,15 @@ public class SchemaUtils {
 	}
 
 	/**
-	 * The constant ANNOTATIONS_FOR_REQUIRED.
+	 * The constructor.
 	 */
-	// using string litterals to support both validation-api v1 and v2
-	public static final List<String> ANNOTATIONS_FOR_REQUIRED = Arrays.asList("NotNull", "NonNull", "NotBlank",
-			"NotEmpty");
+	private SchemaUtils() {
+	}
 
 	/**
 	 * Is swagger visible.
-	 * @param schema the schema
+	 *
+	 * @param schema    the schema
 	 * @param parameter the parameter
 	 * @return the boolean
 	 */
@@ -94,7 +95,8 @@ public class SchemaUtils {
 	/**
 	 * Is swagger required. it may return {@code null} if not specified require value or
 	 * mode
-	 * @param schema the schema
+	 *
+	 * @param schema    the schema
 	 * @param parameter the parameter
 	 * @return the boolean or {@code null}
 	 * @see Parameter#required()
@@ -121,6 +123,7 @@ public class SchemaUtils {
 
 	/**
 	 * Check if the parameter has any of the annotations that make it non-optional
+	 *
 	 * @param annotationSimpleNames the annotation simple class named, e.g. NotNull
 	 * @return whether any of the known NotNull annotations are present
 	 */
@@ -130,19 +133,21 @@ public class SchemaUtils {
 
 	/**
 	 * Is annotated notnull.
+	 *
 	 * @param annotations the field annotations
 	 * @return the boolean
 	 */
 	public static boolean annotatedNotNull(List<Annotation> annotations) {
 		Collection<String> annotationSimpleNames = annotations.stream()
-			.map(annotation -> annotation.annotationType().getSimpleName())
-			.collect(Collectors.toSet());
+				.map(annotation -> annotation.annotationType().getSimpleName())
+				.collect(Collectors.toSet());
 		return ANNOTATIONS_FOR_REQUIRED.stream().anyMatch(annotationSimpleNames::contains);
 	}
 
 	/**
 	 * Is field nullable. java default is nullable
 	 * {@link SchemaUtils#JAVA_FIELD_NULLABLE_DEFAULT}
+	 *
 	 * @param field the field
 	 * @return the boolean
 	 */
@@ -162,8 +167,9 @@ public class SchemaUtils {
 
 	/**
 	 * Is field required.
-	 * @param field the field
-	 * @param schema the schema
+	 *
+	 * @param field     the field
+	 * @param schema    the schema
 	 * @param parameter the parameter
 	 * @return the boolean
 	 * @see Parameter#required()
@@ -195,9 +201,10 @@ public class SchemaUtils {
 		annotations.forEach(anno -> {
 			String annotationName = anno.annotationType().getSimpleName();
 			if (annotationName.equals(Positive.class.getSimpleName())) {
-				if(OpenApiVersion.OPENAPI_3_1.getVersion().equals(openapiVersion)){
+				if (OpenApiVersion.OPENAPI_3_1.getVersion().equals(openapiVersion)) {
 					schema.setExclusiveMinimumValue(BigDecimal.ZERO);
-				} else {
+				}
+				else {
 					schema.setMinimum(BigDecimal.ZERO);
 					schema.setExclusiveMinimum(true);
 				}
@@ -209,9 +216,10 @@ public class SchemaUtils {
 				schema.setMaximum(BigDecimal.ZERO);
 			}
 			if (annotationName.equals(Negative.class.getSimpleName())) {
-				if(OpenApiVersion.OPENAPI_3_1.getVersion().equals(openapiVersion)){
+				if (OpenApiVersion.OPENAPI_3_1.getVersion().equals(openapiVersion)) {
 					schema.setExclusiveMaximumValue(BigDecimal.ZERO);
-				} else {
+				}
+				else {
 					schema.setMaximum(BigDecimal.ZERO);
 					schema.setExclusiveMaximum(true);
 				}
@@ -242,7 +250,7 @@ public class SchemaUtils {
 			}
 			if (annotationName.equals(Size.class.getSimpleName())) {
 				String type = schema.getType();
-				if (type == null && schema.getTypes() != null && schema.getTypes().size() == 1) 
+				if (type == null && schema.getTypes() != null && schema.getTypes().size() == 1)
 					type = schema.getTypes().iterator().next();
 				if (OPENAPI_ARRAY_TYPE.equals(type)) {
 					schema.setMinItems(((Size) anno).min());

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app135;
@@ -40,7 +40,7 @@ class BookRepository {
 	/**
 	 * Find by author list.
 	 *
-	 * @param author the author 
+	 * @param author the author
 	 * @return the list
 	 */
 	List<Book> findByAuthor(String author) {

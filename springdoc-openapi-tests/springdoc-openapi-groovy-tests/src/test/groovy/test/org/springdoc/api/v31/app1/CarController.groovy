@@ -40,7 +40,7 @@ class CarController {
 	CarController(test.org.springdoc.api.v31.app1.CarService carService) {
 		this.carService = carService
 	}
-	
+
 	@GetMapping(path = 'cars/{carId}')
 	test.org.springdoc.api.v31.app1.Car getCar(@PathVariable(value = 'carId') Long carId) {
 		return carService.getCar(carId)

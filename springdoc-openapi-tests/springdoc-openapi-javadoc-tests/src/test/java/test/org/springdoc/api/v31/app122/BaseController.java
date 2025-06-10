@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app122;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * The type Base controller.
  *
- * @param <D>  the type parameter
+ * @param <D> the type parameter
  */
 @RestController
 public abstract class BaseController<D extends BaseObject> {
@@ -44,7 +44,7 @@ public abstract class BaseController<D extends BaseObject> {
 	/**
 	 * Create response entity.
 	 *
-	 * @param payload the payload 
+	 * @param payload the payload
 	 * @return the response entity
 	 */
 	@PostMapping

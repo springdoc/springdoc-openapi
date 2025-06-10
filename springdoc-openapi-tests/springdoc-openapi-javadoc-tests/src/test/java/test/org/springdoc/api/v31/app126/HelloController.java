@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app126;
@@ -42,7 +42,7 @@ import static org.springframework.http.ResponseEntity.ok;
 /**
  * The type Hello controller.
  *
- * @param <T>  the type parameter
+ * @param <T> the type parameter
  */
 @RestController
 @ApiResponses(value = {

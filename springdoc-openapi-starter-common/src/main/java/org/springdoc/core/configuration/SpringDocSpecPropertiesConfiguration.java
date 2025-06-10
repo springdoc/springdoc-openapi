@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.configuration;
@@ -63,13 +63,13 @@ public class SpringDocSpecPropertiesConfiguration {
 	 * @return the springdoc customizer
 	 */
 	@Bean
-    @ConditionalOnMissingBean
-    @Lazy(false)
+	@ConditionalOnMissingBean
+	@Lazy(false)
 	SpecPropertiesCustomizer specificationStringPropertiesCustomizer(
-            SpringDocConfigProperties springDocConfigProperties
-    ) {
-        return new SpecPropertiesCustomizer(springDocConfigProperties);
-    }
+			SpringDocConfigProperties springDocConfigProperties
+	) {
+		return new SpecPropertiesCustomizer(springDocConfigProperties);
+	}
 
 	/**
 	 * Bean post processor that applies the specification string properties customization to
@@ -79,13 +79,13 @@ public class SpringDocSpecPropertiesConfiguration {
 	 * @return the bean post processor
 	 */
 	@Bean
-    @ConditionalOnMissingBean
-    @Lazy(false)
-    SpecificationStringPropertiesCustomizerBeanPostProcessor specificationStringPropertiesCustomizerBeanPostProcessor(
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	SpecificationStringPropertiesCustomizerBeanPostProcessor specificationStringPropertiesCustomizerBeanPostProcessor(
 			SpringDocConfigProperties springDocConfigProperties
-    ) {
-        return new SpecificationStringPropertiesCustomizerBeanPostProcessor(springDocConfigProperties);
-    }
+	) {
+		return new SpecificationStringPropertiesCustomizerBeanPostProcessor(springDocConfigProperties);
+	}
 
 
 	/**
@@ -105,25 +105,24 @@ public class SpringDocSpecPropertiesConfiguration {
 		 */
 		public SpecificationStringPropertiesCustomizerBeanPostProcessor(
 				SpringDocConfigProperties springDocConfigProperties
-        ) {
-            this.springDocConfigProperties = springDocConfigProperties;
-        }
+		) {
+			this.springDocConfigProperties = springDocConfigProperties;
+		}
 
-        @Override
-        public Object postProcessAfterInitialization(Object bean, String beanName) {
-            if (bean instanceof GroupedOpenApi groupedOpenApi) {
-               Set<GroupConfig> groupConfigs = springDocConfigProperties.getGroupConfigs();
+		@Override
+		public Object postProcessAfterInitialization(Object bean, String beanName) {
+			if (bean instanceof GroupedOpenApi groupedOpenApi) {
+				Set<GroupConfig> groupConfigs = springDocConfigProperties.getGroupConfigs();
 				for (GroupConfig groupConfig : groupConfigs) {
-					if(groupConfig.getGroup().equals(groupedOpenApi.getGroup())) {
+					if (groupConfig.getGroup().equals(groupedOpenApi.getGroup())) {
 						groupedOpenApi.addAllOpenApiCustomizer(List.of(new SpecPropertiesCustomizer(
 								groupConfig.getOpenApi()
 						)));
 					}
 				}
-            }
-            return bean;
-        }
-    }
-	
+			}
+			return bean;
+		}
+	}
 
 }

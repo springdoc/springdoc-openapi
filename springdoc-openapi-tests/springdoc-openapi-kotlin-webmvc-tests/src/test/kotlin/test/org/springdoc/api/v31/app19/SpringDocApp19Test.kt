@@ -32,26 +32,26 @@ import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 
 class SpringDocApp19Test : AbstractKotlinSpringDocMVCTest() {
-    @SpringBootApplication
-    class DemoApplication
+	@SpringBootApplication
+	class DemoApplication
 }
 
 @RestController
 @RequestMapping
 class HelloController {
 
-    @PostMapping("euroMillions")
-    fun euroMillions(
-        @Parameter(description = "the numbers")
-        @RequestParam
-        @Size(min = 5, max = 5)
-        numbers: List<@Max(50) @Min(1) Int>,
+	@PostMapping("euroMillions")
+	fun euroMillions(
+		@Parameter(description = "the numbers")
+		@RequestParam
+		@Size(min = 5, max = 5)
+		numbers: List<@Max(50) @Min(1) Int>,
 
-        @Parameter(description = "the stars")
-        @RequestParam
-        @Size(min = 2, max = 2)
-        stars: List<@Max(12) @Min(1) Int>
-    ): ResponseEntity<String> {
-        return ResponseEntity.ok("ok")
-    }
+		@Parameter(description = "the stars")
+		@RequestParam
+		@Size(min = 2, max = 2)
+		stars: List<@Max(12) @Min(1) Int>
+	): ResponseEntity<String> {
+		return ResponseEntity.ok("ok")
+	}
 }

@@ -9,12 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 public class Response {
 
-	public Response(BigDecimal val1, BigDecimal val2, BigDecimal val3) {
-		this.val1 = val1;
-		this.val2 = val2;
-		this.val3 = val3;
-	}
-
 	@Schema(deprecated = true)
 	@Deprecated
 	private BigDecimal val1;
@@ -22,6 +16,12 @@ public class Response {
 	private BigDecimal val2;
 
 	private BigDecimal val3;
+
+	public Response(BigDecimal val1, BigDecimal val2, BigDecimal val3) {
+		this.val1 = val1;
+		this.val2 = val2;
+		this.val3 = val3;
+	}
 
 	public BigDecimal getVal1() {
 		return val1;

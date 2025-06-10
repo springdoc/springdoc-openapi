@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app93;
@@ -33,13 +33,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * The type Base controller.
  *
- * @param <TClientModel>  the type parameter
+ * @param <TClientModel> the type parameter
  */
 public abstract class BaseController<TClientModel extends BaseClientModel> {
 	/**
 	 * Get t client model.
 	 *
-	 * @param param the param 
+	 * @param param the param
 	 * @return the t client model
 	 */
 	@Operation

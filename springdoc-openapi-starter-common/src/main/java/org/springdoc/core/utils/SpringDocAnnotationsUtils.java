@@ -485,7 +485,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	public static Optional<Map<String, Header>> getHeaders(io.swagger.v3.oas.annotations.headers.Header[] annotationHeaders, Components components, JsonView jsonViewAnnotation, boolean openapi31) {
 		Optional<Map<String, Header>> headerMap = AnnotationsUtils.getHeaders(annotationHeaders, components, jsonViewAnnotation, openapi31);
-		if(openapi31){
+		if (openapi31) {
 			headerMap.ifPresent(map -> {
 				for (Entry<String, Header> entry : map.entrySet()) {
 					Header header = entry.getValue();

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.providers;
@@ -74,10 +74,10 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 		if (openApiVersion == OpenApiVersion.OPENAPI_3_1) {
 			jsonMapper = Json31.mapper();
 			yamlMapper = Yaml31.mapper();
-			if(springDocConfigProperties.isUseArbitrarySchemas()){
+			if (springDocConfigProperties.isUseArbitrarySchemas()) {
 				System.setProperty(Schema.USE_ARBITRARY_SCHEMA_PROPERTY, "true");
 			}
-			if(springDocConfigProperties.isExplicitObjectSchema()){
+			if (springDocConfigProperties.isExplicitObjectSchema()) {
 				System.setProperty(Schema.EXPLICIT_OBJECT_SCHEMA_PROPERTY, "true");
 			}
 		}

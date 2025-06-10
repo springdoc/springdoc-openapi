@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app29;
@@ -47,7 +47,7 @@ class HelloController {
 	/**
 	 * Post entity list.
 	 *
-	 * @param postEntity the post entity 
+	 * @param postEntity the post entity
 	 * @return the list
 	 */
 	@PostMapping(value = "/post-entity")

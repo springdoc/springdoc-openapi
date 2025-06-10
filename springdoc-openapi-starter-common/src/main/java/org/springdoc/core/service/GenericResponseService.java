@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.service;
@@ -115,6 +115,11 @@ public class GenericResponseService implements ApplicationContextAware {
 	private static final String EXTENSION_EXCEPTION_CLASSES = "x-exception-class";
 
 	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
+
+	/**
 	 * The Response entity exception handler class.
 	 */
 	private static Class<?> responseEntityExceptionHandlerClass;
@@ -148,11 +153,6 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * The Reentrant lock.
 	 */
 	private final Lock reentrantLock = new ReentrantLock();
-
-	/**
-	 * The constant LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
 
 	/**
 	 * A list of all beans annotated with {@code @ControllerAdvice}
@@ -265,7 +265,7 @@ public class GenericResponseService implements ApplicationContextAware {
 			apiResponsesFromDoc.forEach(apiResponses::addApiResponse);
 		// for each one build ApiResponse and add it to existing responses
 		// Fill api Responses
-		computeResponseFromDoc(components, handlerMethod.getReturnType(), apiResponses, methodAttributes, springDocConfigProperties.isOpenapi31(),methodAttributes.getLocale() );
+		computeResponseFromDoc(components, handlerMethod.getReturnType(), apiResponses, methodAttributes, springDocConfigProperties.isOpenapi31(), methodAttributes.getLocale());
 		buildApiResponses(components, handlerMethod.getReturnType(), apiResponses, methodAttributes);
 		return apiResponses;
 	}
@@ -448,7 +448,7 @@ public class GenericResponseService implements ApplicationContextAware {
 		if (apiResponse != null) {
 			Content content = apiResponse.getContent();
 			if (content != null) {
-				String defaultProducesMediaType  = springDocConfigProperties.getDefaultProducesMediaType();
+				String defaultProducesMediaType = springDocConfigProperties.getDefaultProducesMediaType();
 				io.swagger.v3.oas.models.media.MediaType mediaType = content.get(defaultProducesMediaType);
 				if (mediaType != null && ProblemDetail.class.isAssignableFrom(methodParameter.getParameterType())) {
 					content.addMediaType(MediaType.APPLICATION_PROBLEM_JSON_VALUE, mediaType);
@@ -624,10 +624,10 @@ public class GenericResponseService implements ApplicationContextAware {
 			}
 		}
 		if (apiResponse.getContent() != null && (methodAttributes.isUseReturnTypeSchema() ||
-			 ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc()))) {
+				((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc()))) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
-			Type type = GenericTypeResolver.resolveType( methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+			Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
 			Schema<?> schemaN = calculateSchema(components, type,
 					methodAttributes.getJsonViewAnnotation(), getParameterAnnotations(methodParameter));
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces()))
@@ -691,7 +691,7 @@ public class GenericResponseService implements ApplicationContextAware {
 	 */
 	private ControllerAdviceBean getControllerAdviceBean(List<ControllerAdviceBean> controllerAdviceBeans, Object controllerAdvice) {
 		return controllerAdviceBeans.stream()
-				.filter(controllerAdviceBean -> (controllerAdviceBean.getBeanType()!=null && controllerAdviceBean.getBeanType().isAssignableFrom(controllerAdvice.getClass())))
+				.filter(controllerAdviceBean -> (controllerAdviceBean.getBeanType() != null && controllerAdviceBean.getBeanType().isAssignableFrom(controllerAdvice.getClass())))
 				.findFirst()
 				.orElse(null);
 	}
@@ -720,9 +720,9 @@ public class GenericResponseService implements ApplicationContextAware {
 					.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
 
 			List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
-					.filter(controllerAdviceInfo -> 
+					.filter(controllerAdviceInfo ->
 							getControllerAdviceBean(controllerAdviceBeans, controllerAdviceInfo.getControllerAdvice())
-							.isApplicableToBeanType(beanType))
+									.isApplicableToBeanType(beanType))
 					.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
 					.toList();
 

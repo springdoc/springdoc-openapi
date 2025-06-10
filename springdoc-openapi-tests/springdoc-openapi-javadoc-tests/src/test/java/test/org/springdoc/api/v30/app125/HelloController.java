@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app125;
@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The type Hello controller.
+ *
  * @author bnasslahsen
  */
 @RestController
@@ -41,7 +42,7 @@ class HelloController {
 	/**
 	 * Gets all pets.
 	 *
-	 * @param toto the toto 
+	 * @param toto the toto
 	 * @return the all pets
 	 */
 	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })

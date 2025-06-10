@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.api;
@@ -97,7 +97,7 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 */
 	@Autowired
 	public OpenApiWebfluxResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-			OperationService operationParser,  SpringDocConfigProperties springDocConfigProperties,
+			OperationService operationParser, SpringDocConfigProperties springDocConfigProperties,
 			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
@@ -106,8 +106,8 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * Openapi json mono.
 	 *
 	 * @param serverHttpRequest the server http request
-	 * @param apiDocsUrl the api docs url
-	 * @param locale the locale
+	 * @param apiDocsUrl        the api docs url
+	 * @param locale            the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
@@ -123,8 +123,8 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * Openapi yaml mono.
 	 *
 	 * @param serverHttpRequest the server http request
-	 * @param apiDocsUrl the api docs url
-	 * @param locale the locale
+	 * @param apiDocsUrl        the api docs url
+	 * @param locale            the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
@@ -140,7 +140,7 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * Gets server url.
 	 *
 	 * @param serverHttpRequest the server http request
-	 * @param apiDocsUrl the api docs url
+	 * @param apiDocsUrl        the api docs url
 	 * @return the server url
 	 */
 	@Override

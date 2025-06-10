@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app28;
@@ -38,7 +38,8 @@ public class ExamplePageableReplacement extends Pageable {
 
 	/**
 	 * Instantiates a new Pageable.
-	 *  @param page the page
+	 *
+	 * @param page the page
 	 * @param size the size
 	 * @param sort the sort
 	 */

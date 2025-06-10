@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.ui;
@@ -53,15 +53,15 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class SwaggerUiHome {
 
 	/**
+	 * The Optional web flux properties.
+	 */
+	private final Optional<WebFluxProperties> optionalWebFluxProperties;
+
+	/**
 	 * The Swagger ui path.
 	 */
 	@Value(SWAGGER_UI_PATH)
 	private String swaggerUiPath;
-
-	/**
-	 * The Optional web flux properties.
-	 */
-	private final Optional<WebFluxProperties> optionalWebFluxProperties;
 
 	/**
 	 * Instantiates a new Swagger ui home.

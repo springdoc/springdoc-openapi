@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.converters;
@@ -74,7 +74,7 @@ public class ResponseSupportConverter implements ModelConverter {
 				JavaType innerType = findResponseEntity(javaType).containedType(0);
 				if (innerType == null)
 					return new StringSchema();
-				if(Object.class.equals(innerType.getRawClass()))
+				if (Object.class.equals(innerType.getRawClass()))
 					return new ObjectSchema();
 				return context.resolve(new AnnotatedType(innerType)
 						.jsonViewAnnotation(type.getJsonViewAnnotation())
@@ -93,8 +93,8 @@ public class ResponseSupportConverter implements ModelConverter {
 	 * @param javaType the java type
 	 * @return the java type
 	 */
-	private JavaType findResponseEntity(JavaType javaType){
-		if(ResponseEntity.class.isAssignableFrom(javaType.getRawClass())){
+	private JavaType findResponseEntity(JavaType javaType) {
+		if (ResponseEntity.class.isAssignableFrom(javaType.getRawClass())) {
 			while (ResponseEntity.class != javaType.getRawClass())
 				javaType = javaType.getSuperClass();
 		}

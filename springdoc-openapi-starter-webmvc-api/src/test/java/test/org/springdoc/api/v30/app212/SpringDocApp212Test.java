@@ -39,28 +39,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("212")
 public class SpringDocApp212Test extends AbstractSpringDocV30Test {
 
-    /**
-     * The type Spring doc test app.
-     */
-    @SpringBootApplication
-    static class SpringDocTestApp {
+	@Test
+	void getGroupedOpenapi_shouldCustomizeFromPropertiesWithGroupNamePrefix() throws Exception {
+		String result = mockMvc.perform(get("/v3/api-docs/apiGroupName"))
+				.andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
+		String expected = getContent("results/3.0.1/app212-grouped.json");
+		assertEquals(expected, result, true);
+	}
 
-        @Bean
-        GroupedOpenApi apiGroupBeanName() {
-            return GroupedOpenApi.builder()
-                    .group("apiGroupName")
-                    .packagesToScan("test.org.springdoc.api.v30.app212")
-                    .build();
-        }
-    }
+	/**
+	 * The type Spring doc test app.
+	 */
+	@SpringBootApplication
+	static class SpringDocTestApp {
 
-    @Test
-    void getGroupedOpenapi_shouldCustomizeFromPropertiesWithGroupNamePrefix() throws Exception {
-        String result = mockMvc.perform(get("/v3/api-docs/apiGroupName"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        String expected = getContent("results/3.0.1/app212-grouped.json");
-        assertEquals(expected, result, true);
-    }
+		@Bean
+		GroupedOpenApi apiGroupBeanName() {
+			return GroupedOpenApi.builder()
+					.group("apiGroupName")
+					.packagesToScan("test.org.springdoc.api.v30.app212")
+					.build();
+		}
+	}
 
 }

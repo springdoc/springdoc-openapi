@@ -22,7 +22,8 @@ class KotlinInlineClassUnwrappingConverter(
 		if (type?.type == null || context == null || !chain.hasNext()) {
 			return null
 		}
-		val javaType: JavaType = objectMapperProvider.jsonMapper().constructType(type.type)
+		val javaType: JavaType =
+			objectMapperProvider.jsonMapper().constructType(type.type)
 		val kClass = javaType.rawClass.kotlin
 		if (kClass.findAnnotation<JvmInline>() != null) {
 			val constructor = kClass.primaryConstructor

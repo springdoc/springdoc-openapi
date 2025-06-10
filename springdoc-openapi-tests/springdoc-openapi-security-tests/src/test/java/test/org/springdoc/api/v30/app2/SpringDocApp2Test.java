@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app2;
@@ -36,7 +36,7 @@ import org.springframework.context.annotation.Bean;
 
 public class SpringDocApp2Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.v30.configuration","test.org.springdoc.api.v30.app2" })
+	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.v30.configuration", "test.org.springdoc.api.v30.app2" })
 	static class SpringDocTestApp {
 		@Bean
 		public OpenAPI customOpenAPI() {

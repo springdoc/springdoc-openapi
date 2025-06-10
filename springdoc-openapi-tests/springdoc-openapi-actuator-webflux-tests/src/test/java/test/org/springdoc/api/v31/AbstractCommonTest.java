@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31;
@@ -65,10 +65,10 @@ public abstract class AbstractCommonTest {
 		}
 	}
 
-	protected void testApp(String testId, String groupName) throws Exception{
+	protected void testApp(String testId, String groupName) throws Exception {
 		String result = null;
 		try {
-			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL  + "/" + groupName).exchange()
+			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + groupName).exchange()
 					.expectStatus().isOk().expectBody().returnResult();
 			result = new String(getResult.getResponseBody());
 			String expected = getContent("results/3.1.0/app" + testId + ".json");

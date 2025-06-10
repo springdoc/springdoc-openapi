@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webmvc.api;
@@ -77,7 +77,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 			OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders,  SpringDocCustomizers springDocCustomizers) {
+			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
@@ -95,8 +95,8 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 */
 	public OpenApiActuatorResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-			OperationService operationParser,SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders,  SpringDocCustomizers springDocCustomizers) {
+			OperationService operationParser, SpringDocConfigProperties springDocConfigProperties,
+			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
 				springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}

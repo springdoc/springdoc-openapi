@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app161;
@@ -45,8 +45,8 @@ class HelloController {
 	/**
 	 * Add response entity.
 	 *
-	 * @param content the content 
-	 * @return the response entity 
+	 * @param content the content
+	 * @return the response entity
 	 * @throws Exception the exception
 	 */
 	@Operation(summary = "add")
@@ -59,8 +59,8 @@ class HelloController {
 	/**
 	 * Add 2 response entity.
 	 *
-	 * @param content the content 
-	 * @param type the type 
+	 * @param content the content
+	 * @param type    the type
 	 * @return the response entity
 	 */
 	@Operation(summary = "add2")
@@ -75,7 +75,7 @@ class HelloController {
 	/**
 	 * Test.
 	 *
-	 * @param strValue the str value 
+	 * @param strValue the str value
 	 * @param intValue the int value
 	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

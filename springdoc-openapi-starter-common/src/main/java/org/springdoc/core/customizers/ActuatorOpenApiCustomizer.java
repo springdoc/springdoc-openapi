@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.customizers;
@@ -89,16 +89,16 @@ public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 		Set<String> usedOperationIds = new HashSet<>();
 		actuatorPathEntryStream(openApi, null)
 				.sorted(Comparator.comparing(Entry::getKey))
-				.forEachOrdered(stringPathItemEntry -> 
-					stringPathItemEntry.getValue().readOperations().forEach(operation -> {
-						String initialOperationId = operation.getOperationId();
-						String uniqueOperationId = operation.getOperationId();
-						int counter = 1;
-						while (!usedOperationIds.add(uniqueOperationId)) {
-							uniqueOperationId = initialOperationId + "_" + ++counter;
-						}
-						operation.setOperationId(uniqueOperationId);
-					})
+				.forEachOrdered(stringPathItemEntry ->
+						stringPathItemEntry.getValue().readOperations().forEach(operation -> {
+							String initialOperationId = operation.getOperationId();
+							String uniqueOperationId = operation.getOperationId();
+							int counter = 1;
+							while (!usedOperationIds.add(uniqueOperationId)) {
+								uniqueOperationId = initialOperationId + "_" + ++counter;
+							}
+							operation.setOperationId(uniqueOperationId);
+						})
 				);
 	}
 

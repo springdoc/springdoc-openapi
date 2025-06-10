@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app159;
@@ -48,7 +48,7 @@ class FooBean {
 	 * Instantiates a new Foo bean.
 	 *
 	 * @param message the message
-	 * @param code the code
+	 * @param code    the code
 	 */
 	public FooBean(String message, int code) {
 		this.message = message;

@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClassTwo {
 
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
 	public @NotNull String getName() {
 		return name;

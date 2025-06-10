@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app116;
@@ -46,7 +46,7 @@ class HelloController {
 	/**
 	 * Create string.
 	 *
-	 * @param foo the foo 
+	 * @param foo the foo
 	 * @return the string
 	 */
 	@PostMapping("/foo")

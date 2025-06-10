@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app92;
@@ -42,7 +42,7 @@ class HelloController {
 	/**
 	 * Index string.
 	 *
-	 * @param test the test 
+	 * @param test the test
 	 * @return the string
 	 */
 	@GetMapping

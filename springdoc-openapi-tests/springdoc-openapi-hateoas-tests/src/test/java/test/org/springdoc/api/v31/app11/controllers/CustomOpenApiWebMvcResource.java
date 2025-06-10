@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CustomOpenApiWebMvcResource extends OpenApiWebMvcResource {
 
-    public CustomOpenApiWebMvcResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
-        AbstractRequestService requestBuilder,
-        GenericResponseService responseBuilder,
-        OperationService operationParser,
-        SpringDocConfigProperties springDocConfigProperties,
-        SpringDocProviders springDocProviders,
-        SpringDocCustomizers springDocCustomizers) {
-        super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
-    }
+	public CustomOpenApiWebMvcResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+			AbstractRequestService requestBuilder,
+			GenericResponseService responseBuilder,
+			OperationService operationParser,
+			SpringDocConfigProperties springDocConfigProperties,
+			SpringDocProviders springDocProviders,
+			SpringDocCustomizers springDocCustomizers) {
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	}
 }

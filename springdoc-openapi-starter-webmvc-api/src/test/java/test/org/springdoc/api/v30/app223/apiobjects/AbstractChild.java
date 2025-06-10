@@ -26,7 +26,7 @@ public abstract class AbstractChild {
 	}
 }
 
- class ChildType1 extends AbstractChild {
+class ChildType1 extends AbstractChild {
 	private String childType1Param;
 
 	public ChildType1(int id, String childType1Param) {

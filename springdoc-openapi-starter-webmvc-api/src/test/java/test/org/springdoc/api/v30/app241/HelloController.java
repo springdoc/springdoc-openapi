@@ -47,7 +47,8 @@ public class HelloController {
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
 sealed class Superclass permits IntermediateClass {
 
-	public Superclass() {}
+	public Superclass() {
+	}
 }
 
 @Schema(name = IntermediateClass.SCHEMA_NAME)

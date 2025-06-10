@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.fn.builders.content;
@@ -139,7 +139,7 @@ public class Builder {
 	/**
 	 * The All of.
 	 */
-	private Schema[] allOf ={};
+	private Schema[] allOf = {};
 
 	/**
 	 * Instantiates a new Content builder.

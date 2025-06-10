@@ -36,26 +36,26 @@ springdoc:
             - hello
           summary: Summary of Get operationId 'persons'
           description: Description of Get operationId 'persons'
-          
+  
   group-configs:
-      - group: apiGroupName
-        open-api:
-          info:
-            title: ApiGroupName info title
-            description: ApiGroupName info description
-            version: ApiGroupName info version
-          components:
-            schemas:
-              PersonDTO:
-                description: Description for PersonDTO component in ApiGroupName
-                properties:
-                  name:
-                    description: Description for 'name' property in ApiGroupName
-                    example: Example value for 'name' property in ApiGroupName
-          
-          paths:
-            /persons2:
-              get:
-                summary: Summary of operationId 'persons' in ApiGroupName
-                description: Description of operationId 'persons' in ApiGroupName
+    - group: apiGroupName
+      open-api:
+        info:
+          title: ApiGroupName info title
+          description: ApiGroupName info description
+          version: ApiGroupName info version
+        components:
+          schemas:
+            PersonDTO:
+              description: Description for PersonDTO component in ApiGroupName
+              properties:
+                name:
+                  description: Description for 'name' property in ApiGroupName
+                  example: Example value for 'name' property in ApiGroupName
+        
+        paths:
+          /persons2:
+            get:
+              summary: Summary of operationId 'persons' in ApiGroupName
+              description: Description of operationId 'persons' in ApiGroupName
 

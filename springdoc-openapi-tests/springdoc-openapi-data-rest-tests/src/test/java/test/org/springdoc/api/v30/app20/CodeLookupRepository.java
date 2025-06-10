@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app20;
@@ -30,7 +30,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
 
 @NoRepositoryBean
-public interface CodeLookupRepository<EntityT,  KeyT extends String> {
+public interface CodeLookupRepository<EntityT, KeyT extends String> {
 	EntityT findOneByCode(@Param("code") KeyT code);
 
 	Long countByCode(KeyT code);

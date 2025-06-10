@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.utils;
@@ -45,7 +45,7 @@ public final class Constants {
 	/**
 	 * The constant SPRINGDOC_SWAGGER_PREFIX.
 	 */
-	public static final String SPRINGDOC_SWAGGER_PREFIX =SPRINGDOC_PREFIX+".swagger-ui";
+	public static final String SPRINGDOC_SWAGGER_PREFIX = SPRINGDOC_PREFIX + ".swagger-ui";
 
 	/**
 	 * The constant DEFAULT_API_DOCS_URL.
@@ -429,6 +429,7 @@ public final class Constants {
 	 * The constant SPRINGDOC_DEFAULT_FLAT_PARAM_OBJECT.
 	 */
 	public static final String SPRINGDOC_DEFAULT_FLAT_PARAM_OBJECT = "springdoc.default-flat-param-object";
+
 	/**
 	 * The constant SPRINGDOC_ENABLE_ADDITIONAL_SCHEMAS_RESOLUTION.
 	 */
@@ -438,7 +439,7 @@ public final class Constants {
 	 * The constant SPRINGDOC_EXPLICIT_OBJECT_SCHEMA.
 	 */
 	public static final String SPRINGDOC_EXPLICIT_OBJECT_SCHEMA = "springdoc.explicit-object-schema";
-	
+
 	/**
 	 * Instantiates a new Constants.
 	 */

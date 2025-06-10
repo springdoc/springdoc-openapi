@@ -31,7 +31,7 @@ public class HelloController {
 	public PersonDTO persons1() {
 		return new PersonDTO("John");
 	}
-	
+
 	@GetMapping(value = "/persons2")
 	public PersonDTO persons2() {
 		return new PersonDTO("John");

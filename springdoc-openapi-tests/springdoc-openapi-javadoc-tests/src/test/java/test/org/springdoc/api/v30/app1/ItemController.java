@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app1;
@@ -60,9 +60,9 @@ class ItemController {
 	 * Show items list.
 	 *
 	 * @param customerID the customer id
-	 * @param toto the toto
-	 * @param startDate the start date
-	 * @param filterIds the filter ids
+	 * @param toto       the toto
+	 * @param startDate  the start date
+	 * @param filterIds  the filter ids
 	 * @return the list
 	 */
 	@GetMapping("/items")

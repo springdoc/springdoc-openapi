@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app174;
@@ -38,6 +38,7 @@ class TestQuestion extends Question {
 	 * list of variants
 	 */
 	private final List<String> variants;
+
 	/**
 	 * correct answer
 	 */

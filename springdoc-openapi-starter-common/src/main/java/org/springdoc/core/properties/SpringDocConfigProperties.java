@@ -355,15 +355,6 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
-	 * Sets override with generic response.
-	 *
-	 * @param overrideWithGenericResponse the override with generic response
-	 */
-	public void setOverrideWithGenericResponse(Boolean overrideWithGenericResponse) {
-		this.overrideWithGenericResponse = overrideWithGenericResponse;
-	}
-
-	/**
 	 * Is nullable request parameter enabled boolean.
 	 *
 	 * @return the boolean
@@ -578,7 +569,6 @@ public class SpringDocConfigProperties {
 	public void setModelConverters(ModelConverters modelConverters) {
 		this.modelConverters = modelConverters;
 	}
-
 
 	/**
 	 * Is use management port boolean.
@@ -877,7 +867,6 @@ public class SpringDocConfigProperties {
 		return cache.isDisabled();
 	}
 
-
 	/**
 	 * Gets group configs.
 	 *
@@ -948,6 +937,15 @@ public class SpringDocConfigProperties {
 	 */
 	public boolean isOverrideWithGenericResponse() {
 		return overrideWithGenericResponse != null && overrideWithGenericResponse;
+	}
+
+	/**
+	 * Sets override with generic response.
+	 *
+	 * @param overrideWithGenericResponse the override with generic response
+	 */
+	public void setOverrideWithGenericResponse(Boolean overrideWithGenericResponse) {
+		this.overrideWithGenericResponse = overrideWithGenericResponse;
 	}
 
 	/**
@@ -1071,15 +1069,6 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
-	 * locale list to pre-loading.
-	 *
-	 * @return the Locales
-	 */
-	public List<String> getPreLoadingLocales() {
-		return preLoadingLocales;
-	}
-
-	/**
 	 * Sets locale list to pre-loading.
 	 *
 	 * @param preLoadingEnabled the Locales
@@ -1089,12 +1078,115 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
+	 * locale list to pre-loading.
+	 *
+	 * @return the Locales
+	 */
+	public List<String> getPreLoadingLocales() {
+		return preLoadingLocales;
+	}
+
+	/**
 	 * Sets pre loading locales.
 	 *
 	 * @param preLoadingLocales the pre loading locales
 	 */
 	public void setPreLoadingLocales(List<String> preLoadingLocales) {
 		this.preLoadingLocales = preLoadingLocales;
+	}
+
+	/**
+	 * Is show oauth 2 endpoints boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isShowOauth2Endpoints() {
+		return showOauth2Endpoints;
+	}
+
+	/**
+	 * Sets show oauth 2 endpoints.
+	 *
+	 * @param showOauth2Endpoints the show oauth 2 endpoints
+	 */
+	public void setShowOauth2Endpoints(boolean showOauth2Endpoints) {
+		this.showOauth2Endpoints = showOauth2Endpoints;
+	}
+
+	/**
+	 * Gets spec version.
+	 *
+	 * @return the spec version
+	 */
+	public SpecVersion getSpecVersion() {
+		if (apiDocs.getVersion() == OpenApiVersion.OPENAPI_3_1)
+			return SpecVersion.V31;
+		return SpecVersion.V30;
+	}
+
+	/**
+	 * Is openapi 31 boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isOpenapi31() {
+		if (apiDocs.getVersion() == OpenApiVersion.OPENAPI_3_1)
+			return true;
+		return false;
+	}
+
+	/**
+	 * Is enable default api docs boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableDefaultApiDocs() {
+		return enableDefaultApiDocs;
+	}
+
+	/**
+	 * Sets enable default api docs.
+	 *
+	 * @param enableDefaultApiDocs the enable default api docs
+	 */
+	public void setEnableDefaultApiDocs(boolean enableDefaultApiDocs) {
+		this.enableDefaultApiDocs = enableDefaultApiDocs;
+	}
+
+	/**
+	 * Is explicit object schema boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isExplicitObjectSchema() {
+		return explicitObjectSchema;
+	}
+
+	/**
+	 * Sets explicit object schema.
+	 *
+	 * @param explicitObjectSchema the explicit object schema
+	 */
+	public void setExplicitObjectSchema(boolean explicitObjectSchema) {
+		this.explicitObjectSchema = explicitObjectSchema;
+	}
+
+	/**
+	 * Is use arbitrary schemas boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isUseArbitrarySchemas() {
+		return useArbitrarySchemas;
+	}
+
+	/**
+	 * Sets use arbitrary schemas.
+	 *
+	 * @param useArbitrarySchemas the use arbitrary schemas
+	 */
+	public void setUseArbitrarySchemas(boolean useArbitrarySchemas) {
+		this.useArbitrarySchemas = useArbitrarySchemas;
 	}
 
 	/**
@@ -1455,6 +1547,24 @@ public class SpringDocConfigProperties {
 		}
 
 		/**
+		 * Is resolve extensions properties boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isResolveExtensionsProperties() {
+			return resolveExtensionsProperties;
+		}
+
+		/**
+		 * Sets resolve extensions properties.
+		 *
+		 * @param resolveExtensionsProperties the resolve extensions properties
+		 */
+		public void setResolveExtensionsProperties(boolean resolveExtensionsProperties) {
+			this.resolveExtensionsProperties = resolveExtensionsProperties;
+		}
+
+		/**
 		 * The enum OpenApiVersion.
 		 */
 		public enum OpenApiVersion {
@@ -1490,24 +1600,6 @@ public class SpringDocConfigProperties {
 				return version;
 			}
 		}
-
-		/**
-		 * Is resolve extensions properties boolean.
-		 *
-		 * @return the boolean
-		 */
-		public boolean isResolveExtensionsProperties() {
-			return resolveExtensionsProperties;
-		}
-
-		/**
-		 * Sets resolve extensions properties.
-		 *
-		 * @param resolveExtensionsProperties the resolve extensions properties
-		 */
-		public void setResolveExtensionsProperties(boolean resolveExtensionsProperties) {
-			this.resolveExtensionsProperties = resolveExtensionsProperties;
-		}
 	}
 
 	/**
@@ -1539,7 +1631,6 @@ public class SpringDocConfigProperties {
 			this.enabled = enabled;
 		}
 	}
-
 
 	/**
 	 * The type Cache.
@@ -1855,100 +1946,5 @@ public class SpringDocConfigProperties {
 		public int hashCode() {
 			return Objects.hash(group);
 		}
-	}
-
-
-	/**
-	 * Is show oauth 2 endpoints boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isShowOauth2Endpoints() {
-		return showOauth2Endpoints;
-	}
-
-	/**
-	 * Sets show oauth 2 endpoints.
-	 *
-	 * @param showOauth2Endpoints the show oauth 2 endpoints
-	 */
-	public void setShowOauth2Endpoints(boolean showOauth2Endpoints) {
-		this.showOauth2Endpoints = showOauth2Endpoints;
-	}
-
-	/**
-	 * Gets spec version.
-	 *
-	 * @return the spec version
-	 */
-	public SpecVersion getSpecVersion() {
-		if (apiDocs.getVersion() == OpenApiVersion.OPENAPI_3_1)
-			return SpecVersion.V31;
-		return SpecVersion.V30;
-	}
-
-	/**
-	 * Is openapi 31 boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isOpenapi31() {
-		if (apiDocs.getVersion() == OpenApiVersion.OPENAPI_3_1)
-			return true;
-		return false;
-	}
-
-	/**
-	 * Is enable default api docs boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isEnableDefaultApiDocs() {
-		return enableDefaultApiDocs;
-	}
-
-	/**
-	 * Sets enable default api docs.
-	 *
-	 * @param enableDefaultApiDocs the enable default api docs
-	 */
-	public void setEnableDefaultApiDocs(boolean enableDefaultApiDocs) {
-		this.enableDefaultApiDocs = enableDefaultApiDocs;
-	}
-
-	/**
-	 * Is explicit object schema boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isExplicitObjectSchema() {
-		return explicitObjectSchema;
-	}
-
-	/**
-	 * Sets explicit object schema.
-	 *
-	 * @param explicitObjectSchema the explicit object schema
-	 */
-	public void setExplicitObjectSchema(boolean explicitObjectSchema) {
-		this.explicitObjectSchema = explicitObjectSchema;
-	}
-
-	/**
-	 * Is use arbitrary schemas boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isUseArbitrarySchemas() {
-		return useArbitrarySchemas;
-	}
-
-	/**
-	 * Sets use arbitrary schemas.
-	 *
-	 * @param useArbitrarySchemas the use arbitrary schemas
-	 */
-	public void setUseArbitrarySchemas(boolean useArbitrarySchemas) {
-		this.useArbitrarySchemas = useArbitrarySchemas;
 	}
 }

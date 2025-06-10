@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app1;
@@ -64,7 +64,7 @@ class InventoryApiController implements InventoryApi {
 	 * Instantiates a new Inventory api controller.
 	 *
 	 * @param objectMapper the object mapper
-	 * @param request the request
+	 * @param request      the request
 	 */
 	@org.springframework.beans.factory.annotation.Autowired
 	public InventoryApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -89,8 +89,8 @@ class InventoryApiController implements InventoryApi {
 	 * Search inventory response entity.
 	 *
 	 * @param searchString the search string
-	 * @param skip the skip
-	 * @param limit the limit
+	 * @param skip         the skip
+	 * @param limit        the limit
 	 * @return the response entity
 	 */
 	public ResponseEntity<List<InventoryItem>> searchInventory(

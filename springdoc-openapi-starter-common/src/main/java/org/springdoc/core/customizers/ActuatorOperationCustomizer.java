@@ -97,7 +97,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 	@Override
 	public Operation customize(Operation operation, Components components, HandlerMethod handlerMethod) {
 		if (operationHasValidTag(operation)) {
-			Field operationField = FieldUtils.getDeclaredField(handlerMethod.getBean().getClass(), OPERATION,true);
+			Field operationField = FieldUtils.getDeclaredField(handlerMethod.getBean().getClass(), OPERATION, true);
 			if (operationField != null) {
 				processOperationField(handlerMethod, operation, components, operationField);
 			}
@@ -155,7 +155,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 				addParameters(operationMethod, operation, components, ParameterIn.QUERY);
 				break;
 			case WRITE:
-				addWriteParameters(operationMethod,components, operation);
+				addWriteParameters(operationMethod, components, operation);
 				operation.setResponses(new ApiResponses()
 						.addApiResponse(String.valueOf(HttpStatus.NO_CONTENT.value()), new ApiResponse().description(HttpStatus.NO_CONTENT.getReasonPhrase()))
 						.addApiResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), new ApiResponse().description(HttpStatus.BAD_REQUEST.getReasonPhrase())));
@@ -180,7 +180,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 	private void addParameters(OperationMethod operationMethod, Operation operation, Components components, ParameterIn parameterIn) {
 		for (OperationParameter operationParameter : operationMethod.getParameters()) {
 			Parameter parameter = getParameterFromField(operationParameter);
-			if(parameter == null) continue;
+			if (parameter == null) continue;
 			Schema<?> schema = resolveSchema(parameter, components);
 			if (parameter.getAnnotation(Selector.class) != null) {
 				operation.addParametersItem(new io.swagger.v3.oas.models.parameters.PathParameter()
@@ -207,7 +207,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 	private void addWriteParameters(OperationMethod operationMethod, Components components, Operation operation) {
 		for (OperationParameter operationParameter : operationMethod.getParameters()) {
 			Parameter parameter = getParameterFromField(operationParameter);
-			if(parameter == null) continue;
+			if (parameter == null) continue;
 			Schema<?> schema = resolveSchema(parameter, components);
 			if (parameter.getAnnotation(Selector.class) != null) {
 				operation.addParametersItem(new io.swagger.v3.oas.models.parameters.PathParameter()
@@ -248,7 +248,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 	 */
 	private Schema<?> resolveSchema(Parameter parameter, Components components) {
 		Schema schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), components, null, springDocConfigProperties.isOpenapi31());
-		if(springDocConfigProperties.isOpenapi31()) handleSchemaTypes(schema);
+		if (springDocConfigProperties.isOpenapi31()) handleSchemaTypes(schema);
 		return schema;
 	}
 

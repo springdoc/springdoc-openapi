@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app37;
@@ -51,10 +51,14 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor
 public abstract class BaseEntity implements Serializable {
 
-	/** SVUDI */
+	/**
+	 * SVUDI
+	 */
 	private static final long serialVersionUID = 1L;
 
-	/** 数据库中的ID */
+	/**
+	 * 数据库中的ID
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", unique = true, nullable = false, insertable = false, updatable = false)

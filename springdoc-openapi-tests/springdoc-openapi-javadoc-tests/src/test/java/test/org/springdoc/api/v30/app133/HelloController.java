@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app133;
@@ -42,7 +42,7 @@ class HelloController {
 	/**
 	 * Gets message from header 1.
 	 *
-	 * @param header the header 
+	 * @param header the header
 	 * @return the message from header 1
 	 */
 	@GetMapping(path = "/test1", headers = { "myHeader" })
@@ -56,7 +56,7 @@ class HelloController {
 	/**
 	 * Gets message from header 2.
 	 *
-	 * @param header the header 
+	 * @param header the header
 	 * @return the message from header 2
 	 */
 	@GetMapping("/test2")
@@ -70,7 +70,7 @@ class HelloController {
 	/**
 	 * Gets message from header 3.
 	 *
-	 * @param header the header 
+	 * @param header the header
 	 * @return the message from header 3
 	 */
 	@GetMapping(path = "/test3", headers = { "myHeader" })

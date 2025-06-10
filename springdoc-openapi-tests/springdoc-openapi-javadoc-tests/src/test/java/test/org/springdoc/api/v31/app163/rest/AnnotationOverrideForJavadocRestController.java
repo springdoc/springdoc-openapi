@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app163.rest;
@@ -103,7 +103,7 @@ class AnnotationOverrideForJavadocRestController {
 	 *
 	 * @param prefix the {@code @param prefix} javadoc for the {@code #findStartsBy(String)} method
 	 * @return the {@code @return} javadoc for the {@code #findStartsBy(String)} method
-	 * @throws NoResultException the {@code @throws NoResultException} javadoc for the {@code #findStartsBy(String)} method
+	 * @throws NoResultException        the {@code @throws NoResultException} javadoc for the {@code #findStartsBy(String)} method
 	 * @throws NonUniqueResultException the {@code @throws NonUniqueResultException} javadoc for the {@code #findStartsBy(String)} method
 	 */
 	@Operation(

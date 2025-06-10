@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/applications", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ApplicationsRestController {
 
-    @Operation(summary = "Parameter object")
-    @PostMapping("/parameter-object")
-    public Application createWithParameterObject(
-            @RequestBody @ParameterObject SubClass request
-    ) {
-        return new Application();
-    }
+	@Operation(summary = "Parameter object")
+	@PostMapping("/parameter-object")
+	public Application createWithParameterObject(
+			@RequestBody @ParameterObject SubClass request
+	) {
+		return new Application();
+	}
 
 }

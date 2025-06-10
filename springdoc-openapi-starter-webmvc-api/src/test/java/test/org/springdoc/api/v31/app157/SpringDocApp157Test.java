@@ -64,7 +64,7 @@ public class SpringDocApp157Test extends AbstractSpringDocTest {
 	public void unregisterConverter() {
 		converters.removeConverter(stringyConverter);
 	}
-	
+
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
@@ -75,7 +75,7 @@ public class SpringDocApp157Test extends AbstractSpringDocTest {
 				}})))
 				.andExpect(jsonPath("$.components.schemas.Bar", not(hasProperty("required"))));
 	}
-	
+
 	@SpringBootApplication
 	static class SpringBootApp {}
 }

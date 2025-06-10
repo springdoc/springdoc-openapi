@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app105.api;
@@ -62,7 +62,7 @@ class ExceptionTranslator {
 	/**
 	 * Process constraint violation exception map.
 	 *
-	 * @param request the request 
+	 * @param request the request
 	 * @return the map
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)

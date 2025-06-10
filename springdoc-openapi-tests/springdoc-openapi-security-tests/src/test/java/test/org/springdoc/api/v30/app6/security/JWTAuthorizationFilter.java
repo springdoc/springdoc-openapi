@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app6.security;
@@ -81,7 +81,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	 *
 	 * @param request the {@link HttpServletRequest} containing a JWS.
 	 * @return a {@link UsernamePasswordAuthenticationToken} if the JWS is
-	 *   valid, {@code null} otherwise.
+	 * valid, {@code null} otherwise.
 	 */
 
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {

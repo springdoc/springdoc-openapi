@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app74;
@@ -43,7 +43,7 @@ class HelloController {
 	/**
 	 * Post my request body string.
 	 *
-	 * @param myRequestBody the my request body 
+	 * @param myRequestBody the my request body
 	 * @return the string
 	 */
 	@PostMapping("/test")

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app241;
@@ -36,24 +36,24 @@ import org.springframework.http.HttpRequest;
 @Configuration
 public class OpenApiConfig {
 
-  @Bean
-  public OpenApiCustomizer openApiCustomiser() {
-    return openApi -> {
+	@Bean
+	public OpenApiCustomizer openApiCustomiser() {
+		return openApi -> {
 
-    };
-  }
+		};
+	}
 
-  @Bean
-  ServerBaseUrlCustomizer serverBaseUrlCustomizer() {
-    return new ServerBaseUrlCustomizer() {
+	@Bean
+	ServerBaseUrlCustomizer serverBaseUrlCustomizer() {
+		return new ServerBaseUrlCustomizer() {
 
-      @Override
-      public String customize(final String serverBaseUrl,
-          final HttpRequest request) {
-        // TODO Auto-generated method stub
-        return null;
-      }
-      
-    };
-  }
+			@Override
+			public String customize(final String serverBaseUrl,
+					final HttpRequest request) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+		};
+	}
 }

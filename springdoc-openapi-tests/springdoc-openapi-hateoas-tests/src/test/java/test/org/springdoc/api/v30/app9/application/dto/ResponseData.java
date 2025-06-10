@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app9.application.dto;
@@ -36,11 +36,11 @@ import lombok.Builder;
 
 @Builder
 public record ResponseData(
-        @JsonProperty(value = "DATA_ID", required = true)
-        @NotNull
-        UUID dataId,
-        @JsonProperty(value = "DATE", required = true)
-        @NotNull
-        @Schema(example = "2024-03-27", format = "date")
-        LocalDate date
+		@JsonProperty(value = "DATA_ID", required = true)
+		@NotNull
+		UUID dataId,
+		@JsonProperty(value = "DATE", required = true)
+		@NotNull
+		@Schema(example = "2024-03-27", format = "date")
+		LocalDate date
 ) {}

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app110;
@@ -57,7 +57,7 @@ class PersonController {
 	/**
 	 * Person person.
 	 *
-	 * @param person the person 
+	 * @param person the person
 	 * @return the person
 	 */
 	@RequestMapping(path = "/person", method = RequestMethod.POST)
@@ -73,7 +73,7 @@ class PersonController {
 	/**
 	 * Find by last name list.
 	 *
-	 * @param lastName the last name 
+	 * @param lastName the last name
 	 * @return the list
 	 */
 	@RequestMapping(path = "/personByLastName", method = RequestMethod.GET)

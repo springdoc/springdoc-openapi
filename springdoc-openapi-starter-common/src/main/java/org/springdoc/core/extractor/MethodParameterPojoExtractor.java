@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 package org.springdoc.core.extractor;
 
@@ -66,6 +66,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import org.springdoc.core.utils.SchemaUtils;
+
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 
@@ -108,11 +109,11 @@ public class MethodParameterPojoExtractor {
 		SIMPLE_TYPES.add(MonthDay.class);
 		SIMPLE_TYPES.add(Year.class);
 		SIMPLE_TYPES.add(Class.class);
-		SIMPLE_TYPES.add(Period.class);    
+		SIMPLE_TYPES.add(Period.class);
 		SIMPLE_TYPES.add(OffsetTime.class);
 		SIMPLE_TYPES.add(ZoneOffset.class);
 		SIMPLE_TYPES.add(TimeZone.class);
-		
+
 		SIMPLE_TYPE_PREDICATES.add(Class::isPrimitive);
 		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
 		SIMPLE_TYPE_PREDICATES.add(Class::isArray);
@@ -327,6 +328,5 @@ public class MethodParameterPojoExtractor {
 	public static void removeSimpleTypes(Class<?>... classes) {
 		SIMPLE_TYPES.removeAll(Arrays.asList(classes));
 	}
-
 
 }

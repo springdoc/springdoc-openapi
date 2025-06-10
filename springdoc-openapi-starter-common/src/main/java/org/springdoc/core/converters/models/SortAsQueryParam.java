@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.converters.models;
@@ -44,9 +44,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Parameter(in = ParameterIn.QUERY
-        , description = "Sorting criteria in the format: property,(asc|desc). "
-        + "Default sort order is ascending. " + "Multiple sort criteria are supported."
-        , name = "sort"
-        , array = @ArraySchema(schema = @Schema(type = "string"))
+		, description = "Sorting criteria in the format: property,(asc|desc). "
+		+ "Default sort order is ascending. " + "Multiple sort criteria are supported."
+		, name = "sort"
+		, array = @ArraySchema(schema = @Schema(type = "string"))
 )
 public @interface SortAsQueryParam {}

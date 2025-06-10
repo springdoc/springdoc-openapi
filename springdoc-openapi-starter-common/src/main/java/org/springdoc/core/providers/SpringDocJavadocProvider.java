@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.providers;
@@ -123,7 +123,7 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	 * Gets param javadoc.
 	 *
 	 * @param method the method
-	 * @param name the name
+	 * @param name   the name
 	 * @return the param javadoc
 	 */
 	@Override

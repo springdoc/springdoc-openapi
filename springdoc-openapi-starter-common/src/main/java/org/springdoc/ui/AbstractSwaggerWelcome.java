@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.ui;
@@ -180,7 +180,7 @@ public abstract class AbstractSwaggerWelcome {
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param sbUrls                    the sb urls
 	 */
-	protected abstract void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters,StringBuilder... sbUrls);
+	protected abstract void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls);
 
 	/**
 	 * Calculate ui root common.

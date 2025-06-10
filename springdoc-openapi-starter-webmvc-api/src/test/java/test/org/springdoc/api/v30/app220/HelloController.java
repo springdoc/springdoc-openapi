@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
-	
-    @PostMapping("/parent")
-    public void parentEndpoint(@RequestBody Superclass parent) {
-        
-    }
-	
+
+	@PostMapping("/parent")
+	public void parentEndpoint(@RequestBody Superclass parent) {
+
+	}
+
 }
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
@@ -26,7 +26,8 @@ public class HelloController {
 })
 sealed class Superclass permits IntermediateClass {
 
-	public Superclass() {}
+	public Superclass() {
+	}
 }
 
 @Schema(name = IntermediateClass.SCHEMA_NAME)

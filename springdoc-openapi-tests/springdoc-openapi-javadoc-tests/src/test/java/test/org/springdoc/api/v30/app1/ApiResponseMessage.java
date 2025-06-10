@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app1;
@@ -83,7 +83,7 @@ class ApiResponseMessage {
 	/**
 	 * Instantiates a new Api response message.
 	 *
-	 * @param code the code
+	 * @param code    the code
 	 * @param message the message
 	 */
 	public ApiResponseMessage(int code, String message) {

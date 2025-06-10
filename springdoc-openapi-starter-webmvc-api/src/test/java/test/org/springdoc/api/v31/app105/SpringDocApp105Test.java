@@ -52,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
-		SPRINGDOC_EXPLICIT_OBJECT_SCHEMA+"=true",
+		SPRINGDOC_EXPLICIT_OBJECT_SCHEMA + "=true",
 		"springdoc.group-configs[0].group=stores",
 		"springdoc.group-configs[0].paths-to-match=/store/**",
 		"springdoc.group-configs[1].group=users",

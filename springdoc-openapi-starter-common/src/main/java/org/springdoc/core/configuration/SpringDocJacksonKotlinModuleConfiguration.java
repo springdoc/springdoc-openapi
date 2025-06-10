@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.configuration;
@@ -61,7 +61,7 @@ public class SpringDocJacksonKotlinModuleConfiguration {
 	@Bean
 	@Primary
 	ObjectMapperProvider springdocKotlinObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
-		ObjectMapperProvider mapperProvider =  new ObjectMapperProvider(springDocConfigProperties);
+		ObjectMapperProvider mapperProvider = new ObjectMapperProvider(springDocConfigProperties);
 		mapperProvider.jsonMapper().registerModule(new KotlinModule.Builder().build());
 		return mapperProvider;
 	}

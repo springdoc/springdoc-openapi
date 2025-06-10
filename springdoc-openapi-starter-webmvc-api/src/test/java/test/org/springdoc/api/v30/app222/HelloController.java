@@ -1,7 +1,6 @@
 package test.org.springdoc.api.v30.app222;
 
 
-
 import test.org.springdoc.api.v30.app222.SpringDocApp222Test.FirstHierarchyUser;
 import test.org.springdoc.api.v30.app222.SpringDocApp222Test.SecondHierarchyUser;
 

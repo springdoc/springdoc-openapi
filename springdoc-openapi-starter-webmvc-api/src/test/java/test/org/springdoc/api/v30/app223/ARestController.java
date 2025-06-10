@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ARestController {
-    @PostMapping("/parent")
-    public Response parentEndpoint(@RequestBody AbstractParent parent) {
-        return null;
-    }
+	@PostMapping("/parent")
+	public Response parentEndpoint(@RequestBody AbstractParent parent) {
+		return null;
+	}
 
-    @PostMapping("/child")
-    public Response childEndpoint(@RequestBody AbstractChild child) {
-        return null;
-    }
+	@PostMapping("/child")
+	public Response childEndpoint(@RequestBody AbstractChild child) {
+		return null;
+	}
 }

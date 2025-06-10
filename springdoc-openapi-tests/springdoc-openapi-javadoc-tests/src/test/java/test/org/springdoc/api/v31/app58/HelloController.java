@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app58;
@@ -46,7 +46,7 @@ class HelloController {
 	/**
 	 * Example object.
 	 *
-	 * @param json the json 
+	 * @param json the json
 	 * @return the object
 	 */
 	@PostMapping("/examplePost")
@@ -115,9 +115,9 @@ class HelloController {
 		/**
 		 * Instantiates a new Person dto.
 		 *
-		 * @param email the email 
-		 * @param firstName the first name 
-		 * @param lastName the last name
+		 * @param email     the email
+		 * @param firstName the first name
+		 * @param lastName  the last name
 		 */
 		public PersonDTO(final String email, final String firstName, final String lastName) {
 			this.email = email;

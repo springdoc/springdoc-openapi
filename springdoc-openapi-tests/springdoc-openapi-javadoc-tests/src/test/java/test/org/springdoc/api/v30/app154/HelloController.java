@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app154;
@@ -55,8 +55,8 @@ class HelloController {
 	/**
 	 * Create.
 	 *
-	 * @param id the id 
-	 * @param o the o
+	 * @param id the id
+	 * @param o  the o
 	 */
 	@PostMapping(value = "/persons")
 	public void create(@ParameterObject Long id, @RequestBody Object o) {
@@ -66,8 +66,8 @@ class HelloController {
 	/**
 	 * Createone.
 	 *
-	 * @param id the id 
-	 * @param o the o
+	 * @param id the id
+	 * @param o  the o
 	 */
 	@PostMapping(value = "/personsone")
 	public void createone(Long id, @RequestBody Object o) {

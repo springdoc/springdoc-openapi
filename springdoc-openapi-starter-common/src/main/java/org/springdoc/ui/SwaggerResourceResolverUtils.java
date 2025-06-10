@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.ui;
@@ -51,5 +51,5 @@ public interface SwaggerResourceResolverUtils {
 		Path rest = path.subpath(1, path.getNameCount());
 		return first.resolve(version).resolve(rest).toString();
 	}
-	
+
 }

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app129;
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The type Operation response.
  *
- * @param <T>  the type parameter
+ * @param <T> the type parameter
  */
 class OperationResponse<T> {
 

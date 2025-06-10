@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app174;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 class ExampleController {
 
 	@PostMapping
-	public Test post(){
+	public Test post() {
 		return null;
 	}
 

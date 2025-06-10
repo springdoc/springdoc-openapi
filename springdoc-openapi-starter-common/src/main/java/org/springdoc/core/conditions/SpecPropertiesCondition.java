@@ -21,13 +21,13 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.conditions;
 
 /**
- * @author bnasslahsen
+ *
  */
 
 import java.util.Set;
@@ -49,7 +49,7 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_PREFIX;
  * @author bnasslahsen
  */
 public class SpecPropertiesCondition implements Condition {
-	
+
 	@Override
 	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
 		final BindResult<SpringDocConfigProperties> result = Binder.get(context.getEnvironment())
@@ -63,5 +63,5 @@ public class SpecPropertiesCondition implements Condition {
 		}
 		return false;
 	}
-	
+
 }

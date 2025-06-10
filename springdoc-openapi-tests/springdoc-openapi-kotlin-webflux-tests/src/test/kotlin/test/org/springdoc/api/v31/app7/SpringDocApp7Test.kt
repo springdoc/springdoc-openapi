@@ -29,7 +29,7 @@ class SpringDocApp7Test : AbstractKotlinSpringDocTest() {
 
 	@SpringBootApplication
 	@ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.v31.app7"])
-	open class DemoApplication{
+	open class DemoApplication {
 		@Bean
 		fun controller(applicationContext: GenericApplicationContext): ExampleController {
 			return createProxy(ExampleController::class.java)

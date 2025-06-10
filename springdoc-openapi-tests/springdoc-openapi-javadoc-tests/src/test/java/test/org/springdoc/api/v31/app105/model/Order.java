@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app105.model;
@@ -80,7 +80,8 @@ public class Order {
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
-	 * @param o the o 
+	 *
+	 * @param o the o
 	 * @return the string
 	 */
 	private static String toIndentedString(Object o) {
@@ -112,7 +113,7 @@ public class Order {
 	/**
 	 * Id order.
 	 *
-	 * @param id the id 
+	 * @param id the id
 	 * @return the order
 	 */
 	public Order id(Long id) {
@@ -142,7 +143,7 @@ public class Order {
 	/**
 	 * Pet id order.
 	 *
-	 * @param petId the pet id 
+	 * @param petId the pet id
 	 * @return the order
 	 */
 	public Order petId(Long petId) {
@@ -172,7 +173,7 @@ public class Order {
 	/**
 	 * Quantity order.
 	 *
-	 * @param quantity the quantity 
+	 * @param quantity the quantity
 	 * @return the order
 	 */
 	public Order quantity(Integer quantity) {
@@ -202,7 +203,7 @@ public class Order {
 	/**
 	 * Ship date order.
 	 *
-	 * @param shipDate the ship date 
+	 * @param shipDate the ship date
 	 * @return the order
 	 */
 	public Order shipDate(Date shipDate) {
@@ -235,7 +236,7 @@ public class Order {
 	/**
 	 * Status order.
 	 *
-	 * @param status the status 
+	 * @param status the status
 	 * @return the order
 	 */
 	public Order status(StatusEnum status) {
@@ -265,7 +266,7 @@ public class Order {
 	/**
 	 * Complete order.
 	 *
-	 * @param complete the complete 
+	 * @param complete the complete
 	 * @return the order
 	 */
 	public Order complete(Boolean complete) {
@@ -299,15 +300,15 @@ public class Order {
 	 */
 	public enum StatusEnum {
 		/**
-		 *Placed status enum.
+		 * Placed status enum.
 		 */
 		PLACED("placed"),
 		/**
-		 *Approved status enum.
+		 * Approved status enum.
 		 */
 		APPROVED("approved"),
 		/**
-		 *Delivered status enum.
+		 * Delivered status enum.
 		 */
 		DELIVERED("delivered");
 
@@ -328,7 +329,7 @@ public class Order {
 		/**
 		 * From value status enum.
 		 *
-		 * @param text the text 
+		 * @param text the text
 		 * @return the status enum
 		 */
 		@JsonCreator

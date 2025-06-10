@@ -77,7 +77,7 @@ public class HateoasLinksConverter implements ModelConverter {
 						.filter(ref -> ref.startsWith(Components.COMPONENTS_SCHEMAS_REF))
 						.map(ref -> ref.substring(Components.COMPONENTS_SCHEMAS_REF.length()))
 						.orElse(schema.getName());
-				if(schemaName != null) {
+				if (schemaName != null) {
 					Schema original = context.getDefinedModels().get(schemaName);
 					if (original == null || original.getProperties() == null) {
 						return schema;

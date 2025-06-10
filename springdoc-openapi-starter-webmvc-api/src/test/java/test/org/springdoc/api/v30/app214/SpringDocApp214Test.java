@@ -49,13 +49,13 @@ public class SpringDocApp214Test extends AbstractCommonTest {
 
 	@Autowired
 	private SpringDocConfigProperties springDocConfigProperties;
-	
-	@SpringBootApplication
-	static class SpringDocTestApp {}
 
 	@Test
 	protected void testApp() throws Exception {
 		assertEquals(4, springDocConfigProperties.getGroupConfigs().stream().map(GroupConfig::getGroup).toList().size());
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

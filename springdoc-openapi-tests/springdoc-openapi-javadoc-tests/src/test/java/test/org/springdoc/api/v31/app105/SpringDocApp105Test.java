@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app105;
@@ -57,7 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * The type Spring doc app 105 test.
  */
 @TestPropertySource(properties = {
-		SPRINGDOC_EXPLICIT_OBJECT_SCHEMA+"=true",
+		SPRINGDOC_EXPLICIT_OBJECT_SCHEMA + "=true",
 		"springdoc.explicit-object-schema=true",
 		"springdoc.group-configs[0].group=stores",
 		"springdoc.group-configs[0].paths-to-match=/store/**",

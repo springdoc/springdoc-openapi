@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app127;
@@ -55,7 +55,7 @@ public abstract class AbstractObject {
 	/**
 	 * Instantiates a new Abstract object.
 	 *
-	 * @param type the type 
+	 * @param type the type
 	 * @param name the name
 	 */
 	protected AbstractObject(ConcreteType type, String name) {

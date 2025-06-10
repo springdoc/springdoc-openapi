@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.providers;
@@ -149,14 +149,14 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private final ObjectMapper mapper;
 
 	/**
-	 * The Application context.
-	 */
-	private ApplicationContext applicationContext;
-
-	/**
 	 * The Spring doc data rest utils.
 	 */
 	private final SpringDocDataRestUtils springDocDataRestUtils;
+
+	/**
+	 * The Application context.
+	 */
+	private ApplicationContext applicationContext;
 
 	/**
 	 * The Handler mapping list.
@@ -170,7 +170,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param mapper                         the mapper
 	 * @param springDocDataRestUtils         the spring doc data rest utils
 	 */
-	public SpringRepositoryRestResourceProvider(DataRestRouterOperationService dataRestRouterOperationService, 
+	public SpringRepositoryRestResourceProvider(DataRestRouterOperationService dataRestRouterOperationService,
 			ObjectMapper mapper, SpringDocDataRestUtils springDocDataRestUtils) {
 		this.dataRestRouterOperationService = dataRestRouterOperationService;
 		this.mapper = mapper;
@@ -182,7 +182,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * Gets router operations.
 	 *
 	 * @param openAPI the open api
-	 * @param locale the locale
+	 * @param locale  the locale
 	 * @return the router operations
 	 */
 	public List<RouterOperation> getRouterOperations(OpenAPI openAPI, Locale locale) {
@@ -201,7 +201,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			final JacksonMetadata jackson = new JacksonMetadata(mapper, domainType);
 			boolean hiddenRepository = (AnnotationUtils.findAnnotation(repository, Hidden.class) != null);
 			if (!hiddenRepository) {
-				if (resourceMetadata!=null && resourceMetadata.isExported()) {
+				if (resourceMetadata != null && resourceMetadata.isExported()) {
 					for (HandlerMapping handlerMapping : handlerMappingList) {
 						if (handlerMapping instanceof RepositoryRestHandlerMapping repositoryRestHandlerMapping) {
 							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
@@ -335,7 +335,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								.getValue().getBeanType().getName()))
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 				ResourceMetadata metadata = associations.getMetadataFor(dataRestRepository.getDomainType());
-				if(metadata!=null && metadata.isExported()) {
+				if (metadata != null && metadata.isExported()) {
 					SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();
 					if (searchResourceMappings.isExported()) {
 						findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, searchResourceMappings);

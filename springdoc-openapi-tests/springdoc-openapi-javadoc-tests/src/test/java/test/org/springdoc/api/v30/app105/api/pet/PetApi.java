@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 /**
@@ -100,8 +100,8 @@ public interface PetApi {
 	/**
 	 * Delete pet response entity.
 	 *
-	 * @param petId the pet id 
-	 * @param apiKey the api key 
+	 * @param petId  the pet id
+	 * @param apiKey the api key
 	 * @return the response entity
 	 */
 	@Operation(summary = "Deletes a pet", description = "", security = {
@@ -118,7 +118,7 @@ public interface PetApi {
 	/**
 	 * Find pets by status response entity.
 	 *
-	 * @param status the status 
+	 * @param status the status
 	 * @return the response entity
 	 */
 	@Operation(summary = "Finds Pets by status", description = "Multiple status values can be provided with comma separated strings", security = {
@@ -135,7 +135,7 @@ public interface PetApi {
 	/**
 	 * Find pets by tags response entity.
 	 *
-	 * @param tags the tags 
+	 * @param tags the tags
 	 * @return the response entity
 	 */
 	@Operation(summary = "Finds Pets by tags", description = "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing.", security = {
@@ -152,7 +152,7 @@ public interface PetApi {
 	/**
 	 * Gets pet by id.
 	 *
-	 * @param petId the pet id 
+	 * @param petId the pet id
 	 * @return the pet by id
 	 */
 	@Operation(summary = "Find pet by ID", description = "Returns a single pet", security = {
@@ -170,7 +170,7 @@ public interface PetApi {
 	/**
 	 * Update pet response entity.
 	 *
-	 * @param pet the pet 
+	 * @param pet the pet
 	 * @return the response entity
 	 */
 	@Operation(summary = "Update an existing pet", description = "", security = {
@@ -187,9 +187,9 @@ public interface PetApi {
 	/**
 	 * Update pet with form response entity.
 	 *
-	 * @param petId the pet id 
-	 * @param name the name 
-	 * @param status the status 
+	 * @param petId  the pet id
+	 * @param name   the name
+	 * @param status the status
 	 * @return the response entity
 	 */
 	@Operation(summary = "Updates a pet in the store with form data", description = "", security = {
@@ -206,9 +206,9 @@ public interface PetApi {
 	/**
 	 * Upload file response entity.
 	 *
-	 * @param petId the pet id 
-	 * @param additionalMetadata the additional metadata 
-	 * @param file the file 
+	 * @param petId              the pet id
+	 * @param additionalMetadata the additional metadata
+	 * @param file               the file
 	 * @return the response entity
 	 */
 	@Operation(summary = "uploads an image", description = "", security = {

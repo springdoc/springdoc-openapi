@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app103;
@@ -47,8 +47,8 @@ class HelloController {
 	/**
 	 * Post my request body string.
 	 *
-	 * @param body the body 
-	 * @param file the file 
+	 * @param body the body
+	 * @param file the file
 	 * @return the string
 	 */
 	@PostMapping(value = "/test/103", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

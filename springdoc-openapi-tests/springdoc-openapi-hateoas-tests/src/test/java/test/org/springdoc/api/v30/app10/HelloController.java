@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app10;
@@ -48,7 +48,7 @@ public class HelloController {
 	public ResponseEntity<Page<UserDto>> pageSimpleResponse() {
 		return null;
 	}
-	
+
 	@GetMapping("/paged-model-simple")
 	public PagedModel<String> pagedModelSimple() {
 		return pagedModel("test");

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app125;
@@ -30,6 +30,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The type Deprecated entity.
+ *
  * @author bnasslahsen
  */
 class DeprecatedEntity {
@@ -57,7 +58,7 @@ class DeprecatedEntity {
 	/**
 	 * Sets my non deprecated field.
 	 *
-	 * @param myNonDeprecatedField the my non deprecated field 
+	 * @param myNonDeprecatedField the my non deprecated field
 	 * @return the my non deprecated field
 	 */
 	@Deprecated

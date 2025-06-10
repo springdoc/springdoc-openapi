@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.api;
@@ -90,15 +90,14 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	private final SpringDocProviders springDocProviders;
 
 	/**
-	 * The Grouped open api resources.
-	 */
-	private Map<String, OpenApiResource> groupedOpenApiResources;
-
-
-	/**
 	 * The Spring doc customizers.
 	 */
 	private final SpringDocCustomizers springDocCustomizers;
+
+	/**
+	 * The Grouped open api resources.
+	 */
+	private Map<String, OpenApiResource> groupedOpenApiResources;
 
 	/**
 	 * Instantiates a new Multiple open api resource.
@@ -143,7 +142,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return buildWebFluxOpenApiResource(item);
 						},
-						(existingValue, newValue) ->  existingValue // choice to keep the existing value
+						(existingValue, newValue) -> existingValue // choice to keep the existing value
 				));
 	}
 

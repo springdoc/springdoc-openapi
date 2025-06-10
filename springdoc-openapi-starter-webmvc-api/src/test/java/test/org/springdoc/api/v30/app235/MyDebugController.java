@@ -51,7 +51,7 @@ public class MyDebugController {
 
 	// THIS ONE IS MISSING
 	@PostMapping(value = "/debug/{*wildcard}")
-	public ResponseEntity<String>  postWildcard(String wildcard) {
+	public ResponseEntity<String> postWildcard(String wildcard) {
 		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
 	}
 
@@ -61,7 +61,7 @@ public class MyDebugController {
 	}
 
 	@PostMapping(value = "/debug/{simple}")
-	public ResponseEntity<String>  post(String simple) {
+	public ResponseEntity<String> post(String simple) {
 		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
 	}
 }

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app5;
@@ -32,7 +32,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp5Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.v30.configuration","test.org.springdoc.api.v30.app5" })
+	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.v30.configuration", "test.org.springdoc.api.v30.app5" })
 	static class SpringDocTestApp {}
 
 }

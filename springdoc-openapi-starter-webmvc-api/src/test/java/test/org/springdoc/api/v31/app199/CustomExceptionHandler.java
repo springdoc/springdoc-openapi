@@ -10,14 +10,13 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-    static public class MyInternalException extends Exception {}
+	@ResponseStatus(value = INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(MyInternalException.class)
+	@ResponseBody
+	public ErrorDto handleMyInternalException(final MyInternalException ex) {
+		return new ErrorDto(ex.getMessage());
+	}
 
-    @ResponseStatus( value = INTERNAL_SERVER_ERROR )
-    @ExceptionHandler( MyInternalException.class )
-    @ResponseBody
-    public ErrorDto handleMyInternalException( final MyInternalException ex ) {
-        return new ErrorDto( ex.getMessage() );
-    }
-
+	static public class MyInternalException extends Exception {}
 
 }

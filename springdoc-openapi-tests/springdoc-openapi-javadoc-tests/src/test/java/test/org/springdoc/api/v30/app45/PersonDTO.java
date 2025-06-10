@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app45;
@@ -54,9 +54,9 @@ class PersonDTO {
 	/**
 	 * Instantiates a new Person dto.
 	 *
-	 * @param email the email 
-	 * @param firstName the first name 
-	 * @param lastName the last name
+	 * @param email     the email
+	 * @param firstName the first name
+	 * @param lastName  the last name
 	 */
 	public PersonDTO(final String email, final String firstName, final String lastName) {
 		this.email = email;

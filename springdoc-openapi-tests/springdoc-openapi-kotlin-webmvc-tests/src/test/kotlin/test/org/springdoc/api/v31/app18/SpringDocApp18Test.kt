@@ -28,5 +28,5 @@ class SpringDocApp18Test : AbstractKotlinSpringDocMVCTest() {
 	@SpringBootApplication
 	class DemoApplication {
 	}
-	
+
 }

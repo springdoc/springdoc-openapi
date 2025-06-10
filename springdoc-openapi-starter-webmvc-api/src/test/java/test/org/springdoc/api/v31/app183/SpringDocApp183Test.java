@@ -46,7 +46,7 @@ public class SpringDocApp183Test extends AbstractSpringDocTest {
 		class BToAConvertor implements Converter<ObjectB, ObjectA> {
 			@Override
 			public ObjectA convert(ObjectB source) {
-				return new ObjectA(source.bb+"", source.bbb+"");
+				return new ObjectA(source.bb + "", source.bbb + "");
 			}
 		}
 

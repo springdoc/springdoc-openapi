@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.ui;
@@ -66,7 +66,7 @@ public class SwaggerResourceResolver extends LiteWebJarsResourceResolver {
 	@Override
 	protected String findWebJarResourcePath(String pathStr) {
 		String resourcePath = super.findWebJarResourcePath(pathStr);
-		if(resourcePath == null)
+		if (resourcePath == null)
 			return findSwaggerResourcePath(pathStr, swaggerUiConfigProperties.getVersion());
 		return resourcePath;
 	}

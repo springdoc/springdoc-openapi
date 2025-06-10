@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app191.Handler;
@@ -34,9 +34,9 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Component
 public abstract class BaseHandler {
-    protected abstract Mono<ServerResponse> apply (ServerRequest serverRequest);
+	protected abstract Mono<ServerResponse> apply(ServerRequest serverRequest);
 
-    public Mono<ServerResponse> handle(ServerRequest serverRequest) {
-        return this.apply(serverRequest);
-    }
+	public Mono<ServerResponse> handle(ServerRequest serverRequest) {
+		return this.apply(serverRequest);
+	}
 }

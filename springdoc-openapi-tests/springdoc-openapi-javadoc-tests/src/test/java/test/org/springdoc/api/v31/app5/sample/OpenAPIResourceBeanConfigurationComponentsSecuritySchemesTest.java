@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app5.sample;
@@ -58,6 +58,7 @@ class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest extends Abst
 	 * Given: Bean configuration with security scheme http basic (shouldDefineComponentsSecuritySchemesForHttpBasic)
 	 * When: Get api-docs
 	 * Then: Return security definitions http basic
+	 *
 	 * @throws Exception the exception
 	 */
 	@Test
@@ -75,6 +76,7 @@ class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest extends Abst
 	 * Given: Bean configuration with security scheme API key
 	 * When: Get api-docs
 	 * Then: Return security definitions with API key
+	 *
 	 * @throws Exception the exception
 	 */
 	@Test
@@ -92,6 +94,7 @@ class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest extends Abst
 	 * Given: Bean configuration with security scheme OAuth2
 	 * When: Get api-docs
 	 * Then: Return security definitions with OAuth
+	 *
 	 * @throws Exception the exception
 	 */
 	@Test

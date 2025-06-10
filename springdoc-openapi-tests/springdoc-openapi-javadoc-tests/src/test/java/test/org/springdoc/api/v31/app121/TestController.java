@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app121;
@@ -41,8 +41,8 @@ class TestController {
 	/**
 	 * Gets test.
 	 *
-	 * @param param the param 
-	 * @param requestParams the request params 
+	 * @param param         the param
+	 * @param requestParams the request params
 	 * @return the test
 	 */
 	@PostMapping("test")

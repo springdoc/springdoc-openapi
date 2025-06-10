@@ -156,18 +156,10 @@ public class SpringDocConfiguration {
 	static {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema())
 				.replaceWithClass(Charset.class, String.class)
-				.addResponseWrapperToIgnore(DeferredResult.class) 
+				.addResponseWrapperToIgnore(DeferredResult.class)
 				.addResponseWrapperToIgnore(Future.class);
 	}
 
-	@Bean
-	@Lazy(false)
-	@ConditionalOnProperty(name = SPRINGDOC_ENABLE_EXTRA_SCHEMAS, matchIfMissing = true)
-	Object initExtraSchemas() {
-		getConfig().initExtraSchemas();
-		return null;
-	}
-	
 	/**
 	 * Springdoc bean factory post processor bean factory post processor.
 	 *
@@ -193,6 +185,14 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor2() {
 		return SpringdocBeanFactoryConfigurer::initBeanFactoryPostProcessor;
+	}
+
+	@Bean
+	@Lazy(false)
+	@ConditionalOnProperty(name = SPRINGDOC_ENABLE_EXTRA_SCHEMAS, matchIfMissing = true)
+	Object initExtraSchemas() {
+		getConfig().initExtraSchemas();
+		return null;
 	}
 
 	/**
@@ -454,6 +454,74 @@ public class SpringDocConfiguration {
 	}
 
 	/**
+	 * Spring doc customizers spring doc customizers.
+	 *
+	 * @param openApiCustomizers                 the open api customizers
+	 * @param operationCustomizers               the operation customizers
+	 * @param routerOperationCustomizers         the router operation customizers
+	 * @param dataRestRouterOperationCustomizers the data rest router operation customizers
+	 * @param methodFilters                      the method filters
+	 * @param globalOpenApiCustomizers           the global open api customizers
+	 * @param globalOperationCustomizers         the global operation customizers
+	 * @param globalOpenApiMethodFilters         the global open api method filters
+	 * @return the spring doc customizers
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	public SpringDocCustomizers springDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers,
+			Optional<Set<OperationCustomizer>> operationCustomizers,
+			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers,
+			Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
+			Optional<Set<OpenApiMethodFilter>> methodFilters, Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers,
+			Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
+			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
+		return new SpringDocCustomizers(openApiCustomizers,
+				operationCustomizers,
+				routerOperationCustomizers,
+				dataRestRouterOperationCustomizers,
+				methodFilters, globalOpenApiCustomizers, globalOperationCustomizers, globalOpenApiMethodFilters);
+	}
+
+	/**
+	 * Parameter object naming strategy customizer delegating method parameter customizer.
+	 *
+	 * @return the delegating method parameter customizer
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	ParameterObjectNamingStrategyCustomizer parameterObjectNamingStrategyCustomizer() {
+		return new ParameterObjectNamingStrategyCustomizer();
+	}
+
+	/**
+	 * Global open api customizer global open api customizer.
+	 *
+	 * @return the global open api customizer
+	 */
+	@Bean
+	@ConditionalOnMissingBean(name = GLOBAL_OPEN_API_CUSTOMIZER)
+	@Lazy(false)
+	GlobalOpenApiCustomizer globalOpenApiCustomizer() {
+		return new OperationIdCustomizer();
+	}
+
+	/**
+	 * Oas 31 model converter oas 31 model converter.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the oas 31 model converter
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_EXPLICIT_OBJECT_SCHEMA, havingValue = "true")
+	@Lazy(false)
+	OAS31ModelConverter oas31ModelConverter(SpringDocConfigProperties springDocConfigProperties) {
+		return springDocConfigProperties.isOpenapi31() ? new OAS31ModelConverter() : null;
+	}
+
+	/**
 	 * The type Spring doc web mvc actuator configuration.
 	 *
 	 * @author bnasslashen
@@ -571,57 +639,6 @@ public class SpringDocConfiguration {
 	}
 
 	/**
-	 * The type Open api resource advice.
-	 *
-	 * @author bnasslashen
-	 */
-	@RestControllerAdvice
-	@Hidden
-	class OpenApiResourceAdvice {
-		/**
-		 * Handle no handler found response entity.
-		 *
-		 * @param e the e
-		 * @return the response entity
-		 */
-		@ExceptionHandler(OpenApiResourceNotFoundException.class)
-		@ResponseStatus(HttpStatus.NOT_FOUND)
-		public ResponseEntity<ErrorMessage> handleNoHandlerFound(OpenApiResourceNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(e.getMessage()));
-		}
-	}
-
-	/**
-	 * Spring doc customizers spring doc customizers.
-	 *
-	 * @param openApiCustomizers                 the open api customizers
-	 * @param operationCustomizers               the operation customizers
-	 * @param routerOperationCustomizers         the router operation customizers
-	 * @param dataRestRouterOperationCustomizers the data rest router operation customizers
-	 * @param methodFilters                      the method filters
-	 * @param globalOpenApiCustomizers           the global open api customizers
-	 * @param globalOperationCustomizers         the global operation customizers
-	 * @param globalOpenApiMethodFilters         the global open api method filters
-	 * @return the spring doc customizers
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	public SpringDocCustomizers springDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers,
-			Optional<Set<OperationCustomizer>> operationCustomizers,
-			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers,
-			Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
-			Optional<Set<OpenApiMethodFilter>> methodFilters, Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers,
-			Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
-			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
-		return new SpringDocCustomizers(openApiCustomizers,
-				operationCustomizers,
-				routerOperationCustomizers,
-				dataRestRouterOperationCustomizers,
-				methodFilters, globalOpenApiCustomizers, globalOperationCustomizers, globalOpenApiMethodFilters);
-	}
-
-	/**
 	 * The type Querydsl provider.
 	 *
 	 * @author bnasslashen
@@ -650,40 +667,23 @@ public class SpringDocConfiguration {
 	}
 
 	/**
-	 * Parameter object naming strategy customizer delegating method parameter customizer.
+	 * The type Open api resource advice.
 	 *
-	 * @return the delegating method parameter customizer
+	 * @author bnasslashen
 	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	ParameterObjectNamingStrategyCustomizer parameterObjectNamingStrategyCustomizer() {
-		return new ParameterObjectNamingStrategyCustomizer();
-	}
-
-	/**
-	 * Global open api customizer global open api customizer.
-	 *
-	 * @return the global open api customizer
-	 */
-	@Bean
-	@ConditionalOnMissingBean(name = GLOBAL_OPEN_API_CUSTOMIZER)
-	@Lazy(false)
-	GlobalOpenApiCustomizer globalOpenApiCustomizer() {
-		return new OperationIdCustomizer();
-	}
-
-	/**
-	 * Oas 31 model converter oas 31 model converter.
-	 *
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @return the oas 31 model converter
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = SPRINGDOC_EXPLICIT_OBJECT_SCHEMA, havingValue = "true")
-	@Lazy(false)
-	OAS31ModelConverter oas31ModelConverter(SpringDocConfigProperties springDocConfigProperties) {
-		return  springDocConfigProperties.isOpenapi31()  ? new OAS31ModelConverter() : null;
+	@RestControllerAdvice
+	@Hidden
+	class OpenApiResourceAdvice {
+		/**
+		 * Handle no handler found response entity.
+		 *
+		 * @param e the e
+		 * @return the response entity
+		 */
+		@ExceptionHandler(OpenApiResourceNotFoundException.class)
+		@ResponseStatus(HttpStatus.NOT_FOUND)
+		public ResponseEntity<ErrorMessage> handleNoHandlerFound(OpenApiResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(e.getMessage()));
+		}
 	}
 }

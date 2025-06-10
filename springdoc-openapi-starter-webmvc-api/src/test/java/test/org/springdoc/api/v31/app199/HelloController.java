@@ -48,57 +48,58 @@ public class HelloController {
 	ObjectMapper defaultObjectMapper;
 
 	@GetMapping(
-		value = "/first",
-		produces = APPLICATION_JSON_VALUE
+			value = "/first",
+			produces = APPLICATION_JSON_VALUE
 	)
-	public void first() throws MyInternalException {}
+	public void first() throws MyInternalException {
+	}
 
 	@GetMapping(
-		value = "/second",
-		produces = APPLICATION_JSON_VALUE
+			value = "/second",
+			produces = APPLICATION_JSON_VALUE
 	)
-	public void second() throws MyInternalException {}
+	public void second() throws MyInternalException {
+	}
 
 	@Bean
-	public OperationCustomizer operationCustomizer()
-	{
-		return ( Operation operation, HandlerMethod handlerMethod ) ->
+	public OperationCustomizer operationCustomizer() {
+		return (Operation operation, HandlerMethod handlerMethod) ->
 		{
 			final io.swagger.v3.oas.models.media.MediaType mediaType = operation
-				.getResponses()
-				.get( "500" )
-				.getContent()
-				.get( ALL_VALUE );
+					.getResponses()
+					.get("500")
+					.getContent()
+					.get(ALL_VALUE);
 
-			mediaType.setExamples( mediaType.getExamples() != null
-				? mediaType.getExamples()
-				: new LinkedHashMap<>() );
+			mediaType.setExamples(mediaType.getExamples() != null
+					? mediaType.getExamples()
+					: new LinkedHashMap<>());
 
 			final Map<String, Example> examples = mediaType.getExamples();
 
-			switch ( handlerMethod.getMethod().getName() ) {
+			switch (handlerMethod.getMethod().getName()) {
 
-				case "first" :
+				case "first":
 					examples.put(
-						"First case example",
-						new Example().value(
-							defaultObjectMapper.valueToTree(
-								new ErrorDto( "An ErrorDto sample specific to /first endpoint" )
+							"First case example",
+							new Example().value(
+									defaultObjectMapper.valueToTree(
+											new ErrorDto("An ErrorDto sample specific to /first endpoint")
+									)
 							)
-						)
 					);
-				break;
+					break;
 
-				case "second" :
+				case "second":
 					examples.put(
-						"Second case example",
-						new Example().value(
-							defaultObjectMapper.valueToTree(
-								new ErrorDto( "An ErrorDto sample specific to /second endpoint" )
+							"Second case example",
+							new Example().value(
+									defaultObjectMapper.valueToTree(
+											new ErrorDto("An ErrorDto sample specific to /second endpoint")
+									)
 							)
-						)
 					);
-				break;
+					break;
 			}
 
 			return operation;

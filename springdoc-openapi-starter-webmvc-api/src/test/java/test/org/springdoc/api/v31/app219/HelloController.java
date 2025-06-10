@@ -31,12 +31,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api", produces = {"application/xml"}, consumes = {"application/json"})
+@RequestMapping(value = "/api", produces = { "application/xml" }, consumes = { "application/json" })
 public class HelloController {
 
-    @RequestMapping(value = "/testpost", method = RequestMethod.POST, produces = {"application/json"},
-            consumes = {"application/json;charset=UTF-8", "application/json; charset=UTF-8"})
-    public ResponseEntity<TestObject> testpost(@RequestBody TestObject dto) {
-        return ResponseEntity.ok(dto);
-    }
+	@RequestMapping(value = "/testpost", method = RequestMethod.POST, produces = { "application/json" },
+			consumes = { "application/json;charset=UTF-8", "application/json; charset=UTF-8" })
+	public ResponseEntity<TestObject> testpost(@RequestBody TestObject dto) {
+		return ResponseEntity.ok(dto);
+	}
 }

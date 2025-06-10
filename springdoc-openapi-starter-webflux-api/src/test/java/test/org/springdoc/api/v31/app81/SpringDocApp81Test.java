@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 package test.org.springdoc.api.v31.app81;
 
@@ -73,7 +73,7 @@ public class SpringDocApp81Test extends AbstractCommonTest {
 		when(request.getURI()).thenReturn(URI.create("http://localhost"));
 
 		String expected = getContent("results/3.1.0/app81.json");
-		byte[] openApiBytes =resource.openapiJson(request, "", Locale.US).block();
+		byte[] openApiBytes = resource.openapiJson(request, "", Locale.US).block();
 		String openApi = new String(openApiBytes, StandardCharsets.UTF_8); // for UTF-8 encoding		String openApi = resource.openapiJson(request, "", Locale.US).block();
 		assertEquals(expected, openApi, true);
 	}

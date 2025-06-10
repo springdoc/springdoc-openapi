@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app33;
@@ -38,6 +38,7 @@ public class ExampleSortReplacement extends Sort {
 
 	/**
 	 * Instantiates a new Sort.
+	 *
 	 * @param sort the sort
 	 */
 	public ExampleSortReplacement(List<String> sort) {

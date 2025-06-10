@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app105.model;
@@ -88,7 +88,8 @@ public class User {
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
-	 * @param o the o 
+	 *
+	 * @param o the o
 	 * @return the string
 	 */
 	private static String toIndentedString(Object o) {
@@ -120,7 +121,7 @@ public class User {
 	/**
 	 * Id user.
 	 *
-	 * @param id the id 
+	 * @param id the id
 	 * @return the user
 	 */
 	public User id(Long id) {
@@ -150,7 +151,7 @@ public class User {
 	/**
 	 * Username user.
 	 *
-	 * @param username the username 
+	 * @param username the username
 	 * @return the user
 	 */
 	public User username(String username) {
@@ -180,7 +181,7 @@ public class User {
 	/**
 	 * First name user.
 	 *
-	 * @param firstName the first name 
+	 * @param firstName the first name
 	 * @return the user
 	 */
 	public User firstName(String firstName) {
@@ -210,7 +211,7 @@ public class User {
 	/**
 	 * Last name user.
 	 *
-	 * @param lastName the last name 
+	 * @param lastName the last name
 	 * @return the user
 	 */
 	public User lastName(String lastName) {
@@ -240,7 +241,7 @@ public class User {
 	/**
 	 * Email user.
 	 *
-	 * @param email the email 
+	 * @param email the email
 	 * @return the user
 	 */
 	public User email(String email) {
@@ -270,7 +271,7 @@ public class User {
 	/**
 	 * Password user.
 	 *
-	 * @param password the password 
+	 * @param password the password
 	 * @return the user
 	 */
 	public User password(String password) {
@@ -300,7 +301,7 @@ public class User {
 	/**
 	 * Phone user.
 	 *
-	 * @param phone the phone 
+	 * @param phone the phone
 	 * @return the user
 	 */
 	public User phone(String phone) {
@@ -330,7 +331,7 @@ public class User {
 	/**
 	 * User status user.
 	 *
-	 * @param userStatus the user status 
+	 * @param userStatus the user status
 	 * @return the user
 	 */
 	public User userStatus(Integer userStatus) {

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.core.providers;
@@ -50,14 +50,14 @@ import org.springframework.web.reactive.result.method.RequestMappingInfo;
  */
 public class ActuatorWebFluxProvider extends ActuatorProvider implements ApplicationContextAware {
 
-	
+
 	/**
 	 * Instantiates a new Actuator web flux provider.
 	 *
-	 * @param serverProperties                 the server properties
-	 * @param springDocConfigProperties        the spring doc config properties
-	 * @param managementServerProperties       the management server properties
-	 * @param webEndpointProperties            the web endpoint properties
+	 * @param serverProperties           the server properties
+	 * @param springDocConfigProperties  the spring doc config properties
+	 * @param managementServerProperties the management server properties
+	 * @param webEndpointProperties      the web endpoint properties
 	 */
 	public ActuatorWebFluxProvider(ServerProperties serverProperties,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -65,7 +65,7 @@ public class ActuatorWebFluxProvider extends ActuatorProvider implements Applica
 			Optional<WebEndpointProperties> webEndpointProperties) {
 		super(managementServerProperties, webEndpointProperties, serverProperties, springDocConfigProperties);
 	}
-	
+
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
 		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new HashMap<>();
 

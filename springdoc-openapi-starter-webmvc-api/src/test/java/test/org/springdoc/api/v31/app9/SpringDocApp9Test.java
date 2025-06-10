@@ -30,8 +30,8 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.remove-broken-reference-definitions=false")
 public class SpringDocApp9Test extends AbstractSpringDocTest {
 
-    @SpringBootApplication
-    static class SpringDocTestApp {
+	@SpringBootApplication
+	static class SpringDocTestApp {
 
-    }
+	}
 }

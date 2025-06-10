@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.models;
@@ -345,7 +345,7 @@ public class ParameterInfo {
 	 * @return the boolean
 	 */
 	public boolean isParameterObject() {
-		return methodParameter instanceof DelegatingMethodParameter delegatingMethodParameter 
+		return methodParameter instanceof DelegatingMethodParameter delegatingMethodParameter
 				&& delegatingMethodParameter.isParameterObject();
 	}
 }

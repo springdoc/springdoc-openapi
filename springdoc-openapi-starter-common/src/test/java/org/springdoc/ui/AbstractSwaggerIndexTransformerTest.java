@@ -22,47 +22,49 @@ import static org.hamcrest.Matchers.containsString;
 @ExtendWith(MockitoExtension.class)
 class AbstractSwaggerIndexTransformerTest {
 
-    private SwaggerUiConfigProperties swaggerUiConfig;
-    @Mock
-    private SwaggerUiOAuthProperties swaggerUiOAuthProperties;
+	private final String swaggerInitJs = "window.onload = function() {\n" +
+			"\n" +
+			"  window.ui = SwaggerUIBundle({\n" +
+			"    url: \"https://petstore.swagger.io/v2/swagger.json\",\n" +
+			"    dom_id: '#swagger-ui',\n" +
+			"    deepLinking: true,\n" +
+			"    presets: [\n" +
+			"      SwaggerUIBundle.presets.apis,\n" +
+			"      SwaggerUIStandalonePreset\n" +
+			"    ],\n" +
+			"    plugins: [\n" +
+			"      SwaggerUIBundle.plugins.DownloadUrl\n" +
+			"    ],\n" +
+			"    layout: \"StandaloneLayout\"\n" +
+			"  });\n" +
+			"\n" +
+			"  //</editor-fold>\n" +
+			"};";
 
-    private ObjectMapperProvider objectMapperProvider;
+	private final InputStream is = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
 
-    private AbstractSwaggerIndexTransformer underTest;
+	private final String apiDocUrl = "http://test.springdoc.com/apidoc";
 
-    private final String swaggerInitJs = "window.onload = function() {\n" +
-            "\n" +
-            "  window.ui = SwaggerUIBundle({\n" +
-            "    url: \"https://petstore.swagger.io/v2/swagger.json\",\n" +
-            "    dom_id: '#swagger-ui',\n" +
-            "    deepLinking: true,\n" +
-            "    presets: [\n" +
-            "      SwaggerUIBundle.presets.apis,\n" +
-            "      SwaggerUIStandalonePreset\n" +
-            "    ],\n" +
-            "    plugins: [\n" +
-            "      SwaggerUIBundle.plugins.DownloadUrl\n" +
-            "    ],\n" +
-            "    layout: \"StandaloneLayout\"\n" +
-            "  });\n" +
-            "\n" +
-            "  //</editor-fold>\n" +
-            "};";
-    private final InputStream is = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
+	private SwaggerUiConfigProperties swaggerUiConfig;
 
-    private final String apiDocUrl = "http://test.springdoc.com/apidoc";
+	@Mock
+	private SwaggerUiOAuthProperties swaggerUiOAuthProperties;
 
-    @BeforeEach
-    public void setup(){
-        swaggerUiConfig = new SwaggerUiConfigProperties();
-        swaggerUiConfig.setUrl(apiDocUrl);
+	private ObjectMapperProvider objectMapperProvider;
+
+	private AbstractSwaggerIndexTransformer underTest;
+
+	@BeforeEach
+	public void setup() {
+		swaggerUiConfig = new SwaggerUiConfigProperties();
+		swaggerUiConfig.setUrl(apiDocUrl);
 		objectMapperProvider = new ObjectMapperProvider(new SpringDocConfigProperties());
-        underTest = new AbstractSwaggerIndexTransformer(swaggerUiConfig, swaggerUiOAuthProperties, objectMapperProvider);
-    }
+		underTest = new AbstractSwaggerIndexTransformer(swaggerUiConfig, swaggerUiOAuthProperties, objectMapperProvider);
+	}
 
-    @Test
-    void setApiDocUrlCorrectly() throws IOException {
-        var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), is);
-        assertThat(html, containsString(apiDocUrl));
-    }
+	@Test
+	void setApiDocUrlCorrectly() throws IOException {
+		var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), is);
+		assertThat(html, containsString(apiDocUrl));
+	}
 }

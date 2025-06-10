@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.data;
@@ -210,7 +210,7 @@ public class DataRestOperationService {
 			String pName = parameterMetadatum.getName();
 			ResourceDescription description = parameterMetadatum.getDescription();
 			if (description instanceof TypedResourceDescription) {
-				Type type = getParameterType(pName,method,description);
+				Type type = getParameterType(pName, method, description);
 				Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), type, null, null, openAPI.getSpecVersion());
 				Parameter parameter = getParameterFromAnnotations(openAPI, methodAttributes, method, pName);
 				if (parameter == null) {
@@ -248,7 +248,7 @@ public class DataRestOperationService {
 		java.lang.reflect.Parameter[] parameters = method.getParameters();
 		for (int i = 0; i < parameters.length; i++) {
 			java.lang.reflect.Parameter parameter = parameters[i];
-			if (pName.equals(parameter.getName()) || (parameter.getAnnotation(Param.class)!=null && pName.equals(parameter.getAnnotation(Param.class).value()))) {
+			if (pName.equals(parameter.getName()) || (parameter.getAnnotation(Param.class) != null && pName.equals(parameter.getAnnotation(Param.class).value()))) {
 				ResolvableType resolvableType = ResolvableType.forMethodParameter(method, i);
 				type = resolvableType.getType();
 				break;

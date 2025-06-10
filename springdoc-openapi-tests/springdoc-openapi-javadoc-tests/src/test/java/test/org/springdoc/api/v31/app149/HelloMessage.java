@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app149;
@@ -43,7 +43,7 @@ class HelloMessage {
 	/**
 	 * Instantiates a new Hello message.
 	 *
-	 * @param text the text
+	 * @param text   the text
 	 * @param number the number
 	 */
 	public HelloMessage(String text, int number) {

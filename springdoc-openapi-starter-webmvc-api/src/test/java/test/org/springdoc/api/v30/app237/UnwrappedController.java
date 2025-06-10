@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UnwrappedController {
 
-    @GetMapping("/")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Simple get task")
-    @ApiResponse(responseCode = "200", description = "Task has been started")
-    @ApiResponse(responseCode = "404", description = "Task was not found")
-    @ApiResponse(responseCode = "409", description = "Task is already running")
-    public Example exampleGet() {
-        return new Example(new Example.Wrapped("Some value"), 1);
-    }
+	@GetMapping("/")
+	@ResponseStatus(HttpStatus.OK)
+	@Operation(summary = "Simple get task")
+	@ApiResponse(responseCode = "200", description = "Task has been started")
+	@ApiResponse(responseCode = "404", description = "Task was not found")
+	@ApiResponse(responseCode = "409", description = "Task is already running")
+	public Example exampleGet() {
+		return new Example(new Example.Wrapped("Some value"), 1);
+	}
 }

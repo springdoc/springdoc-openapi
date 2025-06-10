@@ -47,7 +47,7 @@ public class SpringDocApp115Test extends AbstractSpringDocTest {
 		getConfig().initExtraSchemas();
 	}
 
-	
+
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 

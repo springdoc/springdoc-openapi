@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app61;
@@ -46,10 +46,10 @@ class HelloController {
 	/**
 	 * Persons string.
 	 *
-	 * @param name the name 
-	 * @param phone the phone 
-	 * @param createdFrom the created from 
-	 * @param createdRange the created range 
+	 * @param name         the name
+	 * @param phone        the phone
+	 * @param createdFrom  the created from
+	 * @param createdRange the created range
 	 * @return the string
 	 */
 	@Operation(description = "List", parameters = {

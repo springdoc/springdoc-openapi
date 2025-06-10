@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GreetController {
-    @PostMapping("/greet")
-    @Operation(summary = "Greet")
-    public String greet(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Some description", required = false)
-            @RequestBody(required = false) Map<String, String> body) {
-        return body.getOrDefault("greet", "Hello");
-    }
+	@PostMapping("/greet")
+	@Operation(summary = "Greet")
+	public String greet(
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Some description", required = false)
+			@RequestBody(required = false) Map<String, String> body) {
+		return body.getOrDefault("greet", "Hello");
+	}
 }

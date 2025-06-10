@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app36;
@@ -32,12 +32,6 @@ import jakarta.persistence.Id;
 
 @Entity
 public class EnumFieldHolder {
-
-	public enum EnumField {
-
-		FOO, BAR;
-
-	}
 
 	@Id
 	@GeneratedValue
@@ -55,6 +49,12 @@ public class EnumFieldHolder {
 
 	public void setEnumField(EnumField enumField) {
 		this.enumField = enumField;
+	}
+
+	public enum EnumField {
+
+		FOO, BAR;
+
 	}
 
 }

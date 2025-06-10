@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.configuration;
@@ -95,8 +95,8 @@ public class SpringDocPageableConfiguration {
 	PageOpenAPIConverter pageOpenAPIConverter(Optional<SpringDataWebSettings> settings,
 			ObjectMapperProvider objectMapperProvider) {
 		boolean replacePageWithPagedModel = settings.map(SpringDataWebSettings::pageSerializationMode)
-			.map(EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO::equals)
-			.orElse(false);
+				.map(EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO::equals)
+				.orElse(false);
 		return new PageOpenAPIConverter(replacePageWithPagedModel, objectMapperProvider);
 	}
 

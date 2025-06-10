@@ -64,8 +64,7 @@ public class WebHookResource {
 		// The actual processing of the webhook data would be implemented here.
 		System.out.println("Received new pet with personal number: " + requestDto.getPersonalNumber());
 	}
-	
-	
+
 }
 
 

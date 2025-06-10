@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 package org.springdoc.core.customizers;
 
@@ -70,14 +70,14 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	private final Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers;
 
 	/**
-	 * The Context.
-	 */
-	private ApplicationContext context;
-
-	/**
 	 * The method filters to use.
 	 */
 	private final Optional<Set<OpenApiMethodFilter>> methodFilters;
+
+	/**
+	 * The Context.
+	 */
+	private ApplicationContext context;
 
 	/**
 	 * The Global open api customizers.

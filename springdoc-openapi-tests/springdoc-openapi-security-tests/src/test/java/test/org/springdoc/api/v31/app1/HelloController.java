@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app1;
@@ -54,5 +54,5 @@ public class HelloController {
 			@AuthenticationPrincipal User user) {
 		return "OK";
 	}
-	
+
 }

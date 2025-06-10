@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app132;
@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * The type Hello controller.
  *
- * @param <DataRequest>  the type parameter
+ * @param <DataRequest> the type parameter
  */
 @RestController
 class HelloController<DataRequest> {

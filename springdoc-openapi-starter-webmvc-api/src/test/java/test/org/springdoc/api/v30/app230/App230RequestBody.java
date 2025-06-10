@@ -13,9 +13,9 @@ import static java.lang.annotation.ElementType.PARAMETER;
 /**
  * @author edudar
  */
-@Target({PARAMETER, METHOD, ANNOTATION_TYPE})
+@Target({ PARAMETER, METHOD, ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @RequestBody(required = true)
 @interface App230RequestBody {
-    
+
 }

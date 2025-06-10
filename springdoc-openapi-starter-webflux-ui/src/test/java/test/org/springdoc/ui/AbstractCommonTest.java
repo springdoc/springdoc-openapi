@@ -17,7 +17,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @AutoConfigureWebTestClient(timeout = "3600000")
 @ActiveProfiles("test")
-@TestPropertySource(properties =  "springdoc.api-docs.version=openapi_3_0" )
+@TestPropertySource(properties = "springdoc.api-docs.version=openapi_3_0")
 public abstract class AbstractCommonTest {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonTest.class);

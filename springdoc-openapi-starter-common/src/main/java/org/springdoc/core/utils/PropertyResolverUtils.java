@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.utils;
@@ -116,9 +116,9 @@ public class PropertyResolverUtils {
 	 * and removes it.
 	 * If the input text is {@code null}, the method returns {@code null}.
 	 *
-	 *	@param text The original string with possible leading indentation.
-	 *	@return The string with the smallest common leading indentation removed from each line,
-	 *          or {@code null} if the input text is {@code null}.
+	 * @param text The original string with possible leading indentation.
+	 * @return The string with the smallest common leading indentation removed from each line,
+	 * or {@code null} if the input text is {@code null}.
 	 */
 	public String trimIndent(String text) {
 		if (text == null) {
@@ -131,7 +131,8 @@ public class PropertyResolverUtils {
 			return Arrays.stream(lines)
 					.map(line -> line.substring(Math.min(line.length(), minIndent)))
 					.collect(Collectors.joining(newLine));
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			LOGGER.warn(ex.getMessage());
 			return text;
 		}
@@ -145,10 +146,10 @@ public class PropertyResolverUtils {
 	 */
 	private int resolveMinIndent(String[] lines) {
 		return Arrays.stream(lines)
-			.filter(line -> !line.trim().isEmpty())
-			.mapToInt(this::countLeadingSpaces)
-			.min()
-			.orElse(0);
+				.filter(line -> !line.trim().isEmpty())
+				.mapToInt(this::countLeadingSpaces)
+				.min()
+				.orElse(0);
 	}
 
 	/**
@@ -158,13 +159,13 @@ public class PropertyResolverUtils {
 	 * @return the int
 	 */
 	private int countLeadingSpaces(String line) {
-        int count = 0;
-        for (char ch : line.toCharArray()) {
-            if (ch != ' ' && ch != '\t') break;
-            count++;
-        }
-        return count;
-    }
+		int count = 0;
+		for (char ch : line.toCharArray()) {
+			if (ch != ' ' && ch != '\t') break;
+			count++;
+		}
+		return count;
+	}
 
 	/**
 	 * Gets factory.

@@ -10,23 +10,23 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfiguration {
 
-    public OpenApiConfiguration() {
-        // LocalTime support
-        PrimitiveType.enablePartialTime();
-    }
+	public OpenApiConfiguration() {
+		// LocalTime support
+		PrimitiveType.enablePartialTime();
+	}
 
-    private OpenAPI standardOpenApi() {
-        String title = getClass().getPackage().getImplementationTitle();
-        String version = getClass().getPackage().getImplementationVersion();
-        return new OpenAPI()
-                .info(new Info()
-                        .title(title == null ? "DEV" : title)
-                        .version(version == null ? "local" : version));
-    }
+	private OpenAPI standardOpenApi() {
+		String title = getClass().getPackage().getImplementationTitle();
+		String version = getClass().getPackage().getImplementationVersion();
+		return new OpenAPI()
+				.info(new Info()
+						.title(title == null ? "DEV" : title)
+						.version(version == null ? "local" : version));
+	}
 
-    @Bean
-    public OpenAPI devOpenApi() {
-        return standardOpenApi();
-    }
+	@Bean
+	public OpenAPI devOpenApi() {
+		return standardOpenApi();
+	}
 
 }

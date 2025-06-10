@@ -63,11 +63,6 @@ import static java.util.stream.Collectors.toMap;
 public class PolymorphicModelConverter implements ModelConverter {
 
 	/**
-	 * The Spring doc object mapper.
-	 */
-	private final ObjectMapperProvider springDocObjectMapper;
-
-	/**
 	 * The constant PARENT_TYPES_TO_IGNORE.
 	 */
 	private static final Set<String> PARENT_TYPES_TO_IGNORE = Collections.synchronizedSet(new HashSet<>());
@@ -82,6 +77,11 @@ public class PolymorphicModelConverter implements ModelConverter {
 		PARENT_TYPES_TO_IGNORE.add("Pageable");
 		PARENT_TYPES_TO_IGNORE.add("EntityModel");
 	}
+
+	/**
+	 * The Spring doc object mapper.
+	 */
+	private final ObjectMapperProvider springDocObjectMapper;
 
 	/**
 	 * Instantiates a new Polymorphic model converter.
@@ -229,23 +229,23 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 */
 	private List<BeanPropertyBiDefinition> introspectBeanProperties(JavaType javaType) {
 		Map<String, BeanPropertyDefinition> forSerializationProps =
-			springDocObjectMapper.jsonMapper()
-				.getSerializationConfig()
-				.introspect(javaType)
-				.findProperties()
-				.stream()
-				.collect(toMap(BeanPropertyDefinition::getName, identity()));
+				springDocObjectMapper.jsonMapper()
+						.getSerializationConfig()
+						.introspect(javaType)
+						.findProperties()
+						.stream()
+						.collect(toMap(BeanPropertyDefinition::getName, identity()));
 		Map<String, BeanPropertyDefinition> forDeserializationProps =
-			springDocObjectMapper.jsonMapper()
-				.getDeserializationConfig()
-				.introspect(javaType)
-				.findProperties()
-				.stream()
-				.collect(toMap(BeanPropertyDefinition::getName, identity()));
+				springDocObjectMapper.jsonMapper()
+						.getDeserializationConfig()
+						.introspect(javaType)
+						.findProperties()
+						.stream()
+						.collect(toMap(BeanPropertyDefinition::getName, identity()));
 
 		return forSerializationProps.keySet().stream()
-			.map(key -> new BeanPropertyBiDefinition(forSerializationProps.get(key), forDeserializationProps.get(key)))
-			.toList();
+				.map(key -> new BeanPropertyBiDefinition(forSerializationProps.get(key), forDeserializationProps.get(key)))
+				.toList();
 	}
 
 	/**
@@ -253,8 +253,8 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 * serialization and deserialization property views.
 	 */
 	private record BeanPropertyBiDefinition(
-		BeanPropertyDefinition forSerialization,
-		BeanPropertyDefinition forDeserialization
+			BeanPropertyDefinition forSerialization,
+			BeanPropertyDefinition forDeserialization
 	) {
 
 		/**
@@ -292,7 +292,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 
 			if (forSerializationType != null && forDeserializationType != null && forSerializationType != forDeserializationType) {
 				throw new IllegalStateException("The property " + forSerialization.getName() + " has different types for serialization and deserialization: "
-					+ forSerializationType + " and " + forDeserializationType);
+						+ forSerializationType + " and " + forDeserializationType);
 			}
 
 			return forSerializationType != null ? forSerializationType : forDeserializationType;

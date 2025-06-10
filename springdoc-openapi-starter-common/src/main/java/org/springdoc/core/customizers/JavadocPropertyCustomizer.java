@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.customizers;
@@ -109,7 +109,7 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 						try {
 							Field processedTypesField = FieldUtils.getDeclaredField(ModelConverterContextImpl.class, "processedTypes", true);
 							Set<AnnotatedType> processedType = (Set<AnnotatedType>) processedTypesField.get(context);
-							if(processedType.contains(type))
+							if (processedType.contains(type))
 								setJavadocDescription(cls, fields, clsProperties, resolvedSchema, true);
 						}
 						catch (IllegalAccessException e) {
@@ -163,7 +163,7 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 							if (StringUtils.isBlank(stringSchemaEntry.getValue().getDescription())) {
 								Optional<PropertyDescriptor> optionalPd = clsProperties.stream().filter(pd -> pd.getName().equals(stringSchemaEntry.getKey())).findAny();
 								optionalPd.ifPresent(pd1 -> {
-									if(pd1.getReadMethod() != null) {
+									if (pd1.getReadMethod() != null) {
 										String fieldJavadoc = javadocProvider.getMethodJavadocDescription(pd1.getReadMethod());
 										if (StringUtils.isNotBlank(fieldJavadoc))
 											stringSchemaEntry.getValue().setDescription(fieldJavadoc);

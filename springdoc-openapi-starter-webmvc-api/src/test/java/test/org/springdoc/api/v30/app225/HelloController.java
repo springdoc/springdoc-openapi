@@ -21,7 +21,7 @@ public class HelloController {
 }
 
 @JsonNaming(PropertyNamingStrategies.UpperSnakeCaseStrategy.class)
- class RequestDto {
+class RequestDto {
 	private String personalNumber;
 
 	public String getPersonalNumber() {

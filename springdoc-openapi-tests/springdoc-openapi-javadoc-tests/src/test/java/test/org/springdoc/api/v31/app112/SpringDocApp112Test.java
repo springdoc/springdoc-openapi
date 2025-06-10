@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app112;
@@ -54,7 +54,7 @@ class SpringDocApp112Test extends AbstractSpringDocTest {
 		 * Custom open api open api.
 		 *
 		 * @param appDesciption the app desciption
-		 * @param appVersion the app version
+		 * @param appVersion    the app version
 		 * @return the open api
 		 */
 		@Bean

@@ -36,7 +36,7 @@ public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocT
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody()
-                .jsonPath("$.oauth2RedirectUrl").isEqualTo("https://host1/swagger-ui/oauth2-redirect.html");
+				.jsonPath("$.oauth2RedirectUrl").isEqualTo("https://host1/swagger-ui/oauth2-redirect.html");
 
 
 		webTestClient.get().uri("/v3/api-docs/swagger-config")
@@ -45,7 +45,7 @@ public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocT
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody()
-                .jsonPath("$.oauth2RedirectUrl").isEqualTo("http://host2:8080/swagger-ui/oauth2-redirect.html");
+				.jsonPath("$.oauth2RedirectUrl").isEqualTo("http://host2:8080/swagger-ui/oauth2-redirect.html");
 
 	}
 

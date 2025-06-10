@@ -17,7 +17,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequestMapping("api/hello")
 public interface HomeApi {
 
-  @Operation(summary = "Upload new content", description = "Upload test content")
-  @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = MULTIPART_FORM_DATA_VALUE)
-  HelloDto uploadContent(HelloUploadDto contentUploadDto) throws IOException;
+	@Operation(summary = "Upload new content", description = "Upload test content")
+	@PostMapping(produces = APPLICATION_JSON_VALUE, consumes = MULTIPART_FORM_DATA_VALUE)
+	HelloDto uploadContent(HelloUploadDto contentUploadDto) throws IOException;
 }

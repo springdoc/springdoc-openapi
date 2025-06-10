@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app25;
@@ -58,9 +58,9 @@ class HelloController {
 	/**
 	 * List.
 	 *
-	 * @param trackerId the tracker id 
-	 * @param startDate the start date 
-	 * @param endDate the end date
+	 * @param trackerId the tracker id
+	 * @param startDate the start date
+	 * @param endDate   the end date
 	 */
 	@GetMapping(value = "/list/{trackerId}")
 	void list(
@@ -75,7 +75,7 @@ class HelloController {
 	 *
 	 * @param trackerId the tracker id
 	 * @param startDate the start date
-	 * @param endDate the end date
+	 * @param endDate   the end date
 	 */
 	@GetMapping(value = "/secondlist/{trackerId}")
 	void secondlist(
@@ -88,10 +88,10 @@ class HelloController {
 	/**
 	 * Third list.
 	 *
-	 * @param trackerId the tracker id 
-	 * @param start the start 
-	 * @param end the end 
-	 * @param limit the limit
+	 * @param trackerId the tracker id
+	 * @param start     the start
+	 * @param end       the end
+	 * @param limit     the limit
 	 */
 	@Operation(description = "Get last data from a tracker", parameters = {
 			@Parameter(name = "trackerId", in = ParameterIn.PATH, required = true, schema = @Schema(type = "string", example = "the-tracker-id")),

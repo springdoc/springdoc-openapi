@@ -45,12 +45,12 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testApp() throws Exception {
-		super.testWithWebClient("148-1","/test/application/openapi/users");
+		super.testWithWebClient("148-1", "/test/application/openapi/users");
 	}
 
 	@Test
 	void testApp2() throws Exception {
-		super.testWithWebClient("148-2","/test/application/openapi/x-actuator");
+		super.testWithWebClient("148-2", "/test/application/openapi/x-actuator");
 	}
 
 	@Test

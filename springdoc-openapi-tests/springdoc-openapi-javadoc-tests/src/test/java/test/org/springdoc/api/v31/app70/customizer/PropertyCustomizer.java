@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app70.customizer;
@@ -53,8 +53,8 @@ class PropertyCustomizer implements org.springdoc.core.customizers.PropertyCusto
 	/**
 	 * Customize schema.
 	 *
-	 * @param property the property 
-	 * @param type the type 
+	 * @param property the property
+	 * @param type     the type
 	 * @return the schema
 	 */
 	@Override

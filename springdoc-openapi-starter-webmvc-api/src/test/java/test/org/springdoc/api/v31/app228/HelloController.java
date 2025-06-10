@@ -23,7 +23,7 @@ public class HelloController {
 	}
 
 	public class MyRequest {
-		@Schema(oneOf = {Child1.class, Child2.class})
+		@Schema(oneOf = { Child1.class, Child2.class })
 		@JsonProperty
 		private Parent parent;
 	}

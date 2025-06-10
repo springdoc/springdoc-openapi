@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app134;
@@ -80,7 +80,7 @@ class HelloController {
 	/**
 	 * Gets sample v 1.
 	 *
-	 * @param id the id 
+	 * @param id the id
 	 * @return the sample v 1
 	 */
 	@GetMapping(value = "/{id}", produces = VERSION_1, headers = HEADER_1)
@@ -96,7 +96,7 @@ class HelloController {
 	/**
 	 * Gets sample v 2.
 	 *
-	 * @param id the id 
+	 * @param id the id
 	 * @return the sample v 2
 	 */
 	@GetMapping(value = "/{id}", produces = VERSION_2, headers = { HEADER_2, HEADER_1 })
@@ -111,7 +111,7 @@ class HelloController {
 	/**
 	 * Search samples list.
 	 *
-	 * @param searchRequest the search request 
+	 * @param searchRequest the search request
 	 * @return the list
 	 */
 	@PostMapping(path = "/search", consumes = VERSION_2, produces = VERSION_2)

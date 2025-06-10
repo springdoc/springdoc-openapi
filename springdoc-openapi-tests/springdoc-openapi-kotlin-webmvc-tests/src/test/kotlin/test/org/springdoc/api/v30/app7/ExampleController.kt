@@ -9,8 +9,8 @@ data class Greeting(val greeting: String)
 
 @RestController
 interface ExampleController {
-    @GetMapping("/")
-    fun greet(@RequestParam name: String?): Greeting
+	@GetMapping("/")
+	fun greet(@RequestParam name: String?): Greeting
 
 	@GetMapping("/test")
 	fun test(@RequestParam @Parameter(required = true) name: String?): Greeting

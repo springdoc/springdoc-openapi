@@ -40,25 +40,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class HelloController {
 
-    @Operation(
-        summary = "Summary",
-        description = "This is description.",
-        tags = {"Sample"},
-        responses = {
-            @ApiResponse(
-                responseCode = "201",
-                description = "201 (Created)",
-                headers =
-                @Header(
-                    name = HttpHeaders.LOCATION,
-                    description = "Sample endpoint",
-                    schema = @Schema(implementation = URI.class)
-                )
-            )
-        }
-    )
-    @GetMapping
-    public String get() {
-        return "Hello World!";
-    }
+	@Operation(
+			summary = "Summary",
+			description = "This is description.",
+			tags = { "Sample" },
+			responses = {
+					@ApiResponse(
+							responseCode = "201",
+							description = "201 (Created)",
+							headers =
+							@Header(
+									name = HttpHeaders.LOCATION,
+									description = "Sample endpoint",
+									schema = @Schema(implementation = URI.class)
+							)
+					)
+			}
+	)
+	@GetMapping
+	public String get() {
+		return "Hello World!";
+	}
 }

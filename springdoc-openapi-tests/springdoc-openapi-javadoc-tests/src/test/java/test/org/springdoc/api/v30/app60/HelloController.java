@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app60;
@@ -44,8 +44,8 @@ class HelloController {
 	/**
 	 * List 1 list.
 	 *
-	 * @param page the page 
-	 * @param size the size 
+	 * @param page the page
+	 * @param size the size
 	 * @return the list
 	 */
 	@GetMapping("/hello1")
@@ -61,9 +61,9 @@ class HelloController {
 	/**
 	 * List 2 list.
 	 *
-	 * @param page the page 
-	 * @param size the size 
-	 * @param sort the sort 
+	 * @param page the page
+	 * @param size the size
+	 * @param sort the sort
 	 * @return the list
 	 */
 	@GetMapping("/hello2")

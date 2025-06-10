@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.api;
@@ -86,7 +86,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			GenericResponseService responseBuilder, OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties,
 			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,springDocConfigProperties, springDocProviders, springDocCustomizers);
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	protected OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers ) {
+			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
@@ -119,7 +119,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected Mono<byte[]> openapiJson(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		String serverBaseUrl= calculateServerUrl(serverHttpRequest, apiDocsUrl, locale);
+		String serverBaseUrl = calculateServerUrl(serverHttpRequest, apiDocsUrl, locale);
 		OpenAPI openAPI = this.getOpenApi(serverBaseUrl, locale);
 		return Mono.just(writeJsonValue(openAPI));
 	}
@@ -144,7 +144,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * Gets paths.
 	 *
 	 * @param restControllers the rest controllers
-	 * @param locale the locale
+	 * @param locale          the locale
 	 */
 	@Override
 	@SuppressWarnings("unchecked")

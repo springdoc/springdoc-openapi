@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.mixins;
@@ -44,7 +44,7 @@ import io.swagger.v3.core.jackson.mixin.Schema31Mixin;
  *
  * @author bnasslashen
  */
-@JsonPropertyOrder(value = {"type", "format", "if", "then", "else"}, alphabetic = true)
+@JsonPropertyOrder(value = { "type", "format", "if", "then", "else" }, alphabetic = true)
 public interface SortedSchemaMixin31 {
 
 	/**

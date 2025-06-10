@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app115;
@@ -52,7 +52,7 @@ class SpringDocApp115Test extends AbstractSpringDocTest {
 	public static void restore() {
 		getConfig().initExtraSchemas();
 	}
-	
+
 	/**
 	 * The type Spring doc test app.
 	 */

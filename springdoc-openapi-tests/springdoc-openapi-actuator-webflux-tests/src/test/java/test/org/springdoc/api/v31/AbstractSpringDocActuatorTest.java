@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31;
@@ -48,12 +48,12 @@ public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
 				.build();
 	}
 
-	protected void testWithWebClient(String testId, String uri) throws Exception{
+	protected void testWithWebClient(String testId, String uri) throws Exception {
 		String result = null;
 		try {
 			result = webClient.get().uri(uri).retrieve()
 					.bodyToMono(String.class).block();
-			String expected = getContent("results/3.1.0/app"+testId+".json");
+			String expected = getContent("results/3.1.0/app" + testId + ".json");
 			assertEquals(expected, result, true);
 		}
 		catch (AssertionError e) {

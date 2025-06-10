@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app188;
@@ -40,7 +40,7 @@ class SpringDocApp188Test extends AbstractSpringDocTest {
 
 	@Test
 	void testApp1() {
-		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL +"/mygroup").exchange()
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/mygroup").exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/3.1.0/app188.json"), true);
 	}

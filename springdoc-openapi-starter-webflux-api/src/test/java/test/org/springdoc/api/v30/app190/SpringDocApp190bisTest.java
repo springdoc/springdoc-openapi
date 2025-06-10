@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app190;
@@ -36,16 +36,16 @@ import org.springframework.context.annotation.ComponentScan;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLE_DEFAULT_API_DOCS;
 
-@WebFluxTest(properties = SPRINGDOC_ENABLE_DEFAULT_API_DOCS+"=true")
+@WebFluxTest(properties = SPRINGDOC_ENABLE_DEFAULT_API_DOCS + "=true")
 public class SpringDocApp190bisTest extends AbstractCommonTest {
-
-	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v30.app190" })
-	static class SpringDocTestApp {}
 
 	@Test
 	void test_enable_default_api_docs() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
 				.expectStatus().isOk();
 	}
+
+	@SpringBootApplication
+	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v30.app190" })
+	static class SpringDocTestApp {}
 }

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app10;
@@ -36,11 +36,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
-public class HelloController
-{
-    @GetMapping("/hello")
-    public String hello()
-    {
-        return "Hello";
-    }
+public class HelloController {
+	@GetMapping("/hello")
+	public String hello() {
+		return "Hello";
+	}
 }

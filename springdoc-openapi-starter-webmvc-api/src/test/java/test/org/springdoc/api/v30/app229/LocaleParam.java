@@ -44,7 +44,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 /**
  * @author bnasslahsen
  */
-@Target({PARAMETER, METHOD, FIELD, ANNOTATION_TYPE})
+@Target({ PARAMETER, METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Parameter(
 		examples = {

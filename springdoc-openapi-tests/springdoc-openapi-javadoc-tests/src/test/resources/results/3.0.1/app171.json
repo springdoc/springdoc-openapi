@@ -42,23 +42,23 @@
   },
   "components": {
     "schemas": {
-      "PersonProjection" : {
-        "type" : "object",
-        "properties" : {
-          "email" : {
-            "type" : "string",
-            "description" : "The Email."
+      "PersonProjection": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The Email."
           },
-          "firstName" : {
-            "type" : "string",
-            "description" : "The First name."
+          "firstName": {
+            "type": "string",
+            "description": "The First name."
           },
-          "lastName" : {
-            "type" : "string",
-            "description" : "The Last name."
+          "lastName": {
+            "type": "string",
+            "description": "The Last name."
           }
         },
-        "description" : "The type PersonProjection dto interface."
+        "description": "The type PersonProjection dto interface."
       }
     }
   }

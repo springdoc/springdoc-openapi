@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.data;
@@ -243,7 +243,7 @@ public class DataRestResponseService {
 				}
 			}
 			else if ((CollectionModel.class.equals(parameterizedType.getRawType())
-					&& parameterizedType.getActualTypeArguments()[0]!=null)) {
+					&& parameterizedType.getActualTypeArguments()[0] != null)) {
 				return getTypeForCollectionModel(returnedEntityType, resourceMetadata.isPagingResource());
 			}
 		}

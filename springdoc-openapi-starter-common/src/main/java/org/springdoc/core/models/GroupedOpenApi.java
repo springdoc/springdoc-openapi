@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.models;
@@ -123,7 +123,7 @@ public class GroupedOpenApi {
 	 */
 	private GroupedOpenApi(Builder builder) {
 		Assert.isTrue(StringUtils.isNotBlank(builder.group), GROUP_NAME_NOT_NULL_OR_EMPTY);
-		this.group =builder.group;
+		this.group = builder.group;
 		this.pathsToMatch = builder.pathsToMatch;
 		this.packagesToScan = builder.packagesToScan;
 		this.producesToMatch = builder.producesToMatch;

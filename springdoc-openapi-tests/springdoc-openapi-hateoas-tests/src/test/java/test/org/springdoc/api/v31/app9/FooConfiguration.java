@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app9;
@@ -46,10 +46,10 @@ public class FooConfiguration {
 	OpenAPI customOpenApi() {
 		return new OpenAPI()
 				.components(new Components().addSecuritySchemes("bearerScheme",
-						new SecurityScheme()
-								.type(SecurityScheme.Type.HTTP)
-								.scheme("bearer")
-								.bearerFormat("JWT"))
+								new SecurityScheme()
+										.type(SecurityScheme.Type.HTTP)
+										.scheme("bearer")
+										.bearerFormat("JWT"))
 						.addSchemas("FeedResponse", feedResponseSchema()))
 				.info(new Info()
 						.title("Response API")
@@ -69,7 +69,7 @@ public class FooConfiguration {
 	private Schema<?> feedResponseSchema() {
 		Schema<?> schema = new Schema<>();
 		schema.addProperty("_links", linkSchema());
-        schema.addProperty("data", new ArraySchema().items(new Schema<>().$ref("#/components/schemas/ResponseData")));
+		schema.addProperty("data", new ArraySchema().items(new Schema<>().$ref("#/components/schemas/ResponseData")));
 		return schema;
 	}
 

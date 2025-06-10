@@ -140,7 +140,7 @@ class AbstractOpenApiResourceTest {
 				responseBuilder,
 				operationParser,
 				new SpringDocConfigProperties(),
-				springDocProviders,new SpringDocCustomizers(Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty())
+				springDocProviders, new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty())
 		);
 
 		final Parameter refParameter = new Parameter().$ref(PARAMETER_REFERENCE);
@@ -163,11 +163,11 @@ class AbstractOpenApiResourceTest {
 		final RouterOperation routerOperation = new RouterOperation();
 		routerOperation.setMethods(new RequestMethod[] { GET });
 		routerOperation.setOperationModel(operation);
-		routerOperation.setPath(PATH+"/{"+PARAMETER_WITH_NUMBER_SCHEMA_NAME+"}");
+		routerOperation.setPath(PATH + "/{" + PARAMETER_WITH_NUMBER_SCHEMA_NAME + "}");
 
 		resource.calculatePath(routerOperation, Locale.getDefault(), this.openAPI);
 
-		final List<Parameter> parameters = resource.getOpenApi(null, Locale.getDefault()).getPaths().get(PATH+"/{"+PARAMETER_WITH_NUMBER_SCHEMA_NAME+"}").getGet().getParameters();
+		final List<Parameter> parameters = resource.getOpenApi(null, Locale.getDefault()).getPaths().get(PATH + "/{" + PARAMETER_WITH_NUMBER_SCHEMA_NAME + "}").getGet().getParameters();
 		assertThat(parameters.size(), is(3));
 		assertThat(parameters, containsInAnyOrder(refParameter, numberParameterInPath, parameterWithoutSchema));
 
@@ -207,7 +207,7 @@ class AbstractOpenApiResourceTest {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
-				properties, springDocProviders, new SpringDocCustomizers(Optional.of(singleton(openApiCustomizer)),Optional.empty(),Optional.empty(),Optional.empty())
+				properties, springDocProviders, new SpringDocCustomizers(Optional.of(singleton(openApiCustomizer)), Optional.empty(), Optional.empty(), Optional.empty())
 		);
 
 		// wait for executor to be done
@@ -217,7 +217,7 @@ class AbstractOpenApiResourceTest {
 		String serverBaseUrl = openAPIService.calculateServerBaseUrl(generatedUrl, new MockClientHttpRequest());
 		openAPIService.updateServers(serverBaseUrl, openAPI);
 		Locale locale = Locale.US;
-		OpenAPI after = resource.getOpenApi(serverBaseUrl,locale);
+		OpenAPI after = resource.getOpenApi(serverBaseUrl, locale);
 
 		assertThat(after.getServers().get(0).getUrl(), is(customUrl));
 	}
@@ -239,7 +239,7 @@ class AbstractOpenApiResourceTest {
 				responseBuilder,
 				operationParser,
 				properties,
-				springDocProviders, new SpringDocCustomizers(Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty())
+				springDocProviders, new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty())
 		);
 
 		// wait for executor to be done
@@ -292,6 +292,7 @@ class AbstractOpenApiResourceTest {
 		}
 
 		@Override
-		public void getPaths(Map<String, Object> findRestControllers, Locale locale, OpenAPI openAPI) {}
+		public void getPaths(Map<String, Object> findRestControllers, Locale locale, OpenAPI openAPI) {
+		}
 	}
 }

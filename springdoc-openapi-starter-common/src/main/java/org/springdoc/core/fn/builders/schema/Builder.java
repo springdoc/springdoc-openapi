@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.fn.builders.schema;
@@ -257,7 +257,7 @@ public class Builder {
 	/**
 	 * The Types.
 	 */
-	private String[] types ={};
+	private String[] types = {};
 
 	/**
 	 * The Exclusive maximum value.
@@ -382,7 +382,7 @@ public class Builder {
 	/**
 	 * The Properties.
 	 */
-	private StringToClassMapItem[] properties= {};
+	private StringToClassMapItem[] properties = {};
 
 	/**
 	 * The Unevaluated properties.

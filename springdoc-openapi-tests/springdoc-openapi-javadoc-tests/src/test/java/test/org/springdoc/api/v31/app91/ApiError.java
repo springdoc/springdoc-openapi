@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app91;
@@ -67,9 +67,9 @@ class ApiError {
 	/**
 	 * Instantiates a new Api error.
 	 *
-	 * @param status the status 
-	 * @param errorCode the error code 
-	 * @param message the message
+	 * @param status    the status
+	 * @param errorCode the error code
+	 * @param message   the message
 	 */
 	public ApiError(int status, String errorCode, String message) {
 		this.status = status;

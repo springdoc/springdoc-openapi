@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31;
@@ -57,7 +57,7 @@ public abstract class AbstractSpringDocTest {
 	@Autowired
 	protected MockMvc mockMvc;
 
-	public static String getContent(String fileName){
+	public static String getContent(String fileName) {
 		try {
 			Path path = Paths.get(AbstractSpringDocTest.class.getClassLoader().getResource(fileName).toURI());
 			byte[] fileBytes = Files.readAllBytes(path);

@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app73;
@@ -48,8 +48,8 @@ class HelloController {
 	/**
 	 * Delete.
 	 *
-	 * @param countryCode the country code 
-	 * @param id the id
+	 * @param countryCode the country code
+	 * @param id          the id
 	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -61,7 +61,7 @@ class HelloController {
 	 * Get string.
 	 *
 	 * @param countryCode the country code
-	 * @param id the id
+	 * @param id          the id
 	 * @return the string
 	 */
 	@GetMapping("/{id}")

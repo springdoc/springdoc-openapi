@@ -35,5 +35,6 @@ individual is representing the project or its community.
 
 This Code of Conduct is adapted from the
 [Contributor Covenant](https://contributor-covenant.org), version 1.3.0, available at
-[contributor-covenant.org/version/1/3/0/](https://contributor-covenant.org/version/1/3/0/) and [spring-boot
+[contributor-covenant.org/version/1/3/0/](https://contributor-covenant.org/version/1/3/0/)
+and [spring-boot
 Contributor Code of Conduct](https://github.com/spring-projects/spring-boot/blob/master/CODE_OF_CONDUCT.adoc)

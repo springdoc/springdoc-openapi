@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app94;
@@ -102,8 +102,8 @@ class SpringDocApp94Test extends AbstractSpringDocTest {
 		/**
 		 * Default test handler mapping request mapping handler mapping.
 		 *
-		 * @param greetingController the greeting controller 
-		 * @return the request mapping handler mapping 
+		 * @param greetingController the greeting controller
+		 * @return the request mapping handler mapping
 		 * @throws NoSuchMethodException the no such method exception
 		 */
 		@Bean
@@ -122,12 +122,12 @@ class SpringDocApp94Test extends AbstractSpringDocTest {
 		 * Open api resource open api web mvc resource.
 		 *
 		 * @param openAPIBuilderObjectFactory the open api builder object factory
-		 * @param requestBuilder the request builder
-		 * @param responseBuilder the response builder
-		 * @param operationParser the operation parser
-		 * @param springDocConfigProperties the spring doc config properties
-		 * @param springDocProviders the spring doc providers
-		 * @param springDocCustomizers the spring doc customizers
+		 * @param requestBuilder              the request builder
+		 * @param responseBuilder             the response builder
+		 * @param operationParser             the operation parser
+		 * @param springDocConfigProperties   the spring doc config properties
+		 * @param springDocProviders          the spring doc providers
+		 * @param springDocCustomizers        the spring doc customizers
 		 * @return the open api web mvc resource
 		 */
 		@Bean(name = "openApiResource")
@@ -142,7 +142,7 @@ class SpringDocApp94Test extends AbstractSpringDocTest {
 		/**
 		 * Sets application context.
 		 *
-		 * @param applicationContext the application context 
+		 * @param applicationContext the application context
 		 * @throws BeansException the beans exception
 		 */
 		@Override

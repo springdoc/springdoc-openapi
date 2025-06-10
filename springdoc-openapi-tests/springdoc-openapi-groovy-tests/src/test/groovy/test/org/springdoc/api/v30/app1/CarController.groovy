@@ -40,7 +40,7 @@ class CarController {
 	CarController(CarService carService) {
 		this.carService = carService
 	}
-	
+
 	@GetMapping(path = 'cars/{carId}')
 	Car getCar(@PathVariable(value = 'carId') Long carId) {
 		return carService.getCar(carId)

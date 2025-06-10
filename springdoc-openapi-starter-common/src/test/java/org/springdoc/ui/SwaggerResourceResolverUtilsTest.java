@@ -16,21 +16,21 @@ class SwaggerResourceResolverUtilsTest {
 	@Test
 	void findWebJarResourcePath() {
 		String path = "swagger-ui/swagger-initializer.js";
-		String actual = findSwaggerResourcePath(path,VERSION);
+		String actual = findSwaggerResourcePath(path, VERSION);
 		assertEquals("swagger-ui" + File.separator + "4.18.2" + File.separator + "swagger-initializer.js", actual);
 	}
 
 	@Test
 	void returnNullWhenPathIsSameAsWebjar() {
 		String path = "swagger-ui";
-		String actual = findSwaggerResourcePath(path,VERSION);
+		String actual = findSwaggerResourcePath(path, VERSION);
 		assertTrue(Objects.isNull(actual));
 	}
 
 	@Test
 	void returnNullWhenVersionIsNull() {
 		String path = "swagger-ui/swagger-initializer.js";
-		String actual = findSwaggerResourcePath(path,null);
+		String actual = findSwaggerResourcePath(path, null);
 		assertTrue(Objects.isNull(actual));
 	}
 }

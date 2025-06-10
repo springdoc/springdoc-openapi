@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30.app51;
@@ -63,7 +63,7 @@ class HelloController {
 	/**
 	 * Test 2 string.
 	 *
-	 * @param param1 the param 1 
+	 * @param param1 the param 1
 	 * @return the string
 	 */
 	@Operation(parameters = {
@@ -76,7 +76,7 @@ class HelloController {
 	/**
 	 * Test 3 string.
 	 *
-	 * @param param1 the param 1 
+	 * @param param1 the param 1
 	 * @return the string
 	 */
 	@Operation(parameters = {
@@ -91,8 +91,8 @@ class HelloController {
 	/**
 	 * Get string.
 	 *
-	 * @param path the path 
-	 * @param params the params 
+	 * @param path   the path
+	 * @param params the params
 	 * @return the string
 	 */
 	@GetMapping("/test/{path}")
@@ -105,7 +105,7 @@ class HelloController {
 	/**
 	 * Hello response entity.
 	 *
-	 * @param map the map 
+	 * @param map the map
 	 * @return the response entity
 	 */
 	@PostMapping

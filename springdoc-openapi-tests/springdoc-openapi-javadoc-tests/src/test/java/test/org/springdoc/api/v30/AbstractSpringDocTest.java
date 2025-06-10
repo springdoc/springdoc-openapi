@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v30;
@@ -54,7 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(properties =  "springdoc.api-docs.version=openapi_3_0" )
+@TestPropertySource(properties = "springdoc.api-docs.version=openapi_3_0")
 public abstract class AbstractSpringDocTest {
 
 	/**

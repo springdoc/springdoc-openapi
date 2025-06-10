@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi</artifactId>
@@ -59,7 +61,8 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
 		<spring-cloud-function.version>4.2.2</spring-cloud-function.version>
-		<spring-security-oauth2-authorization-server.version>1.4.3</spring-security-oauth2-authorization-server.version>
+		<spring-security-oauth2-authorization-server.version>1.4.3
+		</spring-security-oauth2-authorization-server.version>
 	</properties>
 
 	<dependencyManagement>
@@ -117,7 +120,8 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/classes/META-INF</outputDirectory>
+							<outputDirectory>${basedir}/target/classes/META-INF
+							</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/..</directory>

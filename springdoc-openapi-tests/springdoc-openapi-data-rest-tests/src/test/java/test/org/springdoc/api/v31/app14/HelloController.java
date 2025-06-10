@@ -47,8 +47,8 @@ public class HelloController {
 
 	@GetMapping("/test1")
 	public String getPatientList1(@PageableDefault(size = 100, sort = { "someField", "someoTHER" },
-		direction = Sort.Direction.DESC)
-								  @ParameterObject Pageable pageable) {
+			direction = Sort.Direction.DESC)
+	@ParameterObject Pageable pageable) {
 		return "bla";
 	}
 

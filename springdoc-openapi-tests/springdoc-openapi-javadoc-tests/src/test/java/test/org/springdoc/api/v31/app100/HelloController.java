@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package test.org.springdoc.api.v31.app100;
@@ -43,7 +43,7 @@ class HelloController {
 	/**
 	 * Gets all pets.
 	 *
-	 * @param toto the toto 
+	 * @param toto the toto
 	 * @return the all pets
 	 */
 	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })
