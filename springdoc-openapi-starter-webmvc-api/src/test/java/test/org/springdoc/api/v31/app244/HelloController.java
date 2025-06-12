@@ -26,14 +26,22 @@
 
 package test.org.springdoc.api.v31.app244;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -62,6 +70,20 @@ public class HelloController {
 					@ExampleObject(value = "CCC", name = "Third")
 			})
 	void nope() {
+	}
+
+	@PutMapping(value = "/{id}")
+	@Parameter(
+			in = ParameterIn.PATH,
+			name = "id",
+			description = "ID of the user to update",
+			required = true,
+			content = @Content(schema = @Schema(type = "integer")))
+	@Operation(summary = "Update a user by passing the entire object")
+	public void update(
+			@PathVariable("id") @NotNull final String id,
+			@Valid @RequestBody @NotNull final String user,
+			@Parameter(hidden = true) String spec) {
 	}
 
 }

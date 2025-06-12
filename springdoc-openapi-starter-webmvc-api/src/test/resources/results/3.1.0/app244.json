@@ -11,6 +11,45 @@
     }
   ],
   "paths": {
+    "/test/{id}": {
+      "put": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Update a user by passing the entire object",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to update",
+            "required": true,
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/test": {
       "get": {
         "tags": [

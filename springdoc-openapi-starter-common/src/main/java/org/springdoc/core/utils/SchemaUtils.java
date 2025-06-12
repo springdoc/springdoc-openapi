@@ -265,7 +265,7 @@ public class SchemaUtils {
 				schema.setPattern(((Pattern) anno).regexp());
 			}
 		});
-		if (annotatedNotNull(annotations)) {
+		if (schema!=null && annotatedNotNull(annotations)) {
 			String specVersion = schema.getSpecVersion().name();
 			if (!"V30".equals(specVersion)) {
 				schema.setNullable(false);
