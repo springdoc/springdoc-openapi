@@ -270,7 +270,11 @@ public class MethodAttributes {
 		RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(method.getDeclaringClass(), RequestMapping.class);
 
 		if (reqMappingMethod != null && reqMappingClass != null) {
-			fillMethods(ArrayUtils.addAll(reqMappingMethod.produces(), reqMappingClass.produces()), ArrayUtils.addAll(reqMappingMethod.consumes(), reqMappingClass.consumes()), reqMappingMethod.headers());
+			fillMethods(
+					calculateMethodMediaTypes(reqMappingMethod.produces(), reqMappingClass.produces()),
+					calculateMethodMediaTypes(reqMappingMethod.consumes(), reqMappingClass.consumes()),
+					reqMappingMethod.headers()
+			);
 		}
 		else if (reqMappingMethod != null) {
 			fillMethods(reqMappingMethod.produces(), reqMappingMethod.consumes(), reqMappingMethod.headers());
@@ -311,6 +315,21 @@ public class MethodAttributes {
 		}
 
 		setHeaders(headers);
+	}
+
+	/**
+     * If there is any method type(s) present, then these will override the class type(s).
+     * See <a href="https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html#mvc-ann-requestmapping-consumes">...</a> for details
+	 *
+     * @param methodTypes the method types
+     * @param classTypes the class types
+     * @return the string [ ] containing the types that can be used for the method
+     */
+	private String[] calculateMethodMediaTypes(@Nullable String[] methodTypes, String[] classTypes) {
+		if (ArrayUtils.isNotEmpty(methodTypes)) {
+			return methodTypes;
+		}
+		return classTypes;
 	}
 
 	/**
@@ -478,7 +497,7 @@ public class MethodAttributes {
 	public void calculateHeadersForClass(Class<?> declaringClass) {
 		RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(declaringClass, RequestMapping.class);
 		if (reqMappingClass != null) {
-			fillMethods(reqMappingClass.produces(), reqMappingClass.consumes(), reqMappingClass.headers());
+			setHeaders(reqMappingClass.headers());
 		}
 	}
 
