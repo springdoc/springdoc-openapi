@@ -123,7 +123,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, ServerHttpRequest request) {
 		super.init(swaggerUiConfigParameters);
 		swaggerUiConfigParameters.setContextPath(request.getPath().contextPath().value());
-		String url = UriComponentsBuilder.fromHttpRequest(request).toUriString();
+		String url = ForwardedHeaderUtils.adaptFromForwardedHeaders(request.getURI(), request.getHeaders()).toUriString();
 		String target = UriComponentsBuilder.fromPath(request.getPath().contextPath().value()).toUriString();
 		int endIndex = url.indexOf(target) + target.length();
 		if (endIndex > 0) {
