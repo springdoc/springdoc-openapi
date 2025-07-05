@@ -43,12 +43,12 @@ public class SpringDocApp112Test extends AbstractSpringDocV30Test {
 	static class SpringDocTestApp {
 
 		@Bean
-		public OpenAPI customOpenAPI(@Value("${application-description}") String appDesciption, @Value("${application-version}") String appVersion) {
+		public OpenAPI customOpenAPI(@Value("${application-description}") String appDescription, @Value("${application-version}") String appVersion) {
 			return new OpenAPI()
 					.info(new Info()
 							.title("sample application API")
 							.version(appVersion)
-							.description(appDesciption)
+							.description(appDescription)
 							.termsOfService("http://swagger.io/terms/")
 							.license(new License().name("Apache 2.0").url("http://springdoc.org")));
 		}
