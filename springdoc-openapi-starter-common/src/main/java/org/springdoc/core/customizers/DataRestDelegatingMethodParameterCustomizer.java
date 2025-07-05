@@ -450,6 +450,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 						}
 
 						@Override
+						public String $dynamicRef() {
+							return "";
+						}
+
+						@Override
 						public String contentEncoding() {
 							return parameterSchema.contentEncoding();
 						}
@@ -834,6 +839,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 								@Override
 								public String $dynamicAnchor() {
 									return schema.$dynamicAnchor();
+								}
+
+								@Override
+								public String $dynamicRef() {
+									return schema.$dynamicRef();
 								}
 
 								@Override

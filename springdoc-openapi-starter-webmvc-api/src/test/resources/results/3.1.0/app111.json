@@ -175,7 +175,8 @@
             "type": "string"
           },
           "email1": {
-            "type": "string"
+            "type": "string",
+            "format": "email"
           },
           "age": {
             "maximum": 30,
