@@ -290,7 +290,7 @@
           "email1": {
             "type": "string",
             "description": "The Email 1.",
-            "format": "email1"
+            "format": "email"
           },
           "age": {
             "maximum": 30,
