@@ -224,21 +224,27 @@ public class PropertyResolverUtils {
 			Map<String, Object> extensionsResolved = new HashMap<>();
 			extensions.forEach((key, value) -> {
 				String keyResolved = resolve(key, locale);
-				if (value instanceof HashMap<?, ?>) {
+				if (value instanceof HashMap<?, ?> valueAsMap) {
 					Map<String, Object> valueResolved = new HashMap<>();
-					((HashMap<?, ?>) value).forEach((key1, value1) -> {
+					valueAsMap.forEach((key1, value1) -> {
 						String key1Resolved = resolve(key1.toString(), locale);
 						String value1Resolved = resolve(value1.toString(), locale);
 						valueResolved.put(key1Resolved, value1Resolved);
 					});
 					extensionsResolved.put(keyResolved, valueResolved);
 				}
-				else
+				else if (value instanceof String valueAsString) {
+					String valueResolved = resolve(valueAsString, locale);
+					extensionsResolved.put(keyResolved, valueResolved);
+				}
+				else {
 					extensionsResolved.put(keyResolved, value);
+				}
 			});
 			return extensionsResolved;
 		}
-		else
+		else {
 			return extensions;
+		}
 	}
 }
