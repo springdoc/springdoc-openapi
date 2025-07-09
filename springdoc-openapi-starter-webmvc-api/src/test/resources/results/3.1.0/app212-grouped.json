@@ -127,5 +127,9 @@
         "bearerFormat": "JWT"
       }
     }
+  },
+  "externalDocs": {
+    "description": "External docs description for ApiGroupName",
+    "url": "https://example.com/apiGroupName-external-docs"
   }
 }

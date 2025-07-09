@@ -32,12 +32,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.*;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
-import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
@@ -90,6 +86,7 @@ import org.springframework.util.CollectionUtils;
  *
  * @author Anton Tkachenko tkachenkoas@gmail.com
  * @author bnasslahsen
+ * @author Hujin Hong
  */
 public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 
@@ -148,6 +145,27 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			if (!CollectionUtils.isEmpty(openApiProperties.getServers())) {
 				openApi.setServers(new ArrayList<>(openApiProperties.getServers()));
 			}
+
+			ExternalDocumentation externalDocumentationProperties = openApiProperties.getExternalDocs();
+			if (externalDocumentationProperties != null) {
+				customizeExternalDocs(openApi, externalDocumentationProperties);
+			}
+		}
+	}
+
+	/**
+	 * Customized external docs.
+	 *
+	 * @param openApi the open api
+	 * @param externalDocumentationProperties the external documentation
+	 */
+	private void customizeExternalDocs(OpenAPI openApi, ExternalDocumentation externalDocumentationProperties) {
+		ExternalDocumentation externalDocumentation = openApi.getExternalDocs();
+		if (externalDocumentation != null) {
+			resolveString(externalDocumentation::description, externalDocumentationProperties::getDescription);
+			resolveString(externalDocumentation::url, externalDocumentationProperties::getUrl);
+		} else {
+			openApi.externalDocs(externalDocumentationProperties);
 		}
 	}
 

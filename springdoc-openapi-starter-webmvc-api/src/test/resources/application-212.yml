@@ -36,7 +36,10 @@ springdoc:
             - hello
           summary: Summary of Get operationId 'persons'
           description: Description of Get operationId 'persons'
-  
+    external-docs:
+      description: External docs description
+      url: "https://example.com/external-docs"
+
   group-configs:
     - group: apiGroupName
       open-api:
@@ -52,10 +55,13 @@ springdoc:
                 name:
                   description: Description for 'name' property in ApiGroupName
                   example: Example value for 'name' property in ApiGroupName
-        
+
         paths:
           /persons2:
             get:
               summary: Summary of operationId 'persons' in ApiGroupName
               description: Description of operationId 'persons' in ApiGroupName
+        external-docs:
+          description: External docs description for ApiGroupName
+          url: "https://example.com/apiGroupName-external-docs"
 

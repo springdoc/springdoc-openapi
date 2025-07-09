@@ -22,6 +22,9 @@ springdoc:
               type: http
               scheme: bearer
               bearer-format: JWT
+        external-docs:
+          description: Example External Docs demo
+          url: "https://example.com/external-docs-demo"
     - group: user
       display-name: User Interfaces
       packages-to-scan:
@@ -46,6 +49,9 @@ springdoc:
                 name:
                   description: Description for 'name' property
                   example: Example value for 'name' property
+        external-docs:
+          description: Example External Docs user
+          url: "https://example.com/external-docs-user"
   open-api:
     servers:
       - url: "https://api.example.com"
