@@ -170,7 +170,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			resolveString(externalDocumentation::description, externalDocumentationProperties::getDescription);
 			resolveString(externalDocumentation::url, externalDocumentationProperties::getUrl);
 		} else {
-			openApi.externalDocs(externalDocumentationProperties);
+			openApi.setExternalDocs(externalDocumentationProperties);
 		}
 	}
 
