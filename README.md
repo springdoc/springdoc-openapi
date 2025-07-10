@@ -273,4 +273,4 @@ Thanks you all for your support!
 * [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) - Thanks a lot for
   supporting springdoc-openapi project.
 
-![JenBrains logo](https://springdoc.org/img/jetbrains.svg)
+![JenBrains logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)
