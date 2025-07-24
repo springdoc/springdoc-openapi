@@ -91,7 +91,7 @@ import org.springframework.util.CollectionUtils;
  *
  * @author Anton Tkachenko tkachenkoas@gmail.com
  * @author bnasslahsen
- * @author Hujin Hong
+ * @author Huijin Hong
  */
 public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 
