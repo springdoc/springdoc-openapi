@@ -113,7 +113,7 @@ public class RequestBodyService {
 		}
 
 		if (requestBody.required()) {
-			requestBodyObject.setRequired(requestBody.required());
+			requestBodyObject.setRequired(true);
 			isEmpty = false;
 		}
 		if (requestBody.extensions().length > 0) {
@@ -128,7 +128,7 @@ public class RequestBodyService {
 		if (isEmpty)
 			return Optional.empty();
 
-		buildResquestBodyContent(requestBody, requestBodyOp, methodAttributes, components, jsonViewAnnotation, classConsumes, methodConsumes, requestBodyObject);
+		buildRequestBodyContent(requestBody, requestBodyOp, methodAttributes, components, jsonViewAnnotation, classConsumes, methodConsumes, requestBodyObject);
 
 		return Optional.of(requestBodyObject);
 	}
@@ -145,7 +145,10 @@ public class RequestBodyService {
 	 * @param methodConsumes     the method consumes
 	 * @param requestBodyObject  the request body object
 	 */
-	private void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
+	private void buildRequestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
+										 RequestBody requestBodyOp, MethodAttributes methodAttributes,
+										 Components components, JsonView jsonViewAnnotation, String[] classConsumes,
+										 String[] methodConsumes, RequestBody requestBodyObject) {
 		Optional<Content> optionalContent = SpringDocAnnotationsUtils
 				.getContent(requestBody.content(), getConsumes(classConsumes),
 						getConsumes(methodConsumes), null, components, jsonViewAnnotation, parameterBuilder.isOpenapi31());

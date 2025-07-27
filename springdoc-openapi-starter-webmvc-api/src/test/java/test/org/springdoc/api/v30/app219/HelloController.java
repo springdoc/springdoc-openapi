@@ -31,12 +31,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api", produces = { "application/xml" }, consumes = { "application/json" })
+@RequestMapping(value = "/api", produces = {"application/xml"}, consumes = {"application/json"})
 public class HelloController {
 
-	@RequestMapping(value = "/testpost", method = RequestMethod.POST, produces = { "application/json" },
-			consumes = { "application/json;charset=UTF-8", "application/json; charset=UTF-8" })
-	public ResponseEntity<TestObject> testpost(@RequestBody TestObject dto) {
-		return ResponseEntity.ok(dto);
-	}
+    @RequestMapping(value = "/testpost", method = RequestMethod.POST, produces = {"application/json"},
+            consumes = {"application/json;charset=UTF-8", "application/json; charset=UTF-8"})
+    public ResponseEntity<TestObject> postWithProducesAndConsumes(@RequestBody TestObject dto) {
+        return ResponseEntity.ok(dto);
+    }
+
+    @RequestMapping(value = "/testpost2", method = RequestMethod.POST, consumes = {"application/json;charset=UTF-8"})
+    public ResponseEntity<TestObject> postWithConsumes(@RequestBody TestObject dto) {
+        return ResponseEntity.ok(dto);
+    }
+
+    @RequestMapping(value = "/testpost3", method = RequestMethod.POST, produces = {"application/json"})
+    public ResponseEntity<TestObject> postWithProduces(@RequestBody TestObject dto) {
+        return ResponseEntity.ok(dto);
+    }
+
+    @RequestMapping(value = "/testpost4", method = RequestMethod.POST)
+    public ResponseEntity<TestObject> post(@RequestBody TestObject dto) {
+        return ResponseEntity.ok(dto);
+    }
 }
