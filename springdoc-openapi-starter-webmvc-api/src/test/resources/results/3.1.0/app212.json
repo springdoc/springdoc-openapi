@@ -125,5 +125,9 @@
         "bearerFormat": "JWT"
       }
     }
+  },
+  "externalDocs": {
+    "description": "External docs description",
+    "url": "https://example.com/external-docs"
   }
 }

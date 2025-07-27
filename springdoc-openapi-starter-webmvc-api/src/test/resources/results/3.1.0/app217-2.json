@@ -51,5 +51,9 @@
         }
       }
     }
+  },
+  "externalDocs": {
+    "description": "Example External Docs user",
+    "url": "https://example.com/external-docs-user"
   }
 }
