@@ -636,9 +636,11 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef, Locale locale) {
 		boolean isOpenapi3 = propertyResolverUtils.isOpenapi31();
-		Map<String, Object> extensions = AnnotationsUtils.getExtensions(isOpenapi3, apiDef.info().extensions());
 		// info
-		AnnotationsUtils.getInfo(apiDef.info(), true).map(info -> resolveProperties(info, extensions, locale)).ifPresent(openAPI::setInfo);
+		AnnotationsUtils.getInfo(apiDef.info(), true).map(info -> {
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(isOpenapi3, apiDef.info().extensions());
+			return resolveProperties(info, extensions, locale);
+		}).ifPresent(openAPI::setInfo);
 		// OpenApiDefinition security requirements
 		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
@@ -702,7 +704,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			resolveProperty(contact::getUrl, contact::url, propertyResolverUtils, locale);
 		}
 
-		if (propertyResolverUtils.isResolveExtensionsProperties() && extensions != null) {
+		if (extensions != null) {
 			Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
 			if (propertyResolverUtils.isOpenapi31())
 				extensionsResolved.forEach(info::addExtension31);
@@ -712,7 +714,6 @@ public class OpenAPIService implements ApplicationContextAware {
 
 		return info;
 	}
-
 
 	/**
 	 * Resolve property.
