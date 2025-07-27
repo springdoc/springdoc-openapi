@@ -16,14 +16,9 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "testpost",
+        "operationId": "postWithProducesAndConsumes",
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TestObject"
-              }
-            },
             "application/json;charset=UTF-8": {
               "schema": {
                 "$ref": "#/components/schemas/TestObject"
@@ -41,12 +36,97 @@
           "200": {
             "description": "OK",
             "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/testpost2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "postWithConsumes",
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/TestObject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
               "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/TestObject"
                 }
-              },
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/testpost3": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "postWithProduces",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestObject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/testpost4": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestObject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/TestObject"
                 }
