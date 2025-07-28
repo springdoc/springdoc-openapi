@@ -65,6 +65,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.converters.ModelConverterRegistrar;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -139,7 +140,31 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 							new AnnotatedType(returnType)
 									.resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
 		}
+		// Handle ClassCastException - related to https://github.com/swagger-api/swagger-core/issues/4904
+		catch (ClassCastException e) {
+			if (openapi31) {
+				try {
+					resolvedSchema = ModelConverterRegistrar.getModelConvertersFallbackInstance()
+							.resolveAsResolvedSchema(
+									new AnnotatedType(returnType)
+											.resolveAsRef(true)
+											.jsonViewAnnotation(jsonView)
+											.ctxAnnotations(annotations));
+				} catch (Exception fallbackEx) {
+					LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, fallbackEx);
+					return null;
+				}
+			} else {
+				LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
+				return null;
+			}
+		}
 		catch (Exception e) {
+			if(e instanceof ClassCastException && openapi31) {
+				resolvedSchema = ModelConverterRegistrar.getModelConvertersFallbackInstance()
+						.resolveAsResolvedSchema(new AnnotatedType(returnType)
+								.resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
+			}
 			LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
 			return null;
 		}

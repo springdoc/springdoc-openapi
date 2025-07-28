@@ -25,14 +25,12 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Cat"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Dog"
+                  "type": "object",
+                  "properties": {
+                    "Animal": {
+                      "$ref": "#/components/schemas/Animal"
                     }
-                  ]
+                  }
                 }
               }
             }

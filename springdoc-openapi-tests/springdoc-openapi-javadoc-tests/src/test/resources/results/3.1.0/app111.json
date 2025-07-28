@@ -108,9 +108,9 @@
             "description": "the last name",
             "required": true,
             "schema": {
+              "type": "string",
               "maxLength": 10,
-              "minLength": 0,
-              "type": "string"
+              "minLength": 0
             }
           }
         ],
@@ -146,9 +146,9 @@
             "description": "the last name",
             "required": true,
             "schema": {
+              "type": "string",
               "maxLength": 10,
-              "minLength": 0,
-              "type": "string"
+              "minLength": 0
             }
           }
         ],
@@ -173,50 +173,51 @@
   "components": {
     "schemas": {
       "Person": {
-        "required": [
-          "lastName"
-        ],
         "type": "object",
+        "description": "The type Person.",
         "properties": {
           "id": {
             "type": "integer",
-            "description": "The Id.",
-            "format": "int64"
+            "format": "int64",
+            "description": "The Id."
           },
           "firstName": {
-            "maxLength": 2147483647,
-            "minLength": 2,
             "type": "string",
-            "description": "The First name."
+            "description": "The First name.",
+            "maxLength": 2147483647,
+            "minLength": 2
           },
           "lastName": {
-            "maxLength": 10,
-            "minLength": 0,
             "type": "string",
-            "description": "The Last name."
+            "description": "The Last name.",
+            "maxLength": 10,
+            "minLength": 0
           },
           "email": {
-            "pattern": ".+@.+\\..+",
             "type": "string",
-            "description": "The Email."
+            "description": "The Email.",
+            "pattern": ".+@.+\\..+"
           },
           "email1": {
             "type": "string",
+            "format": "email",
             "description": "The Email 1."
           },
           "age": {
-            "maximum": 30,
-            "minimum": 18,
             "type": "integer",
+            "format": "int32",
             "description": "The Age.",
-            "format": "int32"
+            "maximum": 30,
+            "minimum": 18
           },
           "creditCardNumber": {
             "type": "string",
             "description": "The Credit card number."
           }
         },
-        "description": "The type Person."
+        "required": [
+          "lastName"
+        ]
       }
     }
   }

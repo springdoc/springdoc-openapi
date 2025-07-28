@@ -178,32 +178,6 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "description": "The Id.",
-            "format": "int64"
-          },
-          "firstName": {
-            "maxLength": 2147483647,
-            "minLength": 2,
-            "type": "string",
-            "description": "The First name."
-          },
-          "lastName": {
-            "maxLength": 10,
-            "minLength": 0,
-            "type": "string",
-            "description": "The Last name."
-          },
-          "email": {
-            "pattern": ".+@.+\\..+",
-            "type": "string",
-            "description": "The Email."
-          },
-          "email1": {
-            "type": "string",
-            "description": "The Email 1."
-          },
           "age": {
             "maximum": 30,
             "minimum": 18,
@@ -214,6 +188,33 @@
           "creditCardNumber": {
             "type": "string",
             "description": "The Credit card number."
+          },
+          "email": {
+            "pattern": ".+@.+\\..+",
+            "type": "string",
+            "description": "The Email."
+          },
+          "email1": {
+            "type": "string",
+            "format": "email",
+            "description": "The Email 1."
+          },
+          "firstName": {
+            "maxLength": 2147483647,
+            "minLength": 2,
+            "type": "string",
+            "description": "The First name."
+          },
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int64"
+          },
+          "lastName": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "The Last name."
           }
         },
         "description": "The type Person."

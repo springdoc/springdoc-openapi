@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = { "springdoc.api-docs.version=openapi_3_1" })
+@SpringBootTest(properties = { "springdoc.api-docs.version=openapi_3_1", "springdoc.remove-broken-reference-definitions=false"})
 public class SpringDocApp193Test extends AbstractCommonTest {
 
 	@Test

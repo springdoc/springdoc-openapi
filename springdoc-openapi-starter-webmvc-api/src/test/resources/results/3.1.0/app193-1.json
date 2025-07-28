@@ -25,11 +25,12 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Books"
+                  "type": "object",
+                  "properties": {
+                    "test.org.springdoc.api.v31.app193.Knowledge": {
+                      "$ref": "#/components/schemas/Knowledge"
                     }
-                  ]
+                  }
                 }
               }
             }
@@ -51,14 +52,12 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Cat"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Dog"
+                  "type": "object",
+                  "properties": {
+                    "Animal": {
+                      "$ref": "#/components/schemas/Animal"
                     }
-                  ]
+                  }
                 }
               }
             }

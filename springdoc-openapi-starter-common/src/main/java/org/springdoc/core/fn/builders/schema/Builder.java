@@ -300,6 +300,11 @@ public class Builder {
 	private String $dynamicAnchor = "";
 
 	/**
+	 * The Dynamic ref.
+	 */
+	private String $dynamicRef = "";
+
+	/**
 	 * The Content encoding.
 	 */
 	private String contentEncoding = "";
@@ -1147,6 +1152,11 @@ public class Builder {
 			@Override
 			public String $dynamicAnchor() {
 				return $dynamicAnchor;
+			}
+
+			@Override
+			public String $dynamicRef() {
+				return $dynamicRef;
 			}
 
 			@Override

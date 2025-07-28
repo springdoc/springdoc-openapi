@@ -5,7 +5,7 @@
     "description": "This API exposes endpoints for testing anything",
     "termsOfService": "https://www.test.ca/terms",
     "version": "1.0",
-    "x-amazon-apigateway-integration": {
+    "x-x-amazon-apigateway-integration": {
       "passthroughBehavior": "when_no_match",
       "connectionId": "1rqafw",
       "type": "http_proxy",
@@ -47,7 +47,7 @@
             }
           }
         },
-        "x-amazon-apigateway-integration": {
+        "x-x-amazon-apigateway-integration": {
           "passthroughBehavior": "when_no_match",
           "connectionId": "1rqafw",
           "type": "http_proxy",

@@ -80,12 +80,12 @@
           "required": true
         },
         "responses": {
-          "500": {
-            "description": "the response entity",
+          "200": {
+            "description": "the person",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "$ref": "#/components/schemas/Person"
                 }
               }
             }
@@ -110,12 +110,12 @@
               }
             }
           },
-          "200": {
-            "description": "the person",
+          "500": {
+            "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Person"
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -183,12 +183,15 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "the response entity",
+          "200": {
+            "description": "the list",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
                 }
               }
             }
@@ -213,15 +216,12 @@
               }
             }
           },
-          "200": {
-            "description": "the list",
+          "500": {
+            "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Person"
-                  }
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -232,20 +232,6 @@
   },
   "components": {
     "schemas": {
-      "Problem": {
-        "type": "object",
-        "properties": {
-          "logRef": {
-            "type": "string",
-            "description": "The Log ref."
-          },
-          "message": {
-            "type": "string",
-            "description": "The Message."
-          }
-        },
-        "description": "The type Problem."
-      },
       "ErrorMessage": {
         "type": "object",
         "properties": {
@@ -265,32 +251,6 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "description": "The Id.",
-            "format": "int64"
-          },
-          "firstName": {
-            "maxLength": 2147483647,
-            "minLength": 2,
-            "type": "string",
-            "description": "The First name."
-          },
-          "lastName": {
-            "maxLength": 10,
-            "minLength": 0,
-            "type": "string",
-            "description": "The Last name."
-          },
-          "email": {
-            "pattern": ".+@.+\\..+",
-            "type": "string",
-            "description": "The Email."
-          },
-          "email1": {
-            "type": "string",
-            "description": "The Email 1."
-          },
           "age": {
             "maximum": 30,
             "minimum": 18,
@@ -301,9 +261,50 @@
           "creditCardNumber": {
             "type": "string",
             "description": "The Credit card number."
+          },
+          "email": {
+            "pattern": ".+@.+\\..+",
+            "type": "string",
+            "description": "The Email."
+          },
+          "email1": {
+            "type": "string",
+            "format": "email",
+            "description": "The Email 1."
+          },
+          "firstName": {
+            "maxLength": 2147483647,
+            "minLength": 2,
+            "type": "string",
+            "description": "The First name."
+          },
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int64"
+          },
+          "lastName": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "The Last name."
           }
         },
         "description": "The type Person."
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "logRef": {
+            "type": "string",
+            "description": "The Log ref."
+          },
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          }
+        },
+        "description": "The type Problem."
       }
     }
   }

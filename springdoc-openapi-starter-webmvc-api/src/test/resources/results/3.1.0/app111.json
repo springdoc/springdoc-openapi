@@ -17,41 +17,6 @@
     }
   ],
   "paths": {
-    "/personByLastName": {
-      "get": {
-        "tags": [
-          "person-controller"
-        ],
-        "operationId": "findByLastName",
-        "parameters": [
-          {
-            "name": "lastName",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "maxLength": 10,
-              "minLength": 0,
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Person"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/person": {
       "post": {
         "tags": [
@@ -75,41 +40,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/Person"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/personByLastName2": {
-      "get": {
-        "tags": [
-          "person-controller-2"
-        ],
-        "operationId": "findByLastName_1",
-        "parameters": [
-          {
-            "name": "lastName",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "maxLength": 10,
-              "minLength": 0,
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Person"
-                  }
                 }
               }
             }
@@ -146,14 +76,81 @@
           }
         }
       }
+    },
+    "/personByLastName": {
+      "get": {
+        "tags": [
+          "person-controller"
+        ],
+        "operationId": "findByLastName",
+        "parameters": [
+          {
+            "name": "lastName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 10,
+              "minLength": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/personByLastName2": {
+      "get": {
+        "tags": [
+          "person-controller-2"
+        ],
+        "operationId": "findByLastName_1",
+        "parameters": [
+          {
+            "name": "lastName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 10,
+              "minLength": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
       "Person": {
-        "required": [
-          "lastName"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -161,32 +158,36 @@
             "format": "int64"
           },
           "firstName": {
+            "type": "string",
             "maxLength": 2147483647,
-            "minLength": 2,
-            "type": "string"
+            "minLength": 2
           },
           "lastName": {
+            "type": "string",
             "maxLength": 10,
-            "minLength": 0,
-            "type": "string"
+            "minLength": 0
           },
           "email": {
-            "pattern": ".+@.+\\..+",
-            "type": "string"
+            "type": "string",
+            "pattern": ".+@.+\\..+"
           },
           "email1": {
-            "type": "string"
+            "type": "string",
+            "format": "email"
           },
           "age": {
-            "maximum": 30,
-            "minimum": 18,
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "maximum": 30,
+            "minimum": 18
           },
           "creditCardNumber": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "lastName"
+        ]
       }
     }
   }

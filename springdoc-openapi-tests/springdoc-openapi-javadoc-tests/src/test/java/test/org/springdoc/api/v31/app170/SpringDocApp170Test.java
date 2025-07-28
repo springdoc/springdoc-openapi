@@ -29,10 +29,12 @@ package test.org.springdoc.api.v31.app170;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
 /**
  * The type Spring doc app 193 test.
  */
+@TestPropertySource(properties = "springdoc.remove-broken-reference-definitions=false")
 class SpringDocApp170Test extends AbstractSpringDocTest {
 
 	/**
