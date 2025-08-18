@@ -31,8 +31,6 @@ import java.util.Optional;
 
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.core.jackson.ModelResolver;
-import io.swagger.v3.core.util.Json31;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,12 +53,6 @@ public class ModelConverterRegistrar {
 	 */
 	private final ModelConverters modelConvertersInstance;
 
-
-	/**
-	 * The singleton fallback instance.
-	 */
-	private static volatile ModelConverters modelConvertersFallbackInstance;
-	
 	/**
 	 * Instantiates a new Model converter registrar.
 	 *
@@ -74,30 +66,8 @@ public class ModelConverterRegistrar {
 			registeredConverterOptional.ifPresent(modelConvertersInstance::removeConverter);
 			modelConvertersInstance.addConverter(modelConverter);
 		}
-		if (springDocConfigProperties.isOpenapi31()) {
-			initializeFallbackInstance();
-		}
 	}
 
-	/**
-	 * Initialize fallback instance.
-	 */
-	private static synchronized void initializeFallbackInstance() {
-		if (modelConvertersFallbackInstance == null) {
-			modelConvertersFallbackInstance = new ModelConverters(true);
-			modelConvertersFallbackInstance.addConverter(new ModelResolver(Json31.mapper()));
-		}
-	}
-
-	/**
-	 * Gets model converters fallback instance.
-	 *
-	 * @return the model converters fallback instance
-	 */
-	public static ModelConverters getModelConvertersFallbackInstance() {
-		return modelConvertersFallbackInstance;
-	}
-	
 	/**
 	 * Gets registered converter same as.
 	 *
