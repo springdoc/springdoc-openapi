@@ -85,7 +85,7 @@ public class ParameterInfo {
 	private String paramType;
 
 	/**
-	 * if the paramater type is RequestPart
+	 * if the parameter type is RequestPart
 	 */
 	private boolean requestPart;
 
