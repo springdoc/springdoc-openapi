@@ -11,6 +11,54 @@
     }
   ],
   "paths": {
+    "/test4": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "createTest4",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "map",
+                  "multipartFiles"
+                ],
+                "type": "object",
+                "properties": {
+                  "multipartFiles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "map": {
+                    "type": "object",
+                    "additionalProperties" : {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/test3": {
       "post": {
         "tags": [

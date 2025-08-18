@@ -471,6 +471,8 @@ public abstract class AbstractRequestService {
 			return false;
 		if (isRequestBodyWithMapType(parameter))
 			return false;
+		if (isRequestPartWithMapType(parameter))
+			return false;
 		return isRequestTypeToIgnore(parameter.getParameterType());
 	}
 
@@ -503,6 +505,23 @@ public abstract class AbstractRequestService {
 		// Check for @RequestBody annotation
 		org.springframework.web.bind.annotation.RequestBody requestBody = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class);
 		if (requestBody == null) {
+			return false;
+		}
+		// Check if the parameter type is assignable to Map
+		Class<?> parameterType = parameter.getParameterType();
+		return Map.class.isAssignableFrom(parameterType);
+	}
+
+	/**
+	 * Is request part with map type
+	 *
+	 * @param parameter the parameter
+	 * @return the boolean
+	 */
+	private boolean isRequestPartWithMapType(MethodParameter parameter) {
+		// Check for @RequestPart annotation
+		org.springframework.web.bind.annotation.RequestPart requestPart = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class);
+		if (requestPart == null) {
 			return false;
 		}
 		// Check if the parameter type is assignable to Map
