@@ -37,7 +37,7 @@
           {
             "name": "barList",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "maxItems": 22,
               "minItems": 12,

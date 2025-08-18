@@ -422,7 +422,6 @@ public final class Constants {
 	/**
 	 * The constant SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED.
 	 */
-	@Deprecated(since = "2.8.7")
 	public static final String SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED = "springdoc.nullable-request-parameter-enabled";
 
 	/**
