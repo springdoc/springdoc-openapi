@@ -104,6 +104,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
  * The type Open api builder.
  *
  * @author bnasslahsen
+ * @author zdary
  */
 public class OpenAPIService implements ApplicationContextAware {
 
@@ -538,63 +539,72 @@ public class OpenAPIService implements ApplicationContextAware {
 	}
 
 
-	/**
-	 * Get webhooks webhooks [ ].
-	 *
-	 * @return the webhooks [ ]
-	 */
-	public Webhooks[] getWebhooks() {
-		List<Webhooks> allWebhooks = new ArrayList<>();
+    /**
+     * Gets webhooks from given classes.
+     *
+     * @param classes Array of classes to scan for webhooks.
+     * @return An array of {@link Webhooks} annotations found in the given classes.
+     */
+    public Webhooks[] getWebhooks(Class<?>[] classes) {
+        List<Webhooks> allWebhooks = new ArrayList<>();
 
-		// First: scan Spring-managed beans
-		Map<String, Object> beans = context.getBeansWithAnnotation(Webhooks.class);
+        for (Class<?> clazz : classes) {
+            // Class-level annotations
+            collectWebhooksFromElement(clazz, allWebhooks);
 
-		for (Object bean : beans.values()) {
-			Class<?> beanClass = bean.getClass();
+            // Method-level annotations
+            for (Method method : clazz.getDeclaredMethods()) {
+                collectWebhooksFromElement(method, allWebhooks);
+            }
+        }
 
-			// Collect @Webhooks or @Webhook on class level
-			collectWebhooksFromElement(beanClass, allWebhooks);
+        return allWebhooks.toArray(new Webhooks[0]);
+    }
 
-			// Collect from methods
-			for (Method method : beanClass.getDeclaredMethods()) {
-				collectWebhooksFromElement(method, allWebhooks);
-			}
-		}
 
-		// Fallback: classpath scanning if nothing found
-		if (allWebhooks.isEmpty()) {
-			ClassPathScanningCandidateComponentProvider scanner =
-					new ClassPathScanningCandidateComponentProvider(false);
-			scanner.addIncludeFilter(new AnnotationTypeFilter(Webhooks.class));
-			scanner.addIncludeFilter(new AnnotationTypeFilter(Webhook.class));
+    /**
+     * Retrieves all classes related to webhooks.
+     * This method scans for classes annotated with {@link Webhooks} or {@link Webhook},
+     * first checking Spring-managed beans and then falling back to classpath scanning
+     * if no annotated beans are found.
+     *
+     * @return An array of classes related to webhooks.
+     */
+    public Class<?>[] getWebhooksClasses() {
+        Set<Class<?>> allWebhookClassesToScan = new HashSet<>();
 
-			if (AutoConfigurationPackages.has(context)) {
-				for (String basePackage : AutoConfigurationPackages.get(context)) {
-					Set<BeanDefinition> candidates = scanner.findCandidateComponents(basePackage);
+        // First: scan Spring-managed beans
+        Map<String, Object> beans = context.getBeansWithAnnotation(Webhooks.class);
 
-					for (BeanDefinition bd : candidates) {
-						try {
-							Class<?> clazz = Class.forName(bd.getBeanClassName());
+        for (Object bean : beans.values()) {
+            Class<?> beanClass = bean.getClass();
+            allWebhookClassesToScan.add(beanClass);
+        }
 
-							// Class-level annotations
-							collectWebhooksFromElement(clazz, allWebhooks);
+        // Fallback: classpath scanning
+        ClassPathScanningCandidateComponentProvider scanner =
+                new ClassPathScanningCandidateComponentProvider(false);
+        scanner.addIncludeFilter(new AnnotationTypeFilter(Webhooks.class));
+        scanner.addIncludeFilter(new AnnotationTypeFilter(Webhook.class));
 
-							// Method-level annotations
-							for (Method method : clazz.getDeclaredMethods()) {
-								collectWebhooksFromElement(method, allWebhooks);
-							}
+        if (AutoConfigurationPackages.has(context)) {
+            for (String basePackage : AutoConfigurationPackages.get(context)) {
+                Set<BeanDefinition> candidates = scanner.findCandidateComponents(basePackage);
+                for (BeanDefinition bd : candidates) {
+                    try {
+                        Class<?> clazz = Class.forName(bd.getBeanClassName());
+                        allWebhookClassesToScan.add(clazz);
+                    }
+                    catch (ClassNotFoundException e) {
+                        LOGGER.error("Class not found in classpath: {}", e.getMessage());
+                    }
+                }
+            }
+        }
 
-						}
-						catch (ClassNotFoundException e) {
-							LOGGER.error("Class not found in classpath: {}", e.getMessage());
-						}
-					}
-				}
-			}
-		}
+        return allWebhookClassesToScan.toArray(new Class<?>[0]);
+    }
 
-		return allWebhooks.toArray(new Webhooks[0]);
-	}
 
 	/**
 	 * Collect webhooks from element.

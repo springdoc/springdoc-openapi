@@ -140,6 +140,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * @author kevinraddatz
  * @author hyeonisism
  * @author doljae
+ * @author zdary
  */
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
@@ -523,8 +524,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param locale            the locale
 	 */
 	protected void calculateWebhooks(OpenAPI calculatedOpenAPI, Locale locale) {
-		Webhooks[] webhooksAttr = openAPIService.getWebhooks();
-		if (ArrayUtils.isEmpty(webhooksAttr))
+        Class<?>[] classes = openAPIService.getWebhooksClasses();
+        Class<?>[] refinedClasses = Arrays.stream(classes)
+                .filter(clazz -> isPackageToScan(clazz.getPackage()))
+                .toArray(Class<?>[]::new);
+        Webhooks[] webhooksAttr = openAPIService.getWebhooks(refinedClasses);
+        if (ArrayUtils.isEmpty(webhooksAttr))
 			return;
 		var webhooks = Arrays.stream(webhooksAttr).map(Webhooks::value).flatMap(Arrays::stream).toArray(Webhook[]::new);
 		Arrays.stream(webhooks).forEach(webhook -> {
