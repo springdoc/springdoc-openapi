@@ -1,0 +1,70 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {},
+  "webhooks": {
+    "includedPet": {
+      "post": {
+        "operationId": "includedPet",
+        "requestBody": {
+          "description": "Information about a new pet in the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Webhook Pet",
+                "$ref": "#/components/schemas/RequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    },
+    "includedNewPet": {
+      "post": {
+        "operationId": "includedNewPet",
+        "requestBody": {
+          "description": "Information about a new pet in the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Webhook Pet",
+                "$ref": "#/components/schemas/RequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RequestDto": {
+        "type": "object",
+        "properties": {
+          "personalNumber": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
