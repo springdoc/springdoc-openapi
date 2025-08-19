@@ -26,16 +26,21 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "resumeFile"
-                ],
                 "type": "object",
                 "properties": {
                   "resumeFile": {
                     "type": "string",
-                    "description": "Resume file to be parsed",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "Resume file to be parsed"
                   }
+                },
+                "required": [
+                  "resumeFile"
+                ]
+              },
+              "encoding": {
+                "resumeFile": {
+                  "contentType": "application/octet-stream"
                 }
               }
             }

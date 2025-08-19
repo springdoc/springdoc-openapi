@@ -36,6 +36,11 @@
                     }
                   }
                 }
+              },
+              "encoding": {
+                "files": {
+                  "contentType": "application/octet-stream"
+                }
               }
             }
           }

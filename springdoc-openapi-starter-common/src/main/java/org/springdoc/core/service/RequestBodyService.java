@@ -35,9 +35,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.Encoding;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
+import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.models.ParameterInfo;
@@ -46,6 +48,7 @@ import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestPart;
 
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
@@ -146,9 +149,9 @@ public class RequestBodyService {
 	 * @param requestBodyObject  the request body object
 	 */
 	private void buildRequestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
-										 RequestBody requestBodyOp, MethodAttributes methodAttributes,
-										 Components components, JsonView jsonViewAnnotation, String[] classConsumes,
-										 String[] methodConsumes, RequestBody requestBodyObject) {
+			RequestBody requestBodyOp, MethodAttributes methodAttributes,
+			Components components, JsonView jsonViewAnnotation, String[] classConsumes,
+			String[] methodConsumes, RequestBody requestBodyObject) {
 		Optional<Content> optionalContent = SpringDocAnnotationsUtils
 				.getContent(requestBody.content(), getConsumes(classConsumes),
 						getConsumes(methodConsumes), null, components, jsonViewAnnotation, parameterBuilder.isOpenapi31());
@@ -296,12 +299,14 @@ public class RequestBodyService {
 		if (requestBody.getContent() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
-			buildContent(requestBody, methodAttributes, schema);
+			Map<String, Encoding> parameterEncoding = getParameterEncoding(parameterInfo);
+			buildContent(requestBody, methodAttributes, schema, parameterEncoding);
 		}
 		else if (!methodAttributes.isWithResponseBodySchemaDoc()) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
-			mergeContent(requestBody, methodAttributes, schema);
+			Map<String, Encoding> parameterEncoding = getParameterEncoding(parameterInfo);
+			mergeContent(requestBody, methodAttributes, schema, parameterEncoding);
 		}
 
 		// Add requestBody javadoc
@@ -318,38 +323,40 @@ public class RequestBodyService {
 	/**
 	 * Merge content.
 	 *
-	 * @param requestBody      the request body
-	 * @param methodAttributes the method attributes
-	 * @param schema           the schema
+	 * @param requestBody       the request body
+	 * @param methodAttributes  the method attributes
+	 * @param parameterEncoding the parameter encoding
 	 */
-	private void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
+	private void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Map<String, Encoding> parameterEncoding) {
 		Content content = requestBody.getContent();
-		buildContent(requestBody, methodAttributes, schema, content);
+		buildContent(requestBody, methodAttributes, schema, content, parameterEncoding);
 	}
 
 	/**
 	 * Build content.
 	 *
-	 * @param requestBody      the request body
-	 * @param methodAttributes the method attributes
-	 * @param schema           the schema
+	 * @param requestBody       the request body
+	 * @param methodAttributes  the method attributes
+	 * @param schema            the schema
+	 * @param parameterEncoding the parameter encoding
 	 */
-	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
+	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Map<String, Encoding> parameterEncoding) {
 		Content content = new Content();
-		buildContent(requestBody, methodAttributes, schema, content);
+		buildContent(requestBody, methodAttributes, schema, content, parameterEncoding);
 	}
 
 	/**
 	 * Build content.
 	 *
-	 * @param requestBody      the request body
-	 * @param methodAttributes the method attributes
-	 * @param schema           the schema
-	 * @param content          the content
+	 * @param requestBody       the request body
+	 * @param methodAttributes  the method attributes
+	 * @param schema            the schema
+	 * @param content           the content
+	 * @param parameterEncoding the parameter encoding
 	 */
-	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
+	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content, Map<String, Encoding> parameterEncoding) {
 		for (String value : methodAttributes.getMethodConsumes()) {
-			io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
+			MediaType mediaTypeObject = new MediaType();
 			mediaTypeObject.setSchema(schema);
 			MediaType mediaType = content.get(value);
 			if (mediaType != null) {
@@ -360,8 +367,37 @@ public class RequestBodyService {
 				if (mediaType.getEncoding() != null)
 					mediaTypeObject.setEncoding(mediaType.getEncoding());
 			}
+			else if (!CollectionUtils.isEmpty(parameterEncoding)) {
+				mediaTypeObject.setEncoding(parameterEncoding);
+			}
 			content.addMediaType(value, mediaTypeObject);
 		}
 		requestBody.setContent(content);
+	}
+
+	/**
+	 * Gets parameter encoding.
+	 *
+	 * @param parameterInfo the parameter info
+	 * @return the parameter encoding
+	 */
+	@NotNull
+	private Map<String, Encoding> getParameterEncoding(ParameterInfo parameterInfo) {
+		if (parameterInfo.getParameterModel() != null) {
+			Content parameterContent = parameterInfo.getParameterModel().getContent();
+			if (parameterContent != null && parameterContent.size() == 1) {
+				Map<String, Encoding> encoding = parameterContent.values().iterator().next().getEncoding();
+				if (!CollectionUtils.isEmpty(encoding)) {
+					return encoding;
+				}
+				else {
+					String encodingContentType = parameterContent.keySet().iterator().next();
+					if(StringUtils.isNotBlank(encodingContentType)) {
+						return Map.of(parameterInfo.getpName(), new Encoding().contentType(encodingContentType));
+					}
+				}
+			}
+		}
+		return Map.of();
 	}
 }

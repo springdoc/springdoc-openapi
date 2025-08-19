@@ -31,10 +31,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "params": {
-                    "$ref": "#/components/schemas/JsonRequest",
-                    "description": "the json request"
-                  },
                   "file1": {
                     "type": "string",
                     "format": "binary",
@@ -44,11 +40,20 @@
                     "type": "string",
                     "format": "binary",
                     "description": "This is file2"
+                  },
+                  "params": {
+                    "$ref": "#/components/schemas/JsonRequest",
+                    "description": "the json request"
                   }
                 },
                 "required": [
                   "params"
                 ]
+              },
+              "encoding": {
+                "params": {
+                  "contentType": "application/json"
+                }
               }
             }
           }

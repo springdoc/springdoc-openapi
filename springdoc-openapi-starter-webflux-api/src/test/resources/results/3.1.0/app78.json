@@ -22,9 +22,6 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "files"
-                ],
                 "type": "object",
                 "properties": {
                   "files": {
@@ -35,6 +32,14 @@
                       "format": "binary"
                     }
                   }
+                },
+                "required": [
+                  "files"
+                ]
+              },
+              "encoding": {
+                "files": {
+                  "contentType": "application/octet-stream"
                 }
               }
             }

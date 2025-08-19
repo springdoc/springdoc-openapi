@@ -37,6 +37,11 @@
                     "format": "binary"
                   }
                 }
+              },
+              "encoding": {
+                "resumeFile": {
+                  "contentType": "application/octet-stream"
+                }
               }
             }
           }
