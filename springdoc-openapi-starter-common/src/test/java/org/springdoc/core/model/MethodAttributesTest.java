@@ -1,14 +1,15 @@
 package org.springdoc.core.model;
 
+import java.lang.reflect.Method;
+import java.util.Locale;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springdoc.core.models.MethodAttributes;
+
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.lang.reflect.Method;
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.BDDMockito.given;

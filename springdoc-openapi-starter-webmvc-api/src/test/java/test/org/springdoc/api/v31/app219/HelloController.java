@@ -24,12 +24,13 @@
 
 package test.org.springdoc.api.v31.app219;
 
+import test.org.springdoc.api.v30.app219.TestObject;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import test.org.springdoc.api.v30.app219.TestObject;
 
 @RestController
 @RequestMapping(value = "/api", produces = {"application/xml"}, consumes = {"application/json"})

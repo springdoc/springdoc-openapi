@@ -64,7 +64,6 @@ import java.util.stream.Stream;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import org.springdoc.core.utils.SchemaUtils;
 
 import org.springframework.core.GenericTypeResolver;

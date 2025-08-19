@@ -26,10 +26,10 @@
 
 package org.springdoc.core.customizers;
 
+import java.util.List;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
-
-import java.util.List;
 
 /**
  * The interface Delegating method parameter customizer.
