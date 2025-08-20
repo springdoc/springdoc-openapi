@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [2.8.10] - 2025-08-20
+
+### Added
+
+- #3046 - Feature Request: Support @jakarta.annotation.Nonnull.
+- #3042 - Support externalDocs configure on SpecPropertiesCustomizer
+- #3057 - Refactor webhook discovery and scanning mechanism 
+
+### Changed
+
+- Upgrade spring-boot to v3.5.4
+- Upgrade swagger-ui to v5.27.1
+- Upgrade swagger-core to 2.2.36
+
+### Fixed
+
+- #3050 - @RequestPart JSON parameters missing Content-Type in generated curl commands, causing 415 errors.
+- #2978 - Parameter is no longer optional after upgrade to 2.8.8
+- #3022 - NullPointerException thrown in SchemaUtils.
+- #3026 - Fix unexpected merging of media types
+- #3036 - Fixed "desciption" 
+- #3039 - Fix: Property resolution for extensions within @OpenAPIDefinition Info object
+- #3051 -  Fixes so that a RequestPart with a Map is added to the RequestBody
+- #3060 - Use adaptFromForwardedHeaders instead of deprecated fromHttpRequest 
+
 ## [2.8.9] - 2025-06-10
 
 ### Added
@@ -19,10 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - #2982 - application/problem+json content type is not set for ProblemDetails
-- #2990 - Issues with POST Request, application/x-www-form-urlencoded and only one
-  parameter
-- #2998 - io.swagger.v3.oas.annotations.Webhook does not work when defined on the method
-  level
+- #2990 - Issues with POST Request, application/x-www-form-urlencoded and only one parameter
+- #2998 - io.swagger.v3.oas.annotations.Webhook does not work when defined on the method level
 - #3012 - Order of examples is (sometimes) not preserved
 
 ## [2.8.8] - 2025-05-04
