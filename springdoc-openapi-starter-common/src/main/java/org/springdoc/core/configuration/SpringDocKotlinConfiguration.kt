@@ -69,21 +69,6 @@ class SpringDocKotlinConfiguration() {
 			.addDeprecatedType(Deprecated::class.java)
 	}
 
-	@Bean
-	@ConditionalOnProperty(
-		name = [Constants.SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED],
-		matchIfMissing = true
-	)
-	@Lazy(false)
-	fun kotlinDefaultsInParamObjects(): DelegatingMethodParameterCustomizer =
-		DelegatingMethodParameterCustomizer { _, mp ->
-			val kProp = mp.containingClass.kotlin.primaryConstructor
-				?.parameters
-				?.firstOrNull { it.name == mp.parameterName }
-			if (kProp?.isOptional == true)
-				(mp as DelegatingMethodParameter).isNotRequired = true
-		}
-	
 	@ConditionalOnClass(name = ["kotlin.reflect.full.KClasses"])
 	class KotlinReflectDependingConfiguration {
 
@@ -100,6 +85,21 @@ class SpringDocKotlinConfiguration() {
 		fun kotlinModelConverter(objectMapperProvider: ObjectMapperProvider): KotlinInlineClassUnwrappingConverter {
 			return KotlinInlineClassUnwrappingConverter(objectMapperProvider)
 		}
+
+		@Bean
+		@ConditionalOnProperty(
+			name = [Constants.SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED],
+			matchIfMissing = true
+		)
+		@Lazy(false)
+		fun kotlinDefaultsInParamObjects(): DelegatingMethodParameterCustomizer =
+			DelegatingMethodParameterCustomizer { _, mp ->
+				val kProp = mp.containingClass.kotlin.primaryConstructor
+					?.parameters
+					?.firstOrNull { it.name == mp.parameterName }
+				if (kProp?.isOptional == true)
+					(mp as DelegatingMethodParameter).isNotRequired = true
+			}
 	}
 
 }
