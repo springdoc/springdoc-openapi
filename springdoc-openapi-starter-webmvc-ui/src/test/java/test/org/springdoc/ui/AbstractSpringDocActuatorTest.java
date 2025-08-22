@@ -25,26 +25,30 @@
 package test.org.springdoc.ui;
 
 
+import java.net.http.HttpClient;
+
 import jakarta.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.boot.web.server.test.LocalManagementPort;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
+import org.springframework.web.client.RestClient;
 
 public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
 
-	protected RestTemplate actuatorRestTemplate;
+	protected RestClient actuatorClient;
 
 	@LocalManagementPort
 	private int managementPort;
 
-	@Autowired
-	private RestTemplateBuilder restTemplateBuilder;
-
 	@PostConstruct
 	void init() {
-		actuatorRestTemplate = restTemplateBuilder
-				.rootUri("http://localhost:" + this.managementPort).build();
+		HttpClient jdkClient = HttpClient.newBuilder()
+				.followRedirects(HttpClient.Redirect.NORMAL) 
+				.build();
+		this.actuatorClient = RestClient.builder()
+				.requestFactory(new JdkClientHttpRequestFactory(jdkClient))
+				.baseUrl("http://localhost:" + managementPort)
+				.build();
 	}
+	
 }

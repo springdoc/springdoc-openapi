@@ -26,16 +26,18 @@
 
 package test.org.springdoc.api.v31;
 
+import java.net.http.HttpClient;
+
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.boot.web.server.test.LocalManagementPort;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @TestPropertySource(properties = { "management.endpoints.enabled-by-default=true" })
@@ -43,31 +45,37 @@ public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonTest.class);
 
-	protected RestTemplate actuatorRestTemplate;
+	protected RestClient actuatorClient;
 
 	@LocalManagementPort
 	private int managementPort;
 
-	@Autowired
-	private RestTemplateBuilder restTemplateBuilder;
-
 	@PostConstruct
 	void init() {
-		actuatorRestTemplate = restTemplateBuilder
-				.rootUri("http://localhost:" + this.managementPort).build();
+		HttpClient jdkClient = HttpClient.newBuilder()
+				.followRedirects(HttpClient.Redirect.NORMAL)
+				.build();
+		this.actuatorClient = RestClient.builder()
+				.requestFactory(new JdkClientHttpRequestFactory(jdkClient))
+				.baseUrl("http://localhost:" + managementPort)
+				.build();
 	}
 
 	protected void testWithRestTemplate(String testId, String uri) throws Exception {
 		String result = null;
 		try {
-			result = actuatorRestTemplate.getForObject(uri, String.class);
+			result = actuatorClient.get()
+					.uri(uri)
+					.retrieve()
+					.body(String.class);
+			assertNotNull(result, "Response body was null for URI: " + uri);
 			String expected = getContent("results/3.1.0/app" + testId + ".json");
 			assertEquals(expected, result, true);
-		}
-		catch (AssertionError e) {
-			LOGGER.error(result);
+		} catch (AssertionError e) {
+			LOGGER.error("JSON response for [{}]:\n{}", uri, result);
 			throw e;
 		}
+		
 	}
 
 }

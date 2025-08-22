@@ -19,6 +19,7 @@
 package test.org.springdoc.api.v30.app145;
 
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.v30.AbstractSpringDocActuatorTest;
 
@@ -27,11 +28,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestClientResponseException;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,38 +53,38 @@ public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@Test
-	void testApp1() throws Exception {
-		try {
-			actuatorRestTemplate.getForObject("/application/openapi", String.class);
-			fail();
-		}
-		catch (HttpClientErrorException ex) {
-			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
-				assertTrue(true);
-			else
-				fail();
-		}
+	void testApp1() {
+		// expect 404 on /application/openapi
+		assertThrows(HttpClientErrorException.NotFound.class, () ->
+				actuatorClient.get()
+						.uri("/application/openapi")
+						.retrieve()
+						.body(String.class)
+		);
 	}
 
 	@Test
 	void testApp2() throws Exception {
-		String result = actuatorRestTemplate.getForObject("/application/openapi/users", String.class);
+		String result = actuatorClient.get()
+				.uri("/application/openapi/users")
+				.retrieve()
+				.body(String.class);
+
 		String expected = getContent("results/3.0.1/app145.json");
-		assertEquals(expected, result, true);
+		// strict JSON comparison (structure, values, no extras)
+		JSONAssert.assertEquals(expected, result, true);
 	}
 
 	@Test
-	void testApp3() throws Exception {
-		try {
-			actuatorRestTemplate.getForObject("/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME, String.class);
-			fail();
-		}
-		catch (HttpStatusCodeException ex) {
-			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
-				assertTrue(true);
-		}
+	void testApp3() {
+		RestClientResponseException ex = assertThrows(RestClientResponseException.class, () ->
+				actuatorClient.get()
+						.uri("/application/openapi/{group}", Constants.DEFAULT_GROUP_NAME)
+						.retrieve()
+						.body(String.class)
+		);
+		assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
 	}
-
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 }

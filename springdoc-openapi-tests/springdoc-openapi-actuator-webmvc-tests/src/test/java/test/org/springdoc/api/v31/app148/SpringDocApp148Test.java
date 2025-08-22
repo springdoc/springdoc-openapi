@@ -25,11 +25,9 @@ import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.HttpClientErrorException;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
@@ -56,15 +54,13 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@Test
-	void testApp3() throws Exception {
-		try {
-			actuatorRestTemplate.getForObject("/test/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME, String.class);
-			fail();
-		}
-		catch (HttpStatusCodeException ex) {
-			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
-				assertTrue(true);
-		}
+	void testApp3() {
+		assertThrows(HttpClientErrorException.NotFound.class, () ->
+				actuatorClient.get()
+						.uri("/test/application/openapi/{group}", Constants.DEFAULT_GROUP_NAME)
+						.retrieve()
+						.body(String.class)
+		);
 	}
 
 	@SpringBootApplication

@@ -29,11 +29,7 @@
 			<optional>true</optional>
 		</dependency>
 		<!-- Test dependencies -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-jackson</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

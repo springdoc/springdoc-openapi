@@ -26,6 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,9 +48,13 @@ public class SpringDocApp144Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testApp1() throws Exception {
-		String result = actuatorRestTemplate.getForObject("/application/openapi", String.class);
+		String result = actuatorClient.get()
+				.uri("/application/openapi")
+				.retrieve()
+				.body(String.class);
+		assertNotNull(result, "Response body was null");
 		String expected = getContent("results/3.0.1/app144.json");
-		assertEquals(expected, result, true);
+		assertEquals(expected, result, true); // strict JSON comparison
 	}
 
 	@SpringBootApplication

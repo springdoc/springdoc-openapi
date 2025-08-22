@@ -19,6 +19,7 @@
 package test.org.springdoc.api.v31.app144;
 
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
 
@@ -26,7 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,11 +46,16 @@ public class SpringDocApp144Test extends AbstractSpringDocActuatorTest {
 				.andExpect(status().isNotFound());
 	}
 
+
 	@Test
 	void testApp1() throws Exception {
-		String result = actuatorRestTemplate.getForObject("/application/openapi", String.class);
+		String result = actuatorClient.get()
+				.uri("/application/openapi")
+				.retrieve()
+				.body(String.class);
+		assertNotNull(result, "Response body was null");
 		String expected = getContent("results/3.1.0/app144.json");
-		assertEquals(expected, result, true);
+		JSONAssert.assertEquals(expected, result, true); // strict JSON comparison
 	}
 
 	@SpringBootApplication
