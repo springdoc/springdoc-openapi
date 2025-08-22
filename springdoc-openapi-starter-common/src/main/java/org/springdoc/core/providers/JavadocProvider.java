@@ -102,4 +102,9 @@ public interface JavadocProvider {
 	 * @return the first sentence based on javadoc guidelines
 	 */
 	String getFirstSentence(String text);
+
+	/**
+	 * Clean the temp resources.
+	 */
+	default void clean() {}
 }
