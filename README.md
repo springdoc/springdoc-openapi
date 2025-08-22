@@ -4,14 +4,6 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/springdoc/springdoc-openapi.git/badge.svg)](https://snyk.io/test/github/springdoc/springdoc-openapi.git)
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
 
-IMPORTANT: ``springdoc-openapi v1.8.0`` is the latest Open Source release supporting
-Spring Boot 2.x and 1.x.
-
-An extended support for [*springdoc-openapi v1*](https://springdoc.org/v1)
-project is now available for organizations that need support beyond 2023.
-
-For more details, feel free to reach
-out: [sales@springdoc.org](mailto:sales@springdoc.org)
 
 ``springdoc-openapi`` is on [Open Collective](https://opencollective.com/springdoc). If
 you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
@@ -48,11 +40,11 @@ This project is sponsored by
     - [Library for springdoc-openapi integration with spring-boot and swagger-ui](#library-for-springdoc-openapi-integration-with-spring-boot-and-swagger-ui)
     - [Spring-boot with OpenAPI Demo applications.](#spring-boot-with-openapi-demo-applications)
         - [Source Code for Demo Applications.](#source-code-for-demo-applications)
-        - [Demo Spring Boot 2 Web MVC with OpenAPI 3.](#demo-spring-boot-2-web-mvc-with-openapi-3)
-        - [Demo Spring Boot 2 WebFlux with OpenAPI 3.](#demo-spring-boot-2-webflux-with-openapi-3)
-        - [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3.](#demo-spring-boot-2-webflux-with-functional-endpoints-openapi-3)
-        - [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3.](#demo-spring-boot-2-and-spring-hateoas-with-openapi-3)
-    - [Integration of the library in a Spring Boot 3.x project without the swagger-ui:](#integration-of-the-library-in-a-spring-boot-3x-project-without-the-swagger-ui)
+        - [Demo Spring Boot 4 Web MVC with OpenAPI 3.](#demo-spring-boot-4-web-mvc-with-openapi-3)
+        - [Demo Spring Boot 4 WebFlux with OpenAPI 3.](#demo-spring-boot-4-webflux-with-openapi-3)
+        - [Demo Spring Boot 4 WebFlux with Functional endpoints OpenAPI 3.](#demo-spring-boot-4-webflux-with-functional-endpoints-openapi-3)
+        - [Demo Spring Boot 4 and Spring Hateoas with OpenAPI 3.](#demo-spring-boot-4-and-spring-hateoas-with-openapi-3)
+    - [Integration of the library in a Spring Boot 4.x project without the swagger-ui:](#integration-of-the-library-in-a-spring-boot-3x-project-without-the-swagger-ui)
     - [Error Handling for REST using @ControllerAdvice](#error-handling-for-rest-using-controlleradvice)
     - [Adding API Information and Security documentation](#adding-api-information-and-security-documentation)
     - [spring-webflux support with Annotated Controllers](#spring-webflux-support-with-annotated-controllers)
@@ -95,7 +87,7 @@ Pivotal)
 
 ## Library for springdoc-openapi integration with spring-boot and swagger-ui
 
-* Automatically deploys swagger-ui to a Spring Boot 3.x application
+* Automatically deploys swagger-ui to a Spring Boot 4.x application
 * Documentation will be available in HTML format, using the
   official [swagger-ui jars](https://github.com/swagger-api/swagger-ui.git).
 * The Swagger UI page should then be available at http://server:
@@ -135,23 +127,23 @@ springdoc.swagger-ui.path=/swagger-ui.html
 
 ## Spring-boot with OpenAPI Demo applications.
 
-### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos/tree/master).
+### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos/4.x/master).
 
-## [Demo Spring Boot 3 Web MVC with OpenAPI 3](https://demos.springdoc.org/demo-spring-boot-3-webmvc).
+## [Demo Spring Boot 4 Web MVC with OpenAPI 3](https://demos1.springdoc.org/demo-spring-boot-webmvc).
 
-## [Demo Spring Boot 3 WebFlux with OpenAPI 3](https://demos.springdoc.org/demo-spring-boot-3-webflux/swagger-ui.html).
+## [Demo Spring Boot 4 WebFlux with OpenAPI 3](https://demos1.springdoc.org/demo-spring-boot-webflux/swagger-ui.html).
 
-## [Demo Spring Boot 3 WebFlux with Functional endpoints OpenAPI 3](https://demos.springdoc.org/demo-spring-boot-3-webflux-functional/swagger-ui.html).
+## [Demo Spring Boot 4 WebFlux with Functional endpoints OpenAPI 3](https://demos1.springdoc.org/demo-spring-boot-webflux-functional/swagger-ui.html).
 
-## [Demo Spring Boot 3 and Spring Cloud Function Web MVC](https://demos.springdoc.org/spring-cloud-function-webmvc).
+## [Demo Spring Boot 4 and Spring Cloud Function Web MVC](https://demos1.springdoc.org/spring-cloud-function-webmvc).
 
-## [Demo Spring Boot 3 and Spring Cloud Function WebFlux](http://158.101.191.70:8085/swagger-ui.html).
+## [Demo Spring Boot 4 and Spring Cloud Function WebFlux](http://158.101.191.70:8085/swagger-ui.html).
 
-## [Demo Spring Boot 3 and Spring Cloud Gateway](https://demos.springdoc.org/demo-microservices/swagger-ui.html).
+## [Demo Spring Boot 4 and Spring Cloud Gateway](https://demos1.springdoc.org/demo-microservices/swagger-ui.html).
 
 ![Branching](https://springdoc.org/img/pets.png)
 
-## Integration of the library in a Spring Boot 3.x project without the swagger-ui:
+## Integration of the library in a Spring Boot 4.x project without the swagger-ui:
 
 * Documentation will be available at the following url for json format: http://server:
   port/context-path/v3/api-docs
