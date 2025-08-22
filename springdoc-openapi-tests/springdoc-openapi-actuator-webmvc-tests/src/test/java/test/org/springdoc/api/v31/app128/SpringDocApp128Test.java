@@ -31,7 +31,7 @@ import org.springdoc.core.utils.SpringDocUtils;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
+import org.springframework.boot.webmvc.autoconfigure.error.BasicErrorController;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.hamcrest.Matchers.containsString;

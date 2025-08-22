@@ -38,12 +38,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Data
 @Entity
 @Table(schema = "application", name = "application")
 @Schema(description = "app")
@@ -102,5 +100,77 @@ public class Application implements Serializable {
 	public enum AppType {
 		INNER,
 		EXTERNAL
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public AppType getType() {
+		return type;
+	}
+
+	public void setType(AppType type) {
+		this.type = type;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public LocalDateTime getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(LocalDateTime createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getPublicKey() {
+		return publicKey;
+	}
+
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
+	}
+
+	public AuditStatus getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(AuditStatus auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	public LocalDateTime getAuditTime() {
+		return auditTime;
+	}
+
+	public void setAuditTime(LocalDateTime auditTime) {
+		this.auditTime = auditTime;
 	}
 }

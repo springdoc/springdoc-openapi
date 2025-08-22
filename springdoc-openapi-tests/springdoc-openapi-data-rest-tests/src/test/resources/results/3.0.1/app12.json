@@ -39,12 +39,6 @@
               }
             }
           },
-          "204": {
-            "description": "No Content",
-            "content": {
-              "application/vnd.something": {}
-            }
-          },
           "202": {
             "description": "Accepted",
             "content": {
@@ -53,6 +47,12 @@
                   "$ref": "#/components/schemas/JsonResponse"
                 }
               }
+            }
+          },
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/vnd.something": {}
             }
           }
         }
@@ -78,12 +78,6 @@
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
-        }
-      },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
         }
       },
       "Link": {
@@ -113,6 +107,12 @@
           "templated": {
             "type": "boolean"
           }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
         }
       }
     }

@@ -35,6 +35,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -44,6 +45,7 @@ import org.springframework.security.oauth2.server.authorization.client.InMemoryR
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.web.SecurityFilterChain;
@@ -54,9 +56,14 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 public class AuthorizationServerConfig {
+
 	@Bean
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+		var as = OAuth2AuthorizationServerConfigurer.authorizationServer();
+		http
+				.securityMatcher(as.getEndpointsMatcher())
+				.with(as, Customizer.withDefaults())
+				.authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
 		return http.build();
 	}
 

@@ -114,6 +114,14 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 public abstract class AbstractRequestService {
 
 	/**
+	 * The constant ACTUATOR_PKGS.
+	 */
+	private static final List<String> ACTUATOR_PKGS = List.of(
+			"org.springframework.boot.webmvc.actuate",
+			"org.springframework.boot.webflux.actuate"
+	);
+	
+	/**
 	 * The constant PARAM_TYPES_TO_IGNORE.
 	 */
 	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
@@ -499,9 +507,11 @@ public abstract class AbstractRequestService {
 	 */
 	private boolean isRequestBodyWithMapType(MethodParameter parameter) {
 		// Exclude parameters from the Actuator package
-		if (parameter.getContainingClass().getPackageName().startsWith("org.springframework.boot.actuate")) {
+		String pkg = parameter.getContainingClass().getPackageName();
+		if (ACTUATOR_PKGS.stream().anyMatch(pkg::startsWith)) {
 			return false;
 		}
+		
 		// Check for @RequestBody annotation
 		org.springframework.web.bind.annotation.RequestBody requestBody = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class);
 		if (requestBody == null) {

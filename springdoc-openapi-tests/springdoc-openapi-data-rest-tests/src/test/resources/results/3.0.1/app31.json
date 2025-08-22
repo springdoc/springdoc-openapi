@@ -60,7 +60,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "string"
                 }
@@ -120,7 +120,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "string"
                 }
@@ -157,7 +157,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "string"
                 }
@@ -195,7 +195,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "string"
                 }

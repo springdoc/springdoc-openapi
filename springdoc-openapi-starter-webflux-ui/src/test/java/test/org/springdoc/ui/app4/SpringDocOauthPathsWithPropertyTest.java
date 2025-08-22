@@ -24,8 +24,6 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-
 @TestPropertySource(properties = "springdoc.swagger-ui.oauth2-redirect-url=http://localhost:8080/toto/test/swagger-ui/oauth2-redirect.html")
 public class SpringDocOauthPathsWithPropertyTest extends AbstractSpringDocTest {
 
@@ -33,7 +31,7 @@ public class SpringDocOauthPathsWithPropertyTest extends AbstractSpringDocTest {
 	void oauth2_redirect_url_calculated() throws Exception {
 		webTestClient.get().uri("/v3/api-docs/swagger-config").exchange()
 				.expectStatus().isOk().expectBody()
-				.jsonPath("oauth2RedirectUrl", equalTo("http://localhost:8080/toto/test/swagger-ui/oauth2-redirect.html"));
+				.jsonPath("oauth2RedirectUrl").isEqualTo("http://localhost:8080/toto/test/swagger-ui/oauth2-redirect.html");
 	}
 
 	@SpringBootApplication

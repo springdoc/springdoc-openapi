@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.BodyInserters.fromObject;
+import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 
 @Component
 public class UserHandler {
@@ -71,7 +71,7 @@ public class UserHandler {
 
 		// build response
 		return customerMono
-				.flatMap(customer -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(customer)))
+				.flatMap(customer -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromValue(customer)))
 				.switchIfEmpty(notFound);
 	}
 
@@ -98,7 +98,7 @@ public class UserHandler {
 
 		// build response
 		return responseMono
-				.flatMap(cust -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(cust)));
+				.flatMap(cust -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromValue(cust)));
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class UserHandler {
 
 		// build response
 		return responseMono
-				.flatMap(strMono -> ServerResponse.ok().contentType(MediaType.TEXT_PLAIN).body(fromObject(strMono)));
+				.flatMap(strMono -> ServerResponse.ok().contentType(MediaType.TEXT_PLAIN).body(fromValue(strMono)));
 	}
 
 }

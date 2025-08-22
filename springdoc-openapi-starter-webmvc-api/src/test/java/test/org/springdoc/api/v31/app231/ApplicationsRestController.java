@@ -1,9 +1,11 @@
 package test.org.springdoc.api.v31.app231;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.annotations.ParameterObject;
 
-import org.springframework.boot.actuate.autoconfigure.wavefront.WavefrontProperties.Application;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,5 +23,55 @@ public class ApplicationsRestController {
 	) {
 		return new Application();
 	}
+	
+	public static class Application {
+		private String name = "unnamed_application";
+		private String serviceName;
+		private String clusterName;
+		private String shardName;
+		private Map<String, String> customTags = new HashMap();
+
+		public String getServiceName() {
+			return this.serviceName;
+		}
+
+		public void setServiceName(String serviceName) {
+			this.serviceName = serviceName;
+		}
+
+		public String getName() {
+			return this.name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getClusterName() {
+			return this.clusterName;
+		}
+
+		public void setClusterName(String clusterName) {
+			this.clusterName = clusterName;
+		}
+
+		public String getShardName() {
+			return this.shardName;
+		}
+
+		public void setShardName(String shardName) {
+			this.shardName = shardName;
+		}
+
+		public Map<String, String> getCustomTags() {
+			return this.customTags;
+		}
+
+		public void setCustomTags(Map<String, String> customTags) {
+			this.customTags = customTags;
+		}
+	}
+
+
 
 }

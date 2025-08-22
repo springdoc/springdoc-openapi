@@ -57,7 +57,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/PagedModelEntityModelBank"
                 }
@@ -96,7 +96,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelBank"
                 }
@@ -125,7 +125,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "integer",
                   "format": "int64"
@@ -158,7 +158,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelBank"
                 }
@@ -192,7 +192,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelBank"
                 }
@@ -234,7 +234,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelBank"
                 }
@@ -244,7 +244,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelBank"
                 }
@@ -311,7 +311,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelBank"
                 }
@@ -334,7 +334,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/RepresentationModelObject"
                 }

@@ -22,7 +22,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
                 }
@@ -61,7 +61,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelAccount"
                 }
@@ -90,7 +90,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
                 }
@@ -124,7 +124,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelAccount"
                 }
@@ -166,7 +166,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelAccount"
                 }
@@ -176,7 +176,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelAccount"
                 }
@@ -243,7 +243,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelAccount"
                 }
@@ -277,7 +277,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelCustomer"
                 }
@@ -334,7 +334,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelCustomer"
                 }
@@ -344,7 +344,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelCustomer"
                 }
@@ -421,7 +421,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelCustomer"
                 }
@@ -463,7 +463,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelCustomer"
                 }
@@ -520,7 +520,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelCustomer"
                 }
@@ -593,7 +593,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/PagedModelEntityModelCustomer"
                 }
@@ -616,7 +616,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/RepresentationModelObject"
                 }

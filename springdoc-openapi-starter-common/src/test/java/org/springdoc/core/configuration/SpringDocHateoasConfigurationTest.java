@@ -6,8 +6,8 @@ import org.springdoc.core.customizers.OpenApiHateoasLinksCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
 import org.springframework.hateoas.config.HateoasConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;

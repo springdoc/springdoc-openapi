@@ -29,9 +29,8 @@ package org.springdoc.core.providers;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.annotation.PostConstruct;
-
-import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.hateoas.autoconfigure.HateoasProperties;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
@@ -41,7 +40,7 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author bnasslahsen
  */
-public class HateoasHalProvider {
+public class HateoasHalProvider implements InitializingBean {
 
 	/**
 	 * The Object mapper provider.
@@ -83,16 +82,6 @@ public class HateoasHalProvider {
 		throw new IllegalStateException("No suitable method found to determine if HAL is enabled");
 	}
 
-	/**
-	 * Init.
-	 */
-	@PostConstruct
-	protected void init() {
-		if (!isHalEnabled())
-			return;
-		if (!Jackson2HalModule.isAlreadyRegisteredIn(objectMapperProvider.jsonMapper()))
-			objectMapperProvider.jsonMapper().registerModule(new Jackson2HalModule());
-	}
 
 	/**
 	 * Is hal enabled boolean.
@@ -103,5 +92,19 @@ public class HateoasHalProvider {
 		return hateoasPropertiesOptional
 				.map(HateoasHalProvider::isHalEnabled)
 				.orElse(true);
+	}
+
+	/**
+	 * After Properties Set.
+	 */
+	@Override
+	public void afterPropertiesSet() {
+		if (!isHalEnabled()) {
+			return;
+		}
+		var mapper = objectMapperProvider.jsonMapper();
+		if (!Jackson2HalModule.isAlreadyRegisteredIn(mapper)) {
+			mapper.registerModule(new Jackson2HalModule());
+		}
 	}
 }

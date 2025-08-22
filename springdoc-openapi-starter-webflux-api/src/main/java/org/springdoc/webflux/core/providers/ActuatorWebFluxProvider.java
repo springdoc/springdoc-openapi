@@ -35,9 +35,9 @@ import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
-import org.springframework.boot.actuate.endpoint.web.reactive.ControllerEndpointHandlerMapping;
-import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.web.server.autoconfigure.ServerProperties;
+import org.springframework.boot.webflux.actuate.endpoint.web.ControllerEndpointHandlerMapping;
+import org.springframework.boot.webflux.actuate.endpoint.web.WebFluxEndpointHandlerMapping;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;

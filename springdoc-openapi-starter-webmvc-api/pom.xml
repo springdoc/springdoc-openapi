@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.springdoc</groupId>
 		<artifactId>springdoc-openapi</artifactId>
-		<version>2.8.11-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
 	<name>${project.artifactId}</name>
@@ -15,13 +15,17 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-web-server</artifactId>
 		</dependency>
 		<!-- Actuator dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
+			<artifactId>spring-boot-actuator-autoconfigure</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -29,14 +33,15 @@
 			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!-- Test dependencies -->
 		<dependency>
 			<groupId>javax.money</groupId>
 			<artifactId>money-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-jackson</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

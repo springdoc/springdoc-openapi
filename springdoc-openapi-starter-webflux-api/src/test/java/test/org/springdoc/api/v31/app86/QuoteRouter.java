@@ -39,7 +39,7 @@ import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 import static org.springdoc.core.utils.Constants.OPERATION_ATTRIBUTE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
@@ -71,7 +71,7 @@ public class QuoteRouter {
 								.parameter(parameterBuilder().in(ParameterIn.QUERY).name("size").implementation(String.class))
 								.response(responseBuilder().responseCode("200").implementationArray(Quote.class))))
 
-				.and(route(GET("/quotes").and(accept(APPLICATION_STREAM_JSON)), quoteHandler::streamQuotes)
+				.and(route(GET("/quotes").and(accept(APPLICATION_OCTET_STREAM)), quoteHandler::streamQuotes)
 						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("fetchQuotes")
 								.response(responseBuilder().responseCode("200").implementation(Quote.class))));
 	}

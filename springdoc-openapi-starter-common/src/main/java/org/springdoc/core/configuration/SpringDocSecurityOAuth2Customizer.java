@@ -79,11 +79,12 @@ import org.springframework.security.oauth2.server.authorization.web.OAuth2TokenR
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.ReflectionUtils;
 
+import static org.springdoc.core.utils.SpringSecurityUtils.getPath;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
@@ -496,24 +497,26 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 		try {
 			RequestMatcher endpointMatcher = (RequestMatcher) FieldUtils.readDeclaredField(oAuth2EndpointFilter, authorizationEndpointMatcher, true);
 			String path = null;
-			if (endpointMatcher instanceof AntPathRequestMatcher antPathRequestMatcher)
-				path = antPathRequestMatcher.getPattern();
+			if (endpointMatcher instanceof PathPatternRequestMatcher pathPatternRequestMatcher) {
+				path = getPath(pathPatternRequestMatcher);
+			}
 			else if (endpointMatcher instanceof OrRequestMatcher endpointMatchers) {
 				Iterable<RequestMatcher> requestMatchers = (Iterable<RequestMatcher>) FieldUtils.readDeclaredField(endpointMatchers, "requestMatchers", true);
 				for (RequestMatcher requestMatcher : requestMatchers) {
 					if (requestMatcher instanceof OrRequestMatcher orRequestMatcher) {
 						requestMatchers = (Iterable<RequestMatcher>) FieldUtils.readDeclaredField(orRequestMatcher, "requestMatchers", true);
 						for (RequestMatcher matcher : requestMatchers) {
-							if (matcher instanceof AntPathRequestMatcher antPathRequestMatcher)
-								path = antPathRequestMatcher.getPattern();
+							if (matcher instanceof PathPatternRequestMatcher pathPatternRequestMatcher) {
+								path = getPath(pathPatternRequestMatcher);
+							}
 						}
 					}
-					else if (requestMatcher instanceof AntPathRequestMatcher antPathRequestMatcher) {
-						path = antPathRequestMatcher.getPattern();
+					else if (requestMatcher instanceof PathPatternRequestMatcher pathPatternRequestMatcher) {
+						path = getPath(pathPatternRequestMatcher);
 					}
 				}
 			}
-
+			
 			PathItem pathItem = new PathItem();
 			if (HttpMethod.POST.equals(requestMethod)) {
 				pathItem.post(operation);
@@ -528,8 +531,10 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 		}
 	}
 
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) throws
+			BeansException {
 		this.applicationContext = applicationContext;
 	}
 }

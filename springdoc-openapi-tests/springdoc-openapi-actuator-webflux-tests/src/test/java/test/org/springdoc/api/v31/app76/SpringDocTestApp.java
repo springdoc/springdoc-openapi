@@ -32,11 +32,11 @@ import org.springdoc.core.models.GroupedOpenApi;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.endpoint.web.reactive.WebFluxEndpointManagementContextConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.HealthEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.info.InfoEndpointAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.web.reactive.ReactiveManagementContextAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.reactor.netty.autoconfigure.actuate.web.server.NettyReactiveManagementContextAutoConfiguration;
+import org.springframework.boot.webflux.autoconfigure.actuate.web.WebFluxEndpointManagementContextConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
@@ -47,7 +47,7 @@ import org.springframework.context.annotation.Import;
 		InfoEndpointAutoConfiguration.class,
 		HealthEndpointAutoConfiguration.class,
 		WebFluxEndpointManagementContextConfiguration.class,
-		ReactiveManagementContextAutoConfiguration.class })
+		NettyReactiveManagementContextAutoConfiguration.class })
 @ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v31.app76" })
 public class SpringDocTestApp {
 

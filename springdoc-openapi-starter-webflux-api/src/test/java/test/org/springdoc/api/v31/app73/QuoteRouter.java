@@ -45,8 +45,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
-import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
@@ -65,7 +65,7 @@ public class QuoteRouter {
 					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(type = "string"))))),
 			@RouterOperation(path = "/quotes", produces = APPLICATION_JSON_VALUE, operation = @Operation(operationId = "fetchQuotes", parameters = @Parameter(name = "size", in = ParameterIn.QUERY, schema = @Schema(type = "string")),
 					responses = @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Quote.class)))))),
-			@RouterOperation(path = "/quotes", produces = APPLICATION_STREAM_JSON_VALUE, operation = @Operation(operationId = "fetchQuotes",
+			@RouterOperation(path = "/quotes", produces = APPLICATION_OCTET_STREAM_VALUE, operation = @Operation(operationId = "fetchQuotes",
 					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Quote.class))))) })
 	@Bean
 	public RouterFunction<ServerResponse> route(QuoteHandler quoteHandler) {
@@ -74,6 +74,6 @@ public class QuoteRouter {
 				.andRoute(POST("/echo").and(accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN))), quoteHandler::echo)
 				.andRoute(POST("/echo").and(accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON))), quoteHandler::echo)
 				.andRoute(GET("/quotes").and(accept(APPLICATION_JSON)), quoteHandler::fetchQuotes)
-				.andRoute(GET("/quotes").and(accept(APPLICATION_STREAM_JSON)), quoteHandler::streamQuotes);
+				.andRoute(GET("/quotes").and(accept(APPLICATION_OCTET_STREAM)), quoteHandler::streamQuotes);
 	}
 }

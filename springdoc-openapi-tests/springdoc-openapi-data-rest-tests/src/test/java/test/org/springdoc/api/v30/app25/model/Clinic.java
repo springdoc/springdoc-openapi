@@ -27,23 +27,14 @@
 package test.org.springdoc.api.v30.app25.model;
 
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = false)
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Clinic extends BaseEntity {
 
 	@NotNull
@@ -53,4 +44,33 @@ public class Clinic extends BaseEntity {
 	@ElementCollection
 	private Set<Address> addresses;
 
+	public Clinic(UUID id) {
+		super(id);
+	}
+
+	public Clinic(UUID id, String name, Set<Address> addresses) {
+		super(id);
+		this.name = name;
+		this.addresses = addresses;
+	}
+
+	public Clinic() {
+		super(UUID.randomUUID());
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(Set<Address> addresses) {
+		this.addresses = addresses;
+	}
 }

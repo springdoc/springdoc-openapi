@@ -67,13 +67,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.util.pattern.PathPattern;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SHOW_LOGIN_ENDPOINT;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SHOW_OAUTH2_ENDPOINTS;
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
+import static org.springdoc.core.utils.SpringSecurityUtils.getPath;
 
 /**
  * The type Spring doc security configuration.
@@ -164,24 +163,12 @@ public class SpringDocSecurityConfiguration {
 									true
 							);
 
-							String loginPath = null;
-
-							if (requestMatcher instanceof AntPathRequestMatcher) {
-								loginPath = ((AntPathRequestMatcher) requestMatcher).getPattern();
+							if (requestMatcher instanceof PathPatternRequestMatcher pathPatternRequestMatcher) {
+								String loginPath = getPath(pathPatternRequestMatcher);
+								openAPI.getPaths().addPathItem(loginPath, pathItem);
 							}
-							else if (requestMatcher instanceof PathPatternRequestMatcher) {
-								PathPattern pathPattern = (PathPattern) FieldUtils.readField(
-										requestMatcher,
-										"pattern",
-										true
-								);
-								loginPath = pathPattern.getPatternString();
-							}
-
-							openAPI.getPaths().addPathItem(loginPath, pathItem);
 						}
-						catch (IllegalAccessException |
-							   ClassCastException ignored) {
+						catch (IllegalAccessException | ClassCastException ignored) {
 							// Exception escaped
 							LOGGER.trace(ignored.getMessage());
 						}

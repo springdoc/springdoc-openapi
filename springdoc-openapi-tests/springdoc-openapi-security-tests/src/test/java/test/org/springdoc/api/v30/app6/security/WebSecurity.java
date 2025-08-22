@@ -27,15 +27,19 @@
 package test.org.springdoc.api.v30.app6.security;
 
 import org.springdoc.core.properties.SpringDocConfigProperties;
+import test.org.springdoc.api.v31.app6.security.JWTAuthenticationFilter;
+import test.org.springdoc.api.v31.app6.security.JWTAuthorizationFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -81,27 +85,22 @@ public class WebSecurity {
 	@Bean
 	public SecurityFilterChain securityWebFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
 		String apiDocsPath = configProperties.getApiDocs().getPath();
-		http.cors()
-				.and()
-				.csrf()
-				.disable()
-				.authorizeRequests()
-				.requestMatchers(apiDocsPath + ALL_PATTERN)
-				.permitAll()
-				.requestMatchers(apiDocsPath.substring(0, apiDocsPath.lastIndexOf("/") + 1) + "api-docs.yaml")
-				.permitAll()
-				.anyRequest()
-				.authenticated()
-				.and()
-				.exceptionHandling()
-				.and()
+		String apiDocsYaml = apiDocsPath.substring(0, apiDocsPath.lastIndexOf('/') + 1) + "api-docs.yaml";
+
+		return http
+				.cors(Customizer.withDefaults())
+				.csrf(AbstractHttpConfigurer::disable)
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers(apiDocsPath + ALL_PATTERN).permitAll()
+						.requestMatchers(apiDocsYaml).permitAll()
+						.anyRequest().authenticated()
+				)
 				.addFilter(new JWTAuthenticationFilter(authenticationManager, lifetime, key))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager, key))
-				// this disables session creation on Spring Security
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		return http.build();
+				.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.build();
 	}
+
 
 
 	@Autowired

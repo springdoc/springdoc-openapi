@@ -29,7 +29,6 @@ package test.org.springdoc.api.v30.app5.controller;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import test.org.springdoc.api.v30.app5.entities.CompanyDto;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +40,6 @@ import org.springframework.web.bind.annotation.RestController;
  * 2020
  */
 @RestController
-@RequiredArgsConstructor
 public class CompanyController {
 
 

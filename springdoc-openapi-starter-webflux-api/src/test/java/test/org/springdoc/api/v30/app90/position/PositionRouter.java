@@ -51,7 +51,7 @@ class PositionRouter {
 						.operationId("findAll").description("Get all positions").tags(new String[] { "positions" })
 						.response(responseBuilder().responseCode("200").implementationArray(Position.class))).build()
 
-				.and(route().GET("/getPosition/{id}", accept(MediaType.APPLICATION_STREAM_JSON), HANDLER_FUNCTION, ops -> ops
+				.and(route().GET("/getPosition/{id}", accept(MediaType.APPLICATION_OCTET_STREAM), HANDLER_FUNCTION, ops -> ops
 						.operationId("findById").description("Find all").tags(new String[] { "positions" })
 						.parameter(parameterBuilder().in(ParameterIn.PATH).name("id"))
 						.response(responseBuilder().responseCode("200").implementation(Position.class))).build())

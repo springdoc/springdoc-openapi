@@ -22,7 +22,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelClinic"
                 }
@@ -61,7 +61,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelClinic"
                 }
@@ -92,7 +92,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelClinic"
                 }
@@ -134,7 +134,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelClinic"
                 }
@@ -144,7 +144,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelClinic"
                 }
@@ -211,7 +211,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelClinic"
                 }
@@ -235,7 +235,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelDoctor"
                 }
@@ -274,7 +274,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelDoctor"
                 }
@@ -305,7 +305,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelDoctor"
                 }
@@ -347,7 +347,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelDoctor"
                 }
@@ -357,7 +357,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelDoctor"
                 }
@@ -424,7 +424,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelDoctor"
                 }
@@ -458,7 +458,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelClinic"
                 }
@@ -515,7 +515,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelClinic"
                 }
@@ -525,7 +525,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelClinic"
                 }
@@ -602,7 +602,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelClinic"
                 }
@@ -644,7 +644,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelClinic"
                 }
@@ -700,7 +700,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/RepresentationModelObject"
                 }

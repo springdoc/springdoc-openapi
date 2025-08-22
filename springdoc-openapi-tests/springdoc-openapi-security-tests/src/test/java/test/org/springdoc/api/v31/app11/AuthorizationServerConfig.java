@@ -57,9 +57,19 @@ import org.springframework.security.web.SecurityFilterChain;
 public class AuthorizationServerConfig {
 	@Bean
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-				.oidc(Customizer.withDefaults());
+		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+				OAuth2AuthorizationServerConfigurer.authorizationServer();
+		http
+				.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+				.with(authorizationServerConfigurer, (authorizationServer) ->
+						authorizationServer
+								.oidc(Customizer.withDefaults())
+				)
+				.authorizeHttpRequests((authorize) ->
+						authorize
+								.anyRequest().authenticated()
+				);
+
 		return http.build();
 	}
 

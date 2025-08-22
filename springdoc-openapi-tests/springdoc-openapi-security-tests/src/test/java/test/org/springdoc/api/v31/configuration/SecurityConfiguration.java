@@ -46,6 +46,7 @@ class SecurityConfiguration {
 				.authorizeHttpRequests((requests) -> requests.requestMatchers("/**").permitAll());
 		return http.build();
 	}
+	
 
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {

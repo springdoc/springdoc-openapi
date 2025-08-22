@@ -50,7 +50,6 @@ public class OpenApiConfig {
 			@Override
 			public String customize(final String serverBaseUrl,
 					final HttpRequest request) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 

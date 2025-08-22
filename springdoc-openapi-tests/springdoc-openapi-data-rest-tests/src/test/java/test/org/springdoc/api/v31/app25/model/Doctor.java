@@ -27,6 +27,7 @@
 package test.org.springdoc.api.v31.app25.model;
 
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,18 +35,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+
 
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = false)
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Doctor extends BaseEntity {
 
 	@NotNull
@@ -61,4 +53,47 @@ public class Doctor extends BaseEntity {
 	@ManyToMany
 	private Set<Clinic> clinics;
 
+	public Doctor(String firstname, String lastname, Specialty specialty, Set<Clinic> clinics) {
+		super(UUID.randomUUID());
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.specialty = specialty;
+		this.clinics = clinics;
+	}
+
+	public Doctor() {
+		super(UUID.randomUUID());
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public Specialty getSpecialty() {
+		return specialty;
+	}
+
+	public void setSpecialty(Specialty specialty) {
+		this.specialty = specialty;
+	}
+
+	public Set<Clinic> getClinics() {
+		return clinics;
+	}
+
+	public void setClinics(Set<Clinic> clinics) {
+		this.clinics = clinics;
+	}
 }

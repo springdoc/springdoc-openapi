@@ -58,7 +58,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/PagedModelEntityModelProductEntity"
                 }
@@ -97,7 +97,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelProductEntity"
                 }
@@ -136,7 +136,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelProductEntity"
                 }
@@ -176,7 +176,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelProductEntity"
                 }
@@ -216,7 +216,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelProductEntity"
                 }
@@ -273,7 +273,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelProductEntity"
                 }
@@ -313,7 +313,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelProductEntity"
                 }
@@ -347,7 +347,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelProductEntity"
                 }
@@ -387,7 +387,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelProductEntity"
                 }
@@ -421,7 +421,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelProductEntity"
                 }
@@ -463,7 +463,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelProductEntity"
                 }
@@ -473,7 +473,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelProductEntity"
                 }
@@ -540,7 +540,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelProductEntity"
                 }
@@ -563,7 +563,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/RepresentationModelObject"
                 }

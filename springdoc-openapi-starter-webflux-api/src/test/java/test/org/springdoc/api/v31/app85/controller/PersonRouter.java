@@ -52,7 +52,7 @@ public class PersonRouter {
 		return route(GET("/getAllPersons").and(accept(MediaType.APPLICATION_JSON)), handler::findAll)
 				.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(PersonService.class).beanMethod("getAll"))
 
-				.and(route(GET("/getPerson/{id}").and(accept(MediaType.APPLICATION_STREAM_JSON)), handler::findById)
+				.and(route(GET("/getPerson/{id}").and(accept(MediaType.APPLICATION_OCTET_STREAM)), handler::findById)
 						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(PersonService.class).beanMethod("getById")))
 
 				.and(route(POST("/createPerson").and(accept(MediaType.APPLICATION_JSON)), handler::save)

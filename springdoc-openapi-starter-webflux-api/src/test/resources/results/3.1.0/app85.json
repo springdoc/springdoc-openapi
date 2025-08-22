@@ -114,7 +114,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/stream+json": {
+              "application/octet-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/Person"
                 }
@@ -224,7 +224,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/stream+json": {
+              "application/octet-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/Position"
                 }

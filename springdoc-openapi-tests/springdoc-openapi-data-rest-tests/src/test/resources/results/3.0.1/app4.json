@@ -11,54 +11,6 @@
     }
   ],
   "paths": {
-    "/employees": {
-      "get": {
-        "tags": [
-          "employee-controller"
-        ],
-        "operationId": "findAll",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelEmployee"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "employee-controller"
-        ],
-        "operationId": "newEmployee",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Employee"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelEmployee"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/employees/{id}": {
       "get": {
         "tags": [
@@ -80,7 +32,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelEmployee"
                 }
@@ -121,29 +73,58 @@
           }
         }
       }
-    }
-  },
-  "components": {
-    "schemas": {
-      "CollectionModelEntityModelEmployee": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "employees": {
-                "type": "array",
-                "items": {
+    },
+    "/employees": {
+      "get": {
+        "tags": [
+          "employee-controller"
+        ],
+        "operationId": "findAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelEmployee"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "employee-controller"
+        ],
+        "operationId": "newEmployee",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Employee"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.hal+json": {
+                "schema": {
                   "$ref": "#/components/schemas/EntityModelEmployee"
                 }
               }
             }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
           }
         }
-      },
+      }
+    }
+  },
+  "components": {
+    "schemas": {
       "Employee": {
         "type": "object",
         "properties": {
@@ -183,10 +164,23 @@
           }
         }
       },
-      "Links": {
+      "CollectionModelEntityModelEmployee": {
         "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "employees": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelEmployee"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
         }
       },
       "Link": {
@@ -216,6 +210,12 @@
           "templated": {
             "type": "boolean"
           }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
         }
       }
     }

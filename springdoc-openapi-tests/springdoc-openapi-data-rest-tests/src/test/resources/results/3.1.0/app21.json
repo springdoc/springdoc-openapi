@@ -58,7 +58,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/PagedModelEntityModelPerson"
                 }
@@ -99,7 +99,7 @@
           "200": {
             "description": "another successful operation",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -112,7 +112,7 @@
           "404": {
             "description": "another Contact not found",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -145,7 +145,7 @@
           "400": {
             "description": "Invalid ID supplied",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -158,7 +158,7 @@
           "200": {
             "description": "successful operation",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -171,7 +171,7 @@
           "404": {
             "description": "Contact not found",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -184,7 +184,7 @@
           "405": {
             "description": "Validation exception",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -207,7 +207,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/RepresentationModelObject"
                 }

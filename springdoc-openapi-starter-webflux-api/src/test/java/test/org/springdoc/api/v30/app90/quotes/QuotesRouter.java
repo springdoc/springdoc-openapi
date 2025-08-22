@@ -42,7 +42,7 @@ import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 import static org.springdoc.webflux.core.fn.SpringdocRouteBuilder.route;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RequestPredicates.contentType;
@@ -71,7 +71,7 @@ class QuotesRouter {
 						.parameter(parameterBuilder().in(ParameterIn.QUERY).name("size").implementation(String.class))
 						.response(responseBuilder().responseCode("200").implementationArray(Quote.class))).build())
 
-				.and(route().GET("/quotes", accept(APPLICATION_STREAM_JSON), HANDLER_FUNCTION, ops -> ops.tag("quotes")
+				.and(route().GET("/quotes", accept(APPLICATION_OCTET_STREAM), HANDLER_FUNCTION, ops -> ops.tag("quotes")
 						.operationId("fetchQuotes")
 						.response(responseBuilder().responseCode("200").implementation(Quote.class))).build());
 	}

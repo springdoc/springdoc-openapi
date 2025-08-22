@@ -28,9 +28,8 @@ package org.springdoc.core.providers;
 
 import java.util.Optional;
 
-import jakarta.annotation.PostConstruct;
-
-import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.hateoas.autoconfigure.HateoasProperties;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 
@@ -39,7 +38,7 @@ import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
  *
  * @author bnasslahsen
  */
-public class DataRestHalProvider extends HateoasHalProvider {
+public class DataRestHalProvider extends HateoasHalProvider implements InitializingBean {
 
 	/**
 	 * The Repository rest configuration optional.
@@ -59,9 +58,8 @@ public class DataRestHalProvider extends HateoasHalProvider {
 		this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;
 	}
 
-	@PostConstruct
 	@Override
-	protected void init() {
+	public void afterPropertiesSet() {
 		if (!isHalEnabled())
 			return;
 		if (!Jackson2HalModule.isAlreadyRegisteredIn(objectMapperProvider.jsonMapper()))

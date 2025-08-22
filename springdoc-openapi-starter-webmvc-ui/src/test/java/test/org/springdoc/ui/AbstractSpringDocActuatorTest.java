@@ -28,8 +28,8 @@ package test.org.springdoc.ui;
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalManagementPort;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
+import org.springframework.boot.web.server.test.LocalManagementPort;
 import org.springframework.web.client.RestTemplate;
 
 public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {

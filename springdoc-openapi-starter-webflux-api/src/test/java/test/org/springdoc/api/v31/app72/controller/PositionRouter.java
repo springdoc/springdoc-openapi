@@ -66,7 +66,7 @@ public class PositionRouter {
 	public RouterFunction<ServerResponse> positionRoute(PositionHandler handler) {
 		return RouterFunctions
 				.route(GET("/getAllPositions").and(accept(MediaType.APPLICATION_JSON)), handler::findAll)
-				.andRoute(GET("/getPosition/{id}").and(accept(MediaType.APPLICATION_STREAM_JSON)), handler::findById)
+				.andRoute(GET("/getPosition/{id}").and(accept(MediaType.APPLICATION_OCTET_STREAM)), handler::findById)
 				.andRoute(POST("/createPosition").and(accept(MediaType.APPLICATION_JSON)), handler::save)
 				.andRoute(DELETE("/deletePosition/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::delete);
 	}

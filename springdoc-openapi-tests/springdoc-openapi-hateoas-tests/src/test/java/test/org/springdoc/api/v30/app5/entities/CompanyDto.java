@@ -29,27 +29,86 @@ package test.org.springdoc.api.v30.app5.entities;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 /**
  * @author bnasslahsen
  */
-@AllArgsConstructor
-@Data
-@Builder
-@EqualsAndHashCode(callSuper = false)
 @Relation(collectionRelation = "companies", itemRelation = "company")
 public class CompanyDto extends RepresentationModel<CompanyDto> {
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = Access.READ_ONLY)
 	private UUID id;
 
 	@NotNull
 	private String name;
+
+	private CompanyDto(Builder builder) {
+		setId(builder.id);
+		setName(builder.name);
+	}
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CompanyDto(UUID id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	public CompanyDto(Link initialLink, UUID id, String name) {
+		super(initialLink);
+		this.id = id;
+		this.name = name;
+	}
+
+	public CompanyDto(Iterable<Link> initialLinks, UUID id, String name) {
+		super(initialLinks);
+		this.id = id;
+		this.name = name;
+	}
+
+	public static final class Builder {
+		private UUID id;
+
+		private @NotNull String name;
+
+		private Builder() {
+		}
+
+		public Builder id(UUID val) {
+			id = val;
+			return this;
+		}
+
+		public Builder name(@NotNull String val) {
+			name = val;
+			return this;
+		}
+
+		public CompanyDto build() {
+			return new CompanyDto(this);
+		}
+	}
 }

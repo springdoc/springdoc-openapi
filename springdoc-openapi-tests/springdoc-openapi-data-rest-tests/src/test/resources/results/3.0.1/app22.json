@@ -58,7 +58,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/PagedModelEntityModelPerson"
                 }
@@ -88,7 +88,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/RepresentationModelObject"
                 }
@@ -138,12 +138,12 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/Person"
                 }
               },
-              "application/vnd.hal+json": {
+              "application/hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/Person"
                 }

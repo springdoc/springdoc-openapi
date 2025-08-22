@@ -26,33 +26,39 @@
 
 package test.org.springdoc.api.v30.app25.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
-@NoArgsConstructor
 public class Dog extends Pet {
 
 	@Enumerated(EnumType.STRING)
 	private CoatType coat;
 
-	@Builder
-	public Dog(String name, Owner owner, CoatType coat) {
-		super(name, owner);
+	public Dog(UUID id, CoatType coat) {
+		super(id);
 		this.coat = coat;
+	}
+
+	public Dog(CoatType coat) {
+		this.coat = coat;
+	}
+
+	public Dog() {
 	}
 
 	public static enum CoatType {
 		SMOOTH, SHORT, COMBINATION, DOUBLE, HEAVY, SILKY, LONG, CURLY, WIRE, HAIRLESS
 	}
 
+	public CoatType getCoat() {
+		return coat;
+	}
+
+	public void setCoat(CoatType coat) {
+		this.coat = coat;
+	}
 }

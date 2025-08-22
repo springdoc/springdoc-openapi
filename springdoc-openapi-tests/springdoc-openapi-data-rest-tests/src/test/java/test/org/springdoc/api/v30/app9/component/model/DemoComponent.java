@@ -26,17 +26,9 @@
 
 package test.org.springdoc.api.v30.app9.component.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import org.springframework.data.annotation.Id;
 
-@Data
-@Builder
-@AllArgsConstructor
-@EqualsAndHashCode
 public class DemoComponent {
 
 	@Id
@@ -44,4 +36,52 @@ public class DemoComponent {
 
 	private String payload;
 
+	public DemoComponent(String id, String payload) {
+		this.id = id;
+		this.payload = payload;
+	}
+
+	private DemoComponent(Builder builder) {
+		setId(builder.id);
+		setPayload(builder.payload);
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getPayload() {
+		return payload;
+	}
+
+	public void setPayload(String payload) {
+		this.payload = payload;
+	}
+
+	public static final class Builder {
+		private String id;
+
+		private String payload;
+
+		public Builder() {
+		}
+
+		public Builder id(String val) {
+			id = val;
+			return this;
+		}
+
+		public Builder payload(String val) {
+			payload = val;
+			return this;
+		}
+
+		public DemoComponent build() {
+			return new DemoComponent(this);
+		}
+	}
 }

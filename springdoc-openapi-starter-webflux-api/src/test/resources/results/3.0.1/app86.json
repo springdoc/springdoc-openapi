@@ -81,7 +81,7 @@
                   }
                 }
               },
-              "application/stream+json": {
+              "application/octet-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/Quote"
                 }

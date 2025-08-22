@@ -27,17 +27,9 @@
 package test.org.springdoc.api.v30.app9.component.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import org.springframework.hateoas.server.core.Relation;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Relation(collectionRelation = "components")
 @Schema(description = "A demo component to illustrate Springdoc Issue #401")
 public final class DemoComponentDto {
@@ -48,4 +40,56 @@ public final class DemoComponentDto {
 	@Schema(description = "Some dummy payload", example = "Hello World")
 	private String payload;
 
+	public DemoComponentDto(String id, String payload) {
+		this.id = id;
+		this.payload = payload;
+	}
+
+	private DemoComponentDto(Builder builder) {
+		setId(builder.id);
+		setPayload(builder.payload);
+	}
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getPayload() {
+		return payload;
+	}
+
+	public void setPayload(String payload) {
+		this.payload = payload;
+	}
+
+	public static final class Builder {
+		private String id;
+
+		private String payload;
+
+		private Builder() {
+		}
+
+		public Builder id(String val) {
+			id = val;
+			return this;
+		}
+
+		public Builder payload(String val) {
+			payload = val;
+			return this;
+		}
+
+		public DemoComponentDto build() {
+			return new DemoComponentDto(this);
+		}
+	}
 }

@@ -58,7 +58,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/PagedModelEntityModelPerson"
                 }
@@ -97,7 +97,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelPerson"
                 }
@@ -136,7 +136,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/RepresentationModelObject"
                 }
@@ -243,12 +243,6 @@
           "$schema": {
             "type": "string"
           }
-        }
-      },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
         }
       },
       "RepresentationModelObject": {
@@ -366,6 +360,12 @@
           "templated": {
             "type": "boolean"
           }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
         }
       }
     }

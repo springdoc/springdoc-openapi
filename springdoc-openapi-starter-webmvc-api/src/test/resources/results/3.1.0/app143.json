@@ -69,37 +69,6 @@
           }
         }
       }
-    },
-    "/actuator/health": {
-      "get": {
-        "tags": [
-          "Actuator"
-        ],
-        "summary": "Actuator web endpoint 'health'",
-        "operationId": "health",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/vnd.spring-boot.actuator.v3+json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/vnd.spring-boot.actuator.v2+json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {

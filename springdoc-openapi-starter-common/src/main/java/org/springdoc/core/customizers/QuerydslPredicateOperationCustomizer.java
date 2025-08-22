@@ -53,12 +53,11 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
-import org.springframework.data.util.CastUtils;
-import org.springframework.data.util.ClassTypeInformation;
 import org.springframework.data.util.TypeInformation;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -174,15 +173,23 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	 * @return the querydsl bindings
 	 */
 	private QuerydslBindings extractQdslBindings(QuerydslPredicate predicate) {
-		ClassTypeInformation<?> classTypeInformation = ClassTypeInformation.from(predicate.root());
-		TypeInformation<?> domainType = classTypeInformation.getRequiredActualType();
-
-		Optional<Class<? extends QuerydslBinderCustomizer<?>>> bindingsAnnotation = Optional.of(predicate)
-				.map(QuerydslPredicate::bindings)
-				.map(CastUtils::cast);
+		// Replacement for ClassTypeInformation.from(...).getRequiredActualType()
+		TypeInformation<?> domainType = TypeInformation
+				.of(ResolvableType.forClass(predicate.root()))
+				.getRequiredActualType();
+		// Replacement for CastUtils::cast
+		Optional<Class<? extends QuerydslBinderCustomizer<?>>> bindingsAnnotation =
+				Optional.of(predicate)
+						.map(QuerydslPredicate::bindings)
+						.map(clazz -> {
+							@SuppressWarnings("unchecked")
+							Class<? extends QuerydslBinderCustomizer<?>> typed =
+									(Class<? extends QuerydslBinderCustomizer<?>>) clazz;
+							return typed;
+						});
 
 		return bindingsAnnotation
-				.map(it -> querydslBindingsFactory.createBindingsFor(domainType, it))
+				.map(customizer -> querydslBindingsFactory.createBindingsFor(domainType, customizer))
 				.orElseGet(() -> querydslBindingsFactory.createBindingsFor(domainType));
 	}
 

@@ -26,7 +26,7 @@
 
 package test.org.springdoc.api.v30.app153;
 
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxRegistrations;
+import org.springframework.boot.webflux.autoconfigure.WebFluxRegistrations;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 

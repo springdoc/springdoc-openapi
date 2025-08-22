@@ -40,8 +40,9 @@ public class WebConfig {
 
 	@Bean
 	public SecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
-		http.formLogin()
-				.loginProcessingUrl("/api/login");
+		http.formLogin(form -> form
+				.loginProcessingUrl("/api/login")
+		);
 		return http.build();
 	}
 

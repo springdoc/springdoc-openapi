@@ -11,19 +11,20 @@
     }
   ],
   "paths": {
-    "/persons2": {
+    "/persons": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons2",
+        "operationId": "persons",
         "parameters": [
           {
             "name": "name",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1
             }
           }
         ],
@@ -42,19 +43,20 @@
         }
       }
     },
-    "/persons": {
+    "/persons2": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons",
+        "operationId": "persons2",
         "parameters": [
           {
             "name": "name",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1
             }
           }
         ],

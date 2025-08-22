@@ -26,20 +26,15 @@
 
 package test.org.springdoc.api.v31.app25.model;
 
+
 import java.util.UUID;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @MappedSuperclass
 public abstract class BaseEntity {
 
@@ -53,4 +48,15 @@ public abstract class BaseEntity {
 			id = UUID.randomUUID();
 	}
 
+	public BaseEntity(UUID id) {
+		this.id = id;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
 }

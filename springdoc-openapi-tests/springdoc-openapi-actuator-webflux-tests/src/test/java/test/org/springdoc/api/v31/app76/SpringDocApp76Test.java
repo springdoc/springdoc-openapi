@@ -39,7 +39,7 @@ public class SpringDocApp76Test extends AbstractSpringDocTest {
 	protected void testApp() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/actuator").exchange().expectStatus().isOk().expectBody()
 				.jsonPath("$.openapi").isEqualTo("3.1.0")
-				.jsonPath("$.paths./actuator/health.get.operationId").exists();
+				.jsonPath("$.paths./actuator.get.operationId").exists();
 	}
 
 }

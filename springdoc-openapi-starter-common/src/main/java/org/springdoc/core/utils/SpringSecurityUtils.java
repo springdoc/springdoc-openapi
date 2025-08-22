@@ -24,22 +24,24 @@
  *
  */
 
-package test.org.springdoc.api.v31.app24;
+package org.springdoc.core.utils;
 
-import com.querydsl.core.types.Predicate;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.web.util.pattern.PathPattern;
 
+/**
+ * @author bnasslahsen
+ */
+public final class SpringSecurityUtils {
 
-@RestController
-public class TesteResource {
-
-	@GetMapping("/")
-	public Page<User> testeQueryDslAndSpringDoc(@QuerydslPredicate(root = User.class, bindings = UserPredicate.class) Predicate predicate, Pageable pageable) {
-		return null;
+	public static String getPath(PathPatternRequestMatcher pathPatternRequestMatcher) throws IllegalAccessException {
+		PathPattern pathPattern = (PathPattern) FieldUtils.readField(
+				pathPatternRequestMatcher,
+				"pattern",
+				true
+		);
+		return pathPattern.getPatternString();
 	}
 }

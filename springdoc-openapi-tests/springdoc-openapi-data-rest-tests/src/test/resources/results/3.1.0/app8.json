@@ -21,7 +21,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/PagedModelAlbum"
                 }
@@ -46,12 +46,6 @@
           "releaseDate": {
             "type": "string"
           }
-        }
-      },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
         }
       },
       "PageMetadata": {
@@ -124,6 +118,12 @@
           "templated": {
             "type": "boolean"
           }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
         }
       }
     }

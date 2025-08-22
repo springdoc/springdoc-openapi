@@ -33,9 +33,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -43,12 +40,9 @@ import org.hibernate.annotations.DynamicUpdate;
  * @author bnasslahsen
  */
 
-@Data
 @MappedSuperclass
-@DynamicInsert(true)
-@DynamicUpdate(true)
-@SuperBuilder(toBuilder = true)
-@NoArgsConstructor
+@DynamicInsert
+@DynamicUpdate
 public abstract class BaseEntity implements Serializable {
 
 	/**
@@ -71,4 +65,19 @@ public abstract class BaseEntity implements Serializable {
 	 * @return 是否合法
 	 */
 	public abstract boolean isValid();
+
+	public BaseEntity(Long id) {
+		this.id = id;
+	}
+
+	public BaseEntity() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

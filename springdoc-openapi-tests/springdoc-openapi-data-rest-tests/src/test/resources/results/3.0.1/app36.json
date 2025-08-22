@@ -34,7 +34,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelEnumFieldHolder"
                 }
@@ -73,7 +73,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/hal+json": {
+              "application/vnd.hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/CollectionModelEntityModelEnumFieldHolder"
                 }

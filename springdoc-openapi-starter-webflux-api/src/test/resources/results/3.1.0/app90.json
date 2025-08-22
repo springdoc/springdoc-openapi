@@ -420,7 +420,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/stream+json": {
+              "application/octet-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/Position"
                 }
@@ -509,7 +509,7 @@
                   }
                 }
               },
-              "application/stream+json": {
+              "application/octet-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/Quote"
                 }

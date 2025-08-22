@@ -49,7 +49,7 @@ public class QuoteHandler {
 
 	public Mono<ServerResponse> hello(ServerRequest request) {
 		return ServerResponse.ok().contentType(MediaType.TEXT_PLAIN)
-				.body(BodyInserters.fromObject("Hello Spring!"));
+				.body(BodyInserters.fromValue("Hello Spring!"));
 	}
 
 	public Mono<ServerResponse> echo(ServerRequest request) {
@@ -59,7 +59,7 @@ public class QuoteHandler {
 
 	public Mono<ServerResponse> streamQuotes(ServerRequest request) {
 		return ServerResponse.ok()
-				.contentType(MediaType.APPLICATION_STREAM_JSON)
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
 				.body(this.quoteStream, Quote.class);
 	}
 

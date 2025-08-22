@@ -29,7 +29,6 @@ package test.org.springdoc.api.v30.app2.config;
 import java.time.LocalDate;
 
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import test.org.springdoc.api.v30.app2.entities.Post;
 import test.org.springdoc.api.v30.app2.repositories.PostRepository;
 
@@ -40,10 +39,13 @@ import org.springframework.context.annotation.Configuration;
  * 2020
  */
 @Configuration
-@RequiredArgsConstructor
 public class DatabaseConfig {
 
 	private final PostRepository postRepository;
+
+	public DatabaseConfig(PostRepository postRepository) {
+		this.postRepository = postRepository;
+	}
 
 	@PostConstruct
 	private void postConstruct() {

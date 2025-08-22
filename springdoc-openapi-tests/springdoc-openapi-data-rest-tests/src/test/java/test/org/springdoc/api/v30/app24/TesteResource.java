@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v30.app24;
 
 import com.querydsl.core.types.Predicate;
-import lombok.AllArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@AllArgsConstructor
 public class TesteResource {
 
 	@GetMapping("/")
