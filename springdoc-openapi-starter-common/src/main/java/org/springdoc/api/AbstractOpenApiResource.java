@@ -419,6 +419,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			return openAPI;
 		}
 		finally {
+            JavadocProvider javadocProvider = operationParser.getJavadocProvider();
+            if (javadocProvider != null) {
+                javadocProvider.clean();
+            }
 			this.reentrantLock.unlock();
 		}
 	}
