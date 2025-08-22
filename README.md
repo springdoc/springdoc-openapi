@@ -67,7 +67,7 @@ The generated documentation can be complemented using `swagger-api` annotations.
 This library supports:
 
 * OpenAPI 3
-* Spring-boot v3 (Java 17 & Jakarta EE 9)
+* Spring-boot v4 (Java 17 & Jakarta EE 9)
 * JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
 * Swagger-ui
 * OAuth 2
@@ -77,7 +77,7 @@ The following video introduces the Library:
 
 * [https://youtu.be/utRxyPfFlDw](https://youtu.be/utRxyPfFlDw)
 
-For *spring-boot v3* support, make sure you
+For *Spring-boot v4* support, make sure you
 use [springdoc-openapi v2](https://springdoc.org/)
 
 This is a community-based project, not maintained by the Spring Framework Contributors (
