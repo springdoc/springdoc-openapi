@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.springdoc</groupId>
 		<artifactId>springdoc-openapi</artifactId>
-		<version>3.0.0-M1</version>
+		<version>3.0.0-M2-SNAPSHOT</version>
 	</parent>
 	<artifactId>springdoc-openapi-starter-webflux-api</artifactId>
 	<name>${project.artifactId}</name>
