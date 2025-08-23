@@ -26,11 +26,14 @@
 
 package org.springdoc.core.utils;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.models.media.ComposedSchema;
@@ -39,6 +42,8 @@ import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ConverterUtils;
@@ -65,6 +70,11 @@ public class SpringDocUtils {
 	 * The constant springDocConfig.
 	 */
 	private static final SpringDocUtils springDocConfig = new SpringDocUtils();
+
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocUtils.class);
 
 	/**
 	 * Instantiates a new Spring doc utils.
@@ -560,6 +570,48 @@ public class SpringDocUtils {
 		customClasses().remove("java.util.Charset");
 		customClasses().remove("java.util.Locale");
 		return this;
+	}
+
+	/**
+	 * Clone via json t.
+	 *
+	 * @param <T>        the type parameter
+	 * @param source     the source
+	 * @param targetType the target type
+	 * @return the t
+	 */
+	public static  <T> T cloneViaJson(Object source, Class<T> targetType, ObjectMapper mapper) {
+		if (source == null) return null;
+		try {
+			return mapper.readValue(mapper.writeValueAsBytes(source), targetType);
+		}
+		catch (IOException e) {
+			LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+			@SuppressWarnings("unchecked")
+			T fallback = (T) source; 
+			return fallback;
+		}
+	}
+
+	/**
+	 * Clone via json t.
+	 *
+	 * @param <T>     the type parameter
+	 * @param source  the source
+	 * @param typeRef the type ref
+	 * @return the t
+	 */
+	public static  <T> T cloneViaJson(Object source, TypeReference<T> typeRef, ObjectMapper mapper) {
+		if (source == null) return null;
+		try {
+			return mapper.readValue(mapper.writeValueAsBytes(source), typeRef);
+		}
+		catch (IOException e) {
+			LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+			@SuppressWarnings("unchecked")
+			T fallback = (T) source;
+			return fallback;
+		}
 	}
 
 }

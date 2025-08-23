@@ -77,6 +77,7 @@ import org.springdoc.core.models.ParameterInfo;
 import org.springdoc.core.models.RequestBodyInfo;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.SchemaUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
@@ -102,6 +103,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
 import static org.springdoc.core.service.GenericParameterService.isFile;
+import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -664,7 +666,9 @@ public abstract class AbstractRequestService {
 					java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();
 					for (java.lang.reflect.AnnotatedType typeArg : typeArgs) {
 						List<Annotation> genericAnnotations = Arrays.stream(typeArg.getAnnotations()).toList();
-						SchemaUtils.applyValidationsToSchema(schema.getItems(), genericAnnotations, openapiVersion);
+						Schema schemaItemsClone = cloneViaJson(schema.getItems(), Schema.class,  ObjectMapperProvider.createJson(parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties()));
+						schema.items(schemaItemsClone);
+						SchemaUtils.applyValidationsToSchema(schemaItemsClone, genericAnnotations, openapiVersion);
 					}
 				}
 			}

@@ -208,7 +208,7 @@ public class SpringDocJavadocProvider implements JavadocProvider {
     }
 
     @Override
-    public void clean() {
+    public void clearCache() {
         classJavadocCache.clear();
     }
 }

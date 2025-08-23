@@ -106,5 +106,5 @@ public interface JavadocProvider {
     /**
      * Clean the temp resources.
      */
-    default void clean() {}
+    default void clearCache() {}
 }

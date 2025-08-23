@@ -32,6 +32,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -44,6 +45,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.core.converter.ModelConverterContextImpl;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
@@ -65,6 +68,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.providers.JavadocProvider;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -91,6 +95,11 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 */
 	private static final List<Class> ANNOTATIONS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
 
+	/**
+	 * The reusable context
+	 */
+	private static final ThreadLocal<Map<Boolean, ModelConverterContext>> MODEL_CONVERTER_CONTEXT_MAP = ThreadLocal.withInitial(HashMap::new);
+	
 	static {
 		ANNOTATIONS_TO_IGNORE.add(Hidden.class);
 		ANNOTATIONS_TO_IGNORE.add(JsonIgnore.class);
@@ -131,18 +140,16 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations, SpecVersion specVersion) {
 		if (returnType == null) return null;
 		Schema schemaN = null;
-		ResolvedSchema resolvedSchema;
 		boolean openapi31 = SpecVersion.V31 == specVersion;
-		try {
-			resolvedSchema = ModelConverters.getInstance(openapi31)
-					.resolveAsResolvedSchema(
-							new AnnotatedType(returnType)
-									.resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
-		}
-		catch (Exception e) {
-			LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
-			return null;
-		}
+		if (jsonView != null)
+			annotations = ArrayUtils.addAll(annotations, jsonView);
+
+		AnnotatedType annotatedType = new AnnotatedType(returnType)
+				.resolveAsRef(true)
+				.jsonViewAnnotation(jsonView)
+				.ctxAnnotations(annotations);
+		ResolvedSchema resolvedSchema = resolveAsResolvedSchema(openapi31, annotatedType);
+
 		if (resolvedSchema != null) {
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
 			if (!CollectionUtils.isEmpty(schemaMap) && components != null) {
@@ -483,6 +490,15 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return defaultValue;
 	}
 
+	/**
+	 * Gets headers.
+	 *
+	 * @param annotationHeaders  the annotation headers
+	 * @param components         the components
+	 * @param jsonViewAnnotation the json view annotation
+	 * @param openapi31          the openapi 31
+	 * @return the headers
+	 */
 	public static Optional<Map<String, Header>> getHeaders(io.swagger.v3.oas.annotations.headers.Header[] annotationHeaders, Components components, JsonView jsonViewAnnotation, boolean openapi31) {
 		Optional<Map<String, Header>> headerMap = AnnotationsUtils.getHeaders(annotationHeaders, components, jsonViewAnnotation, openapi31);
 		if (openapi31) {
@@ -496,4 +512,49 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		}
 		return headerMap;
 	}
+
+	/**
+	 * Clear cache.
+	 *
+	 * @param javadocProvider the javadoc provider
+	 */
+	public static void clearCache(JavadocProvider javadocProvider) {
+		if (javadocProvider != null)
+			javadocProvider.clearCache();
+		MODEL_CONVERTER_CONTEXT_MAP.remove();;
+	}
+	
+	/**
+	 * Resolve as resolved schema resolved schema.
+	 *
+	 * @param openapi31 the openapi 31
+	 * @param type      the type
+	 * @return the resolved schema
+	 */
+	private static ResolvedSchema resolveAsResolvedSchema(boolean openapi31, AnnotatedType type) {
+		try {
+			ModelConverterContext modelConverterContext = getModelConverterContext(openapi31);
+			ResolvedSchema resolvedSchema = new ResolvedSchema();
+			resolvedSchema.schema = modelConverterContext.resolve(type);
+			resolvedSchema.referencedSchemas = modelConverterContext.getDefinedModels();
+			return resolvedSchema;
+		}
+		catch (Exception e) {
+			LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
+			return null;
+		}
+	}
+
+	/**
+	 * Gets model converter context.
+	 *
+	 * @param openapi31 the openapi 31
+	 * @return the model converter context
+	 */
+	private static ModelConverterContext getModelConverterContext(boolean openapi31) {
+		Map<Boolean, ModelConverterContext> perThread = MODEL_CONVERTER_CONTEXT_MAP.get();
+		return perThread.computeIfAbsent(openapi31, key ->
+				new ModelConverterContextImpl(ModelConverters.getInstance(openapi31).getConverters()));
+	}
+
 }
