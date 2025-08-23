@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.springdoc</groupId>
 		<artifactId>springdoc-openapi-tests</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>3.0.0-M1</version>
 	</parent>
 	<artifactId>springdoc-openapi-security-tests</artifactId>
 	<name>${project.artifactId}</name>
