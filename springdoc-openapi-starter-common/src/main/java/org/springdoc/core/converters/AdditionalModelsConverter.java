@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -41,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
+import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
 
 /**
@@ -164,17 +164,12 @@ public class AdditionalModelsConverter implements ModelConverter {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
-			if (modelToSchemaMap.containsKey(cls))
-				try {
-					Schema schema = modelToSchemaMap.get(cls);
-					if (springDocObjectMapper.isOpenapi31())
-						handleSchemaTypes(schema);
-					return springDocObjectMapper.jsonMapper()
-							.readValue(springDocObjectMapper.jsonMapper().writeValueAsString(schema), new TypeReference<Schema>() {});
-				}
-				catch (JsonProcessingException e) {
-					LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
-				}
+			if (modelToSchemaMap.containsKey(cls)) {
+				Schema schema = modelToSchemaMap.get(cls);
+				if (springDocObjectMapper.isOpenapi31())
+					handleSchemaTypes(schema);
+				return cloneViaJson(schema, new TypeReference<Schema>() {}, springDocObjectMapper.jsonMapper());
+			}
 			if (modelToClassMap.containsKey(cls))
 				type = new AnnotatedType(modelToClassMap.get(cls)).resolveAsRef(true);
 		}

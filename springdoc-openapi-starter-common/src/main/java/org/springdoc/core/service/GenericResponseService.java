@@ -51,8 +51,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
@@ -99,6 +97,7 @@ import static org.springdoc.core.utils.Constants.DEFAULT_DESCRIPTION;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.getContent;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
+import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 
 /**
@@ -753,17 +752,7 @@ public class GenericResponseService implements ApplicationContextAware {
 					}
 				}
 			}
-
-			LinkedHashMap<String, ApiResponse> genericApiResponsesClone;
-			try {
-				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
-				genericApiResponsesClone = objectMapper.readValue(objectMapper.writeValueAsString(genericApiResponseMap), ApiResponses.class);
-				return genericApiResponsesClone;
-			}
-			catch (JsonProcessingException e) {
-				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
-				return genericApiResponseMap;
-			}
+			return cloneViaJson(genericApiResponseMap, ApiResponses.class, ObjectMapperProvider.createJson(springDocConfigProperties));
 		}
 		finally {
 			reentrantLock.unlock();

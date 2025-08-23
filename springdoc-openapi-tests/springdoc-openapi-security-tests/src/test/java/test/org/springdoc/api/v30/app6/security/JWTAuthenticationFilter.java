@@ -47,6 +47,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
+
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -72,10 +74,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
 			throws AuthenticationException {
 		try {
-
-			UserCredentials credentials =
-					new ObjectMapper().readValue(req.getInputStream(), UserCredentials.class);
-
+			UserCredentials credentials =cloneViaJson(req.getInputStream(), UserCredentials.class, new ObjectMapper());
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(credentials.getUsername(),
 							credentials.getPassword(), new ArrayList<>()));

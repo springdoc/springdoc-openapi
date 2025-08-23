@@ -47,7 +47,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
@@ -98,6 +97,7 @@ import org.springframework.web.method.HandlerMethod;
 import static org.springdoc.core.utils.Constants.DEFAULT_SERVER_DESCRIPTION;
 import static org.springdoc.core.utils.Constants.DEFAULT_TITLE;
 import static org.springdoc.core.utils.Constants.DEFAULT_VERSION;
+import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
@@ -246,14 +246,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			calculatedOpenAPI.setPaths(new Paths());
 		}
 		else {
-			try {
-				ObjectMapper objectMapper = new ObjectMapper();
-				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class);
-			}
-			catch (JsonProcessingException e) {
-				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
-				calculatedOpenAPI = openAPI;
-			}
+			calculatedOpenAPI = cloneViaJson(openAPI, OpenAPI.class, new ObjectMapper());
 		}
 
 		if (apiDef.isPresent()) {
