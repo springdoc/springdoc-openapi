@@ -43,8 +43,10 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
+import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.models.ParameterInfo;
 import org.springdoc.core.models.RequestBodyInfo;
@@ -100,21 +102,32 @@ public class DataRestRequestService {
 	private final SpringDocDataRestUtils springDocDataRestUtils;
 
 	/**
+	 * The Optional delegating method parameter customizers.
+	 */
+	private final Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers;
+
+	/**
+	 * The Method parameter pojo extractor.
+	 */
+	private final MethodParameterPojoExtractor methodParameterPojoExtractor;
+
+	/**
 	 * Instantiates a new Data rest request builder.
 	 *
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
-	 * @param parameterBuilder                      the parameter builder
-	 * @param requestBodyService                    the request body builder
 	 * @param requestBuilder                        the request builder
 	 * @param springDocDataRestUtils                the spring doc data rest utils
 	 */
-	public DataRestRequestService(SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
-			RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
+	public DataRestRequestService(SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer, 
+			AbstractRequestService requestBuilder,
+			SpringDocDataRestUtils springDocDataRestUtils) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
-		this.parameterBuilder = parameterBuilder;
-		this.requestBodyService = requestBodyService;
 		this.requestBuilder = requestBuilder;
 		this.springDocDataRestUtils = springDocDataRestUtils;
+		this.optionalDelegatingMethodParameterCustomizers = requestBuilder.getOptionalDelegatingMethodParameterCustomizers();
+		this.methodParameterPojoExtractor = requestBuilder.getMethodParameterPojoExtractor();
+		this.parameterBuilder = requestBuilder.getParameterBuilder();
+		this.requestBodyService=requestBuilder.getRequestBodyBuilder();
 	}
 
 	/**
@@ -156,7 +169,7 @@ public class DataRestRequestService {
 	 */
 	public void buildCommonParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters,
 			DataRestRepository dataRestRepository) {
-		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getOptionalDelegatingMethodParameterCustomizers(), requestBuilder.isDefaultFlatParamObject());
+		parameters = DelegatingMethodParameter.customize(pNames, parameters, this.optionalDelegatingMethodParameterCustomizers, this.methodParameterPojoExtractor, requestBuilder.isDefaultFlatParamObject());
 		Class<?> domainType = dataRestRepository.getDomainType();
 		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();

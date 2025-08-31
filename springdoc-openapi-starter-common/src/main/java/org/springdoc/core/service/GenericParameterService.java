@@ -62,7 +62,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.models.ParameterInfo;
@@ -116,11 +115,6 @@ public class GenericParameterService {
 	}
 
 	/**
-	 * The Optional delegating method parameter customizer.
-	 */
-	private final Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers;
-
-	/**
 	 * The Web conversion service.
 	 */
 	private final Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider;
@@ -154,15 +148,13 @@ public class GenericParameterService {
 	 * Instantiates a new Generic parameter builder.
 	 *
 	 * @param propertyResolverUtils                        the property resolver utils
-	 * @param optionalDelegatingMethodParameterCustomizers the optional list delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider         the optional web conversion service provider
 	 * @param objectMapperProvider                         the object mapper provider
 	 * @param javadocProviderOptional                      the javadoc provider
 	 */
-	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
+	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, 
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProviderOptional) {
 		this.propertyResolverUtils = propertyResolverUtils;
-		this.optionalDelegatingMethodParameterCustomizers = optionalDelegatingMethodParameterCustomizers;
 		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
 		this.configurableBeanFactory = propertyResolverUtils.getFactory();
 		this.expressionContext = (configurableBeanFactory != null ? new BeanExpressionContext(configurableBeanFactory, new RequestScope()) : null);
@@ -550,15 +542,6 @@ public class GenericParameterService {
 			Class type = methodParameter.getParameterType();
 			return isFile(type);
 		}
-	}
-
-	/**
-	 * Gets optional delegating method parameter customizers.
-	 *
-	 * @return the optional delegating method parameter customizers
-	 */
-	public Optional<List<DelegatingMethodParameterCustomizer>> getOptionalDelegatingMethodParameterCustomizers() {
-		return optionalDelegatingMethodParameterCustomizers;
 	}
 
 	/**

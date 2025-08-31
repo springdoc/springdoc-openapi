@@ -32,6 +32,7 @@ import org.springdoc.core.customizers.KotlinDeprecatedPropertyCustomizer
 import org.springdoc.core.extractor.DelegatingMethodParameter
 import org.springdoc.core.providers.ObjectMapperProvider
 import org.springdoc.core.utils.Constants
+import org.springdoc.core.utils.SpringDocKotlinUtils
 import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -92,14 +93,8 @@ class SpringDocKotlinConfiguration() {
 			matchIfMissing = true
 		)
 		@Lazy(false)
-		fun kotlinDefaultsInParamObjects(): DelegatingMethodParameterCustomizer =
-			DelegatingMethodParameterCustomizer { _, mp ->
-				val kProp = mp.containingClass.kotlin.primaryConstructor
-					?.parameters
-					?.firstOrNull { it.name == mp.parameterName }
-				if (kProp?.isOptional == true)
-					(mp as DelegatingMethodParameter).isNotRequired = true
-			}
+		fun springDocKotlinUtils(): SpringDocKotlinUtils =
+			SpringDocKotlinUtils()
 	}
 
 }

@@ -26,13 +26,12 @@
 
 package org.springdoc.webflux.core.configuration;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springdoc.core.configuration.SpringDocConfiguration;
-import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
+import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.SpringDocProviders;
@@ -110,18 +109,20 @@ public class SpringDocWebFluxConfiguration {
 	 *
 	 * @param parameterBuilder                      the parameter builder
 	 * @param requestBodyService                    the request body builder
-	 * @param parameterCustomizers                  the parameter customizers
+	 * @param customizers                           the customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+	 * @param methodParameterPojoExtractor          the method parameter pojo extractor
 	 * @return the request builder
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			Optional<List<ParameterCustomizer>> parameterCustomizers,
-			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			SpringDocCustomizers customizers,
+			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+			MethodParameterPojoExtractor methodParameterPojoExtractor) {
 		return new RequestService(parameterBuilder, requestBodyService,
-				parameterCustomizers, localSpringDocParameterNameDiscoverer);
+				customizers, localSpringDocParameterNameDiscoverer,methodParameterPojoExtractor);
 	}
 
 	/**

@@ -42,11 +42,9 @@ import org.springdoc.core.providers.DataRestHalProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringRepositoryRestResourceProvider;
 import org.springdoc.core.service.AbstractRequestService;
-import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -173,8 +171,6 @@ public class SpringDocDataRestConfiguration {
 		 * Data rest request builder data rest request builder.
 		 *
 		 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
-		 * @param parameterBuilder                      the parameter builder
-		 * @param requestBodyService                    the request body builder
 		 * @param requestBuilder                        the request builder
 		 * @param springDocDataRestUtils                the spring doc data rest utils
 		 * @return the data rest request builder
@@ -182,10 +178,9 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		DataRestRequestService dataRestRequestBuilder(SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
-				RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
-			return new DataRestRequestService(localSpringDocParameterNameDiscoverer, parameterBuilder,
-					requestBodyService, requestBuilder, springDocDataRestUtils);
+		DataRestRequestService dataRestRequestBuilder(SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer, 
+				AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
+			return new DataRestRequestService(localSpringDocParameterNameDiscoverer, requestBuilder, springDocDataRestUtils);
 		}
 
 		/**

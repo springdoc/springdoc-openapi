@@ -68,6 +68,7 @@ import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.OperationIdCustomizer;
+import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.customizers.ParameterObjectNamingStrategyCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.QuerydslPredicateOperationCustomizer;
@@ -75,6 +76,7 @@ import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
+import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
@@ -97,6 +99,8 @@ import org.springdoc.core.service.OperationService;
 import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.service.SecurityService;
 import org.springdoc.core.utils.PropertyResolverUtils;
+import org.springdoc.core.utils.SchemaUtils;
+import org.springdoc.core.utils.SpringDocKotlinUtils;
 import reactor.core.publisher.Flux;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -383,7 +387,6 @@ public class SpringDocConfiguration {
 	 * Parameter builder generic parameter builder.
 	 *
 	 * @param propertyResolverUtils                        the property resolver utils
-	 * @param optionalDelegatingMethodParameterCustomizers the optional list delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider         the optional web conversion service provider
 	 * @param objectMapperProvider                         the object mapper provider
 	 * @param javadocProvider                              the javadoc provider
@@ -393,9 +396,8 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
-			Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProvider) {
-		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizers,
+		return new GenericParameterService(propertyResolverUtils,
 				optionalWebConversionServiceProvider, objectMapperProvider, javadocProvider);
 	}
 
@@ -475,12 +477,15 @@ public class SpringDocConfiguration {
 			Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
 			Optional<Set<OpenApiMethodFilter>> methodFilters, Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers,
 			Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
-			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
+			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters,
+			Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
+			Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		return new SpringDocCustomizers(openApiCustomizers,
 				operationCustomizers,
 				routerOperationCustomizers,
 				dataRestRouterOperationCustomizers,
-				methodFilters, globalOpenApiCustomizers, globalOperationCustomizers, globalOpenApiMethodFilters);
+				methodFilters, globalOpenApiCustomizers, globalOperationCustomizers, globalOpenApiMethodFilters,
+				optionalDelegatingMethodParameterCustomizers, parameterCustomizers);
 	}
 
 	/**
@@ -685,5 +690,31 @@ public class SpringDocConfiguration {
 		public ResponseEntity<ErrorMessage> handleNoHandlerFound(OpenApiResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(e.getMessage()));
 		}
+	}
+
+	/**
+	 * Schema utils schema utils.
+	 *
+	 * @param springDocKotlinUtils the spring doc kotlin utils
+	 * @return the schema utils
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	SchemaUtils schemaUtils(Optional<SpringDocKotlinUtils> springDocKotlinUtils){
+		return new SchemaUtils(springDocKotlinUtils);
+	}
+
+	/**
+	 * Method parameter pojo extractor method parameter pojo extractor.
+	 *
+	 * @param schemaUtils the schema utils
+	 * @return the method parameter pojo extractor
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	MethodParameterPojoExtractor methodParameterPojoExtractor(SchemaUtils schemaUtils){
+		return new MethodParameterPojoExtractor(schemaUtils);
 	}
 }
