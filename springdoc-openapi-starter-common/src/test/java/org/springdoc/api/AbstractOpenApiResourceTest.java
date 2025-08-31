@@ -141,7 +141,7 @@ class AbstractOpenApiResourceTest {
 				responseBuilder,
 				operationParser,
 				new SpringDocConfigProperties(),
-				springDocProviders, new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty())
+				springDocProviders, new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),Optional.empty(), Optional.empty())
 		);
 
 		final Parameter refParameter = new Parameter().$ref(PARAMETER_REFERENCE);
@@ -208,7 +208,7 @@ class AbstractOpenApiResourceTest {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
-				properties, springDocProviders, new SpringDocCustomizers(Optional.of(singleton(openApiCustomizer)), Optional.empty(), Optional.empty(), Optional.empty())
+				properties, springDocProviders, new SpringDocCustomizers(Optional.of(singleton(openApiCustomizer)), Optional.empty(), Optional.empty(), Optional.empty(),Optional.empty(), Optional.empty())
 		);
 
 		// wait for executor to be done
@@ -240,7 +240,7 @@ class AbstractOpenApiResourceTest {
 				responseBuilder,
 				operationParser,
 				properties,
-				springDocProviders, new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty())
+				springDocProviders, new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),Optional.empty(), Optional.empty())
 		);
 
 		// wait for executor to be done

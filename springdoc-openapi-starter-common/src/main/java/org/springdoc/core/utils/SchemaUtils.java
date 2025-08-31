@@ -1,7 +1,10 @@
 package org.springdoc.core.utils;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,6 +17,7 @@ import java.util.OptionalLong;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import io.swagger.v3.oas.models.media.Schema;
@@ -27,15 +31,15 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import kotlin.reflect.KProperty;
-import kotlin.reflect.jvm.ReflectJvmMapping;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 
-import org.springframework.core.KotlinDetector;
 import org.springframework.lang.Nullable;
 
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
+import static org.springdoc.core.utils.SpringDocKotlinUtils.isKotlinDeclaringClass;
+import static org.springdoc.core.utils.SpringDocKotlinUtils.kotlinConstructorParamIsOptional;
+import static org.springdoc.core.utils.SpringDocKotlinUtils.kotlinNullability;
 
 /**
  * The type Validation utils.
@@ -57,6 +61,11 @@ public class SchemaUtils {
 			"NotEmpty");
 
 	/**
+	 * The constant ANNOTATIONS_FOR_NULLABLE.
+	 */
+	public static final List<String> ANNOTATIONS_FOR_NULLABLE =
+			Arrays.asList("Nullable");
+	/**
 	 * The constant OPTIONAL_TYPES.
 	 */
 	private static final Set<Class<?>> OPTIONAL_TYPES = new HashSet<>();
@@ -69,9 +78,17 @@ public class SchemaUtils {
 	}
 
 	/**
-	 * The constructor.
+	 * The Kotlin utils optional.
 	 */
-	private SchemaUtils() {
+	private final Optional<SpringDocKotlinUtils> kotlinUtilsOptional;
+
+	/**
+	 * The constructor.
+	 *
+	 * @param kotlinUtilsOptional the kotlin utils optional
+	 */
+	public SchemaUtils(Optional<SpringDocKotlinUtils> kotlinUtilsOptional) {
+		this.kotlinUtilsOptional = kotlinUtilsOptional;
 	}
 
 	/**
@@ -122,16 +139,6 @@ public class SchemaUtils {
 	}
 
 	/**
-	 * Check if the parameter has any of the annotations that make it non-optional
-	 *
-	 * @param annotationSimpleNames the annotation simple class named, e.g. NotNull
-	 * @return whether any of the known NotNull annotations are present
-	 */
-	public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
-		return ANNOTATIONS_FOR_REQUIRED.stream().anyMatch(annotationSimpleNames::contains);
-	}
-
-	/**
 	 * Is annotated notnull.
 	 *
 	 * @param annotations the field annotations
@@ -151,17 +158,25 @@ public class SchemaUtils {
 	 * @param field the field
 	 * @return the boolean
 	 */
-	public static boolean fieldNullable(Field field) {
+	public boolean fieldNullable(Field field) {
+		// primitives cannot be null
+		if (field.getType().isPrimitive()) return false;
+
+		// Optional-like wrappers
 		if (OPTIONAL_TYPES.stream().anyMatch(c -> c.isAssignableFrom(field.getType()))) {
 			return true;
 		}
-		if (KotlinDetector.isKotlinPresent() && KotlinDetector.isKotlinReflectPresent()
-				&& KotlinDetector.isKotlinType(field.getDeclaringClass())) {
-			KProperty<?> kotlinProperty = ReflectJvmMapping.getKotlinProperty(field);
-			if (kotlinProperty != null) {
-				return kotlinProperty.getReturnType().isMarkedNullable();
-			}
+
+		// @Nullable/@NotNull
+		Boolean ann = nullableFromAnnotations(field);
+		if (ann != null) return ann;
+
+		// Kotlin nullability
+		if (kotlinUtilsOptional.isPresent() && isKotlinDeclaringClass(field)) {
+			Boolean kotlin = kotlinNullability(field);
+			if (kotlin != null) return kotlin;
 		}
+
 		return JAVA_FIELD_NULLABLE_DEFAULT;
 	}
 
@@ -176,17 +191,34 @@ public class SchemaUtils {
 	 * @see io.swagger.v3.oas.annotations.media.Schema#required()
 	 * @see io.swagger.v3.oas.annotations.media.Schema#requiredMode()
 	 */
-	public static boolean fieldRequired(Field field, @Nullable io.swagger.v3.oas.annotations.media.Schema schema,
-			@Nullable Parameter parameter) {
-		Boolean swaggerRequired = swaggerRequired(schema, parameter);
-		if (swaggerRequired != null) {
-			return swaggerRequired;
+	public boolean fieldRequired(Field field, io.swagger.v3.oas.annotations.media.Schema schema, Parameter parameter) {
+		Boolean swagger = swaggerRequired(schema, parameter);
+		if (swagger != null) return swagger;
+
+		// Optional-like wrapper → not required
+		if (OPTIONAL_TYPES.stream().anyMatch(c -> c.isAssignableFrom(field.getType()))) return false;
+
+		// @Nullable/@NotNull
+		if (hasNullableAnnotation(field) || hasNullableOnGetter(field) || hasNullableOnCtorParam(field)) {
+			return false;
 		}
-		boolean annotatedNotNull = annotatedNotNull(Arrays.asList(field.getDeclaredAnnotations()));
-		if (annotatedNotNull) {
+		if (hasNotNullAnnotation(field) || hasNotNullOnGetter(field) || hasNotNullOnCtorParam(field)) {
 			return true;
 		}
-		return !fieldNullable(field);
+
+		// Kotlin logic
+		if (kotlinUtilsOptional.isPresent()  && isKotlinDeclaringClass(field)) {
+			if (fieldNullable(field)) return false;
+			Boolean hasDefault = kotlinConstructorParamIsOptional(field);
+			if (Boolean.TRUE.equals(hasDefault)) return false;
+			return true;
+		}
+
+		// Jackson @JsonProperty(required = true)
+		JsonProperty jp = getJsonProperty(field);
+		if (jp != null && jp.required()) return true;
+
+		return false;
 	}
 
 	/**
@@ -273,4 +305,197 @@ public class SchemaUtils {
 		}
 	}
 
+	/**
+	 * Nullable from annotations boolean.
+	 *
+	 * @param field the field
+	 * @return the boolean
+	 */
+	private static Boolean nullableFromAnnotations(Field field) {
+		if (hasNullableAnnotation(field)) return true;
+		if (hasNotNullAnnotation(field)) return false;
+		Method getter = findGetter(field);
+		if (getter != null) {
+			if (hasNullableAnnotation(getter)) return true;
+			if (hasNotNullAnnotation(getter)) return false;
+		}
+		return null;
+	}
+
+	/**
+	 * Has nullable annotation boolean.
+	 *
+	 * @param el the el
+	 * @return the boolean
+	 */
+	private static boolean hasNullableAnnotation(AnnotatedElement el) {
+		if (el == null) return false;
+		for (Annotation ann : el.getAnnotations()) {
+			if (ANNOTATIONS_FOR_NULLABLE.contains(ann.annotationType().getSimpleName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
+	 * Has not null annotation boolean.
+	 *
+	 * @param el the el
+	 * @return the boolean
+	 */
+	private static boolean hasNotNullAnnotation(AnnotatedElement el) {
+		if (el == null) {
+			return false;
+		}
+		for (Annotation ann : el.getAnnotations()) {
+			String simpleName = ann.annotationType().getSimpleName();
+			if (ANNOTATIONS_FOR_REQUIRED.contains(simpleName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Has nullable on getter boolean.
+	 *
+	 * @param f the f
+	 * @return the boolean
+	 */
+	private static boolean hasNullableOnGetter(Field f) {
+		Method g = findGetter(f);
+		return g != null && hasNullableAnnotation(g);
+	}
+
+	/**
+	 * Has not null on getter boolean.
+	 *
+	 * @param f the f
+	 * @return the boolean
+	 */
+	private static boolean hasNotNullOnGetter(Field f) {
+		Method g = findGetter(f);
+		return g != null && hasNotNullAnnotation(g);
+	}
+
+	/**
+	 * Has nullable on ctor param boolean.
+	 *
+	 * @param f the f
+	 * @return the boolean
+	 */
+	private static boolean hasNullableOnCtorParam(Field f) {
+		return ctorParamHasAnyAnnotationSimpleName(f, ANNOTATIONS_FOR_NULLABLE);
+	}
+
+	/**
+	 * Has not null on ctor param boolean.
+	 *
+	 * @param f the f
+	 * @return the boolean
+	 */
+	private static boolean hasNotNullOnCtorParam(Field f) {
+		return ctorParamHasAnyAnnotationSimpleName(f, ANNOTATIONS_FOR_REQUIRED);
+	}
+
+	/**
+	 * Ctor param has any annotation simple name boolean.
+	 *
+	 * @param f           the f
+	 * @param simpleNames the simple names
+	 * @return the boolean
+	 */
+	private static boolean ctorParamHasAnyAnnotationSimpleName(Field f, Collection<String> simpleNames) {
+		if (f == null || simpleNames == null || simpleNames.isEmpty()) return false;
+
+		final String fieldName = f.getName();
+		final Class<?> declaring = f.getDeclaringClass();
+
+		try {
+			for (Constructor<?> ctor : declaring.getDeclaredConstructors()) {
+				java.lang.reflect.Parameter[] params = ctor.getParameters();
+				for (java.lang.reflect.Parameter p : params) {
+					// A) compiled with -parameters
+					if (fieldName.equals(p.getName()) && paramHasAnyAnnotationSimpleName(p, simpleNames)) {
+						return true;
+					}
+					// B) fallback: @JsonProperty("fieldName") on the parameter
+					if (hasJsonPropertyName(p, fieldName) && paramHasAnyAnnotationSimpleName(p, simpleNames)) {
+						return true;
+					}
+				}
+			}
+		} catch (Throwable ignored) {
+			// best-effort only
+		}
+		return false;
+	}
+
+	/**
+	 * Param has any annotation simple name boolean.
+	 *
+	 * @param p           the p
+	 * @param simpleNames the simple names
+	 * @return the boolean
+	 */
+	private static boolean paramHasAnyAnnotationSimpleName(java.lang.reflect.Parameter p, Collection<String> simpleNames) {
+		for (Annotation ann : p.getAnnotations()) {
+			if (simpleNames.contains(ann.annotationType().getSimpleName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Has json property name boolean.
+	 *
+	 * @param p        the p
+	 * @param expected the expected
+	 * @return the boolean
+	 */
+	private static boolean hasJsonPropertyName(java.lang.reflect.Parameter p, String expected) {
+		try {
+			JsonProperty jp = p.getAnnotation(JsonProperty.class);
+			return jp != null && expected.equals(jp.value());
+		} catch (Throwable ignored) {
+			return false;
+		}
+	}
+
+	/**
+	 * Find getter method.
+	 *
+	 * @param f the f
+	 * @return the method
+	 */
+	private static Method findGetter(Field f) {
+		String n = f.getName();
+		String cap = Character.toUpperCase(n.charAt(0)) + n.substring(1);
+		String[] names = (f.getType() == boolean.class || f.getType() == Boolean.class)
+				? new String[] { "is" + cap, "get" + cap }
+				: new String[] { "get" + cap };
+		for (String m : names) {
+			try {
+				return f.getDeclaringClass().getMethod(m);
+			} catch (NoSuchMethodException ignored) {}
+		}
+		return null;
+	}
+
+	/**
+	 * Gets json property.
+	 *
+	 * @param f the f
+	 * @return the json property
+	 */
+	private static JsonProperty getJsonProperty(Field f) {
+		JsonProperty jp = f.getAnnotation(JsonProperty.class);
+		if (jp != null) return jp;
+		Method g = findGetter(f);
+		if (g != null) return g.getAnnotation(JsonProperty.class);
+		return null;
+	}
 }

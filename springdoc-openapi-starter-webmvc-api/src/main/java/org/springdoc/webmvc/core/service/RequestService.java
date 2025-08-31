@@ -30,7 +30,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
+import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.RequestBodyService;
@@ -58,12 +60,14 @@ public class RequestService extends AbstractRequestService {
 	 *
 	 * @param parameterBuilder                      the parameter builder
 	 * @param requestBodyService                    the request body builder
-	 * @param parameterCustomizers                  the parameter customizers
+	 * @param springDocCustomizers                  the spring doc customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+	 * @param methodParameterPojoExtractor          the method parameter pojo extractor
 	 */
 	public RequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			Optional<List<ParameterCustomizer>> parameterCustomizers,
-			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		super(parameterBuilder, requestBodyService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
+			SpringDocCustomizers springDocCustomizers,
+			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+			MethodParameterPojoExtractor methodParameterPojoExtractor) {
+		super(parameterBuilder, requestBodyService, springDocCustomizers, localSpringDocParameterNameDiscoverer,methodParameterPojoExtractor);
 	}
 }

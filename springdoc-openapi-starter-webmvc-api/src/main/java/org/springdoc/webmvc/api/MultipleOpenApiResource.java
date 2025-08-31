@@ -161,7 +161,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					operationParser,
 					springDocConfigProperties, springDocProviders,
 					new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()), Optional.of(item.getOperationCustomizers()),
-							Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters()))
+							Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters()), Optional.empty(), Optional.empty())
 
 			);
 		else
@@ -172,7 +172,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					operationParser,
 					springDocConfigProperties, springDocProviders,
 					new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()), Optional.of(item.getOperationCustomizers()),
-							Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters()))
+							Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters()), Optional.empty(), Optional.empty())
 			);
 	}
 

@@ -68,9 +68,12 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
+import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.models.ParameterId;
 import org.springdoc.core.models.ParameterInfo;
@@ -180,28 +183,41 @@ public abstract class AbstractRequestService {
 	 */
 	private boolean defaultSupportFormData;
 
+	/**
+	 * The Optional delegating method parameter customizers.
+	 */
+	private final Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers;
+
+	/**
+	 * The Method parameter pojo extractor.
+	 */
+	private final MethodParameterPojoExtractor methodParameterPojoExtractor;
 
 	/**
 	 * Instantiates a new Abstract request builder.
 	 *
 	 * @param parameterBuilder                      the parameter builder
 	 * @param requestBodyService                    the request body builder
-	 * @param parameterCustomizers                  the parameter customizers
+	 * @param springDocCustomizers                  the spring doc customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+	 * @param methodParameterPojoExtractor          the method parameter pojo extractor
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			Optional<List<ParameterCustomizer>> parameterCustomizers,
-			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			SpringDocCustomizers springDocCustomizers,
+			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+			MethodParameterPojoExtractor methodParameterPojoExtractor) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
+		this.optionalDelegatingMethodParameterCustomizers = springDocCustomizers.getOptionalDelegatingMethodParameterCustomizers();
+		this.methodParameterPojoExtractor = methodParameterPojoExtractor;
+		this.parameterCustomizers = springDocCustomizers.getParameterCustomizers();
 		parameterCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
-		this.parameterCustomizers = parameterCustomizers;
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.defaultFlatParamObject = parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties().isDefaultFlatParamObject();
 		this.defaultSupportFormData = parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties().isDefaultSupportFormData();
 	}
-
+	
 	/**
 	 * Add request wrapper to ignore.
 	 *
@@ -262,17 +278,6 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
-	 * deprecated use {@link SchemaUtils#hasNotNullAnnotation(Collection)}
-	 *
-	 * @param annotationSimpleNames the annotation simple names
-	 * @return boolean
-	 */
-	@Deprecated(forRemoval = true)
-	public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
-		return SchemaUtils.hasNotNullAnnotation(annotationSimpleNames);
-	}
-
-	/**
 	 * Build operation.
 	 *
 	 * @param handlerMethod    the handler method
@@ -297,7 +302,7 @@ public abstract class AbstractRequestService {
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
 		// Process: DelegatingMethodParameterCustomizer
-		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getOptionalDelegatingMethodParameterCustomizers(), this.defaultFlatParamObject);
+		parameters = DelegatingMethodParameter.customize(pNames, parameters, optionalDelegatingMethodParameterCustomizers, methodParameterPojoExtractor, this.defaultFlatParamObject);
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
@@ -843,4 +848,21 @@ public abstract class AbstractRequestService {
 		return false;
 	}
 
+	/**
+	 * Gets optional delegating method parameter customizers.
+	 *
+	 * @return the optional delegating method parameter customizers
+	 */
+	public Optional<List<DelegatingMethodParameterCustomizer>> getOptionalDelegatingMethodParameterCustomizers() {
+		return optionalDelegatingMethodParameterCustomizers;
+	}
+
+	/**
+	 * Gets method parameter pojo extractor.
+	 *
+	 * @return the method parameter pojo extractor
+	 */
+	public MethodParameterPojoExtractor getMethodParameterPojoExtractor() {
+		return methodParameterPojoExtractor;
+	}
 }

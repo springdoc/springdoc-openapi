@@ -25,6 +25,7 @@
  */
 package org.springdoc.core.customizers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -94,7 +95,15 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	 */
 	private Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters;
 
+	/**
+	 * The Optional delegating method parameter customizers.
+	 */
+	private final Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers;
 
+	/**
+	 * The Parameter customizers.
+	 */
+	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
 	/**
 	 * Instantiates a new Spring doc customizers.
 	 *
@@ -113,12 +122,14 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 			Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
 			Optional<Set<OpenApiMethodFilter>> methodFilters,
 			Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers, Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
-			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
+			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters, Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		this.openApiCustomizers = openApiCustomizers;
 		this.operationCustomizers = operationCustomizers;
 		this.globalOpenApiCustomizers = globalOpenApiCustomizers;
 		this.globalOperationCustomizers = globalOperationCustomizers;
 		this.globalOpenApiMethodFilters = globalOpenApiMethodFilters;
+		this.optionalDelegatingMethodParameterCustomizers = optionalDelegatingMethodParameterCustomizers;
+		this.parameterCustomizers = parameterCustomizers;
 		operationCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.routerOperationCustomizers = routerOperationCustomizers;
 		this.dataRestRouterOperationCustomizers = dataRestRouterOperationCustomizers;
@@ -134,11 +145,13 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	 * @param openApiMethodFilters       the open api method filters
 	 */
 	public SpringDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers, Optional<Set<OperationCustomizer>> operationCustomizers,
-			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers, Optional<Set<OpenApiMethodFilter>> openApiMethodFilters) {
+			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers, Optional<Set<OpenApiMethodFilter>> openApiMethodFilters, Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		this.openApiCustomizers = openApiCustomizers;
 		this.operationCustomizers = operationCustomizers;
 		this.routerOperationCustomizers = routerOperationCustomizers;
 		this.methodFilters = openApiMethodFilters;
+		this.optionalDelegatingMethodParameterCustomizers = optionalDelegatingMethodParameterCustomizers;
+		this.parameterCustomizers = parameterCustomizers;
 		this.dataRestRouterOperationCustomizers = Optional.empty();
 	}
 
@@ -217,6 +230,24 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	 */
 	public Optional<Set<GlobalOpenApiMethodFilter>> getGlobalOpenApiMethodFilters() {
 		return globalOpenApiMethodFilters;
+	}
+
+	/**
+	 * Gets optional delegating method parameter customizers.
+	 *
+	 * @return the optional delegating method parameter customizers
+	 */
+	public Optional<List<DelegatingMethodParameterCustomizer>> getOptionalDelegatingMethodParameterCustomizers() {
+		return optionalDelegatingMethodParameterCustomizers;
+	}
+
+	/**
+	 * Gets parameter customizers.
+	 *
+	 * @return the parameter customizers
+	 */
+	public Optional<List<ParameterCustomizer>> getParameterCustomizers() {
+		return parameterCustomizers;
 	}
 
 	@Override

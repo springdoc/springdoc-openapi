@@ -24,10 +24,12 @@
 package org.springdoc.core.extractor;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.utils.SchemaUtils;
 
 import org.springframework.core.MethodParameter;
 
@@ -37,6 +39,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests for {@link MethodParameterPojoExtractor}.
  */
 class MethodParameterPojoExtractorTest {
+
+	private MethodParameterPojoExtractor methodParameterPojoExtractor = new MethodParameterPojoExtractor(new SchemaUtils(Optional.empty()));
+
 	/**
 	 * Tests for {@link MethodParameterPojoExtractor#extractFrom(Class<?>)}.
 	 */
@@ -47,7 +52,7 @@ class MethodParameterPojoExtractorTest {
 		 */
 		@Test
 		void ifRecordObjectShouldGetField() {
-			Stream<MethodParameter> actual = MethodParameterPojoExtractor.extractFrom(RecordObject.class);
+			Stream<MethodParameter> actual = methodParameterPojoExtractor.extractFrom(RecordObject.class);
 			assertThat(actual)
 					.extracting(MethodParameter::getMethod)
 					.extracting(Method::getName)
@@ -59,7 +64,7 @@ class MethodParameterPojoExtractorTest {
 		 */
 		@Test
 		void ifClassObjectShouldGetMethod() {
-			Stream<MethodParameter> actual = MethodParameterPojoExtractor.extractFrom(ClassObject.class);
+			Stream<MethodParameter> actual = methodParameterPojoExtractor.extractFrom(ClassObject.class);
 			assertThat(actual)
 					.extracting(MethodParameter::getMethod)
 					.extracting(Method::getName)
