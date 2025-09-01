@@ -68,6 +68,8 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
@@ -118,6 +120,11 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
  */
 public abstract class AbstractRequestService {
 
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRequestService.class);
+	
 	/**
 	 * The constant PARAM_TYPES_TO_IGNORE.
 	 */
@@ -407,7 +414,12 @@ public abstract class AbstractRequestService {
 	 */
 	private LinkedHashMap<ParameterId, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
 		LinkedHashMap<ParameterId, Parameter> map = operationParameters.stream().collect(Collectors.toMap(ParameterId::new, parameter -> parameter, (u, v) -> {
-			throw new IllegalStateException(String.format("Duplicate key %s", u));
+			LOGGER.warn(
+					"Duplicate OpenAPI parameter detected: name='{}', in='{}'. Keeping the first found and ignoring the rest. " +
+							"Declare the parameter only once.",
+					u.getName(), u.getIn()
+			);
+			return u;
 		}, LinkedHashMap::new));
 
 		for (Entry<ParameterId, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
