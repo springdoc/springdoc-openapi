@@ -166,7 +166,10 @@ public class SpringDocUtils {
 	 */
 	public static void handleSchemaTypes(Schema<?> schema) {
 		if (schema != null) {
-			if (schema.getType() != null && CollectionUtils.isEmpty(schema.getTypes())) {
+			if (schema.getType() == null && schema.getTypes() == null && schema.get$ref() == null && !isComposedSchema(schema)) {
+				schema.addType("object");
+			}
+			else if (schema.getType() != null && CollectionUtils.isEmpty(schema.getTypes()) && !isComposedSchema(schema)) {
 				schema.addType(schema.getType());
 			}
 			else if (schema.getItems() != null && schema.getItems().getType() != null
@@ -175,9 +178,6 @@ public class SpringDocUtils {
 			}
 			if (schema.getProperties() != null) {
 				schema.getProperties().forEach((key, value) -> handleSchemaTypes(value));
-			}
-			if (schema.getType() == null && schema.getTypes() == null && schema.get$ref() == null && !isComposedSchema(schema)) {
-				schema.addType("object");
 			}
 		}
 	}
