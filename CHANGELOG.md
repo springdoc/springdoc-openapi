@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.12] - 2025-09-01
+
+### Changed
+
+- Upgrade swagger-ui to v5.28.0
+- Upgrade commons-lang3 to v3.18.0
+
+### Fixed
+
+- #3073 - Duplicate key class Parameter when documenting two GET methods with same path and PathVariable.
+- #3071 - @io.swagger.v3.oas.annotations.parameters.RequestBody does not work well with @RequestPart
+- #3066 - Parameter is now required after upgrading to springdoc-openapi 2.8.10
+
 ## [2.8.11] - 2025-08-23
 
 ### Added
