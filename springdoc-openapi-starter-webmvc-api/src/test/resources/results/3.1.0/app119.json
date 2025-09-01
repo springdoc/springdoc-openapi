@@ -11,6 +11,55 @@
     }
   ],
   "paths": {
+    "/uploadFileWithJson2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "uploadFileWithJson",
+        "requestBody": {
+          "description": "toto",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "file"
+                  },
+                  "jsonRequest": {
+                    "$ref": "#/components/schemas/JsonRequest"
+                  }
+                },
+                "required": [
+                  "file",
+                  "jsonRequest"
+                ]
+              },
+              "encoding": {
+                "jsonRequest": {
+                  "contentType": "application/json"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/multi": {
       "post": {
         "tags": [
@@ -22,25 +71,25 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "params"
-                ],
                 "type": "object",
                 "properties": {
+                  "params": {
+                    "$ref": "#/components/schemas/JsonRequest"
+                  },
                   "file1": {
                     "type": "string",
-                    "description": "This is file1",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "This is file1"
                   },
                   "file2": {
                     "type": "string",
-                    "description": "This is file2",
-                    "format": "binary"
-                  },
-                  "params": {
-                    "$ref": "#/components/schemas/JsonRequest"
+                    "format": "binary",
+                    "description": "This is file2"
                   }
-                }
+                },
+                "required": [
+                  "params"
+                ]
               },
               "encoding": {
                 "params": {
@@ -69,12 +118,12 @@
     "schemas": {
       "JsonRequest": {
         "type": "object",
+        "description": "This is the configuration",
         "properties": {
           "name": {
             "type": "string"
           }
-        },
-        "description": "This is the configuration"
+        }
       }
     }
   }

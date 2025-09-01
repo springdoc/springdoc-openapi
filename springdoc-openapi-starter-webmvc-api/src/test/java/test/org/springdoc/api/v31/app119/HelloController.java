@@ -31,6 +31,7 @@ import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,5 +54,14 @@ public class HelloController {
 			@RequestPart(value = "file1", required = false) @Parameter(description = "This is file1") final MultipartFile file1,
 			@RequestPart(value = "file2", required = false) @Parameter(description = "This is file2") final MultipartFile file2) {
 		return "Hello World " + jsonRequest.getName();
+	}
+
+	@PostMapping(value = "/uploadFileWithJson2", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {
+			MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<?> uploadFileWithJson(
+			@Parameter(description="file") @RequestPart("file") final MultipartFile file,
+			@RequestBody(description = "toto", content = @Content(encoding = @Encoding(name = "jsonRequest", contentType = MediaType.APPLICATION_JSON_VALUE)))
+			@Parameter(description = "An extra JSON payload sent with file") @RequestPart("jsonRequest") final JsonRequest jsonRequest) {
+		return null;
 	}
 }

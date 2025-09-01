@@ -257,11 +257,7 @@ public class RequestBodyService {
 			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
-		// Get it from parameter level, if not present
-		if (requestBody == null) {
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class);
-			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes, components).orElse(null);
-		}
+
 
 		RequestPart requestPart = methodParameter.getParameterAnnotation(RequestPart.class);
 		String paramName = null;
@@ -273,7 +269,8 @@ public class RequestBodyService {
 		paramName = StringUtils.defaultIfEmpty(paramName, parameterInfo.getpName());
 		parameterInfo.setpName(paramName);
 
-		requestBody = buildRequestBody(requestBody, components, methodAttributes, parameterInfo,
+		io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+		requestBody = buildRequestBody(requestBodyDoc, components, methodAttributes, parameterInfo,
 				requestBodyInfo);
 		requestBodyInfo.setRequestBody(requestBody);
 	}
@@ -281,33 +278,29 @@ public class RequestBodyService {
 	/**
 	 * Build request body.
 	 *
-	 * @param requestBody      the request body
+	 * @param requestBodyDoc   the request body doc
 	 * @param components       the components
 	 * @param methodAttributes the method attributes
 	 * @param parameterInfo    the parameter info
 	 * @param requestBodyInfo  the request body info
 	 * @return the request body
 	 */
-	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
+	private RequestBody buildRequestBody(io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc, Components components,
 			MethodAttributes methodAttributes,
 			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
+		RequestBody requestBody = requestBodyInfo.getRequestBody();
 		if (requestBody == null) {
 			requestBody = new RequestBody();
 			requestBodyInfo.setRequestBody(requestBody);
 		}
 
-		if (requestBody.getContent() == null) {
-			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
-					methodAttributes.getJsonViewAnnotationForRequestBody());
-			Map<String, Encoding> parameterEncoding = getParameterEncoding(parameterInfo);
-			buildContent(requestBody, methodAttributes, schema, parameterEncoding);
-		}
-		else if (!methodAttributes.isWithResponseBodySchemaDoc()) {
-			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
-					methodAttributes.getJsonViewAnnotationForRequestBody());
-			Map<String, Encoding> parameterEncoding = getParameterEncoding(parameterInfo);
-			mergeContent(requestBody, methodAttributes, schema, parameterEncoding);
-		}
+		if (requestBodyDoc != null)
+			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes, components).orElse(requestBody);
+
+		Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
+				methodAttributes.getJsonViewAnnotationForRequestBody());
+		Map<String, Encoding> parameterEncoding = getParameterEncoding(parameterInfo);
+		buildContent(requestBody, methodAttributes, schema, parameterEncoding);
 
 		// Add requestBody javadoc
 		if (StringUtils.isBlank(requestBody.getDescription()) && parameterBuilder.getJavadocProvider() != null
@@ -321,18 +314,6 @@ public class RequestBodyService {
 	}
 
 	/**
-	 * Merge content.
-	 *
-	 * @param requestBody       the request body
-	 * @param methodAttributes  the method attributes
-	 * @param parameterEncoding the parameter encoding
-	 */
-	private void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Map<String, Encoding> parameterEncoding) {
-		Content content = requestBody.getContent();
-		buildContent(requestBody, methodAttributes, schema, content, parameterEncoding);
-	}
-
-	/**
 	 * Build content.
 	 *
 	 * @param requestBody       the request body
@@ -341,24 +322,18 @@ public class RequestBodyService {
 	 * @param parameterEncoding the parameter encoding
 	 */
 	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Map<String, Encoding> parameterEncoding) {
-		Content content = new Content();
-		buildContent(requestBody, methodAttributes, schema, content, parameterEncoding);
-	}
+		Content content;
+		if (requestBody.getContent() == null) {
+			content = new Content();
+		}
+		else {
+			content = requestBody.getContent();
+		}
 
-	/**
-	 * Build content.
-	 *
-	 * @param requestBody       the request body
-	 * @param methodAttributes  the method attributes
-	 * @param schema            the schema
-	 * @param content           the content
-	 * @param parameterEncoding the parameter encoding
-	 */
-	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content, Map<String, Encoding> parameterEncoding) {
 		for (String value : methodAttributes.getMethodConsumes()) {
 			MediaType mediaTypeObject = new MediaType();
-			mediaTypeObject.setSchema(schema);
 			MediaType mediaType = content.get(value);
+			mediaTypeObject.setSchema(schema);
 			if (mediaType != null) {
 				if (mediaType.getExample() != null)
 					mediaTypeObject.setExample(mediaType.getExample());
@@ -366,6 +341,8 @@ public class RequestBodyService {
 					mediaTypeObject.setExamples(mediaType.getExamples());
 				if (mediaType.getEncoding() != null)
 					mediaTypeObject.setEncoding(mediaType.getEncoding());
+				if (mediaType.getSchema() != null)
+					mediaTypeObject.setSchema(mediaType.getSchema());
 			}
 			else if (!CollectionUtils.isEmpty(parameterEncoding)) {
 				mediaTypeObject.setEncoding(parameterEncoding);
@@ -392,7 +369,7 @@ public class RequestBodyService {
 				}
 				else {
 					String encodingContentType = parameterContent.keySet().iterator().next();
-					if(StringUtils.isNotBlank(encodingContentType)) {
+					if (StringUtils.isNotBlank(encodingContentType)) {
 						return Map.of(parameterInfo.getpName(), new Encoding().contentType(encodingContentType));
 					}
 				}
