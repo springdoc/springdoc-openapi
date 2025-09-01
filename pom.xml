@@ -61,6 +61,7 @@
 		<spring-cloud-function.version>5.0.0-M1</spring-cloud-function.version>
 		<spring-security-oauth2-authorization-server.version>2.0.0-M1
 		</spring-security-oauth2-authorization-server.version>
+		<commons-lang3.version>3.18.0</commons-lang3.version>
 	</properties>
 
 	<dependencyManagement>
