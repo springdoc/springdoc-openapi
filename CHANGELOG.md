@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Upgrade swagger-ui to v5.28.0
-- Upgrade commons-lang3 to v3.18.0
 
 ### Fixed
 
