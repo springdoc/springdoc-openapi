@@ -93,6 +93,11 @@
 			<artifactId>querydsl-core</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.scalar.maven</groupId>
+			<artifactId>scalar</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>

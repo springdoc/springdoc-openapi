@@ -44,6 +44,8 @@
 		<module>springdoc-openapi-starter-webflux-api</module>
 		<module>springdoc-openapi-starter-webmvc-ui</module>
 		<module>springdoc-openapi-starter-webflux-ui</module>
+		<module>springdoc-openapi-starter-webmvc-scalar</module>
+		<module>springdoc-openapi-starter-webflux-scalar</module>
 		<module>springdoc-openapi-bom</module>
 	</modules>
 
@@ -61,6 +63,7 @@
 		<spring-cloud-function.version>4.2.2</spring-cloud-function.version>
 		<spring-security-oauth2-authorization-server.version>1.4.3
 		</spring-security-oauth2-authorization-server.version>
+		<scalar.version>0.1.0</scalar.version>
 	</properties>
 
 	<dependencyManagement>
@@ -95,6 +98,11 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-oauth2-authorization-server</artifactId>
 				<version>${spring-security-oauth2-authorization-server.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.scalar.maven</groupId>
+				<artifactId>scalar</artifactId>
+				<version>${scalar.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
