@@ -1,0 +1,4 @@
+spring:
+  main:
+    banner-mode: "off"
+    lazy-initialization: true

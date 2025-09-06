@@ -113,6 +113,12 @@
 			<artifactId>commons-logging</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Scalar Support-->
+		<dependency>
+			<groupId>com.scalar.maven</groupId>
+			<artifactId>scalar</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>
