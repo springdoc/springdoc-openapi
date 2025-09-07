@@ -47,7 +47,6 @@
 		<dependency>
 			<groupId>com.github.therapi</groupId>
 			<artifactId>therapi-runtime-javadoc</artifactId>
-			<version>${therapi-runtime-javadoc.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<!-- Spring Security -->

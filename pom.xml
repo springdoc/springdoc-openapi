@@ -56,7 +56,7 @@
 		</central-publishing-maven-plugin.version>
 		<flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
 		<swagger-api.version>2.2.36</swagger-api.version>
-		<swagger-ui.version>5.28.0</swagger-ui.version>
+		<swagger-ui.version>5.28.1</swagger-ui.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
@@ -104,6 +104,16 @@
 				<groupId>com.scalar.maven</groupId>
 				<artifactId>scalar</artifactId>
 				<version>${scalar.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.therapi</groupId>
+				<artifactId>therapi-runtime-javadoc</artifactId>
+				<version>${therapi-runtime-javadoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.therapi</groupId>
+				<artifactId>therapi-runtime-javadoc-scribe</artifactId>
+				<version>${therapi-runtime-javadoc.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
