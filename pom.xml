@@ -64,6 +64,7 @@
 		<spring-security-oauth2-authorization-server.version>1.4.3
 		</spring-security-oauth2-authorization-server.version>
 		<scalar.version>0.1.0</scalar.version>
+		<skipPublishing>false</skipPublishing>
 	</properties>
 
 	<dependencyManagement>
@@ -214,6 +215,7 @@
 							<publishingServerId>central</publishingServerId>
 							<autoPublish>true</autoPublish>
 							<waitUntil>published</waitUntil>
+							<skipPublishing>${skipPublishing}</skipPublishing>
 						</configuration>
 					</plugin>
 					<plugin>

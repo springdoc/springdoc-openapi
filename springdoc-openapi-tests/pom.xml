@@ -11,7 +11,7 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
+		<skipPublishing>true</skipPublishing>
 	</properties>
 	
 	<modules>
