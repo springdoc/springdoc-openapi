@@ -10,6 +10,10 @@
 	<artifactId>springdoc-openapi-tests</artifactId>
 	<name>${project.artifactId}</name>
 
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+	
 	<modules>
 		<module>springdoc-openapi-security-tests</module>
 		<module>springdoc-openapi-groovy-tests</module>
