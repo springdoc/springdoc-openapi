@@ -26,11 +26,18 @@
 
 package test.org.springdoc.api.v30.app7.application;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class Foo {
 	String foo;
+
+	public Foo(String foo) {
+		this.foo = foo;
+	}
+
+	public String getFoo() {
+		return foo;
+	}
+
+	public void setFoo(String foo) {
+		this.foo = foo;
+	}
 }

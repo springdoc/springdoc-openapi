@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v30.app2.service;
 
 
-import lombok.RequiredArgsConstructor;
 import test.org.springdoc.api.v30.app2.entities.Post;
 import test.org.springdoc.api.v30.app2.hateoas.PostResourceAssembler;
 import test.org.springdoc.api.v30.app2.repositories.PostRepository;
@@ -43,7 +42,6 @@ import org.springframework.stereotype.Service;
  * @author Davide Pedone
  * 2020
  */
-@RequiredArgsConstructor
 @Service
 public class PostService {
 
@@ -58,4 +56,9 @@ public class PostService {
 		return pagedResourcesAssembler.toModel(postPage, postResourceAssembler);
 	}
 
+	public PostService(PostRepository postRepository, PagedResourcesAssembler<Post> pagedResourcesAssembler, PostResourceAssembler postResourceAssembler) {
+		this.postRepository = postRepository;
+		this.pagedResourcesAssembler = pagedResourcesAssembler;
+		this.postResourceAssembler = postResourceAssembler;
+	}
 }

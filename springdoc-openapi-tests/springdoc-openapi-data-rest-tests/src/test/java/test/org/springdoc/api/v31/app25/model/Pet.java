@@ -26,6 +26,8 @@
 
 package test.org.springdoc.api.v31.app25.model;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -34,21 +36,9 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 @Entity
-
-@EqualsAndHashCode(callSuper = false)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-
-@Data
-@NoArgsConstructor
-@RequiredArgsConstructor
-
 @JsonTypeInfo(
 		use = JsonTypeInfo.Id.NAME,
 		include = JsonTypeInfo.As.PROPERTY,
@@ -59,12 +49,33 @@ import lombok.RequiredArgsConstructor;
 })
 public class Pet extends BaseEntity {
 
-	@NonNull
 	@NotNull
 	private String name;
 
-	@NonNull
 	@ManyToOne
 	private Owner owner;
 
+	public Pet(UUID id) {
+		super(id);
+	}
+
+	public Pet() {
+		super(UUID.randomUUID());
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
 }

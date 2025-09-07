@@ -28,27 +28,8 @@ package test.org.springdoc.api.v31.app8;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-/**
- * Domain object representing a company employee. Project Lombok keeps actual code at a minimum. {@code @Data} -
- * Generates getters, setters, toString, hash, and equals functions {@code @Entity} - JPA annotation to flag this class
- * for DB persistence {@code @NoArgsConstructor} - Create a constructor with no args to support JPA
- * {@code @AllArgsConstructor} - Create a constructor with all args to support testing
- * {@code @JsonIgnoreProperties(ignoreUnknow=true)} When converting JSON to Java, ignore any unrecognized attributes.
- * This is critical for REST because it encourages adding new fields in later versions that won't break. It also allows
- * things like _links to be ignore as well, meaning HAL documents can be fetched and later posted to the server without
- * adjustment.
- *
- * @author Greg Turnquist
- */
-@Data
 @Entity
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
 class Employee {
 
 	@Id
@@ -61,6 +42,13 @@ class Employee {
 
 	private String role;
 
+	public Employee(Long id, String firstName, String lastName, String role) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.role = role;
+	}
+
 	/**
 	 * Useful constructor when id is not yet known.
 	 *
@@ -72,6 +60,41 @@ class Employee {
 
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.role = role;
+	}
+
+	public Employee() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
 		this.role = role;
 	}
 }

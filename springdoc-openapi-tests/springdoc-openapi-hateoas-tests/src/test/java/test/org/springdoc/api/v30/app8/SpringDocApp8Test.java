@@ -57,7 +57,7 @@ public class SpringDocApp8Test extends AbstractSpringDocTest {
 		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) FieldUtils.readDeclaredField(_mixIns, "_localMixIns", true);
 		Iterator<Entry<ClassKey, Class<?>>> it = _localMixIns.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry<ClassKey, Class<?>> entry = it.next();
+			Entry<ClassKey, Class<?>> entry = it.next();
 			if (entry.getKey().toString().startsWith("org.springframework")) {
 				springMixins.put(entry.getKey(), entry.getValue());
 				it.remove();

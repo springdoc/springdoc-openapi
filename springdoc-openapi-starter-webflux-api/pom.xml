@@ -21,19 +21,8 @@
 		<!-- Actuator dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
+			<artifactId>spring-boot-actuator-autoconfigure</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-reactor-netty</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-resolver-dns-native-macos</artifactId>
-			<classifier>osx-aarch_64</classifier>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

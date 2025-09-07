@@ -33,25 +33,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 /**
  * @author bnasslahsen
  */
 
-@Getter
-@Setter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "PRODUCT_ENTITY")
-@SuperBuilder(toBuilder = true)
-@NoArgsConstructor
 public class ProductEntity extends BaseEntity implements Comparable<ProductEntity> {
 
 	/**
@@ -83,6 +71,30 @@ public class ProductEntity extends BaseEntity implements Comparable<ProductEntit
 	@Override
 	public boolean isValid() {
 		return name != null && price != null && date != null;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 	/**

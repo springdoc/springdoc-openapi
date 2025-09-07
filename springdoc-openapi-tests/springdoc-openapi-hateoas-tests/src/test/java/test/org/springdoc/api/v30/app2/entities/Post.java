@@ -29,18 +29,12 @@ package test.org.springdoc.api.v30.app2.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author Davide Pedone
  * 2020
  */
-@Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 public class Post {
 
 	@Id
@@ -53,4 +47,46 @@ public class Post {
 
 	private Long createdAt;
 
+	public Post(Long id, String author, String content, Long createdAt) {
+		this.id = id;
+		this.author = author;
+		this.content = content;
+		this.createdAt = createdAt;
+	}
+
+	public Post() {
+		
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
 }

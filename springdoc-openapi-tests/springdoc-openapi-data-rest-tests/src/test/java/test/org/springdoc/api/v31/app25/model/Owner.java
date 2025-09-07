@@ -27,24 +27,16 @@
 package test.org.springdoc.api.v31.app25.model;
 
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+
 
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = false)
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Owner extends BaseEntity {
 
 	private String firstname;
@@ -56,8 +48,46 @@ public class Owner extends BaseEntity {
 	@Embedded
 	private Address addresses;
 
-	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "owner", cascade = { CascadeType.ALL })
 	private Set<Pet> pets;
 
+	public Owner(UUID id) {
+		super(id);
+	}
+
+	public Owner() {
+		super(UUID.randomUUID());
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public Address getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(Address addresses) {
+		this.addresses = addresses;
+	}
+
+	public Set<Pet> getPets() {
+		return pets;
+	}
+
+	public void setPets(Set<Pet> pets) {
+		this.pets = pets;
+	}
 }

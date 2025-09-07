@@ -30,26 +30,53 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 /**
  * @author bnasslahsen
  */
-@AllArgsConstructor
-@Data
-@Builder
-@EqualsAndHashCode(callSuper = false)
 @Relation(collectionRelation = "companies", itemRelation = "company")
 public class Company extends RepresentationModel<Company> {
+	
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private UUID id;
 
 	@NotNull
 	private String name;
+
+	public Company(UUID id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	public Company(Link initialLink, UUID id, String name) {
+		super(initialLink);
+		this.id = id;
+		this.name = name;
+	}
+
+	public Company(Iterable<Link> initialLinks, UUID id, String name) {
+		super(initialLinks);
+		this.id = id;
+		this.name = name;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

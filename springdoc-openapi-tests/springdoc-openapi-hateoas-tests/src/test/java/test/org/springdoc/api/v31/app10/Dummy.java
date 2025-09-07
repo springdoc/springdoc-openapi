@@ -26,13 +26,20 @@
 
 package test.org.springdoc.api.v31.app10;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
 public class Dummy<T> {
 
 	private T value;
 
+	public Dummy(T value) {
+		this.value = value;
+	}
+
+	public T getValue() {
+		return value;
+	}
+
+	public void setValue(T value) {
+		this.value = value;
+	}
 }

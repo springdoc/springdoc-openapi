@@ -26,6 +26,7 @@
 
 package test.org.springdoc.api.v31.app23;
 
+
 import java.util.Set;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -37,18 +38,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-@Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@Builder
 public class Doctor {
 
 	@Id
@@ -63,4 +54,25 @@ public class Doctor {
 					accessMode = AccessMode.WRITE_ONLY
 			))
 	private Set<Clinic> clinics;
+
+
+	public Doctor() {
+
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Set<Clinic> getClinics() {
+		return clinics;
+	}
+
+	public void setClinics(Set<Clinic> clinics) {
+		this.clinics = clinics;
+	}
 }

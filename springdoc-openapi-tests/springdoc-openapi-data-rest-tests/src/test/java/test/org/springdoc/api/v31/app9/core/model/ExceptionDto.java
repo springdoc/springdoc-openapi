@@ -31,13 +31,10 @@ import java.time.Instant;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.NonNull;
 
-@Data
+
 public class ExceptionDto {
 
-	@NonNull
 	@NotNull
 	@NotEmpty
 	@Schema(description = "The date and time the problem occured", example = "2020-02-04T13:21:08.098+0000", type = "string", format = "date-time")
@@ -49,4 +46,27 @@ public class ExceptionDto {
 	@Schema(description = "The exception message", example = "Trying to update a non existing component !")
 	private String message;
 
+	public Instant getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Instant timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public String getException() {
+		return exception;
+	}
+
+	public void setException(String exception) {
+		this.exception = exception;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 }
