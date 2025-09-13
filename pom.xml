@@ -63,7 +63,7 @@
 		<spring-cloud-function.version>4.2.2</spring-cloud-function.version>
 		<spring-security-oauth2-authorization-server.version>1.4.3
 		</spring-security-oauth2-authorization-server.version>
-		<scalar.version>0.1.0</scalar.version>
+		<scalar.version>0.2.1</scalar.version>
 		<skipPublishing>false</skipPublishing>
 	</properties>
 
