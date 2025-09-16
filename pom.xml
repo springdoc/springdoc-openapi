@@ -39,6 +39,7 @@
 	</scm>
 
 	<modules>
+		<module>springdoc-openapi-common</module>
 		<module>springdoc-openapi-starter-common</module>
 		<module>springdoc-openapi-starter-webmvc-api</module>
 		<module>springdoc-openapi-starter-webflux-api</module>
