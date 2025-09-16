@@ -10,6 +10,11 @@
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-starter-common</artifactId>
