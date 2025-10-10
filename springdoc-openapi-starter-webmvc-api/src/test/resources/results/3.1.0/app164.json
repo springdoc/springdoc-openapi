@@ -49,10 +49,12 @@
           "booleanValueAsFourthParameter": {
             "type": "boolean"
           },
-          "listBlah": {
-            "type": "array",
-            "items": {
-              "description": "test"
+          "listBlah" : {
+            "type" : "array",
+            "description" : "test",
+            "items" : {
+              "type" : "string",
+              "description" : "test"
             }
           }
         }
