@@ -36,7 +36,7 @@ class MyModel {
 	/**
 	 * The Thing.
 	 */
-	@Schema(description = "Hello", type = "object", oneOf = { Foo.class, Bar.class })
+	@Schema(description = "Hello", types = "object", oneOf = { Foo.class, Bar.class })
 	private Object thing;
 
 	/**
