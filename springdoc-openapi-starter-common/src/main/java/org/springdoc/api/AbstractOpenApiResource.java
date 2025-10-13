@@ -143,6 +143,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * @author hyeonisism
  * @author doljae
  * @author zdary
+ * @author Haotian Zhang
  */
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
@@ -340,9 +341,20 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.getOpenApi(null, Locale.getDefault());
 	}
 
-	/**
-	 * Gets open api.
-	 *
+    /**
+     * Gets open api.
+     *
+     * @param locale the locale
+     * @return the open api
+     */
+    protected OpenAPI getOpenApi(Locale locale) {
+        return this.getOpenApi(null, locale);
+    }
+
+    /**
+     * Gets open api.
+     *
+     * @param serverBaseUrl the server base url
 	 * @param locale the locale
 	 * @return the open api
 	 */
