@@ -33,7 +33,7 @@ import org.springdoc.core.converters.PageableOpenAPIConverter;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
-import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
+import org.springdoc.core.providers.DataWebPropertiesProvider;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -103,14 +103,14 @@ public class SpringDocPageableConfiguration {
 	/**
 	 * Delegating method parameter customizer delegating method parameter customizer.
 	 *
-	 * @param optionalSpringDataWebPropertiesProvider the optional spring data web properties
+	 * @param optionalDataWebPropertiesProvider the optional spring data web properties
 	 * @param optionalRepositoryRestConfiguration     the optional repository rest configuration
 	 * @return the delegating method parameter customizer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
-		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
+	DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(Optional<DataWebPropertiesProvider> optionalDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
+		return new DataRestDelegatingMethodParameterCustomizer(optionalDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
 	}
 }

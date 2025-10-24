@@ -89,7 +89,7 @@ import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.RepositoryRestResourceProvider;
 import org.springdoc.core.providers.RouterFunctionProvider;
 import org.springdoc.core.providers.SecurityOAuth2Provider;
-import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
+import org.springdoc.core.providers.DataWebPropertiesProvider;
 import org.springdoc.core.providers.SpringDocProviders;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.core.providers.WebConversionServiceProvider;
@@ -115,7 +115,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClas
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.format.WebConversionService;
-import org.springframework.boot.data.autoconfigure.web.SpringDataWebProperties;
+import org.springframework.boot.data.autoconfigure.web.DataWebProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -589,19 +589,19 @@ public class SpringDocConfiguration {
 	/**
 	 * The type Spring doc spring data web properties provider.
 	 */
-	@ConditionalOnClass(SpringDataWebProperties.class)
-	static class SpringDocSpringDataWebPropertiesProvider {
+	@ConditionalOnClass(DataWebProperties.class)
+	static class SpringDocDataWebPropertiesProvider {
 		/**
 		 * Spring data web properties provider spring data web properties provider.
 		 *
-		 * @param optionalSpringDataWebProperties the optional spring data web properties
+		 * @param optionalDataWebProperties the optional spring data web properties
 		 * @return the spring data web properties provider
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		SpringDataWebPropertiesProvider springDataWebPropertiesProvider(Optional<SpringDataWebProperties> optionalSpringDataWebProperties) {
-			return new SpringDataWebPropertiesProvider(optionalSpringDataWebProperties);
+        DataWebPropertiesProvider dataWebPropertiesProvider(Optional<DataWebProperties> optionalDataWebProperties) {
+			return new DataWebPropertiesProvider(optionalDataWebProperties);
 		}
 	}
 

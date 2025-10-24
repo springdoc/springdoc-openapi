@@ -31,7 +31,7 @@ import java.util.Optional;
 import org.springdoc.core.configuration.SpringDocDataRestConfiguration;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
-import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
+import org.springdoc.core.providers.DataWebPropertiesProvider;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -59,8 +59,8 @@ public class SpringDocApp14Test extends AbstractSpringDocTest {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
-			return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
+		DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(Optional<DataWebPropertiesProvider> optionalDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
+			return new DataRestDelegatingMethodParameterCustomizer(optionalDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
 		}
 	}
 

@@ -27,7 +27,7 @@ package org.springdoc.core.providers;
 
 import java.util.Optional;
 
-import org.springframework.boot.data.autoconfigure.web.SpringDataWebProperties;
+import org.springframework.boot.data.autoconfigure.web.DataWebProperties;
 
 
 /**
@@ -35,21 +35,21 @@ import org.springframework.boot.data.autoconfigure.web.SpringDataWebProperties;
  *
  * @author bnasslahsen
  */
-public class SpringDataWebPropertiesProvider {
+public class DataWebPropertiesProvider {
 
 
 	/**
 	 * The Optional spring data web properties.
 	 */
-	private final Optional<SpringDataWebProperties> optionalSpringDataWebProperties;
+	private final Optional<DataWebProperties> optionalDataWebProperties;
 
 	/**
 	 * Instantiates a new Spring data web properties provider.
 	 *
-	 * @param optionalSpringDataWebProperties the optional spring data web properties
+	 * @param optionalDataWebProperties the optional spring data web properties
 	 */
-	public SpringDataWebPropertiesProvider(Optional<SpringDataWebProperties> optionalSpringDataWebProperties) {
-		this.optionalSpringDataWebProperties = optionalSpringDataWebProperties;
+	public DataWebPropertiesProvider(Optional<DataWebProperties> optionalDataWebProperties) {
+		this.optionalDataWebProperties = optionalDataWebProperties;
 	}
 
 	/**
@@ -57,8 +57,8 @@ public class SpringDataWebPropertiesProvider {
 	 *
 	 * @return the spring data web properties
 	 */
-	public SpringDataWebProperties getSpringDataWebProperties() {
-		return optionalSpringDataWebProperties.orElse(null);
+	public DataWebProperties getDataWebProperties() {
+		return optionalDataWebProperties.orElse(null);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class SpringDataWebPropertiesProvider {
 	 *
 	 * @return the boolean
 	 */
-	public boolean isSpringDataWebPropertiesPresent() {
-		return optionalSpringDataWebProperties.isPresent();
+	public boolean isDataWebPropertiesPresent() {
+		return optionalDataWebProperties.isPresent();
 	}
 }

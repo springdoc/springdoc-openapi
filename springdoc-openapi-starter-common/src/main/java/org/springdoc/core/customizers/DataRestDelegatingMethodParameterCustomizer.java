@@ -54,7 +54,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
-import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
+import org.springdoc.core.providers.DataWebPropertiesProvider;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Pageable;
@@ -79,7 +79,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * The Optional spring data web properties provider.
 	 */
-	private final Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider;
+	private final Optional<DataWebPropertiesProvider> optionalDataWebPropertiesProvider;
 
 
 	/**
@@ -91,11 +91,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Instantiates a new Data rest delegating method parameter customizer.
 	 *
-	 * @param optionalSpringDataWebPropertiesProvider     the optional spring data web properties provider
+	 * @param optionalDataWebPropertiesProvider     the optional spring data web properties provider
 	 * @param optionalRepositoryRestConfigurationProvider the optional repository rest configuration provider
 	 */
-	public DataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfigurationProvider) {
-		this.optionalSpringDataWebPropertiesProvider = optionalSpringDataWebPropertiesProvider;
+	public DataRestDelegatingMethodParameterCustomizer(Optional<DataWebPropertiesProvider> optionalDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfigurationProvider) {
+		this.optionalDataWebPropertiesProvider = optionalDataWebPropertiesProvider;
 		this.optionalRepositoryRestConfigurationProvider = optionalRepositoryRestConfigurationProvider;
 	}
 
@@ -106,7 +106,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		Class<?> parameterType = originalParameter.getParameterType();
 		if (pageableDefault != null || sortDefault != null || (
 				(Pageable.class.isAssignableFrom(parameterType) || Sort.class.isAssignableFrom(parameterType))
-						&& (isSpringDataWebPropertiesPresent() || isRepositoryRestConfigurationPresent())
+						&& (isDataWebPropertiesPresent() || isRepositoryRestConfigurationPresent())
 		)) {
 			try {
 				Annotation[] parameterAnnotations = (Annotation[]) FieldUtils.readDeclaredField(methodParameter, "additionalParameterAnnotations", true);
@@ -1066,26 +1066,26 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 			case "size":
 				if (isRepositoryRestConfigurationPresent())
 					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getLimitParamName();
-				else if (isSpringDataWebPropertiesPresent())
-					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPrefix() +
-							optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getSizeParameter();
+				else if (isDataWebPropertiesPresent())
+					name = optionalDataWebPropertiesProvider.get().getDataWebProperties().getPageable().getPrefix() +
+							optionalDataWebPropertiesProvider.get().getDataWebProperties().getPageable().getSizeParameter();
 				else
 					name = originalName;
 				break;
 			case "sort":
 				if (isRepositoryRestConfigurationPresent())
 					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getSortParamName();
-				else if (isSpringDataWebPropertiesPresent())
-					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getSort().getSortParameter();
+				else if (isDataWebPropertiesPresent())
+					name = optionalDataWebPropertiesProvider.get().getDataWebProperties().getSort().getSortParameter();
 				else
 					name = originalName;
 				break;
 			case "page":
 				if (isRepositoryRestConfigurationPresent())
 					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getPageParamName();
-				else if (isSpringDataWebPropertiesPresent())
-					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPrefix() +
-							optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPageParameter();
+				else if (isDataWebPropertiesPresent())
+					name = optionalDataWebPropertiesProvider.get().getDataWebProperties().getPageable().getPrefix() +
+							optionalDataWebPropertiesProvider.get().getDataWebProperties().getPageable().getPageParameter();
 				else
 					name = originalName;
 				break;
@@ -1107,8 +1107,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 * @return the description
 	 */
 	private String getDescription(String parameterName, String originalDescription) {
-		if ("page".equals(parameterName) && isSpringDataWebPropertiesPresent() &&
-				optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters())
+		if ("page".equals(parameterName) && isDataWebPropertiesPresent() &&
+				optionalDataWebPropertiesProvider.get().getDataWebProperties().getPageable().isOneIndexedParameters())
 			return "One-based page index (1..N)";
 		return originalDescription;
 	}
@@ -1143,21 +1143,21 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				}
 				else if (isRepositoryRestConfigurationPresent())
 					defaultValue = String.valueOf(optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getDefaultPageSize());
-				else if (isSpringDataWebPropertiesPresent())
-					defaultValue = String.valueOf(optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getDefaultPageSize());
+				else if (isDataWebPropertiesPresent())
+					defaultValue = String.valueOf(optionalDataWebPropertiesProvider.get().getDataWebProperties().getPageable().getDefaultPageSize());
 				else
 					defaultValue = defaultSchemaVal;
 				break;
 			case "page":
 				if (pageableDefault != null) {
-					if (isSpringDataWebPropertiesPresent() && optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters()) {
+					if (isDataWebPropertiesPresent() && optionalDataWebPropertiesProvider.get().getDataWebProperties().getPageable().isOneIndexedParameters()) {
 						defaultValue = String.valueOf(pageableDefault.page() + 1);
 					}
 					else {
 						defaultValue = String.valueOf(pageableDefault.page());
 					}
 				}
-				else if (isSpringDataWebPropertiesPresent() && optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters())
+				else if (isDataWebPropertiesPresent() && optionalDataWebPropertiesProvider.get().getDataWebProperties().getPageable().isOneIndexedParameters())
 					defaultValue = "1";
 				else
 					defaultValue = defaultSchemaVal;
@@ -1241,8 +1241,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 *
 	 * @return the boolean
 	 */
-	private boolean isSpringDataWebPropertiesPresent() {
-		return optionalSpringDataWebPropertiesProvider.isPresent() && optionalSpringDataWebPropertiesProvider.get().isSpringDataWebPropertiesPresent();
+	private boolean isDataWebPropertiesPresent() {
+		return optionalDataWebPropertiesProvider.isPresent() && optionalDataWebPropertiesProvider.get().isDataWebPropertiesPresent();
 	}
 
 	/**

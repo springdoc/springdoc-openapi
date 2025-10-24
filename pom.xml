@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.0-M2</version>
+		<version>4.0.0-RC1</version>
 	</parent>
 
 	<licenses>
@@ -60,9 +60,8 @@
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
-		<spring-cloud-function.version>5.0.0-M1</spring-cloud-function.version>
-		<spring-security-oauth2-authorization-server.version>2.0.0-M1
-		</spring-security-oauth2-authorization-server.version>
+		<spring-cloud-function.version>5.0.0-M4</spring-cloud-function.version>
+		<spring-security-oauth2-authorization-server.version>7.0.0-RC1</spring-security-oauth2-authorization-server.version>
 		<scalar.version>0.3.12</scalar.version>
 		<skipPublishing>false</skipPublishing>
 	</properties>
