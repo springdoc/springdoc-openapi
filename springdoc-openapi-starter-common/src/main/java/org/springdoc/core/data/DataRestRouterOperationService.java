@@ -43,10 +43,8 @@ import io.swagger.v3.oas.models.Operation;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-import org.springdoc.core.providers.DataRestHalProvider;
 
 import org.springframework.data.rest.core.Path;
-import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.HttpMethods;
 import org.springframework.data.rest.core.mapping.MethodResourceMapping;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
@@ -102,15 +100,10 @@ public class DataRestRouterOperationService {
 	 *
 	 * @param dataRestOperationService    the data rest operation builder
 	 * @param springDocConfigProperties   the spring doc config properties
-	 * @param repositoryRestConfiguration the repository rest configuration
-	 * @param dataRestHalProvider         the data rest hal provider
-	 */
-	public DataRestRouterOperationService(DataRestOperationService dataRestOperationService, SpringDocConfigProperties springDocConfigProperties,
-			RepositoryRestConfiguration repositoryRestConfiguration, DataRestHalProvider dataRestHalProvider) {
+     */
+	public DataRestRouterOperationService(DataRestOperationService dataRestOperationService, SpringDocConfigProperties springDocConfigProperties) {
 		this.dataRestOperationService = dataRestOperationService;
 		this.springDocConfigProperties = springDocConfigProperties;
-		if (dataRestHalProvider.isHalEnabled())
-			springDocConfigProperties.setDefaultProducesMediaType(repositoryRestConfiguration.getDefaultMediaType().toString());
 	}
 
 	/**

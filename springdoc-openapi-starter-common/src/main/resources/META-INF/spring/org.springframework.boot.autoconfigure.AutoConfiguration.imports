@@ -4,7 +4,6 @@ org.springdoc.core.configuration.SpringDocJavadocConfiguration
 org.springdoc.core.configuration.SpringDocGroovyConfiguration
 org.springdoc.core.configuration.SpringDocSecurityConfiguration
 org.springdoc.core.configuration.SpringDocFunctionCatalogConfiguration
-org.springdoc.core.configuration.SpringDocHateoasConfiguration
 org.springdoc.core.configuration.SpringDocPageableConfiguration
 org.springdoc.core.configuration.SpringDocSortConfiguration
 org.springdoc.core.configuration.SpringDocSpecPropertiesConfiguration

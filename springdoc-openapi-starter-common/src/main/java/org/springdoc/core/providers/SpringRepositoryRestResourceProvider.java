@@ -65,7 +65,7 @@ import org.springframework.data.rest.webmvc.BasePathAwareHandlerMapping;
 import org.springframework.data.rest.webmvc.ProfileController;
 import org.springframework.data.rest.webmvc.RepositoryRestHandlerMapping;
 import org.springframework.data.rest.webmvc.alps.AlpsController;
-import org.springframework.data.rest.webmvc.json.JacksonMetadata;
+import org.springframework.data.rest.webmvc.json.Jackson2Metadata;
 import org.springframework.data.rest.webmvc.mapping.Associations;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
@@ -198,7 +198,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			ResourceMetadata resourceMetadata = mappings.getMetadataFor(domainType);
 			final PersistentEntity<?, ?> entity = persistentEntities.getRequiredPersistentEntity(domainType);
 			dataRestRepository.setPersistentEntity(entity);
-			final JacksonMetadata jackson = new JacksonMetadata(mapper, domainType);
+			final Jackson2Metadata jackson = new Jackson2Metadata(mapper, domainType);
 			boolean hiddenRepository = (AnnotationUtils.findAnnotation(repository, Hidden.class) != null);
 			if (!hiddenRepository) {
 				if (resourceMetadata != null && resourceMetadata.isExported()) {

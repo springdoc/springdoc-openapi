@@ -26,8 +26,6 @@
 
 package org.springdoc.core.configuration;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.configuration.hints.SpringDocDataRestHints;
 import org.springdoc.core.converters.models.DefaultPageable;
@@ -38,15 +36,11 @@ import org.springdoc.core.data.DataRestRouterOperationService;
 import org.springdoc.core.data.DataRestTagsService;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-import org.springdoc.core.providers.DataRestHalProvider;
-import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringRepositoryRestResourceProvider;
 import org.springdoc.core.service.AbstractRequestService;
-import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -54,12 +48,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.hateoas.autoconfigure.HateoasProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
@@ -84,22 +76,6 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 @ConditionalOnBean(SpringDocConfiguration.class)
 @ImportRuntimeHints(SpringDocDataRestHints.class)
 public class SpringDocDataRestConfiguration {
-
-	/**
-	 * Hal provider data rest hal provider.
-	 *
-	 * @param repositoryRestConfiguration the repository rest configuration
-	 * @param hateoasPropertiesOptional   the hateoas properties optional
-	 * @param objectMapperProvider        the object mapper provider
-	 * @return the data rest hal provider
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Primary
-	@Lazy(false)
-	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration, Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
-		return new DataRestHalProvider(repositoryRestConfiguration, hateoasPropertiesOptional, objectMapperProvider);
-	}
 
 	/**
 	 * The type Spring repository rest resource provider configuration.
@@ -140,16 +116,14 @@ public class SpringDocDataRestConfiguration {
 		 *
 		 * @param dataRestOperationService    the data rest operation service
 		 * @param springDocConfigProperties   the spring doc config properties
-		 * @param repositoryRestConfiguration the repository rest configuration
-		 * @param dataRestHalProvider         the data rest hal provider
 		 * @return the data rest router operation service
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
 		DataRestRouterOperationService dataRestRouterOperationBuilder(DataRestOperationService dataRestOperationService,
-				SpringDocConfigProperties springDocConfigProperties, RepositoryRestConfiguration repositoryRestConfiguration, DataRestHalProvider dataRestHalProvider) {
-			return new DataRestRouterOperationService(dataRestOperationService, springDocConfigProperties, repositoryRestConfiguration, dataRestHalProvider);
+				SpringDocConfigProperties springDocConfigProperties) {
+			return new DataRestRouterOperationService(dataRestOperationService, springDocConfigProperties);
 		}
 
 		/**
