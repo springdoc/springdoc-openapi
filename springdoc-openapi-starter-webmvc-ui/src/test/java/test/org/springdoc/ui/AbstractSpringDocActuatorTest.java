@@ -29,7 +29,7 @@ import java.net.http.HttpClient;
 
 import jakarta.annotation.PostConstruct;
 
-import org.springframework.boot.web.server.test.LocalManagementPort;
+import org.springframework.boot.test.web.server.LocalManagementPort;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
