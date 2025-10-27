@@ -38,6 +38,22 @@
 		<tag>HEAD</tag>
 	</scm>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>spring-snapshot</id>
+            <name>Spring Snapshot Repository</name>
+            <url>https://repo.spring.io/snapshot</url>
+        </repository>
+    </repositories>
+
 	<modules>
 		<module>springdoc-openapi-starter-common</module>
 		<module>springdoc-openapi-starter-webmvc-api</module>
@@ -124,7 +140,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-jackson</artifactId>
+			<artifactId>spring-boot-jackson2</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
