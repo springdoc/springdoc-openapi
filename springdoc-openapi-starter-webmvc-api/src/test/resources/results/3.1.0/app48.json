@@ -18,8 +18,28 @@
         ],
         "operationId": "getDocuments",
         "responses": {
-          "410": {
-            "description": "Gone",
+          "413": {
+            "description": "Content Too Large",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Length Required",
             "content": {
               "*/*": {
                 "schema": {
@@ -48,16 +68,6 @@
               }
             }
           },
-          "413": {
-            "description": "Payload Too Large",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "402": {
             "description": "Payment Required",
             "content": {
@@ -68,18 +78,8 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Length Required",
+          "410": {
+            "description": "Gone",
             "content": {
               "*/*": {
                 "schema": {
