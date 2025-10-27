@@ -54,7 +54,7 @@ class TrackerData {
 	/**
 	 * The Value.
 	 */
-	@Schema(name = "value", type = "number", format = "double", description = "The data value", required = true, example = "19.0")
+	@Schema(name = "value", types = "number", format = "double", description = "The data value", required = true, example = "19.0")
 	@JsonProperty("value")
 	Double value;
 

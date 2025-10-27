@@ -78,14 +78,9 @@
         "description": "The type My model.",
         "properties": {
           "thing": {
+            "type": "string",
             "description": "Hello",
             "oneOf": [
-              {
-                "$ref": "#/components/schemas/Foo"
-              },
-              {
-                "$ref": "#/components/schemas/Bar"
-              },
               {
                 "$ref": "#/components/schemas/Foo"
               },
@@ -99,3 +94,4 @@
     }
   }
 }
+ 

@@ -30,8 +30,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.scalar.maven.webjar.ScalarProperties;
+import com.scalar.maven.webjar.ScalarProperties.ScalarSource;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -182,4 +185,160 @@ public abstract class AbstractScalarController {
 	 * @return the string
 	 */
 	protected abstract String buildJsBundleUrl(String requestUrl);
+
+	/**
+	 * Builds the configuration JSON for the Scalar API Reference.
+	 *
+	 * @return the configuration JSON as a string
+	 */
+	private String buildConfigurationJson() {
+		StringBuilder config = new StringBuilder();
+		config.append("{");
+
+		// Add URL
+		config.append("\n  url: \"").append(escapeJson(scalarProperties.getUrl())).append("\"");
+
+		// Add sources
+		if (scalarProperties.getSources() != null && !scalarProperties.getSources().isEmpty()) {
+			config.append(",\n  sources: ").append(buildSourcesJsonArray(scalarProperties.getSources()));
+		}
+
+		// Add showSidebar
+		if (!scalarProperties.isShowSidebar()) {
+			config.append(",\n  showSidebar: false");
+		}
+
+		// Add hideModels
+		if (scalarProperties.isHideModels()) {
+			config.append(",\n  hideModels: true");
+		}
+
+		// Add hideTestRequestButton
+		if (scalarProperties.isHideTestRequestButton()) {
+			config.append(",\n  hideTestRequestButton: true");
+		}
+
+		// Add darkMode
+		if (scalarProperties.isDarkMode()) {
+			config.append(",\n  darkMode: true");
+		}
+
+		// Add hideDarkModeToggle
+		if (scalarProperties.isHideDarkModeToggle()) {
+			config.append(",\n  hideDarkModeToggle: true");
+		}
+
+		// Add customCss
+		if (scalarProperties.getCustomCss() != null && !scalarProperties.getCustomCss().trim().isEmpty()) {
+			config.append(",\n  customCss: \"").append(escapeJson(scalarProperties.getCustomCss())).append("\"");
+		}
+
+		// Add theme
+		if (scalarProperties.getTheme() != null && !"default".equals(scalarProperties.getTheme())) {
+			config.append(",\n  theme: \"").append(escapeJson(scalarProperties.getTheme())).append("\"");
+		}
+
+		// Add layout
+		if (scalarProperties.getLayout() != null && !"modern".equals(scalarProperties.getLayout())) {
+			config.append(",\n  layout: \"").append(escapeJson(scalarProperties.getLayout())).append("\"");
+		}
+
+		// Add hideSearch
+		if (scalarProperties.isHideSearch()) {
+			config.append(",\n  hideSearch: true");
+		}
+
+		// Add documentDownloadType
+		if (scalarProperties.getDocumentDownloadType() != null && !"both".equals(scalarProperties.getDocumentDownloadType())) {
+			config.append(",\n  documentDownloadType: \"").append(escapeJson(scalarProperties.getDocumentDownloadType())).append("\"");
+		}
+
+		config.append("\n}");
+		return config.toString();
+	}
+
+	/**
+	 * Escapes a string for JSON output.
+	 *
+	 * @param input the input string
+	 * @return the escaped string
+	 */
+	private String escapeJson(String input) {
+		if (input == null) {
+			return "";
+		}
+		return input.replace("\\", "\\\\")
+				.replace("\"", "\\\"")
+				.replace("\n", "\\n")
+				.replace("\r", "\\r")
+				.replace("\t", "\\t");
+	}
+
+	    /**
+     * Builds the JSON for the OpenAPI reference sources
+     *
+     * @param sources list of OpenAPI reference sources
+     * @return the sources as a JSON string
+     */
+    private String buildSourcesJsonArray(List<ScalarSource> sources) {
+        final StringBuilder builder = new StringBuilder("[");
+
+        // Filter out sources with invalid urls
+        final List<ScalarSource> filteredSources = sources.stream()
+                .filter(source -> isNotNullOrBlank(source.getUrl()))
+                .collect(Collectors.toList());
+
+        // Append each source to json array
+        for (int i = 0; i < filteredSources.size(); i++) {
+            final ScalarSource source = filteredSources.get(i);
+
+            final String sourceJson = buildSourceJson(source);
+            builder.append("\n").append(sourceJson);
+
+            if (i != filteredSources.size() - 1) {
+                builder.append(",");
+            }
+        }
+
+        builder.append("\n]");
+        return builder.toString();
+    }
+
+	/**
+	 * Builds the JSON for an OpenAPI reference source
+	 *
+	 * @param source the OpenAPI reference source
+	 * @return the source as a JSON string
+	 */
+	private String buildSourceJson(ScalarSource source) {
+		final StringBuilder builder = new StringBuilder("{");
+
+		builder.append("\n  url: \"").append(escapeJson(source.getUrl())).append("\"");
+
+
+		if (isNotNullOrBlank(source.getTitle())) {
+			builder.append(",\n  title: \"").append(escapeJson(source.getTitle())).append("\"");
+		}
+
+		if (isNotNullOrBlank(source.getSlug())) {
+			builder.append(",\n  slug: \"").append(escapeJson(source.getSlug())).append("\"");
+		}
+
+		if (source.isDefault() != null) {
+			builder.append(",\n  default: ").append(source.isDefault());
+		}
+
+		builder.append("\n}");
+		return builder.toString();
+	}
+	
+	/**
+	 * Returns whether a String is not null or blank
+	 *
+	 * @param input the string
+	 * @return whether the string is not null or blank
+	 */
+	private boolean isNotNullOrBlank(String input) {
+		return input != null && !input.isBlank();
+	}
 }
