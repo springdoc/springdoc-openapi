@@ -1434,7 +1434,7 @@ public class SpringDocConfigProperties {
 		/**
 		 * Whether to generate and serve an OpenAPI document.
 		 */
-		private boolean enabled = false;
+		private boolean enabled = true;
 
 		/**
 		 * The Resolve schema properties.

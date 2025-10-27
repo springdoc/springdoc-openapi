@@ -46,7 +46,7 @@ public class ScalarConstants {
 	/**
 	 * The constant SCALAR_DEFAULT_URL.
 	 */
-	public static final String SCALAR_DEFAULT_URL = "https://cdn.jsdelivr.net/npm/@scalar/galaxy/dist/latest.json";
+	public static final String SCALAR_DEFAULT_URL = "https://registry.scalar.com/@scalar/apis/galaxy/latest?format=json";
 
 	/**
 	 * The constant DEFAULT_SCALAR_ACTUATOR_PATH.

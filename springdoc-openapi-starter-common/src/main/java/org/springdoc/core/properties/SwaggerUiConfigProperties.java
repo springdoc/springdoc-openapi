@@ -96,7 +96,7 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	/**
 	 * Whether to generate and serve an OpenAPI document.
 	 */
-	private boolean enabled = false;
+	private boolean enabled = true;
 
 	/**
 	 * The Use root path.
