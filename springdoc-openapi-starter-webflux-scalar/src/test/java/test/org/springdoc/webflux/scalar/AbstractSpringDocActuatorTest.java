@@ -26,13 +26,16 @@ package test.org.springdoc.webflux.scalar;
 
 import jakarta.annotation.PostConstruct;
 
-import org.springframework.boot.web.server.test.LocalManagementPort;
+import org.springframework.boot.test.web.server.LocalManagementPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -40,8 +43,11 @@ public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
 
 	protected WebClient webClient;
 
-	@LocalManagementPort
-	private int managementPort;
+    @LocalServerPort
+	protected int localServerPort;
+
+    @LocalManagementPort
+    private int managementPort;
 
 	@PostConstruct
 	public void init() {
@@ -73,7 +79,18 @@ public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
 	}
 
 	protected void checkContentWithWebTestClient(String requestPath) {
-		super.checkContent(requestPath);
+        String expected = getResultFile();
+		String scalarJsPath = getScalarJsPath(requestPath);
+		webTestClient.get().uri(requestPath)
+				.exchange()
+				.expectStatus().isOk()
+				.expectHeader().value(HttpHeaders.CONTENT_TYPE, startsWith(MediaType.TEXT_HTML_VALUE))
+				.expectBody(String.class)
+				.value(containsString(scalarJsPath))
+				.value(equalTo(expected.replace("{PORT}", String.valueOf(localServerPort))));
+		webTestClient.get().uri(scalarJsPath)
+				.exchange()
+				.expectStatus().isOk();
 	}
 
 	protected void checkHtmlResult(String htmlResult) {
