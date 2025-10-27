@@ -26,7 +26,7 @@ package test.org.springdoc.ui;
 
 import jakarta.annotation.PostConstruct;
 
-import org.springframework.boot.web.server.test.LocalManagementPort;
+import org.springframework.boot.test.web.server.LocalManagementPort;
 import org.springframework.web.reactive.function.client.WebClient;
 
 

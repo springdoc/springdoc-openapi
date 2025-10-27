@@ -20,13 +20,13 @@ package test.org.springdoc.ui.app33;
 
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import reactor.core.publisher.Mono;
 import test.org.springdoc.ui.AbstractCommonTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.web.server.test.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
