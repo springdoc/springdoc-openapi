@@ -36,7 +36,8 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.utils.Constants;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.webtestclient.AutoConfigureWebTestClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
@@ -54,11 +55,15 @@ public abstract class AbstractCommonTest {
 	@Autowired
 	protected WebTestClient webTestClient;
 
+    @LocalServerPort
+    private String localServerPort;
+
 	protected String getContent(String fileName) {
 		try {
 			Path path = Paths.get(AbstractCommonTest.class.getClassLoader().getResource(fileName).toURI());
 			byte[] fileBytes = Files.readAllBytes(path);
-			return new String(fileBytes, StandardCharsets.UTF_8);
+			return new String(fileBytes, StandardCharsets.UTF_8)
+                    .replace("{LOCAL_SERVER_PORT}", localServerPort);
 		}
 		catch (Exception e) {
 			throw new RuntimeException("Failed to read file: " + fileName, e);

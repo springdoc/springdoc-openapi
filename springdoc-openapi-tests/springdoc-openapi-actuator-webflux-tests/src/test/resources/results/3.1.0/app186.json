@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "",
+      "url": "http://localhost:{LOCAL_SERVER_PORT}",
       "description": "Generated server url"
     }
   ],
