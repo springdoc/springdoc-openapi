@@ -30,7 +30,7 @@ import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
 
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.webtestclient.AutoConfigureWebTestClient;
 import org.springframework.cloud.function.context.test.FunctionalSpringBootTest;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
