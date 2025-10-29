@@ -346,6 +346,17 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param locale the locale
 	 * @return the open api
 	 */
+	protected OpenAPI getOpenApi(Locale locale) {
+		return this.getOpenApi(null, locale);
+	}
+
+	/**
+	 * Gets open api.
+	 *
+	 * @param serverBaseUrl the server base url
+	 * @param locale the locale
+	 * @return the open api
+	 */
 	protected OpenAPI getOpenApi(String serverBaseUrl, Locale locale) {
 		this.reentrantLock.lock();
 		try {
