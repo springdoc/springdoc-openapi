@@ -64,7 +64,7 @@ class KotlinDeprecatedPropertyCustomizer(
 			prop.hasAnnotation<Deprecated>()
 			if (deprecatedAnnotation != null) {
 				val fieldName = prop.name
-				if (resolvedSchema.`$ref` != null) {
+				if (resolvedSchema!=null && resolvedSchema.`$ref` != null) {
 					val schema =
 						context.getDefinedModels()[resolvedSchema.`$ref`.substring(
 							Components.COMPONENTS_SCHEMAS_REF.length
