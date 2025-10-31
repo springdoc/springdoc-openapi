@@ -32,10 +32,19 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 import org.springframework.web.util.pattern.PathPattern;
 
 /**
+ * The type Spring security utils.
+ *
  * @author bnasslahsen
  */
 public final class SpringSecurityUtils {
 
+	/**
+	 * Gets path.
+	 *
+	 * @param pathPatternRequestMatcher the path pattern request matcher
+	 * @return the path
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	public static String getPath(PathPatternRequestMatcher pathPatternRequestMatcher) throws IllegalAccessException {
 		PathPattern pathPattern = (PathPattern) FieldUtils.readField(
 				pathPatternRequestMatcher,

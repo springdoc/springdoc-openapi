@@ -534,6 +534,8 @@ public class SpringDocUtils {
 
 	/**
 	 * Init extra schemas.
+	 *
+	 * @return the spring doc utils
 	 */
 	public SpringDocUtils initExtraSchemas() {
 		customClasses().put("java.time.Duration", PrimitiveType.STRING);
@@ -579,6 +581,7 @@ public class SpringDocUtils {
 	 * @param <T>        the type parameter
 	 * @param source     the source
 	 * @param targetType the target type
+	 * @param mapper     the mapper
 	 * @return the t
 	 */
 	public static  <T> T cloneViaJson(Object source, Class<T> targetType, ObjectMapper mapper) {
@@ -600,6 +603,7 @@ public class SpringDocUtils {
 	 * @param <T>     the type parameter
 	 * @param source  the source
 	 * @param typeRef the type ref
+	 * @param mapper  the mapper
 	 * @return the t
 	 */
 	public static  <T> T cloneViaJson(Object source, TypeReference<T> typeRef, ObjectMapper mapper) {

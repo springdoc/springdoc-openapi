@@ -147,10 +147,10 @@ public class GenericParameterService {
 	/**
 	 * Instantiates a new Generic parameter builder.
 	 *
-	 * @param propertyResolverUtils                        the property resolver utils
-	 * @param optionalWebConversionServiceProvider         the optional web conversion service provider
-	 * @param objectMapperProvider                         the object mapper provider
-	 * @param javadocProviderOptional                      the javadoc provider
+	 * @param propertyResolverUtils                the property resolver utils
+	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
+	 * @param objectMapperProvider                 the object mapper provider
+	 * @param javadocProviderOptional              the javadoc provider
 	 */
 	public GenericParameterService(PropertyResolverUtils propertyResolverUtils,
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProviderOptional) {

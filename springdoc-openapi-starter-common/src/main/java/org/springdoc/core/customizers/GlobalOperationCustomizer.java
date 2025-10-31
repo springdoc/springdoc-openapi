@@ -32,7 +32,6 @@ package org.springdoc.core.customizers;
  * description and groups
  *
  * @author christophejan
- * @see OperationCustomizer operations on default OpenAPI      description but not groups
  */
 public interface GlobalOperationCustomizer extends OperationCustomizer {
 }

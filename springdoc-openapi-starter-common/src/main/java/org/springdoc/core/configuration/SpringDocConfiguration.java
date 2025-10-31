@@ -191,6 +191,11 @@ public class SpringDocConfiguration {
 		return SpringdocBeanFactoryConfigurer::initBeanFactoryPostProcessor;
 	}
 
+	/**
+	 * Init extra schemas object.
+	 *
+	 * @return the object
+	 */
 	@Bean
 	@Lazy(false)
 	@ConditionalOnProperty(name = SPRINGDOC_ENABLE_EXTRA_SCHEMAS, matchIfMissing = true)
@@ -386,10 +391,10 @@ public class SpringDocConfiguration {
 	/**
 	 * Parameter builder generic parameter builder.
 	 *
-	 * @param propertyResolverUtils                        the property resolver utils
-	 * @param optionalWebConversionServiceProvider         the optional web conversion service provider
-	 * @param objectMapperProvider                         the object mapper provider
-	 * @param javadocProvider                              the javadoc provider
+	 * @param propertyResolverUtils                the property resolver utils
+	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
+	 * @param objectMapperProvider                 the object mapper provider
+	 * @param javadocProvider                      the javadoc provider
 	 * @return the generic parameter builder
 	 */
 	@Bean

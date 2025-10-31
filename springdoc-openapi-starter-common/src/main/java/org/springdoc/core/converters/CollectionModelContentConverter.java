@@ -26,11 +26,8 @@
 
 package org.springdoc.core.converters;
 
-import java.util.Collection;
 import java.util.Iterator;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -48,8 +45,6 @@ import org.springframework.util.CollectionUtils;
  * Override resolved schema as there is a custom serializer that converts the data to a map before serializing it.
  *
  * @author bnasslahsen
- * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer
- * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)
  */
 public class CollectionModelContentConverter implements ModelConverter {
 

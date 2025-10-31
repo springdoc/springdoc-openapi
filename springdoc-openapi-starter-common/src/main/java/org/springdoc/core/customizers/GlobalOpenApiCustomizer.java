@@ -31,7 +31,6 @@ package org.springdoc.core.customizers;
  * customize Open api on default OpenAPI description and groups.
  *
  * @author christophejan
- * @see OpenApiCustomizer default OpenAPI description but not      groups
  */
 public interface GlobalOpenApiCustomizer extends OpenApiCustomizer {
 }

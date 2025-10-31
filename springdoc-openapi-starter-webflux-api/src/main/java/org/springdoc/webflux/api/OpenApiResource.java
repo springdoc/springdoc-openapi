@@ -232,6 +232,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param serverHttpRequest the server http request
 	 * @param apiDocsUrl        the api docs url
 	 * @param locale            the locale
+	 * @return the string
 	 */
 	protected String calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale) {
 		initOpenAPIBuilder(locale);

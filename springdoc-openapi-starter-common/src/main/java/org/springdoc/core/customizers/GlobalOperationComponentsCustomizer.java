@@ -37,7 +37,6 @@ import org.springframework.web.method.HandlerMethod;
  * description and groups
  *
  * @author christophejan
- * @see OperationCustomizer operations on default OpenAPI      description but not groups
  */
 public interface GlobalOperationComponentsCustomizer extends GlobalOperationCustomizer {
 
@@ -45,6 +44,7 @@ public interface GlobalOperationComponentsCustomizer extends GlobalOperationCust
 	 * Customize operation.
 	 *
 	 * @param operation     input operation
+	 * @param components    the components
 	 * @param handlerMethod original handler method
 	 * @return customized operation
 	 */

@@ -67,6 +67,13 @@ public class ScalarWebFluxController extends AbstractScalarController {
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
+	/**
+	 * Gets docs.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @return the docs
+	 * @throws IOException the io exception
+	 */
 	@GetMapping
 	public ResponseEntity<String> getDocs(ServerHttpRequest serverHttpRequest) throws IOException {
 		return super.getDocs(serverHttpRequest.getURI().toString());

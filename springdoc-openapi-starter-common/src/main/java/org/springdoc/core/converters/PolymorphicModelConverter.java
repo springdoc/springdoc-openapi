@@ -260,6 +260,10 @@ public class PolymorphicModelConverter implements ModelConverter {
 		/**
 		 * Retrieves an annotation of the specified type from either the serialization or
 		 * deserialization property definition (field, getter, setter), returning the first available match.
+		 *
+		 * @param <A>  the type parameter
+		 * @param acls the acls
+		 * @return the any annotation
 		 */
 		public <A extends Annotation> A getAnyAnnotation(Class<A> acls) {
 			A anyForSerializationAnnotation = getAnyAnnotation(forSerialization, acls);
@@ -271,6 +275,10 @@ public class PolymorphicModelConverter implements ModelConverter {
 		/**
 		 * Checks if any annotation of the specified type exists across serialization
 		 * or deserialization property definitions.
+		 *
+		 * @param <A>  the type parameter
+		 * @param acls the acls
+		 * @return the boolean
 		 */
 		public <A extends Annotation> boolean isAnyAnnotated(Class<A> acls) {
 			return getAnyAnnotation(acls) != null;
@@ -278,6 +286,8 @@ public class PolymorphicModelConverter implements ModelConverter {
 
 		/**
 		 * Type determined from the primary member for the property being built.
+		 *
+		 * @return the primary type
 		 */
 		public JavaType getPrimaryType() {
 			JavaType forSerializationType = null;

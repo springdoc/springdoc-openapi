@@ -56,7 +56,7 @@ public class SchemaUtils {
 	/**
 	 * The constant ANNOTATIONS_FOR_REQUIRED.
 	 */
-	// using string litterals to support both validation-api v1 and v2
+// using string litterals to support both validation-api v1 and v2
 	public static final List<String> ANNOTATIONS_FOR_REQUIRED = Arrays.asList("NotNull", "NonNull", "NotBlank",
 			"NotEmpty");
 
@@ -116,9 +116,9 @@ public class SchemaUtils {
 	 * @param schema    the schema
 	 * @param parameter the parameter
 	 * @return the boolean or {@code null}
-	 * @see Parameter#required()
-	 * @see io.swagger.v3.oas.annotations.media.Schema#required()
-	 * @see io.swagger.v3.oas.annotations.media.Schema#requiredMode()
+	 * @see Parameter#required() Parameter#required()
+	 * @see io.swagger.v3.oas.annotations.media.Schema#required() io.swagger.v3.oas.annotations.media.Schema#required()
+	 * @see io.swagger.v3.oas.annotations.media.Schema#requiredMode() io.swagger.v3.oas.annotations.media.Schema#requiredMode()
 	 */
 	@Nullable
 	public static Boolean swaggerRequired(@Nullable io.swagger.v3.oas.annotations.media.Schema schema,
@@ -187,9 +187,9 @@ public class SchemaUtils {
 	 * @param schema    the schema
 	 * @param parameter the parameter
 	 * @return the boolean
-	 * @see Parameter#required()
-	 * @see io.swagger.v3.oas.annotations.media.Schema#required()
-	 * @see io.swagger.v3.oas.annotations.media.Schema#requiredMode()
+	 * @see Parameter#required() Parameter#required()
+	 * @see io.swagger.v3.oas.annotations.media.Schema#required() io.swagger.v3.oas.annotations.media.Schema#required()
+	 * @see io.swagger.v3.oas.annotations.media.Schema#requiredMode() io.swagger.v3.oas.annotations.media.Schema#requiredMode()
 	 */
 	public boolean fieldRequired(Field field, io.swagger.v3.oas.annotations.media.Schema schema, Parameter parameter) {
 		Boolean swagger = swaggerRequired(schema, parameter);

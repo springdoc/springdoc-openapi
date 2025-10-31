@@ -104,17 +104,20 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	 * The Parameter customizers.
 	 */
 	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
+
 	/**
 	 * Instantiates a new Spring doc customizers.
 	 *
-	 * @param openApiCustomizers                 the open api customizers
-	 * @param operationCustomizers               the operation customizers
-	 * @param routerOperationCustomizers         the router operation customizers
-	 * @param dataRestRouterOperationCustomizers the data rest router operation customizers
-	 * @param methodFilters                      the method filters
-	 * @param globalOpenApiCustomizers           the global open api customizers
-	 * @param globalOperationCustomizers         the global operation customizers
-	 * @param globalOpenApiMethodFilters         the global open api method filters
+	 * @param openApiCustomizers                           the open api customizers
+	 * @param operationCustomizers                         the operation customizers
+	 * @param routerOperationCustomizers                   the router operation customizers
+	 * @param dataRestRouterOperationCustomizers           the data rest router operation customizers
+	 * @param methodFilters                                the method filters
+	 * @param globalOpenApiCustomizers                     the global open api customizers
+	 * @param globalOperationCustomizers                   the global operation customizers
+	 * @param globalOpenApiMethodFilters                   the global open api method filters
+	 * @param optionalDelegatingMethodParameterCustomizers the optional delegating method parameter customizers
+	 * @param parameterCustomizers                         the parameter customizers
 	 */
 	public SpringDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers,
 			Optional<Set<OperationCustomizer>> operationCustomizers,
@@ -139,10 +142,12 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	/**
 	 * Instantiates a new Spring doc customizers.
 	 *
-	 * @param openApiCustomizers         the open api customizers
-	 * @param operationCustomizers       the operation customizers
-	 * @param routerOperationCustomizers the router operation customizers
-	 * @param openApiMethodFilters       the open api method filters
+	 * @param openApiCustomizers                           the open api customizers
+	 * @param operationCustomizers                         the operation customizers
+	 * @param routerOperationCustomizers                   the router operation customizers
+	 * @param openApiMethodFilters                         the open api method filters
+	 * @param optionalDelegatingMethodParameterCustomizers the optional delegating method parameter customizers
+	 * @param parameterCustomizers                         the parameter customizers
 	 */
 	public SpringDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers, Optional<Set<OperationCustomizer>> operationCustomizers,
 			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers, Optional<Set<OpenApiMethodFilter>> openApiMethodFilters, Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {

@@ -532,13 +532,13 @@ public class OpenAPIService implements ApplicationContextAware {
 	}
 
 
-    /**
-     * Gets webhooks from given classes.
-     *
-     * @param classes Array of classes to scan for webhooks.
-     * @return An array of {@link Webhooks} annotations found in the given classes.
-     */
-    public Webhooks[] getWebhooks(Class<?>[] classes) {
+	/**
+	 * Gets webhooks from given classes.
+	 *
+	 * @param classes Array of classes to scan for webhooks.
+	 * @return An array of {@link Webhooks} annotations found in the given classes.
+	 */
+	public Webhooks[] getWebhooks(Class<?>[] classes) {
         List<Webhooks> allWebhooks = new ArrayList<>();
 
         for (Class<?> clazz : classes) {
@@ -555,15 +555,15 @@ public class OpenAPIService implements ApplicationContextAware {
     }
 
 
-    /**
-     * Retrieves all classes related to webhooks.
-     * This method scans for classes annotated with {@link Webhooks} or {@link Webhook},
-     * first checking Spring-managed beans and then falling back to classpath scanning
-     * if no annotated beans are found.
-     *
-     * @return An array of classes related to webhooks.
-     */
-    public Class<?>[] getWebhooksClasses() {
+	/**
+	 * Retrieves all classes related to webhooks.
+	 * This method scans for classes annotated with {@link Webhooks} or {@link Webhook},
+	 * first checking Spring-managed beans and then falling back to classpath scanning
+	 * if no annotated beans are found.
+	 *
+	 * @return An array of classes related to webhooks.
+	 */
+	public Class<?>[] getWebhooksClasses() {
         Set<Class<?>> allWebhookClassesToScan = new HashSet<>();
 
         // First: scan Spring-managed beans

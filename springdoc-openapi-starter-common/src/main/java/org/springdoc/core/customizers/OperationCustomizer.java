@@ -36,7 +36,6 @@ import org.springframework.web.method.HandlerMethod;
  * groups
  *
  * @author bnasslahsen
- * @see GlobalOperationCustomizer operations on default OpenAPI      description and groups
  */
 @FunctionalInterface
 public interface OperationCustomizer {

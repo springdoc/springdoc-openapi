@@ -67,6 +67,13 @@ public class ScalarWebMvcController extends AbstractScalarController {
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
+	/**
+	 * Gets docs.
+	 *
+	 * @param request the request
+	 * @return the docs
+	 * @throws IOException the io exception
+	 */
 	@GetMapping
 	public ResponseEntity<String> getDocs(HttpServletRequest request) throws IOException {
 		return super.getDocs(request.getRequestURL().toString());

@@ -65,6 +65,13 @@ public class ScalarActuatorController extends AbstractScalarController {
 		this.webEndpointProperties = webEndpointProperties;
 	}
 
+	/**
+	 * Gets docs.
+	 *
+	 * @param request the request
+	 * @return the docs
+	 * @throws IOException the io exception
+	 */
 	@Operation(hidden = true)
 	@GetMapping(DEFAULT_PATH_SEPARATOR)
 	public ResponseEntity<String> getDocs(HttpServletRequest request) throws IOException {

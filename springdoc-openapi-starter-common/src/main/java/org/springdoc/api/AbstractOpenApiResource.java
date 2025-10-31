@@ -354,7 +354,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Gets open api.
 	 *
 	 * @param serverBaseUrl the server base url
-	 * @param locale the locale
+	 * @param locale        the locale
 	 * @return the open api
 	 */
 	protected OpenAPI getOpenApi(String serverBaseUrl, Locale locale) {
@@ -1023,7 +1023,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Customise operation.
 	 *
 	 * @param operation     the operation
-	 * @param components
+	 * @param components    the components
 	 * @param handlerMethod the handler method
 	 * @return the operation
 	 */

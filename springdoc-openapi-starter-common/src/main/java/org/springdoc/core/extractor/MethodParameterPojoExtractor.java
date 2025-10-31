@@ -127,6 +127,8 @@ public class MethodParameterPojoExtractor {
 
 	/**
 	 * Instantiates a new Method parameter pojo extractor.
+	 *
+	 * @param schemaUtils the schema utils
 	 */
 	public MethodParameterPojoExtractor(SchemaUtils schemaUtils) {
 		this.schemaUtils = schemaUtils;

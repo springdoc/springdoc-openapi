@@ -224,7 +224,7 @@ public abstract class AbstractRequestService {
 		this.defaultFlatParamObject = parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties().isDefaultFlatParamObject();
 		this.defaultSupportFormData = parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties().isDefaultSupportFormData();
 	}
-	
+
 	/**
 	 * Add request wrapper to ignore.
 	 *
@@ -293,9 +293,9 @@ public abstract class AbstractRequestService {
 	 * @param methodAttributes the method attributes
 	 * @param openAPI          the open api
 	 * @return the operation
-	 * @see org.springdoc.core.customizers.DelegatingMethodParameterCustomizer#customizeList(MethodParameter, List)
-	 * @see ParameterCustomizer#customize(Parameter, MethodParameter)
-	 * @see org.springdoc.core.customizers.PropertyCustomizer#customize(Schema, AnnotatedType)
+	 * @see org.springdoc.core.customizers.DelegatingMethodParameterCustomizer#customizeList(MethodParameter, List) org.springdoc.core.customizers.DelegatingMethodParameterCustomizer#customizeList(MethodParameter, List)
+	 * @see ParameterCustomizer#customize(Parameter, MethodParameter) ParameterCustomizer#customize(Parameter, MethodParameter)
+	 * @see org.springdoc.core.customizers.PropertyCustomizer#customize(Schema, AnnotatedType) org.springdoc.core.customizers.PropertyCustomizer#customize(Schema, AnnotatedType)
 	 */
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
