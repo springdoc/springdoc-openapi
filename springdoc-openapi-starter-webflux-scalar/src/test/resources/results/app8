@@ -17,7 +17,7 @@
     <!-- Initialize the Scalar API Reference -->
     <script>
       Scalar.createApiReference('#app',     {
-      url: "http://localhost/v3/api-docs"
+      url: "http://localhost:9519/v3/api-docs"
     }
 )
     </script>

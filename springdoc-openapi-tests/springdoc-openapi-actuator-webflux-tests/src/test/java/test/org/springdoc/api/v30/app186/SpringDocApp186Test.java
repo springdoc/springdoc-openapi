@@ -34,14 +34,16 @@ import test.org.springdoc.api.v30.AbstractCommonTest;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = { "springdoc.show-actuator=true",
+		"server.port=62233",
 		"springdoc.group-configs[0].group=group-actuator-as-properties",
 		"springdoc.group-configs[0].paths-to-match=${management.endpoints.web.base-path:/actuator}/**",
 		"management.endpoints.enabled-by-default=true",

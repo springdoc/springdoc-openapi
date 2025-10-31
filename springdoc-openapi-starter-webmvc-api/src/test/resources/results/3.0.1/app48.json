@@ -49,7 +49,7 @@
             }
           },
           "413": {
-            "description": "Payload Too Large",
+            "description": "Content Too Large",
             "content": {
               "*/*": {
                 "schema": {

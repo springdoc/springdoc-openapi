@@ -141,12 +141,12 @@
             "type": "boolean"
           },
           "instance": {},
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -286,6 +286,9 @@
       "CSTNode": {
         "type": "object",
         "properties": {
+          "description": {
+            "type": "string"
+          },
           "empty": {
             "type": "boolean"
           },
@@ -296,16 +299,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "meaning": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "rootText": {
-            "type": "string"
-          },
-          "anExpression": {
-            "type": "boolean"
-          },
           "startLine": {
             "type": "integer",
             "format": "int32"
@@ -314,7 +307,14 @@
             "type": "integer",
             "format": "int32"
           },
-          "description": {
+          "anExpression": {
+            "type": "boolean"
+          },
+          "meaning": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rootText": {
             "type": "string"
           }
         }
@@ -340,7 +340,6 @@
               "$ref": "#/components/schemas/CachedMethod"
             }
           },
-          "cachedSuperClass": {},
           "hierarchy": {
             "type": "array",
             "items": {
@@ -398,6 +397,7 @@
           "typeDescription": {
             "type": "string"
           },
+          "cachedSuperClass": {},
           "newMetaMethods": {
             "type": "array",
             "items": {}
@@ -1327,11 +1327,35 @@
               }
             }
           },
+          "name": {
+            "type": "string"
+          },
           "modifiers": {
             "type": "integer",
             "format": "int32"
           },
+          "synthetic": {
+            "type": "boolean"
+          },
           "cachedClass": {},
+          "final": {
+            "type": "boolean"
+          },
+          "static": {
+            "type": "boolean"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "protected": {
+            "type": "boolean"
+          },
+          "private": {
+            "type": "boolean"
+          },
+          "packagePrivate": {
+            "type": "boolean"
+          },
           "vargsMethod": {
             "type": "boolean"
           }
@@ -1346,12 +1370,6 @@
           "modifiers": {
             "type": "integer",
             "format": "int32"
-          },
-          "final": {
-            "type": "boolean"
-          },
-          "static": {
-            "type": "boolean"
           },
           "cachedField": {
             "type": "object",
@@ -1411,6 +1429,27 @@
                 "items": {}
               }
             }
+          },
+          "synthetic": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "static": {
+            "type": "boolean"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "protected": {
+            "type": "boolean"
+          },
+          "private": {
+            "type": "boolean"
+          },
+          "packagePrivate": {
+            "type": "boolean"
           }
         }
       },
@@ -1938,9 +1977,6 @@
           "synthetic": {
             "type": "boolean"
           },
-          "static": {
-            "type": "boolean"
-          },
           "declaringClass": {},
           "paramsCount": {
             "type": "integer",
@@ -1949,22 +1985,31 @@
           "paramTypes": {
             "$ref": "#/components/schemas/ParameterTypes"
           },
-          "public": {
-            "type": "boolean"
-          },
-          "protected": {
-            "type": "boolean"
-          },
           "default": {
             "type": "boolean"
           },
           "abstract": {
             "type": "boolean"
           },
+          "cacheable": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "static": {
+            "type": "boolean"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "protected": {
+            "type": "boolean"
+          },
           "private": {
             "type": "boolean"
           },
-          "cacheable": {
+          "packagePrivate": {
             "type": "boolean"
           },
           "vargsMethod": {
@@ -2319,13 +2364,13 @@
           "weakMetaClass": {
             "$ref": "#/components/schemas/MetaClass"
           },
+          "cachedClass": {},
           "metaClassForClass": {
             "$ref": "#/components/schemas/MetaClass"
           },
           "modifiedExpando": {
             "$ref": "#/components/schemas/ExpandoMetaClass"
-          },
-          "cachedClass": {}
+          }
         }
       },
       "ClassLoaderForClassArtifacts": {
@@ -2679,9 +2724,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "syntheticPublic": {
-            "type": "boolean"
-          },
           "interfaces": {
             "type": "array",
             "items": {}
@@ -2714,35 +2756,14 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/FieldNode"
-            }
-          },
-          "module": {
-            "$ref": "#/components/schemas/ModuleNode"
-          },
-          "compileUnit": {
-            "$ref": "#/components/schemas/CompileUnit"
-          },
-          "staticClass": {
-            "type": "boolean"
-          },
-          "scriptBody": {
-            "type": "boolean"
-          },
-          "script": {
-            "type": "boolean"
+            },
+            "deprecated": true
           },
           "superClass": {},
-          "innerClasses": {},
           "permittedSubclasses": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "typeAnnotations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AnnotationNode"
             }
           },
           "recordComponents": {
@@ -2755,8 +2776,9 @@
           "redirect": {
             "writeOnly": true
           },
-          "annotated": {
-            "type": "boolean"
+          "innerClasses": {},
+          "enclosingMethod": {
+            "$ref": "#/components/schemas/MethodNode"
           },
           "genericsTypes": {
             "type": "array",
@@ -2764,8 +2786,29 @@
               "$ref": "#/components/schemas/GenericsType"
             }
           },
-          "enclosingMethod": {
-            "$ref": "#/components/schemas/MethodNode"
+          "script": {
+            "type": "boolean"
+          },
+          "scriptBody": {
+            "type": "boolean"
+          },
+          "staticClass": {
+            "type": "boolean"
+          },
+          "syntheticPublic": {
+            "type": "boolean"
+          },
+          "annotated": {
+            "type": "boolean"
+          },
+          "typeAnnotations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnnotationNode"
+            }
+          },
+          "module": {
+            "$ref": "#/components/schemas/ModuleNode"
           },
           "interface": {
             "type": "boolean"
@@ -2806,25 +2849,29 @@
           "text": {
             "type": "string"
           },
-          "unresolvedSuperClass": {},
-          "objectInitializerStatements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Statement"
-            }
+          "compileUnit": {
+            "$ref": "#/components/schemas/CompileUnit",
+            "deprecated": true
           },
-          "unresolvedInterfaces": {
-            "type": "array",
-            "items": {}
-          },
-          "derivedFromGroovyObject": {
+          "outerClass": {},
+          "redirectNode": {
             "type": "boolean"
           },
-          "recordComponentNodes": {
+          "allDeclaredMethods": {
             "type": "array",
-            "deprecated": true,
             "items": {
-              "$ref": "#/components/schemas/RecordComponentNode"
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "type": "array",
+            "items": {},
+            "uniqueItems": true
+          },
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
             }
           },
           "genericsPlaceHolder": {
@@ -2843,46 +2890,39 @@
               "$ref": "#/components/schemas/MethodNode"
             }
           },
-          "outerClasses": {
-            "type": "array",
-            "items": {}
-          },
           "nameWithoutPackage": {
             "type": "string"
           },
           "annotationDefinition": {
             "type": "boolean"
           },
-          "abstractMethods": {
+          "outerClasses": {
+            "type": "array",
+            "items": {}
+          },
+          "unresolvedSuperClass": {},
+          "unresolvedInterfaces": {
+            "type": "array",
+            "items": {}
+          },
+          "objectInitializerStatements": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MethodNode"
+              "$ref": "#/components/schemas/Statement"
             }
           },
-          "allInterfaces": {
-            "type": "array",
-            "items": {},
-            "uniqueItems": true
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "outerClass": {},
-          "redirectNode": {
+          "derivedFromGroovyObject": {
             "type": "boolean"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode",
@@ -3190,11 +3230,7 @@
           "bytecodePostprocessor": {
             "$ref": "#/components/schemas/BytecodeProcessor"
           },
-          "targetBytecodeIfValid": {
-            "type": "string",
-            "writeOnly": true
-          },
-          "runtimeGroovydocEnabled": {
+          "indyEnabled": {
             "type": "boolean"
           },
           "targetDirectorySafe": {
@@ -3215,7 +3251,11 @@
           "groovydocEnabled": {
             "type": "boolean"
           },
-          "indyEnabled": {
+          "targetBytecodeIfValid": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "runtimeGroovydocEnabled": {
             "type": "boolean"
           }
         }
@@ -3319,6 +3359,15 @@
           "text": {
             "type": "string"
           },
+          "voidMethod": {
+            "type": "boolean"
+          },
+          "packageScope": {
+            "type": "boolean"
+          },
+          "scriptBody": {
+            "type": "boolean"
+          },
           "annotationDefault": {
             "type": "boolean",
             "writeOnly": true
@@ -3329,24 +3378,15 @@
           "staticConstructor": {
             "type": "boolean"
           },
-          "voidMethod": {
-            "type": "boolean"
-          },
-          "packageScope": {
-            "type": "boolean"
-          },
-          "scriptBody": {
-            "type": "boolean"
-          },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode",
@@ -3376,14 +3416,14 @@
           "configuration": {
             "$ref": "#/components/schemas/CompilerConfiguration"
           },
-          "warningCount": {
+          "errorCount": {
             "type": "integer",
             "format": "int32"
           },
           "lastError": {
             "$ref": "#/components/schemas/Message"
           },
-          "errorCount": {
+          "warningCount": {
             "type": "integer",
             "format": "int32"
           }
@@ -3440,6 +3480,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "groovyObject": {
+            "type": "boolean"
+          },
+          "classInfo": {},
           "upProperties": {
             "type": "array",
             "items": {
@@ -4472,11 +4516,7 @@
               }
             },
             "writeOnly": true
-          },
-          "groovyObject": {
-            "type": "boolean"
-          },
-          "classInfo": {}
+          }
         }
       },
       "Expression": {
@@ -4510,12 +4550,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -4585,6 +4625,12 @@
           "enum": {
             "type": "boolean"
           },
+          "initialExpression": {
+            "$ref": "#/components/schemas/Expression"
+          },
+          "inStaticContext": {
+            "type": "boolean"
+          },
           "final": {
             "type": "boolean"
           },
@@ -4604,24 +4650,17 @@
             "type": "boolean"
           },
           "closureSharedVariable": {
-            "type": "boolean",
-            "deprecated": true
-          },
-          "initialExpression": {
-            "$ref": "#/components/schemas/Expression"
-          },
-          "inStaticContext": {
             "type": "boolean"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -5103,12 +5142,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode",
@@ -5160,9 +5199,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "syntheticPublic": {
-            "type": "boolean"
-          },
           "interfaces": {
             "type": "array",
             "items": {}
@@ -5189,33 +5225,10 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/FieldNode"
-            }
-          },
-          "module": {},
-          "compileUnit": {},
-          "staticClass": {
-            "type": "boolean"
-          },
-          "scriptBody": {
-            "type": "boolean"
-          },
-          "script": {
-            "type": "boolean"
+            },
+            "deprecated": true
           },
           "superClass": {},
-          "innerClasses": {},
-          "permittedSubclasses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "typeAnnotations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AnnotationNode"
-            }
-          },
           "recordComponents": {
             "type": "array",
             "items": {
@@ -5226,8 +5239,9 @@
           "redirect": {
             "writeOnly": true
           },
-          "annotated": {
-            "type": "boolean"
+          "innerClasses": {},
+          "enclosingMethod": {
+            "$ref": "#/components/schemas/MethodNode"
           },
           "genericsTypes": {
             "type": "array",
@@ -5235,17 +5249,36 @@
               "$ref": "#/components/schemas/GenericsType"
             }
           },
-          "enclosingMethod": {
-            "$ref": "#/components/schemas/MethodNode"
+          "script": {
+            "type": "boolean"
+          },
+          "scriptBody": {
+            "type": "boolean"
+          },
+          "staticClass": {
+            "type": "boolean"
+          },
+          "syntheticPublic": {
+            "type": "boolean"
+          },
+          "annotated": {
+            "type": "boolean"
+          },
+          "typeAnnotations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnnotationNode"
+            }
           },
           "outerClass": {},
           "anonymous": {
             "type": "boolean"
           },
-          "outerMostClass": {},
           "variableScope": {
             "$ref": "#/components/schemas/VariableScope"
           },
+          "outerMostClass": {},
+          "module": {},
           "interface": {
             "type": "boolean"
           },
@@ -5285,25 +5318,28 @@
           "text": {
             "type": "string"
           },
-          "unresolvedSuperClass": {},
-          "objectInitializerStatements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Statement"
-            }
+          "compileUnit": {
+            "$ref": "#/components/schemas/CompileUnit",
+            "deprecated": true
           },
-          "unresolvedInterfaces": {
-            "type": "array",
-            "items": {}
-          },
-          "derivedFromGroovyObject": {
+          "redirectNode": {
             "type": "boolean"
           },
-          "recordComponentNodes": {
+          "allDeclaredMethods": {
             "type": "array",
-            "deprecated": true,
             "items": {
-              "$ref": "#/components/schemas/RecordComponentNode"
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "type": "array",
+            "items": {},
+            "uniqueItems": true
+          },
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
             }
           },
           "genericsPlaceHolder": {
@@ -5322,45 +5358,39 @@
               "$ref": "#/components/schemas/MethodNode"
             }
           },
-          "outerClasses": {
-            "type": "array",
-            "items": {}
-          },
           "nameWithoutPackage": {
             "type": "string"
           },
           "annotationDefinition": {
             "type": "boolean"
           },
-          "abstractMethods": {
+          "outerClasses": {
+            "type": "array",
+            "items": {}
+          },
+          "unresolvedSuperClass": {},
+          "unresolvedInterfaces": {
+            "type": "array",
+            "items": {}
+          },
+          "objectInitializerStatements": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MethodNode"
+              "$ref": "#/components/schemas/Statement"
             }
           },
-          "allInterfaces": {
-            "type": "array",
-            "items": {},
-            "uniqueItems": true
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "redirectNode": {
+          "derivedFromGroovyObject": {
             "type": "boolean"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode",
@@ -5410,18 +5440,18 @@
       "MetaClassRegistry": {
         "type": "object",
         "properties": {
-          "metaClassRegistryChangeEventListeners": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MetaClassRegistryChangeEventListener"
-            }
-          },
           "metaClassCreationHandler": {
             "$ref": "#/components/schemas/MetaClassCreationHandle"
           },
           "metaClassCreationHandle": {
             "$ref": "#/components/schemas/MetaClassCreationHandle",
             "writeOnly": true
+          },
+          "metaClassRegistryChangeEventListeners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetaClassRegistryChangeEventListener"
+            }
           }
         }
       },
@@ -5451,17 +5481,8 @@
           "descriptor": {
             "type": "string"
           },
-          "static": {
-            "type": "boolean"
-          },
           "declaringClass": {
             "$ref": "#/components/schemas/CachedClass"
-          },
-          "public": {
-            "type": "boolean"
-          },
-          "protected": {
-            "type": "boolean"
           },
           "default": {
             "type": "boolean"
@@ -5469,10 +5490,31 @@
           "abstract": {
             "type": "boolean"
           },
+          "cacheable": {
+            "type": "boolean"
+          },
+          "synthetic": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "static": {
+            "type": "boolean"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "protected": {
+            "type": "boolean"
+          },
           "private": {
             "type": "boolean"
           },
-          "cacheable": {
+          "packagePrivate": {
+            "type": "boolean"
+          },
+          "vargsMethod": {
             "type": "boolean"
           },
           "parametersTypes": {
@@ -5481,9 +5523,6 @@
               "$ref": "#/components/schemas/CachedClass"
             },
             "writeOnly": true
-          },
-          "vargsMethod": {
-            "type": "boolean"
           }
         }
       },
@@ -5496,6 +5535,27 @@
           "modifiers": {
             "type": "integer",
             "format": "int32"
+          },
+          "synthetic": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "static": {
+            "type": "boolean"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "protected": {
+            "type": "boolean"
+          },
+          "private": {
+            "type": "boolean"
+          },
+          "packagePrivate": {
+            "type": "boolean"
           }
         }
       },
@@ -5598,6 +5658,15 @@
           "text": {
             "type": "string"
           },
+          "voidMethod": {
+            "type": "boolean"
+          },
+          "packageScope": {
+            "type": "boolean"
+          },
+          "scriptBody": {
+            "type": "boolean"
+          },
           "annotationDefault": {
             "type": "boolean",
             "writeOnly": true
@@ -5608,24 +5677,15 @@
           "staticConstructor": {
             "type": "boolean"
           },
-          "voidMethod": {
-            "type": "boolean"
-          },
-          "packageScope": {
-            "type": "boolean"
-          },
-          "scriptBody": {
-            "type": "boolean"
-          },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode",
@@ -5677,9 +5737,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "syntheticPublic": {
-            "type": "boolean"
-          },
           "interfaces": {
             "type": "array",
             "items": {}
@@ -5706,35 +5763,14 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/FieldNode"
-            }
-          },
-          "module": {
-            "$ref": "#/components/schemas/ModuleNode"
-          },
-          "compileUnit": {
-            "$ref": "#/components/schemas/CompileUnit"
-          },
-          "staticClass": {
-            "type": "boolean"
-          },
-          "scriptBody": {
-            "type": "boolean"
-          },
-          "script": {
-            "type": "boolean"
+            },
+            "deprecated": true
           },
           "superClass": {},
-          "innerClasses": {},
           "permittedSubclasses": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "typeAnnotations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AnnotationNode"
             }
           },
           "recordComponents": {
@@ -5747,8 +5783,9 @@
           "redirect": {
             "writeOnly": true
           },
-          "annotated": {
-            "type": "boolean"
+          "innerClasses": {},
+          "enclosingMethod": {
+            "$ref": "#/components/schemas/MethodNode"
           },
           "genericsTypes": {
             "type": "array",
@@ -5756,8 +5793,29 @@
               "$ref": "#/components/schemas/GenericsType"
             }
           },
-          "enclosingMethod": {
-            "$ref": "#/components/schemas/MethodNode"
+          "script": {
+            "type": "boolean"
+          },
+          "scriptBody": {
+            "type": "boolean"
+          },
+          "staticClass": {
+            "type": "boolean"
+          },
+          "syntheticPublic": {
+            "type": "boolean"
+          },
+          "annotated": {
+            "type": "boolean"
+          },
+          "typeAnnotations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnnotationNode"
+            }
+          },
+          "module": {
+            "$ref": "#/components/schemas/ModuleNode"
           },
           "interface": {
             "type": "boolean"
@@ -5798,25 +5856,29 @@
           "text": {
             "type": "string"
           },
-          "unresolvedSuperClass": {},
-          "objectInitializerStatements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Statement"
-            }
+          "compileUnit": {
+            "$ref": "#/components/schemas/CompileUnit",
+            "deprecated": true
           },
-          "unresolvedInterfaces": {
-            "type": "array",
-            "items": {}
-          },
-          "derivedFromGroovyObject": {
+          "outerClass": {},
+          "redirectNode": {
             "type": "boolean"
           },
-          "recordComponentNodes": {
+          "allDeclaredMethods": {
             "type": "array",
-            "deprecated": true,
             "items": {
-              "$ref": "#/components/schemas/RecordComponentNode"
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "type": "array",
+            "items": {},
+            "uniqueItems": true
+          },
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
             }
           },
           "genericsPlaceHolder": {
@@ -5835,46 +5897,39 @@
               "$ref": "#/components/schemas/MethodNode"
             }
           },
-          "outerClasses": {
-            "type": "array",
-            "items": {}
-          },
           "nameWithoutPackage": {
             "type": "string"
           },
           "annotationDefinition": {
             "type": "boolean"
           },
-          "abstractMethods": {
+          "outerClasses": {
+            "type": "array",
+            "items": {}
+          },
+          "unresolvedSuperClass": {},
+          "unresolvedInterfaces": {
+            "type": "array",
+            "items": {}
+          },
+          "objectInitializerStatements": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MethodNode"
+              "$ref": "#/components/schemas/Statement"
             }
           },
-          "allInterfaces": {
-            "type": "array",
-            "items": {},
-            "uniqueItems": true
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "outerClass": {},
-          "redirectNode": {
+          "derivedFromGroovyObject": {
             "type": "boolean"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode",
@@ -5971,10 +6026,10 @@
           "context": {
             "$ref": "#/components/schemas/SourceUnit"
           },
+          "scriptClassDummy": {},
           "scriptBaseClassFromConfig": {
             "writeOnly": true
           },
-          "scriptClassDummy": {},
           "text": {
             "type": "string"
           },
@@ -6030,12 +6085,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode",
@@ -6098,21 +6153,45 @@
             "type": "integer",
             "format": "int32"
           },
-          "closureSharedVariable": {
+          "implicit": {
+            "type": "boolean"
+          },
+          "receiver": {
             "type": "boolean"
           },
           "initialExpression": {
             "$ref": "#/components/schemas/Expression"
           },
+          "closureSharedVariable": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "static": {
+            "type": "boolean"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "protected": {
+            "type": "boolean"
+          },
+          "volatile": {
+            "type": "boolean"
+          },
+          "private": {
+            "type": "boolean"
+          },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -6172,6 +6251,10 @@
           "field": {
             "$ref": "#/components/schemas/FieldNode"
           },
+          "modifiers": {
+            "type": "integer",
+            "format": "int32"
+          },
           "getterBlock": {
             "$ref": "#/components/schemas/Statement"
           },
@@ -6184,26 +6267,19 @@
           "setterName": {
             "type": "string"
           },
-          "modifiers": {
-            "type": "integer",
-            "format": "int32"
-          },
           "type": {},
           "name": {
             "type": "string"
           },
-          "static": {
+          "dynamicTyped": {
             "type": "boolean"
           },
-          "public": {
-            "type": "boolean"
+          "originType": {},
+          "initialExpression": {
+            "$ref": "#/components/schemas/Expression"
           },
-          "private": {
+          "inStaticContext": {
             "type": "boolean"
-          },
-          "closureSharedVariable": {
-            "type": "boolean",
-            "deprecated": true
           },
           "getterNameOrDefault": {
             "type": "string"
@@ -6211,25 +6287,36 @@
           "setterNameOrDefault": {
             "type": "string"
           },
-          "initialExpression": {
-            "$ref": "#/components/schemas/Expression"
-          },
-          "inStaticContext": {
+          "final": {
             "type": "boolean"
           },
-          "dynamicTyped": {
+          "static": {
             "type": "boolean"
           },
-          "originType": {},
+          "public": {
+            "type": "boolean"
+          },
+          "protected": {
+            "type": "boolean"
+          },
+          "volatile": {
+            "type": "boolean"
+          },
+          "private": {
+            "type": "boolean"
+          },
+          "closureSharedVariable": {
+            "type": "boolean"
+          },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -6294,12 +6381,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -6326,16 +6413,12 @@
           "anExpression": {
             "type": "boolean"
           },
+          "description": {
+            "type": "string"
+          },
           "type": {
             "type": "integer",
             "format": "int32"
-          },
-          "meaning": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "rootText": {
-            "type": "string"
           },
           "startLine": {
             "type": "integer",
@@ -6345,7 +6428,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "description": {
+          "meaning": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rootText": {
             "type": "string"
           }
         }
@@ -6459,14 +6546,14 @@
           "rootText": {
             "type": "string"
           },
+          "description": {
+            "type": "string"
+          },
           "empty": {
             "type": "boolean"
           },
           "anExpression": {
             "type": "boolean"
-          },
-          "description": {
-            "type": "string"
           }
         }
       },
@@ -6480,20 +6567,38 @@
             "type": "integer",
             "format": "int32"
           },
-          "type": {},
-          "closureSharedVariable": {
+          "final": {
             "type": "boolean"
           },
+          "static": {
+            "type": "boolean"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "protected": {
+            "type": "boolean"
+          },
+          "type": {},
+          "volatile": {
+            "type": "boolean"
+          },
+          "private": {
+            "type": "boolean"
+          },
+          "dynamicTyped": {
+            "type": "boolean"
+          },
+          "originType": {},
           "initialExpression": {
             "$ref": "#/components/schemas/Expression"
           },
           "inStaticContext": {
             "type": "boolean"
           },
-          "dynamicTyped": {
+          "closureSharedVariable": {
             "type": "boolean"
-          },
-          "originType": {}
+          }
         }
       },
       "VariableScope": {

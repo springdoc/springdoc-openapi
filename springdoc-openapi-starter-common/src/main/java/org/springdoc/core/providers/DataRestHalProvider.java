@@ -28,10 +28,11 @@ package org.springdoc.core.providers;
 
 import java.util.Optional;
 
+import org.springdoc.core.data.SpringDocJackson2HalModule;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.hateoas.autoconfigure.HateoasProperties;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 
 /**
  * The type Data rest hal provider.
@@ -62,8 +63,8 @@ public class DataRestHalProvider extends HateoasHalProvider implements Initializ
 	public void afterPropertiesSet() {
 		if (!isHalEnabled())
 			return;
-		if (!Jackson2HalModule.isAlreadyRegisteredIn(objectMapperProvider.jsonMapper()))
-			objectMapperProvider.jsonMapper().registerModule(new Jackson2HalModule());
+		if (!SpringDocJackson2HalModule.isAlreadyRegisteredIn(objectMapperProvider.jsonMapper()))
+			objectMapperProvider.jsonMapper().registerModule(new SpringDocJackson2HalModule());
 	}
 
 	@Override

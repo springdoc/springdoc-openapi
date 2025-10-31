@@ -19,14 +19,7 @@
 package test.org.springdoc.api.v31.app22
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped
-import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.enums.Explode
-import io.swagger.v3.oas.annotations.media.ArraySchema
-import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.Valid
-import org.springdoc.core.annotations.ParameterObject
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

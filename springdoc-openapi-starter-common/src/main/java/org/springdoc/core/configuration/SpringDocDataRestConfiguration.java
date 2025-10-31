@@ -28,7 +28,6 @@ package org.springdoc.core.configuration;
 
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.configuration.hints.SpringDocDataRestHints;
 import org.springdoc.core.converters.models.DefaultPageable;
 import org.springdoc.core.data.DataRestOperationService;
@@ -42,12 +41,11 @@ import org.springdoc.core.providers.DataRestHalProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringRepositoryRestResourceProvider;
 import org.springdoc.core.service.AbstractRequestService;
-import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
+import tools.jackson.databind.ObjectMapper;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

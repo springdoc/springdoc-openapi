@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -45,6 +44,7 @@ import org.springdoc.core.data.DataRestRepository;
 import org.springdoc.core.data.DataRestRouterOperationService;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
+import tools.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

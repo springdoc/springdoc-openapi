@@ -26,10 +26,10 @@ package test.org.springdoc.api.v30.app199;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import test.org.springdoc.api.v30.app199.CustomExceptionHandler.MyInternalException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class HelloController {
 
 	@Autowired
-	ObjectMapper defaultObjectMapper;
+	ObjectMapperProvider objectMapperProvider;
 
 	@GetMapping(
 			value = "/first",
@@ -83,7 +83,7 @@ public class HelloController {
 					examples.put(
 							"First case example",
 							new Example().value(
-									defaultObjectMapper.valueToTree(
+									objectMapperProvider.jsonMapper().valueToTree(
 											new ErrorDto("An ErrorDto sample specific to /first endpoint")
 									)
 							)
@@ -94,7 +94,7 @@ public class HelloController {
 					examples.put(
 							"Second case example",
 							new Example().value(
-									defaultObjectMapper.valueToTree(
+									objectMapperProvider.jsonMapper().valueToTree(
 											new ErrorDto("An ErrorDto sample specific to /second endpoint")
 									)
 							)

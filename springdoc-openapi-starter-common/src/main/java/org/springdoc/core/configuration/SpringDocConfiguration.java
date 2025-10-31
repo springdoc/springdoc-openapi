@@ -115,7 +115,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClas
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.format.WebConversionService;
-import org.springframework.boot.data.autoconfigure.web.SpringDataWebProperties;
+import org.springframework.boot.data.autoconfigure.web.DataWebProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -589,7 +589,7 @@ public class SpringDocConfiguration {
 	/**
 	 * The type Spring doc spring data web properties provider.
 	 */
-	@ConditionalOnClass(SpringDataWebProperties.class)
+	@ConditionalOnClass(DataWebProperties.class)
 	static class SpringDocSpringDataWebPropertiesProvider {
 		/**
 		 * Spring data web properties provider spring data web properties provider.
@@ -600,7 +600,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		SpringDataWebPropertiesProvider springDataWebPropertiesProvider(Optional<SpringDataWebProperties> optionalSpringDataWebProperties) {
+		SpringDataWebPropertiesProvider springDataWebPropertiesProvider(Optional<DataWebProperties> optionalSpringDataWebProperties) {
 			return new SpringDataWebPropertiesProvider(optionalSpringDataWebProperties);
 		}
 	}

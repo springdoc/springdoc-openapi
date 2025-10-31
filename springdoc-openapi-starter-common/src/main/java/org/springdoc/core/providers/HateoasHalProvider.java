@@ -29,9 +29,10 @@ package org.springdoc.core.providers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springdoc.core.data.SpringDocJackson2HalModule;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.hateoas.autoconfigure.HateoasProperties;
-import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 
@@ -103,8 +104,8 @@ public class HateoasHalProvider implements InitializingBean {
 			return;
 		}
 		var mapper = objectMapperProvider.jsonMapper();
-		if (!Jackson2HalModule.isAlreadyRegisteredIn(mapper)) {
-			mapper.registerModule(new Jackson2HalModule());
+		if (!SpringDocJackson2HalModule.isAlreadyRegisteredIn(mapper)) {
+			mapper.registerModule(new SpringDocJackson2HalModule());
 		}
 	}
 }

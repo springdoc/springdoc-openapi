@@ -26,10 +26,6 @@
 
 package org.springdoc.webmvc.core.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;

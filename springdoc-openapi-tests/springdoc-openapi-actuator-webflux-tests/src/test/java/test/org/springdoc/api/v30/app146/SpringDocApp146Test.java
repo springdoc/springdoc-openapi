@@ -24,10 +24,12 @@ import test.org.springdoc.api.v30.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
 		properties = { "management.endpoints.web.exposure.include=*",
+				"server.port=62386",
 				"springdoc.show-actuator=true",
 				"management.server.port=9286",
 				"management.endpoints.web.exposure.exclude=functions, shutdown",

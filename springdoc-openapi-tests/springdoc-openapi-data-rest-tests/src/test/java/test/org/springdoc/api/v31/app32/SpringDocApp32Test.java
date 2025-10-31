@@ -37,14 +37,14 @@ import test.org.springdoc.api.v31.AbstractSpringDocTest;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.data.rest.autoconfigure.RepositoryRestMvcAutoConfiguration;
+import org.springframework.boot.data.rest.autoconfigure.DataRestAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "spring.data.web.sort.sort-parameter=sorts")
 @EnableAutoConfiguration(exclude = {
-		RepositoryRestMvcAutoConfiguration.class, SpringDocDataRestConfiguration.class
+		DataRestAutoConfiguration.class, SpringDocDataRestConfiguration.class
 })
 public class SpringDocApp32Test extends AbstractSpringDocTest {
 

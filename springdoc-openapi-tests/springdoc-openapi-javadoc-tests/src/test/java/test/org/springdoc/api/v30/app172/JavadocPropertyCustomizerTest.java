@@ -89,7 +89,7 @@ class JavadocPropertyCustomizerTest {
 	@Nested
 	class setJavadocDescription {
 		@Test
-		@EnabledForJreRange(min = JRE.JAVA_17)
+		@EnabledForJreRange(min = JRE.JAVA_17, max = JRE.JAVA_26)
 		void ifRecordObjectShouldGetField() throws IOException, ClassNotFoundException, IntrospectionException {
 			File recordObject = new File(tempDir, "RecordObject.java");
 			try (PrintWriter writer = new PrintWriter(new FileWriter(recordObject))) {
