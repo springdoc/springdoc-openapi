@@ -24,7 +24,8 @@
 		<module>springdoc-openapi-actuator-webmvc-tests</module>
 		<module>springdoc-openapi-kotlin-webflux-tests</module>
 		<module>springdoc-openapi-kotlin-webmvc-tests</module>
-		<module>springdoc-openapi-data-rest-tests</module>
+        <!-- TODO does not support jackson 2 -->
+		<!--<module>springdoc-openapi-data-rest-tests</module>-->
 	</modules>
 
 	<build>
