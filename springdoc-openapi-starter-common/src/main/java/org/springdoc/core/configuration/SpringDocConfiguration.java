@@ -44,8 +44,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.api.ErrorMessage;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.conditions.CacheOrGroupedOpenApiCondition;
@@ -78,6 +76,7 @@ import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
+import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
@@ -103,8 +102,6 @@ import org.springdoc.core.service.SecurityService;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SchemaUtils;
 import org.springdoc.core.utils.SpringDocKotlinUtils;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import reactor.core.publisher.Flux;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -155,13 +152,6 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @ConditionalOnWebApplication
 public class SpringDocConfiguration {
-
-	protected static final Logger LOGGER = LoggerFactory.getLogger(SpringDocConfiguration.class);
-
-	@EventListener(ApplicationReadyEvent.class)
-	public void init() {
-		LOGGER.warn("SpringDoc /api-docs endpoint is enabled by default. To disable it in production, set the property '{}=false' in your production profile configuration.", SPRINGDOC_ENABLED);
-	}
 
 	/**
 	 * The constant BINDRESULT_CLASS.
@@ -727,5 +717,18 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	MethodParameterPojoExtractor methodParameterPojoExtractor(SchemaUtils schemaUtils){
 		return new MethodParameterPojoExtractor(schemaUtils);
+	}
+
+	/**
+	 * Spring doc app initializer spring doc app initializer.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the spring doc app initializer
+	 */
+	@Bean
+	@ConditionalOnMissingBean(name = "springDocAppInitializer")
+	@Lazy(false)
+	SpringDocAppInitializer springDocAppInitializer(SpringDocConfigProperties springDocConfigProperties){
+		return new SpringDocAppInitializer(springDocConfigProperties.getApiDocs().getPath(), SPRINGDOC_ENABLED);
 	}
 }
