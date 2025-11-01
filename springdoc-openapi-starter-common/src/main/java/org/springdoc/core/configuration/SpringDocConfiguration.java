@@ -44,6 +44,8 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.api.ErrorMessage;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.conditions.CacheOrGroupedOpenApiCondition;
@@ -101,6 +103,8 @@ import org.springdoc.core.service.SecurityService;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SchemaUtils;
 import org.springdoc.core.utils.SpringDocKotlinUtils;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import reactor.core.publisher.Flux;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -151,6 +155,13 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @ConditionalOnWebApplication
 public class SpringDocConfiguration {
+
+	protected static final Logger LOGGER = LoggerFactory.getLogger(SpringDocConfiguration.class);
+
+	@EventListener(ApplicationReadyEvent.class)
+	public void init() {
+		LOGGER.warn("SpringDoc /api-docs endpoint is enabled by default. To disable it in production, set the property '{}=false' in your production profile configuration.", SPRINGDOC_ENABLED);
+	}
 
 	/**
 	 * The constant BINDRESULT_CLASS.
