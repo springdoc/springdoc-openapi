@@ -1,0 +1,40 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/icons/**": {
+      "get": {
+        "operationId": "getIcon",
+        "summary": "Get icons resource.",
+        "responses": {
+          "200": {
+            "description": "icon resource",
+            "content": {
+              "image/svg+xml": {}
+            },
+            "headers": {
+              "Cache-Control": {
+                "description": "Cache-Control for icons",
+                "required": true,
+                "style":"simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
