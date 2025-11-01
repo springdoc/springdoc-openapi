@@ -28,6 +28,7 @@ package org.springdoc.webflux.scalar;
 
 import com.scalar.maven.webjar.ScalarProperties;
 import org.springdoc.core.configuration.SpringDocConfiguration;
+import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
@@ -46,8 +47,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
-import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
+import static org.springdoc.core.utils.Constants.SCALAR_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
+import static org.springdoc.scalar.ScalarConstants.DEFAULT_SCALAR_ACTUATOR_PATH;
 
 /**
  * The type Scalar configuration.
@@ -56,11 +58,10 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
+@ConditionalOnProperty(name = SCALAR_ENABLED, matchIfMissing = true)
 @ConditionalOnWebApplication(type = Type.REACTIVE)
 @ConditionalOnBean(SpringDocConfiguration.class)
 @EnableConfigurationProperties(ScalarProperties.class)
-@ConditionalOnProperty(prefix = "scalar", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class ScalarConfiguration {
 
 	/**
@@ -91,6 +92,20 @@ public class ScalarConfiguration {
 	}
 
 	/**
+	 * Spring doc app initializer spring doc app initializer.
+	 *
+	 * @param scalarProperties the spring doc config properties
+	 * @return the spring doc app initializer
+	 */
+	@Bean
+	@ConditionalOnMissingBean(name = "springDocScalarInitializer")
+	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	@Lazy(false)
+	SpringDocAppInitializer springDocScalarInitializer(ScalarProperties scalarProperties){
+		return new SpringDocAppInitializer(scalarProperties.getPath(), SCALAR_ENABLED);
+	}
+
+	/**
 	 * The type Swagger actuator welcome configuration.
 	 */
 	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
@@ -110,6 +125,18 @@ public class ScalarConfiguration {
 		@Lazy(false)
 		ScalarActuatorController scalarActuatorController(ScalarProperties properties,  WebEndpointProperties webEndpointProperties) {
 			return new ScalarActuatorController(properties,webEndpointProperties);
+		}
+		
+		/**
+		 * Spring doc scalar initializer spring doc app initializer.
+		 *
+		 * @return the spring doc app initializer
+		 */
+		@Bean
+		@ConditionalOnMissingBean(name = "springDocScalarInitializer")
+		@Lazy(false)
+		SpringDocAppInitializer springDocScalarInitializer(){
+			return new SpringDocAppInitializer(DEFAULT_SCALAR_ACTUATOR_PATH, SCALAR_ENABLED);
 		}
 	}
 

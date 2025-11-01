@@ -440,6 +440,11 @@ public final class Constants {
 	public static final String SPRINGDOC_EXPLICIT_OBJECT_SCHEMA = "springdoc.explicit-object-schema";
 
 	/**
+	 * The constant SCALAR_ENABLED.
+	 */
+	public static final String SCALAR_ENABLED= "scalar.enabled";
+	
+	/**
 	 * Instantiates a new Constants.
 	 */
 	private Constants() {

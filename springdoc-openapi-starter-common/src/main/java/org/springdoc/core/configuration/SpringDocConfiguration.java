@@ -76,6 +76,7 @@ import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
+import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
@@ -723,5 +724,18 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	MethodParameterPojoExtractor methodParameterPojoExtractor(SchemaUtils schemaUtils){
 		return new MethodParameterPojoExtractor(schemaUtils);
+	}
+	
+		/**
+	 * Spring doc app initializer spring doc app initializer.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the spring doc app initializer
+	 */
+	@Bean
+	@ConditionalOnMissingBean(name = "springDocAppInitializer")
+	@Lazy(false)
+	SpringDocAppInitializer springDocAppInitializer(SpringDocConfigProperties springDocConfigProperties){
+		return new SpringDocAppInitializer(springDocConfigProperties.getApiDocs().getPath(), SPRINGDOC_ENABLED);
 	}
 }

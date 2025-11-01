@@ -29,6 +29,7 @@ package org.springdoc.webflux.ui;
 import java.util.Optional;
 
 import org.springdoc.core.configuration.SpringDocConfiguration;
+import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiOAuthProperties;
@@ -53,6 +54,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
+import static org.springdoc.core.utils.Constants.DEFAULT_SWAGGER_UI_ACTUATOR_PATH;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_ROOT_PATH;
@@ -182,6 +184,20 @@ public class SwaggerConfig implements WebFluxConfigurer {
 		return new SwaggerResourceResolver(swaggerUiConfigProperties);
 	}
 
+		/**
+	 * Spring doc swagger initializer spring doc swagger initializer.
+	 *
+	 * @param swaggerUiConfigProperties the swagger ui config properties
+	 * @return the spring doc swagger initializer
+	 */
+	@Bean
+	@ConditionalOnMissingBean(name = "springDocSwaggerInitializer")
+	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	@Lazy(false)
+	SpringDocAppInitializer springDocSwaggerInitializer(SwaggerUiConfigProperties swaggerUiConfigProperties) {
+		return new SpringDocAppInitializer(swaggerUiConfigProperties.getPath(), SPRINGDOC_SWAGGER_UI_ENABLED);
+	}
+	
 	/**
 	 * The type Swagger actuator welcome configuration.
 	 *
@@ -206,6 +222,18 @@ public class SwaggerConfig implements WebFluxConfigurer {
 		SwaggerWelcomeActuator swaggerActuatorWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
 				WebEndpointProperties webEndpointProperties) {
 			return new SwaggerWelcomeActuator(swaggerUiConfig, springDocConfigProperties, webEndpointProperties);
+		}
+		
+		/**
+		 * Spring doc swagger initializer spring doc app initializer.
+		 *
+		 * @return the spring doc app initializer
+		 */
+		@Bean
+		@ConditionalOnMissingBean(name = "springDocSwaggerInitializer")
+		@Lazy(false)
+		SpringDocAppInitializer springDocSwaggerInitializer() {
+			return new SpringDocAppInitializer(DEFAULT_SWAGGER_UI_ACTUATOR_PATH, SPRINGDOC_SWAGGER_UI_ENABLED);
 		}
 	}
 }
