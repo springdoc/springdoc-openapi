@@ -77,6 +77,7 @@ import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.customizers.EnumDescriptionOperationCustomizer;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
+import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
@@ -719,15 +720,28 @@ public class SpringDocConfiguration {
 		return new MethodParameterPojoExtractor(schemaUtils);
 	}
 
-    /**
-     * Enum description operation customizer.
-     *
-     * @return the enum description operation customizer
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @Lazy(false)
-    GlobalOperationCustomizer enumDescriptionOperationCustomizer() {
-        return new EnumDescriptionOperationCustomizer();
-    }
+  /**
+   * Enum description operation customizer.
+   *
+   * @return the enum description operation customizer
+   */
+  @Bean
+  @ConditionalOnMissingBean
+  @Lazy(false)
+  GlobalOperationCustomizer enumDescriptionOperationCustomizer() {
+    return new EnumDescriptionOperationCustomizer();
+  }
+  
+	/**
+	 * Spring doc app initializer spring doc app initializer.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the spring doc app initializer
+	 */
+	@Bean
+	@ConditionalOnMissingBean(name = "springDocAppInitializer")
+	@Lazy(false)
+	SpringDocAppInitializer springDocAppInitializer(SpringDocConfigProperties springDocConfigProperties){
+		return new SpringDocAppInitializer(springDocConfigProperties.getApiDocs().getPath(), SPRINGDOC_ENABLED);
+	}
 }
