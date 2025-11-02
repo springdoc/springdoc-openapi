@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-RC1] - 2025-11-02
+
+### Added
+- #3095 - Add support for Spring Boot 4.0.0-RC1
+
+## [2.8.14] - 2025-11-02
+
+### Added
+
+- #3090 - Add logs to notify when SpringDocs/Scalar is enabled because SpringDocs/Scalar is enabled by default
+
+### Changed
+
+- Upgrade swagger-ui to v5.30.1
+- Upgrade swagger-core to v2.2.38
+- Upgrade spring-boot to v3.5.7
+- Upgrade commons-lang3 to v3.18.0
+- Upgrade scalar to v0.3.12
+
+### Fixed
+
+- #3107 - Fix:compatible with lower version of getOpenApi().
+- #3121 - NPE in KotlinDeprecatedPropertyCustomizer - resolvedSchema is null
+
 ## [2.8.13] - 2025-09-07
 
 ### Added
