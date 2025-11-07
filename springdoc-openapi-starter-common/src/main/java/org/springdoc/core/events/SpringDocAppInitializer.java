@@ -68,7 +68,10 @@ public class SpringDocAppInitializer {
 	/**
 	 * Init.
 	 */
-	@EventListener(ApplicationReadyEvent.class)
+	@EventListener(
+			value = ApplicationReadyEvent.class,
+			condition = "@environment.getProperty('springdoc.warnings.enabled', T(Boolean), true)"
+	)
 	public void init() {
 		LOGGER.warn("SpringDoc {} endpoint is enabled by default. To disable it in production, set the property '{}=false'", endpoint, property);
 	}
