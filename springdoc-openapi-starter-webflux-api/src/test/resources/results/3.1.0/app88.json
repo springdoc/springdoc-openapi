@@ -22,7 +22,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "value"
+              "default": "value",
+              "enum": [
+                "value"
+              ]
             }
           },
           {

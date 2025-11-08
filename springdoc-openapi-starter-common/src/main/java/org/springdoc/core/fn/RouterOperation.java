@@ -35,6 +35,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.builders.operation.Builder;
+import org.springdoc.core.versions.SpringDocVersionStrategy;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -108,6 +109,11 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	private io.swagger.v3.oas.models.Operation operationModel;
 
 	/**
+	 * The Spring doc version strategy.
+	 */
+	private SpringDocVersionStrategy springDocVersionStrategy;
+
+	/**
 	 * Instantiates a new Router operation.
 	 */
 	public RouterOperation() {
@@ -154,20 +160,22 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	/**
 	 * Instantiates a new Router operation.
 	 *
-	 * @param path     the path
-	 * @param methods  the methods
-	 * @param consumes the consumes
-	 * @param produces the produces
-	 * @param headers  the headers
-	 * @param params   the params
+	 * @param path            the path
+	 * @param methods         the methods
+	 * @param consumes        the consumes
+	 * @param produces        the produces
+	 * @param headers         the headers
+	 * @param params          the params
+	 * @param springDocVersionStrategy the version strategy
 	 */
-	public RouterOperation(String path, RequestMethod[] methods, String[] consumes, String[] produces, String[] headers, String[] params) {
+	public RouterOperation(String path, RequestMethod[] methods, String[] consumes, String[] produces, String[] headers, String[] params, SpringDocVersionStrategy springDocVersionStrategy) {
 		this.path = path;
 		this.methods = methods;
 		this.consumes = consumes;
 		this.produces = produces;
 		this.headers = headers;
 		this.params = params;
+		this.springDocVersionStrategy = springDocVersionStrategy;
 	}
 
 	/**
@@ -420,6 +428,24 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 */
 	public void setOperationModel(io.swagger.v3.oas.models.Operation operationModel) {
 		this.operationModel = operationModel;
+	}
+
+	/**
+	 * Gets version strategy.
+	 *
+	 * @return the version strategy
+	 */
+	public SpringDocVersionStrategy getSpringDocVersionStrategy() {
+		return springDocVersionStrategy;
+	}
+
+	/**
+	 * Sets version strategy.
+	 *
+	 * @param springDocVersionStrategy the version strategy
+	 */
+	public void setVersionStrategy(SpringDocVersionStrategy springDocVersionStrategy) {
+		this.springDocVersionStrategy = springDocVersionStrategy;
 	}
 
 	@Override

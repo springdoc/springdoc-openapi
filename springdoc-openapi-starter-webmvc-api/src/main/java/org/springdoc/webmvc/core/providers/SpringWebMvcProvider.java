@@ -25,18 +25,35 @@
  */
 package org.springdoc.webmvc.core.providers;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
+import org.springdoc.core.versions.HeaderVersionStrategy;
+import org.springdoc.core.versions.MediaTypeVersionStrategy;
+import org.springdoc.core.versions.PathVersionStrategy;
+import org.springdoc.core.versions.QueryParamVersionStrategy;
+import org.springdoc.core.versions.SpringDocApiVersionType;
 
+import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.accept.ApiVersionResolver;
+import org.springframework.web.accept.ApiVersionStrategy;
+import org.springframework.web.accept.DefaultApiVersionStrategy;
+import org.springframework.web.accept.HeaderApiVersionResolver;
+import org.springframework.web.accept.MediaTypeParamApiVersionResolver;
+import org.springframework.web.accept.PathApiVersionResolver;
+import org.springframework.web.accept.QueryApiVersionResolver;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
 import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
@@ -50,6 +67,55 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * @author bnasslahsen
  */
 public class SpringWebMvcProvider extends SpringWebProvider {
+
+	/**
+	 * Instantiates a new Spring web mvc provider.
+	 *
+	 * @param apiVersionStrategyOptional the api version strategy optional
+	 */
+	public SpringWebMvcProvider(Optional<ApiVersionStrategy> apiVersionStrategyOptional) {
+		apiVersionStrategyOptional.ifPresent(apiVersionStrategy -> {
+			try {
+				DefaultApiVersionStrategy defaultApiVersionStrategy = (DefaultApiVersionStrategy) apiVersionStrategy;
+				String defaultVersion = null;
+				if(defaultApiVersionStrategy.getDefaultVersion() !=null)
+					defaultVersion = defaultApiVersionStrategy.getDefaultVersion().toString();
+				Field field = FieldUtils.getDeclaredField(DefaultApiVersionStrategy.class, "versionResolvers", true);
+				final List<ApiVersionResolver> versionResolvers = (List<ApiVersionResolver>) field.get(defaultApiVersionStrategy);
+				for (ApiVersionResolver apiVersionResolver : versionResolvers) {
+					if (apiVersionResolver instanceof MediaTypeParamApiVersionResolver mediaTypeParamApiVersionResolver) {
+						field = FieldUtils.getDeclaredField(MediaTypeParamApiVersionResolver.class, "compatibleMediaType", true);
+						MediaType mediaType = (MediaType) field.get(mediaTypeParamApiVersionResolver);
+						field = FieldUtils.getDeclaredField(MediaTypeParamApiVersionResolver.class, "parameterName", true);
+						String parameterName = (String) field.get(mediaTypeParamApiVersionResolver);
+						MediaTypeVersionStrategy mediaTypeStrategy = new MediaTypeVersionStrategy(mediaType, parameterName, defaultVersion);
+						springDocVersionStrategyMap.put(SpringDocApiVersionType.MEDIA_TYPE, mediaTypeStrategy);
+					}
+					else if (apiVersionResolver instanceof PathApiVersionResolver pathApiVersionResolver) {
+						field = FieldUtils.getDeclaredField(PathApiVersionResolver.class, "pathSegmentIndex", true);
+						Integer pathSegmentIndex = (Integer) field.get(pathApiVersionResolver);
+						PathVersionStrategy pathVersionStrategy = new PathVersionStrategy(pathSegmentIndex, defaultVersion);
+						springDocVersionStrategyMap.put(SpringDocApiVersionType.PATH, pathVersionStrategy);
+					}
+					else if (apiVersionResolver instanceof HeaderApiVersionResolver headerApiVersionResolver) {
+						field = FieldUtils.getDeclaredField(HeaderApiVersionResolver.class, "headerName", true);
+						String headerName = (String) field.get(headerApiVersionResolver);
+						HeaderVersionStrategy headerVersionStrategy = new HeaderVersionStrategy(headerName, defaultVersion);
+						springDocVersionStrategyMap.put(SpringDocApiVersionType.HEADER, headerVersionStrategy);
+					}
+					else if (apiVersionResolver instanceof QueryApiVersionResolver queryApiVersionResolver) {
+						field = FieldUtils.getDeclaredField(QueryApiVersionResolver.class, "queryParamName", true);
+						String queryParamName = (String) field.get(queryApiVersionResolver);
+						QueryParamVersionStrategy queryParamVersionStrategy = new QueryParamVersionStrategy(queryParamName, defaultVersion);
+						springDocVersionStrategyMap.put(SpringDocApiVersionType.QUERY_PARAM, queryParamVersionStrategy);
+					}
+				}
+			}
+			catch (IllegalAccessException e) {
+				LOGGER.warn(e.getMessage());
+			}
+		});
+	}
 
 	/**
 	 * Finds path prefix.
@@ -93,7 +159,6 @@ public class SpringWebMvcProvider extends SpringWebProvider {
 		return patterns;
 	}
 
-
 	/**
 	 * Gets handler methods.
 	 *
@@ -107,8 +172,9 @@ public class SpringWebMvcProvider extends SpringWebProvider {
 					.map(AbstractHandlerMethodMapping::getHandlerMethods)
 					.map(Map::entrySet)
 					.flatMap(Collection::stream)
-					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1, LinkedHashMap::new));
+					.collect(Collectors.toMap(Entry::getKey, Entry::getValue, (a1, a2) -> a1, LinkedHashMap::new));
 		}
 		return this.handlerMethods;
 	}
+
 }

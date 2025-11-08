@@ -41,6 +41,9 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import org.springdoc.core.versions.HeaderVersionStrategy;
+import org.springdoc.core.versions.MediaTypeVersionStrategy;
+import org.springdoc.core.versions.SpringDocVersionStrategy;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -137,6 +140,11 @@ public class MethodAttributes {
 	private boolean useReturnTypeSchema;
 
 	/**
+	 * The Spring doc version strategy.
+	 */
+	private SpringDocVersionStrategy springDocVersionStrategy;
+
+	/**
 	 * Instantiates a new Method attributes.
 	 *
 	 * @param methodProducesNew        the method produces new
@@ -174,14 +182,17 @@ public class MethodAttributes {
 	 * @param methodConsumes           the method consumes
 	 * @param methodProduces           the method produces
 	 * @param headers                  the headers
+	 * @param springDocVersionStrategy the spring doc version strategy
 	 * @param locale                   the locale
 	 */
-	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces, String[] headers, Locale locale) {
+	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces, String[] headers,
+			SpringDocVersionStrategy springDocVersionStrategy, Locale locale) {
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
 		this.methodProduces = methodProduces;
 		this.methodConsumes = methodConsumes;
 		this.locale = locale;
+		this.springDocVersionStrategy = springDocVersionStrategy;
 		setHeaders(headers);
 	}
 
@@ -296,6 +307,10 @@ public class MethodAttributes {
 	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
 		if (ArrayUtils.isNotEmpty(produces)) {
 			methodProduces = mergeArrays(methodProduces, produces);
+			if (springDocVersionStrategy instanceof MediaTypeVersionStrategy mediaTypeVersionStrategy
+					&& mediaTypeVersionStrategy.getVersion() != null) {
+				methodProduces = mediaTypeVersionStrategy.buildProduces();
+			}
 		}
 		else if (ArrayUtils.isNotEmpty(classProduces)) {
 			methodProduces = mergeArrays(methodProduces, classProduces);
@@ -318,13 +333,13 @@ public class MethodAttributes {
 	}
 
 	/**
-     * If there is any method type(s) present, then these will override the class type(s).
-     * See <a href="https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html#mvc-ann-requestmapping-consumes">...</a> for details
+	 * If there is any method type(s) present, then these will override the class type(s).
+	 * See <a href="https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html#mvc-ann-requestmapping-consumes">...</a> for details
 	 *
-     * @param methodTypes the method types
-     * @param classTypes the class types
-     * @return the string [ ] containing the types that can be used for the method
-     */
+	 * @param methodTypes the method types
+	 * @param classTypes  the class types
+	 * @return the string [ ] containing the types that can be used for the method
+	 */
 	private String[] calculateMethodMediaTypes(@Nullable String[] methodTypes, String[] classTypes) {
 		if (ArrayUtils.isNotEmpty(methodTypes)) {
 			return methodTypes;
@@ -340,9 +355,45 @@ public class MethodAttributes {
 	 * @return the string [ ]
 	 */
 	private String[] mergeArrays(@Nullable String[] array1, String[] array2) {
-		Set<String> uniqueValues = array1 == null ? new LinkedHashSet<>() : Arrays.stream(array1).collect(Collectors.toCollection(LinkedHashSet::new));
-		uniqueValues.addAll(Arrays.asList(array2));
-		return uniqueValues.toArray(new String[0]);
+		Set<String> merged = array1 == null
+				? new LinkedHashSet<>()
+				: Arrays.stream(array1).collect(Collectors.toCollection(LinkedHashSet::new));
+
+		merged.addAll(Arrays.asList(array2));
+
+		// Apply dynamic version filtering if versionStrategy is active
+		if (springDocVersionStrategy != null
+				&& springDocVersionStrategy instanceof MediaTypeVersionStrategy mediaTypeVersionStrategy
+				&& mediaTypeVersionStrategy.getVersion() != null) {
+
+			// Remove unversioned media types if versioned variants exist
+			Set<String> baseTypesWithVersion = merged.stream()
+					.filter(mt -> mt.contains(";"))
+					.filter(this::containsVersionParameter)
+					.map(mt -> mt.split(";", 2)[0])
+					.collect(Collectors.toSet());
+
+			merged.removeIf(mt -> baseTypesWithVersion.contains(mt) && !mt.contains(";"));
+		}
+
+		return merged.toArray(new String[0]);
+	}
+
+	/**
+	 * Contains version parameter boolean.
+	 *
+	 * @param mediaType the media type
+	 * @return the boolean
+	 */
+	private boolean containsVersionParameter(String mediaType) {
+		String[] parts = mediaType.split(";");
+		for (int i = 1; i < parts.length; i++) {
+			String param = parts[i].trim().toLowerCase();
+			if (param.startsWith("version=") || param.startsWith("v=") || param.contains("version=")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -447,6 +498,11 @@ public class MethodAttributes {
 						this.headers.put(keyValueHeader[0], StringUtils.EMPTY);
 				}
 			}
+
+		if (springDocVersionStrategy instanceof HeaderVersionStrategy headerVersionStrategy
+				&& headerVersionStrategy.getVersion() != null) {
+				this.headers.put(headerVersionStrategy.getHeaderName(), headerVersionStrategy.getVersion()); 
+		}
 	}
 
 	/**
@@ -469,15 +525,6 @@ public class MethodAttributes {
 	 */
 	public Map<String, ApiResponse> getGenericMapResponse() {
 		return genericMapResponse;
-	}
-
-	/**
-	 * Is with response body schema doc boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isWithResponseBodySchemaDoc() {
-		return withResponseBodySchemaDoc;
 	}
 
 	/**
@@ -544,5 +591,14 @@ public class MethodAttributes {
 	 */
 	public void setUseReturnTypeSchema(boolean useReturnTypeSchema) {
 		this.useReturnTypeSchema = useReturnTypeSchema;
+	}
+
+	/**
+	 * Gets spring doc version strategy.
+	 *
+	 * @return the spring doc version strategy
+	 */
+	public SpringDocVersionStrategy getSpringDocVersionStrategy() {
+		return springDocVersionStrategy;
 	}
 }

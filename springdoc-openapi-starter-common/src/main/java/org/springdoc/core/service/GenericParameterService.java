@@ -57,6 +57,7 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -237,7 +238,7 @@ public class GenericParameterService {
 			paramDoc.setAllowReserved(paramCalcul.getAllowReserved());
 
 		if (StringUtils.isBlank(paramDoc.get$ref()))
-			paramDoc.set$ref(paramDoc.get$ref());
+			paramDoc.set$ref(paramCalcul.get$ref());
 
 		if (paramDoc.getSchema() == null && paramDoc.getContent() == null)
 			paramDoc.setSchema(paramCalcul.getSchema());
@@ -253,6 +254,29 @@ public class GenericParameterService {
 
 		if (paramDoc.getExplode() == null)
 			paramDoc.setExplode(paramCalcul.getExplode());
+
+		if (paramDoc.getSchema() instanceof StringSchema existingSchema &&
+				paramCalcul.getSchema() instanceof StringSchema newSchema) {
+
+			List<String> existingEnums = existingSchema.getEnum() != null
+					? new ArrayList<>(existingSchema.getEnum())
+					: new ArrayList<>();
+
+			List<String> newEnums = newSchema.getEnum();
+
+			if (newEnums != null && !newEnums.isEmpty()) {
+				for (String val : newEnums) {
+					if (!existingEnums.contains(val)) {
+						existingEnums.add(val);
+					}
+				}
+				existingSchema.setEnum(existingEnums);
+			}
+
+			if (newSchema.getDefault() != null) {
+				existingSchema.setDefault(newSchema.getDefault());
+			}
+		}
 	}
 
 	/**

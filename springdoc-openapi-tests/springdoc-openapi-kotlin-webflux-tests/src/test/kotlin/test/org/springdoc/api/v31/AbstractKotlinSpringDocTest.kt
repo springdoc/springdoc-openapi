@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory
 import org.springdoc.core.utils.Constants
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
-import org.springframework.boot.webtestclient.AutoConfigureWebTestClient
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.nio.charset.StandardCharsets

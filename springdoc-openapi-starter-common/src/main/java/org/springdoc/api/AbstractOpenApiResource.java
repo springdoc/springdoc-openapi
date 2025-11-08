@@ -43,7 +43,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Locale.LanguageRange;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -111,6 +113,7 @@ import org.springdoc.core.service.OperationService;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 import org.springdoc.core.utils.SpringDocUtils;
+import org.springdoc.core.versions.SpringDocVersionStrategy;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.ObjectFactory;
@@ -369,7 +372,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 						.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 								Hidden.class) == null))
 						.filter(controller -> !isHiddenRestControllers(controller.getValue().getClass()))
-						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+						.collect(Collectors.toMap(Entry::getKey, Entry::getValue, (a1, a2) -> a1));
 
 				Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
 				if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()) {
@@ -434,7 +437,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		List<String> allowedLocales = springDocConfigProperties.getAllowedLocales();
 		if (!CollectionUtils.isEmpty(allowedLocales)) {
 			Locale bestMatchingAllowedLocale = Locale.lookup(
-					Locale.LanguageRange.parse(inputLocale.toLanguageTag()),
+					LanguageRange.parse(inputLocale.toLanguageTag()),
 					allowedLocales.stream().map(Locale::forLanguageTag).toList()
 			);
 
@@ -568,7 +571,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		String[] methodProduces = routerOperation.getProduces();
 		String[] headers = routerOperation.getHeaders();
 		Map<String, String> queryParams = routerOperation.getQueryParams();
-
+		SpringDocVersionStrategy springDocVersionStrategy = routerOperation.getSpringDocVersionStrategy();
+		if (springDocVersionStrategy != null)
+			queryParams = springDocVersionStrategy.updateQueryParams(queryParams);
 		Components components = openAPI.getComponents();
 		Paths paths = openAPI.getPaths();
 
@@ -590,7 +595,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getBeanType(),
 					RequestMapping.class);
 
-			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers, locale);
+			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers, springDocVersionStrategy, locale);
 			methodAttributes.setMethodOverloaded(existingOperation != null);
 			//Use the javadoc return if present
 			if (javadocProvider != null) {
@@ -655,7 +660,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				}
 			}
 
-			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = AnnotatedElementUtils.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);
+			Set<Callback> apiCallbacks = AnnotatedElementUtils.findMergedRepeatableAnnotations(method, Callback.class);
 
 			// callbacks
 			buildCallbacks(openAPI, methodAttributes, operation, apiCallbacks);
@@ -757,7 +762,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		String[] methodProduces = routerOperation.getProduces();
 		String[] headers = routerOperation.getHeaders();
 		Map<String, String> queryParams = routerOperation.getQueryParams();
-
+		SpringDocVersionStrategy springDocVersionStrategy = routerOperation.getSpringDocVersionStrategy();
+		if(springDocVersionStrategy != null)
+			queryParams = springDocVersionStrategy.updateQueryParams(queryParams);
 		Paths paths = openAPI.getPaths();
 		Map<HttpMethod, Operation> operationMap = null;
 		if (paths.containsKey(operationPath)) {
@@ -766,7 +773,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 		for (RequestMethod requestMethod : routerOperation.getMethods()) {
 			Operation existingOperation = getExistingOperation(operationMap, requestMethod);
-			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers, locale);
+			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers, springDocVersionStrategy, locale);
 			methodAttributes.setMethodOverloaded(existingOperation != null);
 			Operation operation = getOperation(routerOperation, existingOperation);
 			if (apiOperation != null)
@@ -812,19 +819,20 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Calculate path.
 	 *
-	 * @param handlerMethod  the handler method
-	 * @param operationPath  the operation path
-	 * @param requestMethods the request methods
-	 * @param consumes       the consumes
-	 * @param produces       the produces
-	 * @param headers        the headers
-	 * @param params         the params
-	 * @param locale         the locale
-	 * @param openAPI        the open api
+	 * @param handlerMethod   the handler method
+	 * @param operationPath   the operation path
+	 * @param requestMethods  the request methods
+	 * @param consumes        the consumes
+	 * @param produces        the produces
+	 * @param headers         the headers
+	 * @param params          the params
+	 * @param versionStrategy the version strategy
+	 * @param locale          the locale
+	 * @param openAPI         the open api
 	 */
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods, String[] consumes, String[] produces, String[] headers, String[] params, Locale locale, OpenAPI openAPI) {
-		this.calculatePath(handlerMethod, new RouterOperation(operationPath, requestMethods.toArray(new RequestMethod[requestMethods.size()]), consumes, produces, headers, params), locale, openAPI);
+			Set<RequestMethod> requestMethods, String[] consumes, String[] produces, String[] headers, String[] params, SpringDocVersionStrategy versionStrategy, Locale locale, OpenAPI openAPI) {
+		this.calculatePath(handlerMethod, new RouterOperation(operationPath, requestMethods.toArray(new RequestMethod[requestMethods.size()]), consumes, produces, headers, params, versionStrategy), locale, openAPI);
 	}
 
 	/**
@@ -1227,10 +1235,16 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 		});
 		if (!CollectionUtils.isEmpty(queryParams)) {
-			for (Map.Entry<String, String> entry : queryParams.entrySet()) {
-				io.swagger.v3.oas.models.parameters.Parameter parameter = new io.swagger.v3.oas.models.parameters.Parameter();
-				parameter.setName(entry.getKey());
-				parameter.setSchema(new StringSchema()._default(entry.getValue()));
+			Map<String, String> versionDefaultMap = null;
+			if(methodAttributes.getSpringDocVersionStrategy() != null)
+				versionDefaultMap= methodAttributes.getSpringDocVersionStrategy().getVersionDefaultMap();
+			for (Entry<String, String> entry : queryParams.entrySet()) {
+				Parameter parameter = new Parameter();
+				String name = entry.getKey();
+				String value = entry.getValue();
+				String defaultValue = (versionDefaultMap != null) ? versionDefaultMap.get(name) : value;
+				parameter.setName(name);
+				parameter.setSchema(new StringSchema()._default(defaultValue)._enum(Collections.singletonList(value)));
 				parameter.setRequired(true);
 				parameter.setIn(ParameterIn.QUERY.toString());
 				GenericParameterService.mergeParameter(parametersList, parameter);

@@ -52,6 +52,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 
+import org.springframework.data.core.TypeInformation;
 import org.springframework.data.mapping.PersistentEntity;
 import org.springframework.data.mapping.PersistentProperty;
 import org.springframework.data.mapping.SimpleAssociationHandler;
@@ -61,7 +62,6 @@ import org.springframework.data.rest.core.mapping.ResourceMapping;
 import org.springframework.data.rest.core.mapping.ResourceMappings;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
-import org.springframework.data.util.TypeInformation;
 import org.springframework.hateoas.server.LinkRelationProvider;
 import org.springframework.util.CollectionUtils;
 

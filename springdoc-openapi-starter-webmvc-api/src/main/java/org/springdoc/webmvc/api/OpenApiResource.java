@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
@@ -54,6 +55,7 @@ import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
+import org.springdoc.core.versions.SpringDocVersionStrategy;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.ObjectFactory;
@@ -73,7 +75,7 @@ import static org.springdoc.core.utils.Constants.DEFAULT_GROUP_NAME;
  * @author bnasslahsen, Azige
  */
 public abstract class OpenApiResource extends AbstractOpenApiResource {
-
+	
 	/**
 	 * Instantiates a new Open api resource.
 	 *
@@ -163,7 +165,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				AbstractOpenApiResource.addRestControllers(additionalRestClasses);
 				map.putAll(mapDataRest);
 			});
-
+			
 			Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
 			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
 				Map<RequestMappingInfo, HandlerMethod> actuatorMap = actuatorProviderOptional.get().getMethods();
@@ -205,8 +207,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		TreeMap<RequestMappingInfo, HandlerMethod> methodTreeMap = new TreeMap<>(byReversedRequestMappingInfos());
 		methodTreeMap.putAll(map);
 		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
-		springWebProviderOptional.ifPresent(springWebProvider -> {
-			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : methodTreeMap.entrySet()) {
+		springWebProviderOptional.ifPresent( springWebProvider -> {
+			for (Entry<RequestMappingInfo, HandlerMethod> entry : methodTreeMap.entrySet()) {
 				RequestMappingInfo requestMappingInfo = entry.getKey();
 				HandlerMethod handlerMethod = entry.getValue();
 				Set<String> patterns = springWebProvider.getActivePatterns(requestMappingInfo);
@@ -218,13 +220,18 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 						String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 						String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
 						String[] params = requestMappingInfo.getParamsCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
+						String version = requestMappingInfo.getVersionCondition().getVersion();
 						if ((isRestController(restControllers, handlerMethod, operationPath) || isActuatorRestController(operationPath, handlerMethod))
 								&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 							Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 							// default allowed requestmethods
 							if (requestMethods.isEmpty())
 								requestMethods = this.getDefaultAllowedHttpMethods();
-							calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces, headers, params, locale, openAPI);
+							SpringDocVersionStrategy springDocVersionStrategy = springWebProvider.getSpringDocVersionStrategy(version, params);
+							if(springDocVersionStrategy != null)
+								operationPath = springDocVersionStrategy.updateOperationPath(operationPath, version);
+							
+							calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces, headers, params, springDocVersionStrategy, locale, openAPI);
 						}
 					}
 				}

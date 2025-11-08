@@ -66,6 +66,7 @@ import org.springframework.boot.webmvc.actuate.endpoint.web.WebMvcEndpointHandle
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.web.accept.ApiVersionStrategy;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -138,13 +139,14 @@ public class SpringDocWebMvcConfiguration {
 	/**
 	 * Spring web provider spring web provider.
 	 *
+	 * @param apiVersionStrategyOptional the api version strategy optional
 	 * @return the spring web provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpringWebProvider springWebProvider() {
-		return new SpringWebMvcProvider();
+	SpringWebProvider springWebProvider(Optional<ApiVersionStrategy> apiVersionStrategyOptional) {
+		return new SpringWebMvcProvider(apiVersionStrategyOptional);
 	}
 
 	/**

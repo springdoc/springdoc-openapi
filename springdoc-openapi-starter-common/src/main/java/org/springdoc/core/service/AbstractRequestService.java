@@ -72,6 +72,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
@@ -124,7 +125,7 @@ public abstract class AbstractRequestService {
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRequestService.class);
-	
+
 	/**
 	 * The constant ACTUATOR_PKGS.
 	 */
@@ -132,7 +133,7 @@ public abstract class AbstractRequestService {
 			"org.springframework.boot.webmvc.actuate",
 			"org.springframework.boot.webflux.actuate"
 	);
-	
+
 	/**
 	 * The constant PARAM_TYPES_TO_IGNORE.
 	 */
@@ -264,19 +265,31 @@ public abstract class AbstractRequestService {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<ParameterId, Parameter> map) {
+		Map<String, String> versionDefaultMap = null;
+		if (methodAttributes.getSpringDocVersionStrategy() != null)
+			versionDefaultMap = methodAttributes.getSpringDocVersionStrategy().getVersionDefaultMap();
 		for (Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
 			StringSchema schema = new StringSchema();
-			if (StringUtils.isNotEmpty(entry.getValue()))
-				schema.addEnumItem(entry.getValue());
-			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
+			String headerName = entry.getKey();
+			String headerValue = entry.getValue();
+			if (StringUtils.isNotEmpty(headerValue))
+				schema.addEnumItem(headerValue);
+			String defaultValue = null;
+			if(versionDefaultMap != null) {
+				defaultValue = versionDefaultMap.get(headerName);
+				schema._default(defaultValue);
+			}
+			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(headerName).schema(schema);
 			ParameterId parameterId = new ParameterId(parameter);
 			if (map.containsKey(parameterId)) {
 				parameter = map.get(parameterId);
 				List existingEnum = null;
 				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
 					existingEnum = parameter.getSchema().getEnum();
-				if (StringUtils.isNotEmpty(entry.getValue()) && (existingEnum == null || !existingEnum.contains(entry.getValue())))
-					parameter.getSchema().addEnumItemObject(entry.getValue());
+				if (StringUtils.isNotEmpty(headerValue) && (existingEnum == null || !existingEnum.contains(headerValue)))
+					parameter.getSchema().addEnumItemObject(headerValue);
+				if (defaultValue != null && (existingEnum == null || !existingEnum.contains(defaultValue)))
+					parameter.getSchema().addEnumItemObject(defaultValue);
 				parameter.setSchema(parameter.getSchema());
 			}
 			map.put(parameterId, parameter);
@@ -293,9 +306,9 @@ public abstract class AbstractRequestService {
 	 * @param methodAttributes the method attributes
 	 * @param openAPI          the open api
 	 * @return the operation
-	 * @see org.springdoc.core.customizers.DelegatingMethodParameterCustomizer#customizeList(MethodParameter, List) org.springdoc.core.customizers.DelegatingMethodParameterCustomizer#customizeList(MethodParameter, List)
+	 * @see DelegatingMethodParameterCustomizer#customizeList(MethodParameter, List) org.springdoc.core.customizers.DelegatingMethodParameterCustomizer#customizeList(MethodParameter, List)
 	 * @see ParameterCustomizer#customize(Parameter, MethodParameter) ParameterCustomizer#customize(Parameter, MethodParameter)
-	 * @see org.springdoc.core.customizers.PropertyCustomizer#customize(Schema, AnnotatedType) org.springdoc.core.customizers.PropertyCustomizer#customize(Schema, AnnotatedType)
+	 * @see PropertyCustomizer#customize(Schema, AnnotatedType) org.springdoc.core.customizers.PropertyCustomizer#customize(Schema, AnnotatedType)
 	 */
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
@@ -530,7 +543,7 @@ public abstract class AbstractRequestService {
 		if (ACTUATOR_PKGS.stream().anyMatch(pkg::startsWith)) {
 			return false;
 		}
-		
+
 		// Check for @RequestBody annotation
 		org.springframework.web.bind.annotation.RequestBody requestBody = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class);
 		if (requestBody == null) {
@@ -549,7 +562,7 @@ public abstract class AbstractRequestService {
 	 */
 	private boolean isRequestPartWithMapType(MethodParameter parameter) {
 		// Check for @RequestPart annotation
-		org.springframework.web.bind.annotation.RequestPart requestPart = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class);
+		RequestPart requestPart = parameter.getParameterAnnotation(RequestPart.class);
 		if (requestPart == null) {
 			return false;
 		}
@@ -693,7 +706,7 @@ public abstract class AbstractRequestService {
 					java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();
 					for (java.lang.reflect.AnnotatedType typeArg : typeArgs) {
 						List<Annotation> genericAnnotations = Arrays.stream(typeArg.getAnnotations()).toList();
-						Schema schemaItemsClone = cloneViaJson(schema.getItems(), Schema.class,  ObjectMapperProvider.createJson(parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties()));
+						Schema schemaItemsClone = cloneViaJson(schema.getItems(), Schema.class, ObjectMapperProvider.createJson(parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties()));
 						schema.items(schemaItemsClone);
 						SchemaUtils.applyValidationsToSchema(schema.getItems(), genericAnnotations, openapiVersion);
 					}

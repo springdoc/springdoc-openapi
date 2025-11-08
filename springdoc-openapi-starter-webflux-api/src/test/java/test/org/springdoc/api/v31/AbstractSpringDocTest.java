@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
 
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
-import org.springframework.boot.webtestclient.AutoConfigureWebTestClient;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;

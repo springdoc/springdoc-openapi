@@ -54,11 +54,11 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
+import org.springframework.data.core.TypeInformation;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
-import org.springframework.data.util.TypeInformation;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 

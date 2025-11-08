@@ -65,6 +65,7 @@ import org.springframework.boot.webflux.actuate.endpoint.web.WebFluxEndpointHand
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.web.reactive.accept.ApiVersionStrategy;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 
@@ -143,13 +144,14 @@ public class SpringDocWebFluxConfiguration {
 	/**
 	 * Spring web provider spring web provider.
 	 *
+	 * @param apiVersionStrategyOptional the api version strategy optional
 	 * @return the spring web provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpringWebProvider springWebProvider() {
-		return new SpringWebFluxProvider();
+	SpringWebProvider springWebProvider(Optional<ApiVersionStrategy> apiVersionStrategyOptional) {
+		return new SpringWebFluxProvider(apiVersionStrategyOptional);
 	}
 
 	/**

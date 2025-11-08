@@ -52,6 +52,7 @@ import org.springframework.boot.webflux.autoconfigure.WebFluxProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.web.reactive.accept.ApiVersionStrategy;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 import static org.springdoc.core.utils.Constants.DEFAULT_SWAGGER_UI_ACTUATOR_PATH;
@@ -84,7 +85,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
-	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SpringWebProvider springWebProvider) {
+	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, @Lazy SpringWebProvider springWebProvider) {
 		return new SwaggerWelcomeWebFlux(swaggerUiConfig, springDocConfigProperties, springWebProvider);
 	}
 
@@ -160,8 +161,8 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpringWebProvider springWebProvider() {
-		return new SpringWebFluxProvider();
+	SpringWebProvider springWebProvider(Optional<ApiVersionStrategy> apiVersionStrategyOptional) {
+		return new SpringWebFluxProvider(apiVersionStrategyOptional);
 	}
 
 	/**

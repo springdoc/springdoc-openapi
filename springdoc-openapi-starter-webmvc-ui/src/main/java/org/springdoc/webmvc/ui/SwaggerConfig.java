@@ -51,6 +51,7 @@ import org.springframework.boot.webmvc.actuate.endpoint.web.WebMvcEndpointHandle
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.web.accept.ApiVersionStrategy;
 
 import static org.springdoc.core.utils.Constants.DEFAULT_SWAGGER_UI_ACTUATOR_PATH;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
@@ -82,20 +83,21 @@ public class SwaggerConfig {
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
-	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SpringWebProvider springWebProvider) {
+	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, @Lazy SpringWebProvider springWebProvider) {
 		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties, springWebProvider);
 	}
 
 	/**
 	 * Spring web provider spring web provider.
 	 *
+	 * @param apiVersionStrategyOptional the api version strategy optional
 	 * @return the spring web provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpringWebProvider springWebProvider() {
-		return new SpringWebMvcProvider();
+	SpringWebProvider springWebProvider(Optional<ApiVersionStrategy> apiVersionStrategyOptional) {
+		return new SpringWebMvcProvider(apiVersionStrategyOptional);
 	}
 
 	/**
