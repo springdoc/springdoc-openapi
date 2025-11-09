@@ -1,88 +1,144 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
   },
-  "servers": [
-    {
-      "url": "http://localhost",
-      "description": "Generated server url"
-    }
-  ],
-  "paths": {
-    "/test": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "description": "**status**\n- `ACTIVE`: Active status\n- `INACTIVE`: Inactive status\n",
-        "operationId": "test",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TestRequest"
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/test" : {
+      "post" : {
+        "tags" : [ "hello-controller" ],
+        "description" : "Endpoint to request test resource\n\n**status**\n- `ACTIVE`: Active status\n- `INACTIVE`: Inactive status\n",
+        "operationId" : "test",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TestRequest"
               }
             }
           },
-          "required": true
+          "required" : true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
+        "responses" : {
+          "200" : {
+            "description" : "OK"
           }
         }
       }
     },
-    "/test2": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "description": "**priority**\n- `HIGH`: High priority\n- `LOW`: Low priority\n",
-        "operationId": "test2",
-        "parameters": [
-          {
-            "name": "request",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/TestRequest2"
-            }
+    "/test4" : {
+      "get" : {
+        "tags" : [ "hello-controller" ],
+        "description" : "Endpoint to request test4 resource",
+        "operationId" : "test4",
+        "parameters" : [ {
+          "name" : "request",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/components/schemas/TestRequest4"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/test3" : {
+      "get" : {
+        "tags" : [ "hello-controller" ],
+        "description" : "Endpoint to request test3 resource\n\n**priority**\n- `HIGH`: High priority\n- `LOW`: Low priority\n\n\n**priority2**\n- `HIGH`: High priority\n- `LOW`: Low priority\n",
+        "operationId" : "test3",
+        "parameters" : [ {
+          "name" : "request",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/components/schemas/TestRequest3"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/test2" : {
+      "get" : {
+        "tags" : [ "hello-controller" ],
+        "description" : "Endpoint to request test2 resource\n\n**priority**\n- `HIGH`: High priority\n- `LOW`: Low priority\n",
+        "operationId" : "test2",
+        "parameters" : [ {
+          "name" : "request",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/components/schemas/TestRequest2"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
           }
         }
       }
     }
   },
-  "components": {
-    "schemas": {
-      "TestRequest": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "ACTIVE",
-              "INACTIVE"
-            ]
+  "components" : {
+    "schemas" : {
+      "TestRequest" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "ACTIVE", "INACTIVE" ]
           }
         }
       },
-      "TestRequest2": {
-        "type": "object",
-        "properties": {
-          "priority": {
-            "type": "string",
-            "enum": [
-              "HIGH",
-              "LOW"
-            ]
+      "DeepModel" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "ACTIVE", "INACTIVE" ]
+          }
+        }
+      },
+      "TestRequest4" : {
+        "type" : "object",
+        "properties" : {
+          "deepModel" : {
+            "$ref" : "#/components/schemas/DeepModel"
+          }
+        }
+      },
+      "TestRequest3" : {
+        "type" : "object",
+        "properties" : {
+          "priority" : {
+            "type" : "string",
+            "enum" : [ "HIGH", "LOW" ]
+          },
+          "priority2" : {
+            "type" : "string",
+            "enum" : [ "HIGH", "LOW" ]
+          }
+        }
+      },
+      "TestRequest2" : {
+        "type" : "object",
+        "properties" : {
+          "priority" : {
+            "type" : "string",
+            "enum" : [ "HIGH", "LOW" ]
           }
         }
       }
