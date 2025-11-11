@@ -183,7 +183,7 @@ public class SwaggerConfig {
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
 	SpringDocAppInitializer springDocSwaggerInitializer(SwaggerUiConfigProperties swaggerUiConfigProperties) {
-		return new SpringDocAppInitializer(swaggerUiConfigProperties.getPath(), SPRINGDOC_SWAGGER_UI_ENABLED);
+		return new SpringDocAppInitializer(swaggerUiConfigProperties.getPath(), SPRINGDOC_SWAGGER_UI_ENABLED, swaggerUiConfigProperties.isEnabled());
 	}
 
 	/**
@@ -217,8 +217,8 @@ public class SwaggerConfig {
 		@Bean
 		@ConditionalOnMissingBean(name = "springDocSwaggerInitializer")
 		@Lazy(false)
-		SpringDocAppInitializer springDocSwaggerInitializer() {
-			return new SpringDocAppInitializer(DEFAULT_SWAGGER_UI_ACTUATOR_PATH, SPRINGDOC_SWAGGER_UI_ENABLED);
+		SpringDocAppInitializer springDocSwaggerInitializer(SwaggerUiConfigProperties swaggerUiConfigProperties) {
+			return new SpringDocAppInitializer(DEFAULT_SWAGGER_UI_ACTUATOR_PATH, SPRINGDOC_SWAGGER_UI_ENABLED, swaggerUiConfigProperties.isEnabled());
 		}
 	}
 }

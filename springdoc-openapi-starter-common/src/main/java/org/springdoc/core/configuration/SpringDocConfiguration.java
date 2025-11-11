@@ -729,6 +729,6 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingBean(name = "springDocAppInitializer")
 	@Lazy(false)
 	SpringDocAppInitializer springDocAppInitializer(SpringDocConfigProperties springDocConfigProperties){
-		return new SpringDocAppInitializer(springDocConfigProperties.getApiDocs().getPath(), SPRINGDOC_ENABLED);
+		return new SpringDocAppInitializer(springDocConfigProperties.getApiDocs().getPath(), SPRINGDOC_ENABLED, springDocConfigProperties.getApiDocs().isEnabled());
 	}
 }
