@@ -46,10 +46,15 @@ public class ScalarConstants {
 	/**
 	 * The constant SCALAR_DEFAULT_URL.
 	 */
-	public static final String SCALAR_DEFAULT_URL = "https://registry.scalar.com/@scalar/apis/galaxy/latest?format=json";
+	public static final String SCALAR_DEFAULT_URL = "https://registry.scalar.com/@scalar/apis/galaxy?format=json";
 
 	/**
 	 * The constant DEFAULT_SCALAR_ACTUATOR_PATH.
 	 */
 	public static final String DEFAULT_SCALAR_ACTUATOR_PATH = "scalar";
+
+	/**
+	 * The constant HTML_TEMPLATE_PATH.
+	 */
+	public static final String HTML_TEMPLATE_PATH = "/META-INF/resources/webjars/scalar/index.html";
 }

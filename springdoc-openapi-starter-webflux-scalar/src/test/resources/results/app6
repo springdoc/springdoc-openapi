@@ -4,8 +4,8 @@
     <title>Scalar API Reference</title>
     <meta charset="utf-8" />
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1" />
+      content="width=device-width, initial-scale=1"
+      name="viewport" />
   </head>
 
   <body>
@@ -16,10 +16,7 @@
 
     <!-- Initialize the Scalar API Reference -->
     <script>
-      Scalar.createApiReference('#app',     {
-      url: "http://localhost:9594/test/application/openapi"
-    }
-)
+      Scalar.createApiReference('#app', {"url":"http://localhost:9594/test/application/openapi","showSidebar":true,"hideModels":false,"hideTestRequestButton":false,"darkMode":false,"hideDarkModeToggle":false,"withDefaultFonts":true,"defaultOpenAllTags":false,"expandAllModelSections":false,"expandAllResponses":false,"hideSearch":false,"theme":"default","layout":"modern","favicon":"favicon.svg","hideClientButton":false,"persistAuth":false,"documentDownloadType":"both","orderRequiredPropertiesFirst":true,"showOperationId":false})
     </script>
   </body>
 </html>

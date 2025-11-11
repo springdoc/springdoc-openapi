@@ -28,6 +28,7 @@ package org.springdoc.webflux.scalar;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scalar.maven.webjar.ScalarProperties;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.scalar.AbstractScalarController;
@@ -61,12 +62,20 @@ public class ScalarWebFluxController extends AbstractScalarController {
 	 *
 	 * @param scalarProperties          the scalar properties
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param objectMapper              the object mapper
 	 */
-	protected ScalarWebFluxController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
-		super(scalarProperties);
+	protected ScalarWebFluxController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties, ObjectMapper objectMapper) {
+		super(scalarProperties, objectMapper);
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
+	/**
+	 * Gets docs.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @return the docs
+	 * @throws IOException the io exception
+	 */
 	@GetMapping
 	public ResponseEntity<String> getDocs(ServerHttpRequest serverHttpRequest) throws IOException {
 		return super.getDocs(serverHttpRequest.getURI().toString());
