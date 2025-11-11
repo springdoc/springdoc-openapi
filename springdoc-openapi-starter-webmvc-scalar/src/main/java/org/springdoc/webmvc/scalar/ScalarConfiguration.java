@@ -103,7 +103,7 @@ public class ScalarConfiguration {
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
 	SpringDocAppInitializer springDocScalarInitializer(ScalarProperties scalarProperties) {
-		return new SpringDocAppInitializer(scalarProperties.getPath(), SCALAR_ENABLED);
+		return new SpringDocAppInitializer(scalarProperties.getPath(), SCALAR_ENABLED, scalarProperties.isEnabled());
 	}
 	
 	/**
@@ -137,8 +137,8 @@ public class ScalarConfiguration {
 		@Bean
 		@ConditionalOnMissingBean(name = "springDocScalarInitializer")
 		@Lazy(false)
-		SpringDocAppInitializer springDocScalarInitializer() {
-			return new SpringDocAppInitializer(DEFAULT_SCALAR_ACTUATOR_PATH, SCALAR_ENABLED);
+		SpringDocAppInitializer springDocScalarInitializer(ScalarProperties properties) {
+			return new SpringDocAppInitializer(DEFAULT_SCALAR_ACTUATOR_PATH, SCALAR_ENABLED, properties.isEnabled());
 		}
 	}
 
