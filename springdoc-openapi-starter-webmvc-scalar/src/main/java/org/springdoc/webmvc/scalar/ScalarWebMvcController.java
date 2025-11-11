@@ -28,6 +28,7 @@ package org.springdoc.webmvc.scalar;
 
 import java.io.IOException;
 
+import tools.jackson.databind.ObjectMapper;
 import com.scalar.maven.webjar.ScalarProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -61,9 +62,10 @@ public class ScalarWebMvcController extends AbstractScalarController {
 	 *
 	 * @param scalarProperties          the scalar properties
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param objectMapper              the object mapper
 	 */
-	protected ScalarWebMvcController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
-		super(scalarProperties);
+	protected ScalarWebMvcController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties, ObjectMapper objectMapper) {
+		super(scalarProperties, objectMapper);
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
 

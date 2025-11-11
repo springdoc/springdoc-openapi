@@ -30,6 +30,7 @@ import com.scalar.maven.webjar.ScalarProperties;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
+import tools.jackson.databind.ObjectMapper;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
@@ -69,14 +70,15 @@ public class ScalarConfiguration {
 	 *
 	 * @param scalarProperties          the scalar properties
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param objectMapper              the object mapper
 	 * @return the scalar web mvc controller
 	 */
 	@Bean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ScalarWebFluxController scalarWebMvcController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
-		return new ScalarWebFluxController(scalarProperties,springDocConfigProperties);
+	ScalarWebFluxController scalarWebMvcController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties, ObjectMapper objectMapper) {
+		return new ScalarWebFluxController(scalarProperties,springDocConfigProperties, objectMapper);
 	}
 
 	/**
@@ -118,13 +120,14 @@ public class ScalarConfiguration {
 		 *
 		 * @param properties            the properties
 		 * @param webEndpointProperties the web endpoint properties
+		 * @param objectMapper          the object mapper
 		 * @return the scalar actuator controller
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		ScalarActuatorController scalarActuatorController(ScalarProperties properties,  WebEndpointProperties webEndpointProperties) {
-			return new ScalarActuatorController(properties,webEndpointProperties);
+		ScalarActuatorController scalarActuatorController(ScalarProperties properties,  WebEndpointProperties webEndpointProperties, ObjectMapper objectMapper) {
+			return new ScalarActuatorController(properties,webEndpointProperties, objectMapper);
 		}
 		
 		/**

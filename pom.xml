@@ -63,7 +63,7 @@
 		<spring-cloud-function.version>5.0.0-M1</spring-cloud-function.version>
 		<spring-security-oauth2-authorization-server.version>2.0.0-M2
 		</spring-security-oauth2-authorization-server.version>
-		<scalar.version>0.3.12</scalar.version>
+		<scalar.version>0.4.3</scalar.version>
 		<skipPublishing>false</skipPublishing>
 	</properties>
 
@@ -121,11 +121,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-jackson</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

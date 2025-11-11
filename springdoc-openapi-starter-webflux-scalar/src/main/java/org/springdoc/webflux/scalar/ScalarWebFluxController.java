@@ -31,6 +31,7 @@ import java.io.IOException;
 import com.scalar.maven.webjar.ScalarProperties;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.scalar.AbstractScalarController;
+import tools.jackson.databind.ObjectMapper;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -61,9 +62,10 @@ public class ScalarWebFluxController extends AbstractScalarController {
 	 *
 	 * @param scalarProperties          the scalar properties
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param objectMapper              the object mapper
 	 */
-	protected ScalarWebFluxController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
-		super(scalarProperties);
+	protected ScalarWebFluxController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties, ObjectMapper objectMapper) {
+		super(scalarProperties, objectMapper);
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
