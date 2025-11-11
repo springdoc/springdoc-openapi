@@ -285,9 +285,11 @@ public class RequestBodyService {
 	 * @param requestBodyInfo  the request body info
 	 * @return the request body
 	 */
-	private RequestBody buildRequestBody(io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc, Components components,
-			MethodAttributes methodAttributes,
-			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
+	private RequestBody buildRequestBody(io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc,
+										 Components components,
+										 MethodAttributes methodAttributes,
+										 ParameterInfo parameterInfo,
+										 RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 		if (requestBody == null) {
 			requestBody = new RequestBody();
@@ -300,7 +302,9 @@ public class RequestBodyService {
 		Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 				methodAttributes.getJsonViewAnnotationForRequestBody());
 		Map<String, Encoding> parameterEncoding = getParameterEncoding(parameterInfo);
-		buildContent(requestBody, methodAttributes, schema, parameterEncoding);
+		// If a content type is explicitly stated with a @RequestBody annotation, yield to that content type
+		if (!methodAttributes.isWithResponseBodySchemaDoc())
+			buildContent(requestBody, methodAttributes, schema, parameterEncoding);
 
 		// Add requestBody javadoc
 		if (StringUtils.isBlank(requestBody.getDescription()) && parameterBuilder.getJavadocProvider() != null
