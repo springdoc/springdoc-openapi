@@ -471,6 +471,15 @@ public class MethodAttributes {
 	}
 
 	/**
+	 * Is with response body schema doc boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isWithResponseBodySchemaDoc() {
+		return withResponseBodySchemaDoc;
+	}
+
+	/**
 	 * Gets headers.
 	 *
 	 * @return the headers

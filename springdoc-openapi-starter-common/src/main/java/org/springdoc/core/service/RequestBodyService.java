@@ -299,7 +299,9 @@ public class RequestBodyService {
 		Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 				methodAttributes.getJsonViewAnnotationForRequestBody());
 		Map<String, Encoding> parameterEncoding = getParameterEncoding(parameterInfo);
-		buildContent(requestBody, methodAttributes, schema, parameterEncoding);
+		// If a content type is explicitly stated with a @RequestBody annotation, yield to that content type
+		if (!methodAttributes.isWithResponseBodySchemaDoc())
+			buildContent(requestBody, methodAttributes, schema, parameterEncoding);
 
 		// Add requestBody javadoc
 		if (StringUtils.isBlank(requestBody.getDescription()) && parameterBuilder.getJavadocProvider() != null
