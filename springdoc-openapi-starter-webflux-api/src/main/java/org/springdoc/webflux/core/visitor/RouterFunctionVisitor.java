@@ -26,19 +26,24 @@
 
 package org.springdoc.webflux.core.visitor;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import reactor.core.publisher.Mono;
 
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpMethod;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.RequestPredicate;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.web.util.pattern.PathPattern;
 
 /**
  * The type Router function visitor.
@@ -67,7 +72,19 @@ public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor impleme
 
 	@Override
 	public void resources(Function<ServerRequest, Mono<Resource>> lookupFunction) {
-		// Not yet needed
+		if ("PathResourceLookupFunction".equals(lookupFunction.getClass().getSimpleName())) {
+			Field patternField = ReflectionUtils.findField(lookupFunction.getClass(), "pattern");
+			if (patternField != null) {
+				ReflectionUtils.makeAccessible(patternField);
+				Object patternFieldValue = ReflectionUtils.getField(patternField, lookupFunction);
+				if (patternFieldValue instanceof PathPattern patternCastedValue) {
+					this.currentRouterFunctionDatas = new ArrayList<>();
+					this.path(patternCastedValue.getPatternString());
+					this.commonRoute();
+					this.method(Set.of(HttpMethod.GET));
+				}
+			}
+		}
 	}
 
 	@Override
