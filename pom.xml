@@ -65,7 +65,6 @@
 		</spring-security-oauth2-authorization-server.version>
 		<scalar.version>0.3.12</scalar.version>
 		<skipPublishing>false</skipPublishing>
-		<spring-framework.version>7.0.0-SNAPSHOT</spring-framework.version>
 	</properties>
 
 	<dependencyManagement>
