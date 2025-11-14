@@ -28,7 +28,6 @@ package org.springdoc.scalar;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -129,16 +128,6 @@ public abstract class AbstractScalarController {
 		return ResponseEntity.ok()
 				.contentType(MediaType.valueOf("application/javascript"))
 				.body(jsContent);
-	}
-
-	/**
-	 * Decode string.
-	 *
-	 * @param requestURI the request uri
-	 * @return the string
-	 */
-	protected String decode(String requestURI) {
-		return URLDecoder.decode(requestURI, StandardCharsets.UTF_8);
 	}
 
 	/**
