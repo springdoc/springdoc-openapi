@@ -720,17 +720,17 @@ public class SpringDocConfiguration {
 		return new MethodParameterPojoExtractor(schemaUtils);
 	}
 
-    /**
-     * Enum description operation customizer.
-     *
-     * @return the enum description operation customizer
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @Lazy(false)
-    GlobalOperationCustomizer enumDescriptionOperationCustomizer() {
-        return new EnumDescriptionOperationCustomizer();
-    }
+  /**
+   * Enum description operation customizer.
+   *
+   * @return the enum description operation customizer
+   */
+  @Bean
+  @ConditionalOnMissingBean
+  @Lazy(false)
+  GlobalOperationCustomizer enumDescriptionOperationCustomizer() {
+    return new EnumDescriptionOperationCustomizer();
+  }
 
 	/**
 	 * Spring doc app initializer spring doc app initializer.
