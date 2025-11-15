@@ -31,17 +31,17 @@
         }
       }
     },
-    "/test4" : {
+    "/test2" : {
       "get" : {
         "tags" : [ "hello-controller" ],
-        "description" : "Endpoint to request test4 resource",
-        "operationId" : "test4",
+        "description" : "Endpoint to request test2 resource\n\n**priority**\n- `HIGH`: High priority\n- `LOW`: Low priority\n",
+        "operationId" : "test2",
         "parameters" : [ {
           "name" : "request",
           "in" : "query",
           "required" : true,
           "schema" : {
-            "$ref" : "#/components/schemas/TestRequest4"
+            "$ref" : "#/components/schemas/TestRequest2"
           }
         } ],
         "responses" : {
@@ -71,22 +71,44 @@
         }
       }
     },
-    "/test2" : {
+    "/test4" : {
       "get" : {
         "tags" : [ "hello-controller" ],
-        "description" : "Endpoint to request test2 resource\n\n**priority**\n- `HIGH`: High priority\n- `LOW`: Low priority\n",
-        "operationId" : "test2",
+        "description" : "Endpoint to request test4 resource",
+        "operationId" : "test4",
         "parameters" : [ {
           "name" : "request",
           "in" : "query",
           "required" : true,
           "schema" : {
-            "$ref" : "#/components/schemas/TestRequest2"
+            "$ref" : "#/components/schemas/TestRequest4"
           }
         } ],
         "responses" : {
           "200" : {
             "description" : "OK"
+          }
+        }
+      }
+    },
+    "/test5": {
+      "post": {
+        "tags": ["hello-controller"],
+        "description": "Endpoint to request test5 resource\n\n**priority**\n- `HIGH`: High priority\n- `LOW`: Low priority\n\n\n**status**\n- `ACTIVE`: Active status\n- `INACTIVE`: Inactive status\n",
+        "operationId": "test5",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestRequest5"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -112,11 +134,12 @@
           }
         }
       },
-      "TestRequest4" : {
+      "TestRequest2" : {
         "type" : "object",
         "properties" : {
-          "deepModel" : {
-            "$ref" : "#/components/schemas/DeepModel"
+          "priority" : {
+            "type" : "string",
+            "enum" : [ "HIGH", "LOW" ]
           }
         }
       },
@@ -133,12 +156,24 @@
           }
         }
       },
-      "TestRequest2" : {
+      "TestRequest4" : {
         "type" : "object",
         "properties" : {
-          "priority" : {
-            "type" : "string",
-            "enum" : [ "HIGH", "LOW" ]
+          "deepModel" : {
+            "$ref" : "#/components/schemas/DeepModel"
+          }
+        }
+      },
+      "TestRequest5": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "INACTIVE"]
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["HIGH", "LOW"]
           }
         }
       }
