@@ -28,6 +28,7 @@ package org.springdoc.webmvc.scalar;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scalar.maven.webjar.ScalarProperties;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,9 +60,10 @@ public class ScalarActuatorController extends AbstractScalarController {
 	 *
 	 * @param scalarProperties      the scalar properties
 	 * @param webEndpointProperties the web endpoint properties
+	 * @param objectMapper          the object mapper
 	 */
-	protected ScalarActuatorController(ScalarProperties scalarProperties, WebEndpointProperties webEndpointProperties) {
-		super(scalarProperties);
+	protected ScalarActuatorController(ScalarProperties scalarProperties, WebEndpointProperties webEndpointProperties, ObjectMapper objectMapper) {
+		super(scalarProperties, objectMapper);
 		this.webEndpointProperties = webEndpointProperties;
 	}
 

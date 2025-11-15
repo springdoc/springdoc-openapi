@@ -26,6 +26,7 @@
 
 package org.springdoc.webmvc.scalar;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scalar.maven.webjar.ScalarProperties;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.events.SpringDocAppInitializer;
@@ -76,8 +77,8 @@ public class ScalarConfiguration {
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ScalarWebMvcController scalarWebMvcController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
-		return new ScalarWebMvcController(scalarProperties,springDocConfigProperties);
+	ScalarWebMvcController scalarWebMvcController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties, ObjectMapper objectMapper) {
+		return new ScalarWebMvcController(scalarProperties,springDocConfigProperties, objectMapper);
 	}
 
 	/**
@@ -103,7 +104,7 @@ public class ScalarConfiguration {
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
 	SpringDocAppInitializer springDocScalarInitializer(ScalarProperties scalarProperties){
-		return new SpringDocAppInitializer(scalarProperties.getPath(), SCALAR_ENABLED);
+		return new SpringDocAppInitializer(scalarProperties.getPath(), SCALAR_ENABLED, scalarProperties.isEnabled());
 	}
 
 	/**
@@ -124,8 +125,8 @@ public class ScalarConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		ScalarActuatorController scalarActuatorController(ScalarProperties properties,  WebEndpointProperties webEndpointProperties) {
-			return new ScalarActuatorController(properties,webEndpointProperties);
+		ScalarActuatorController scalarActuatorController(ScalarProperties properties,  WebEndpointProperties webEndpointProperties, ObjectMapper objectMapper) {
+			return new ScalarActuatorController(properties,webEndpointProperties, objectMapper);
 		}
 
 		/**
@@ -136,8 +137,8 @@ public class ScalarConfiguration {
 		@Bean
 		@ConditionalOnMissingBean(name = "springDocScalarInitializer")
 		@Lazy(false)
-		SpringDocAppInitializer springDocScalarInitializer(){
-			return new SpringDocAppInitializer(DEFAULT_SCALAR_ACTUATOR_PATH, SCALAR_ENABLED);
+		SpringDocAppInitializer springDocScalarInitializer(ScalarProperties scalarProperties){
+			return new SpringDocAppInitializer(DEFAULT_SCALAR_ACTUATOR_PATH, SCALAR_ENABLED, scalarProperties.isEnabled());
 		}
 	}
 

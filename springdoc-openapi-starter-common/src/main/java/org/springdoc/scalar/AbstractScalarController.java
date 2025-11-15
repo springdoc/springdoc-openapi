@@ -21,24 +21,25 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.scalar;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scalar.maven.webjar.ScalarProperties;
-import com.scalar.maven.webjar.ScalarProperties.ScalarSource;
+import com.scalar.maven.webjar.internal.ScalarConfiguration;
+import com.scalar.maven.webjar.internal.ScalarConfigurationMapper;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import static org.springdoc.scalar.ScalarConstants.HTML_TEMPLATE_PATH;
 import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_URL;
 import static org.springdoc.scalar.ScalarConstants.SCALAR_JS_FILENAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
@@ -61,13 +62,20 @@ public abstract class AbstractScalarController {
 	protected final String originalScalarUrl;
 
 	/**
+	 * The Object mapper.
+	 */
+	private final ObjectMapper objectMapper;
+
+	/**
 	 * Instantiates a new Abstract scalar controller.
 	 *
 	 * @param scalarProperties the scalar properties
+	 * @param objectMapper     the object mapper
 	 */
-	protected AbstractScalarController(ScalarProperties scalarProperties) {
+	protected AbstractScalarController(ScalarProperties scalarProperties, ObjectMapper objectMapper) {
 		this.scalarProperties = scalarProperties;
 		this.originalScalarUrl = scalarProperties.getUrl();
+		this.objectMapper = objectMapper;
 	}
 
 	/**
@@ -82,22 +90,18 @@ public abstract class AbstractScalarController {
 	 */
 	protected ResponseEntity<String> getDocs(String requestUrl) throws IOException {
 		// Load the template HTML
-		InputStream inputStream = getClass().getResourceAsStream("/META-INF/resources/webjars/scalar/index.html");
+		InputStream inputStream = getClass().getResourceAsStream(HTML_TEMPLATE_PATH);
 		if (inputStream == null) {
-			return ResponseEntity.notFound().build();
+			throw new IOException("HTML template not found at: " + HTML_TEMPLATE_PATH);
 		}
 
 		String html = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-		requestUrl = decode(requestUrl);
+
 		// Replace the placeholders with actual values
-		String cdnUrl = buildJsBundleUrl(requestUrl);
+		String bundleUrl = buildJsBundleUrl(requestUrl);
 		String injectedHtml = html
-				.replace("__JS_BUNDLE_URL__", cdnUrl)
-				.replace("__CONFIGURATION__", """
-						    {
-						      url: "%s"
-						    }
-						""".formatted(buildApiDocsUrl(requestUrl)));
+				.replace("__JS_BUNDLE_URL__", bundleUrl)
+				.replace("__CONFIGURATION__", buildConfigurationJson(buildApiDocsUrl(requestUrl)));
 
 		return ResponseEntity.ok()
 				.contentType(MediaType.TEXT_HTML)
@@ -127,16 +131,6 @@ public abstract class AbstractScalarController {
 	}
 
 	/**
-	 * Decode string.
-	 *
-	 * @param requestURI the request uri
-	 * @return the string
-	 */
-	protected String decode(String requestURI) {
-		return URLDecoder.decode(requestURI, StandardCharsets.UTF_8);
-	}
-
-	/**
 	 * Gets api docs url.
 	 *
 	 * @param requestUrl  the request url
@@ -163,7 +157,7 @@ public abstract class AbstractScalarController {
 		if (SCALAR_DEFAULT_URL.equals(originalScalarUrl)) {
 			int firstPathSlash = requestUrl.indexOf('/', requestUrl.indexOf("://") + 3);
 			String path = firstPathSlash >= 0 ? requestUrl.substring(firstPathSlash) : "/";
-			if( path.endsWith("/"))
+			if (path.endsWith("/"))
 				path = path.substring(0, path.length() - 1);
 			return path + DEFAULT_PATH_SEPARATOR + SCALAR_JS_FILENAME;
 		}
@@ -187,158 +181,20 @@ public abstract class AbstractScalarController {
 	protected abstract String buildJsBundleUrl(String requestUrl);
 
 	/**
-	 * Builds the configuration JSON for the Scalar API Reference.
+	 * Build configuration json string.
 	 *
-	 * @return the configuration JSON as a string
+	 * @param requestUrl the request url
+	 * @return the string
 	 */
-	private String buildConfigurationJson() {
-		StringBuilder config = new StringBuilder();
-		config.append("{");
-
-		// Add URL
-		config.append("\n  url: \"").append(escapeJson(scalarProperties.getUrl())).append("\"");
-
-		// Add sources
-		if (scalarProperties.getSources() != null && !scalarProperties.getSources().isEmpty()) {
-			config.append(",\n  sources: ").append(buildSourcesJsonArray(scalarProperties.getSources()));
+	private String buildConfigurationJson(String requestUrl) {
+		try {
+			this.scalarProperties.setUrl(requestUrl);
+			ScalarConfiguration config = ScalarConfigurationMapper.map(scalarProperties);
+			return objectMapper.writeValueAsString(config);
 		}
-
-		// Add showSidebar
-		if (!scalarProperties.isShowSidebar()) {
-			config.append(",\n  showSidebar: false");
+		catch (JsonProcessingException e) {
+			throw new RuntimeException("Failed to serialize Scalar configuration", e);
 		}
-
-		// Add hideModels
-		if (scalarProperties.isHideModels()) {
-			config.append(",\n  hideModels: true");
-		}
-
-		// Add hideTestRequestButton
-		if (scalarProperties.isHideTestRequestButton()) {
-			config.append(",\n  hideTestRequestButton: true");
-		}
-
-		// Add darkMode
-		if (scalarProperties.isDarkMode()) {
-			config.append(",\n  darkMode: true");
-		}
-
-		// Add hideDarkModeToggle
-		if (scalarProperties.isHideDarkModeToggle()) {
-			config.append(",\n  hideDarkModeToggle: true");
-		}
-
-		// Add customCss
-		if (scalarProperties.getCustomCss() != null && !scalarProperties.getCustomCss().trim().isEmpty()) {
-			config.append(",\n  customCss: \"").append(escapeJson(scalarProperties.getCustomCss())).append("\"");
-		}
-
-		// Add theme
-		if (scalarProperties.getTheme() != null && !"default".equals(scalarProperties.getTheme())) {
-			config.append(",\n  theme: \"").append(escapeJson(scalarProperties.getTheme())).append("\"");
-		}
-
-		// Add layout
-		if (scalarProperties.getLayout() != null && !"modern".equals(scalarProperties.getLayout())) {
-			config.append(",\n  layout: \"").append(escapeJson(scalarProperties.getLayout())).append("\"");
-		}
-
-		// Add hideSearch
-		if (scalarProperties.isHideSearch()) {
-			config.append(",\n  hideSearch: true");
-		}
-
-		// Add documentDownloadType
-		if (scalarProperties.getDocumentDownloadType() != null && !"both".equals(scalarProperties.getDocumentDownloadType())) {
-			config.append(",\n  documentDownloadType: \"").append(escapeJson(scalarProperties.getDocumentDownloadType())).append("\"");
-		}
-
-		config.append("\n}");
-		return config.toString();
 	}
 
-	/**
-	 * Escapes a string for JSON output.
-	 *
-	 * @param input the input string
-	 * @return the escaped string
-	 */
-	private String escapeJson(String input) {
-		if (input == null) {
-			return "";
-		}
-		return input.replace("\\", "\\\\")
-				.replace("\"", "\\\"")
-				.replace("\n", "\\n")
-				.replace("\r", "\\r")
-				.replace("\t", "\\t");
-	}
-
-	    /**
-     * Builds the JSON for the OpenAPI reference sources
-     *
-     * @param sources list of OpenAPI reference sources
-     * @return the sources as a JSON string
-     */
-    private String buildSourcesJsonArray(List<ScalarSource> sources) {
-        final StringBuilder builder = new StringBuilder("[");
-
-        // Filter out sources with invalid urls
-        final List<ScalarProperties.ScalarSource> filteredSources = sources.stream()
-                .filter(source -> isNotNullOrBlank(source.getUrl()))
-                .collect(Collectors.toList());
-
-        // Append each source to json array
-        for (int i = 0; i < filteredSources.size(); i++) {
-            final ScalarProperties.ScalarSource source = filteredSources.get(i);
-
-            final String sourceJson = buildSourceJson(source);
-            builder.append("\n").append(sourceJson);
-
-            if (i != filteredSources.size() - 1) {
-                builder.append(",");
-            }
-        }
-
-        builder.append("\n]");
-        return builder.toString();
-    }
-
-	/**
-	 * Builds the JSON for an OpenAPI reference source
-	 *
-	 * @param source the OpenAPI reference source
-	 * @return the source as a JSON string
-	 */
-	private String buildSourceJson(ScalarProperties.ScalarSource source) {
-		final StringBuilder builder = new StringBuilder("{");
-
-		builder.append("\n  url: \"").append(escapeJson(source.getUrl())).append("\"");
-
-
-		if (isNotNullOrBlank(source.getTitle())) {
-			builder.append(",\n  title: \"").append(escapeJson(source.getTitle())).append("\"");
-		}
-
-		if (isNotNullOrBlank(source.getSlug())) {
-			builder.append(",\n  slug: \"").append(escapeJson(source.getSlug())).append("\"");
-		}
-
-		if (source.isDefault() != null) {
-			builder.append(",\n  default: ").append(source.isDefault());
-		}
-
-		builder.append("\n}");
-		return builder.toString();
-	}
-	
-	/**
-	 * Returns whether a String is not null or blank
-	 *
-	 * @param input the string
-	 * @return whether the string is not null or blank
-	 */
-	private boolean isNotNullOrBlank(String input) {
-		return input != null && !input.isBlank();
-	}
 }
