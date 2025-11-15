@@ -26,12 +26,11 @@
 
 package test.org.springdoc.api.v30.app244;
 
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+public class TestRequest4 {
+    private DeepModel deepModel;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+    public DeepModel getDeepModel() {
+        return deepModel;
+    }
 
-public class SpringDocApp244Test extends AbstractSpringDocV30Test {
-
-	@SpringBootApplication
-	static class SpringDocTestApp {}
 }

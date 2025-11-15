@@ -24,14 +24,19 @@
  *
  */
 
-package test.org.springdoc.api.v30.app244;
+package test.org.springdoc.ui.app36;
 
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+public enum Priority {
+	HIGH("High priority"),
+	LOW("Low priority");
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+	private final String label;
 
-public class SpringDocApp244Test extends AbstractSpringDocV30Test {
+	Priority(String label) {
+		this.label = label;
+	}
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+	public String getLabel() {
+		return label;
+	}
 }

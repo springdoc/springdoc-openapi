@@ -24,14 +24,19 @@
  *
  */
 
-package test.org.springdoc.api.v30.app244;
+package test.org.springdoc.ui.app36;
 
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+import org.springdoc.core.annotations.EnumDescription;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+public class TestRequest2 {
+	@EnumDescription(fieldName = "label")
+	private Priority priority;
 
-public class SpringDocApp244Test extends AbstractSpringDocV30Test {
+	public Priority getPriority() {
+		return priority;
+	}
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+	public void setPriority(Priority priority) {
+		this.priority = priority;
+	}
 }

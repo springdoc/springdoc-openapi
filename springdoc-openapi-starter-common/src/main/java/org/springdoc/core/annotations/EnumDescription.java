@@ -17,21 +17,35 @@
  *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  *  *  *  *  * See the License for the specific language governing permissions and
  *  *  *  *  *  * limitations under the License.
- *  *  *  *  *  *
  *  *  *  *  *
  *  *  *  *
  *  *  *
+ *  *
  *
  */
 
-package test.org.springdoc.api.v30.app244;
+package org.springdoc.core.annotations;
 
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+/**
+ * Scans an Enum class from the annotated field and automatically adds its constants
+ * and descriptions to the OpenAPI documentation.
+ *
+ * @author TAEWOOKK
+ */
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface EnumDescription {
 
-public class SpringDocApp244Test extends AbstractSpringDocV30Test {
-
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+    /**
+     * The field name in the Enum class to read for description.
+     * If left empty (default), the library will attempt to find "description" field.
+     *
+     * @return The name of the field to read (e.g., "label", "description", "value").
+     */
+    String fieldName() default "";
 }

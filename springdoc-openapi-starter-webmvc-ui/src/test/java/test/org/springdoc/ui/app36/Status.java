@@ -24,14 +24,19 @@
  *
  */
 
-package test.org.springdoc.api.v30.app244;
+package test.org.springdoc.ui.app36;
 
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+public enum Status {
+	ACTIVE("Active status"),
+	INACTIVE("Inactive status");
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+	private final String description;
 
-public class SpringDocApp244Test extends AbstractSpringDocV30Test {
+	Status(String description) {
+		this.description = description;
+	}
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+	public String getDescription() {
+		return description;
+	}
 }

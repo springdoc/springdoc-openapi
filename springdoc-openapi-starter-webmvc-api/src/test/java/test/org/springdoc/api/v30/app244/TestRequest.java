@@ -26,12 +26,17 @@
 
 package test.org.springdoc.api.v30.app244;
 
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+import org.springdoc.core.annotations.EnumDescription;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+public class TestRequest {
+	@EnumDescription
+	private Status status;
 
-public class SpringDocApp244Test extends AbstractSpringDocV30Test {
+	public Status getStatus() {
+		return status;
+	}
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 }
