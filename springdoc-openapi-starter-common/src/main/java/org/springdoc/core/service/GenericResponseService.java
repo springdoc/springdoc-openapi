@@ -180,22 +180,22 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param components             the components
 	 * @param apiResponsesOp         the api responses op
 	 * @param methodAttributes       the method attributes
-	 * @param apiResponseAnnotations the api response annotations
+	 * @param apiResponseAnnotation  the api response annotation
 	 * @param apiResponse            the api response
 	 * @param openapi31              the openapi 31
 	 */
 	public static void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes,
-			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations,
+			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotation,
 			ApiResponse apiResponse, boolean openapi31) {
 
-		methodAttributes.setUseReturnTypeSchema(apiResponseAnnotations.useReturnTypeSchema());
-		io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
+		methodAttributes.putUseReturnTypeSchema(apiResponseAnnotation.responseCode(), apiResponseAnnotation.useReturnTypeSchema());
+		io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotation.content();
 		Optional<Content> optionalContent = getContent(contentdoc, new String[0],
 				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation(), openapi31);
-		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
+		if (apiResponsesOp.containsKey(apiResponseAnnotation.responseCode())) {
 			// Merge with the existing content
-			Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
+			Content existingContent = apiResponsesOp.get(apiResponseAnnotation.responseCode()).getContent();
 			if (optionalContent.isPresent()) {
 				Content newContent = optionalContent.get();
 				if (methodAttributes.isMethodOverloaded() && existingContent != null) {
@@ -387,17 +387,17 @@ public class GenericResponseService implements ApplicationContextAware {
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(Objects.requireNonNull(methodParameter.getMethod()));
 		if (!responsesArray.isEmpty()) {
 			methodAttributes.setWithApiResponseDoc(true);
-			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations : responsesArray) {
-				String httpCode = apiResponseAnnotations.responseCode();
+			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotation : responsesArray) {
+				String httpCode = apiResponseAnnotation.responseCode();
 				ApiResponse apiResponse = new ApiResponse();
-				if (StringUtils.isNotBlank(apiResponseAnnotations.ref())) {
-					apiResponse.$ref(apiResponseAnnotations.ref());
-					apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
+				if (StringUtils.isNotBlank(apiResponseAnnotation.ref())) {
+					apiResponse.$ref(apiResponseAnnotation.ref());
+					apiResponsesOp.addApiResponse(apiResponseAnnotation.responseCode(), apiResponse);
 					continue;
 				}
-				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description(), methodAttributes.getLocale()));
-				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse, openapi31);
-				Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiResponseAnnotations.extensions());
+				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotation.description(), methodAttributes.getLocale()));
+				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotation, apiResponse, openapi31);
+				Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiResponseAnnotation.extensions());
 				if (!CollectionUtils.isEmpty(extensions)) {
 					if (propertyResolverUtils.isResolveExtensionsProperties()) {
 						Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
@@ -407,7 +407,7 @@ public class GenericResponseService implements ApplicationContextAware {
 						apiResponse.extensions(extensions);
 					}
 				}
-				SpringDocAnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), components, methodAttributes.getJsonViewAnnotation(), openapi31)
+				SpringDocAnnotationsUtils.getHeaders(apiResponseAnnotation.headers(), components, methodAttributes.getJsonViewAnnotation(), openapi31)
 						.ifPresent(apiResponse::headers);
 				apiResponsesOp.addApiResponse(httpCode, apiResponse);
 			}
@@ -622,8 +622,7 @@ public class GenericResponseService implements ApplicationContextAware {
 					setDescription(httpCode, apiResponse);
 			}
 		}
-		if (apiResponse.getContent() != null && (methodAttributes.isUseReturnTypeSchema() ||
-				((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc()))) {
+		if (apiResponse.getContent() != null && shouldCalculateContent(methodAttributes, isGeneric, httpCode)) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
 			Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
@@ -640,6 +639,28 @@ public class GenericResponseService implements ApplicationContextAware {
 			apiResponse.addExtension(EXTENSION_EXCEPTION_CLASSES, exceptions);
 		}
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
+	}
+
+	/**
+	 * Whether to consider calculating additional content.
+	 *
+	 * @param methodAttributes the method attributes
+	 * @param isGeneric        the is generic
+	 * @param httpCode         the http code
+	 */
+	private boolean shouldCalculateContent(MethodAttributes methodAttributes, boolean isGeneric, String httpCode) {
+		return useReturnTypeSchema(methodAttributes, httpCode) ||
+			   ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc());
+	}
+
+	/**
+	 * Whether to use return type schema.
+	 *
+	 * @param methodAttributes the method attributes
+	 * @param httpCode         the http code
+	 */
+	private boolean useReturnTypeSchema(MethodAttributes methodAttributes, String httpCode) {
+		return methodAttributes.getUseReturnTypeSchema().getOrDefault(httpCode, false);
 	}
 
 	/**

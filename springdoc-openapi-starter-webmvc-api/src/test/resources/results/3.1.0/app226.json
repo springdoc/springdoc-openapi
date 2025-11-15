@@ -1,38 +1,44 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
   },
-  "servers": [
-    {
-      "url": "http://localhost",
-      "description": "Generated server url"
-    }
-  ],
-  "paths": {
-    "/testBoolean": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "HelloController",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/testBoolean" : {
+      "post" : {
+        "tags" : [ "hello-controller" ],
+        "operationId" : "HelloController",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "string"
                   }
                 },
-                "examples": {
-                  "success": {
-                    "description": "success",
-                    "value": "..."
+                "examples" : {
+                  "success" : {
+                    "description" : "success",
+                    "value" : "..."
                   }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
                 }
               }
             }
@@ -41,5 +47,16 @@
       }
     }
   },
-  "components": {}
+  "components" : {
+    "schemas" : {
+      "Error" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
 }
