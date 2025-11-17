@@ -28,11 +28,14 @@ package org.springdoc.core.properties;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.SpecVersion;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.License;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.utils.Constants;
@@ -44,6 +47,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 
+import static org.springdoc.core.utils.Constants.DEFAULT_TITLE;
+import static org.springdoc.core.utils.Constants.DEFAULT_VERSION;
 import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 
@@ -1452,6 +1457,11 @@ public class SpringDocConfigProperties {
 		private Groups groups = new Groups();
 
 		/**
+		 * The Info.
+		 */
+		private Info info = new Info();
+
+		/**
 		 * The OpenAPI version.
 		 */
 		private OpenApiVersion version = OpenApiVersion.OPENAPI_3_1;
@@ -1508,6 +1518,24 @@ public class SpringDocConfigProperties {
 		 */
 		public void setGroups(Groups groups) {
 			this.groups = groups;
+		}
+
+		/**
+		 * Gets info.
+		 *
+		 * @return the info
+		 */
+		public Info getInfo() {
+			return info;
+		}
+
+		/**
+		 * Sets info.
+		 *
+		 * @param info the info
+		 */
+		public void setInfo(Info info) {
+			this.info = info;
 		}
 
 		/**
@@ -1945,6 +1973,196 @@ public class SpringDocConfigProperties {
 		@Override
 		public int hashCode() {
 			return Objects.hash(group);
+		}
+	}
+
+	/**
+	 * The type Info.
+	 */
+	public static class Info {
+
+		/**
+		 * The Title.
+		 */
+		private String title = DEFAULT_TITLE;
+
+		/**
+		 * The Description.
+		 */
+		private String description;
+
+		/**
+		 * The Terms of service.
+		 */
+		private String termsOfService;
+
+		/**
+		 * The Contact.
+		 */
+		private Contact contact;
+
+		/**
+		 * The License.
+		 */
+		private License license;
+
+		/**
+		 * The Version.
+		 */
+		private String version = DEFAULT_VERSION;
+
+		/**
+		 * The Extensions.
+		 */
+		private Map<String, Object> extensions;
+
+		/**
+		 * The Summary.
+		 */
+		private String summary;
+
+		/**
+		 * Gets title.
+		 *
+		 * @return the title
+		 */
+		public String getTitle() {
+			return title;
+		}
+
+		/**
+		 * Sets title.
+		 *
+		 * @param title the title
+		 */
+		public void setTitle(String title) {
+			this.title = title;
+		}
+
+		/**
+		 * Gets description.
+		 *
+		 * @return the description
+		 */
+		public String getDescription() {
+			return description;
+		}
+
+		/**
+		 * Sets description.
+		 *
+		 * @param description the description
+		 */
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		/**
+		 * Gets terms of service.
+		 *
+		 * @return the terms of service
+		 */
+		public String getTermsOfService() {
+			return termsOfService;
+		}
+
+		/**
+		 * Sets terms of service.
+		 *
+		 * @param termsOfService the terms of service
+		 */
+		public void setTermsOfService(String termsOfService) {
+			this.termsOfService = termsOfService;
+		}
+
+		/**
+		 * Gets contact.
+		 *
+		 * @return the contact
+		 */
+		public Contact getContact() {
+			return contact;
+		}
+
+		/**
+		 * Sets contact.
+		 *
+		 * @param contact the contact
+		 */
+		public void setContact(Contact contact) {
+			this.contact = contact;
+		}
+
+		/**
+		 * Gets license.
+		 *
+		 * @return the license
+		 */
+		public License getLicense() {
+			return license;
+		}
+
+		/**
+		 * Sets license.
+		 *
+		 * @param license the license
+		 */
+		public void setLicense(License license) {
+			this.license = license;
+		}
+
+		/**
+		 * Gets version.
+		 *
+		 * @return the version
+		 */
+		public String getVersion() {
+			return version;
+		}
+
+		/**
+		 * Sets version.
+		 *
+		 * @param version the version
+		 */
+		public void setVersion(String version) {
+			this.version = version;
+		}
+
+		/**
+		 * Gets extensions.
+		 *
+		 * @return the extensions
+		 */
+		public Map<String, Object> getExtensions() {
+			return extensions;
+		}
+
+		/**
+		 * Sets extensions.
+		 *
+		 * @param extensions the extensions
+		 */
+		public void setExtensions(Map<String, Object> extensions) {
+			this.extensions = extensions;
+		}
+
+		/**
+		 * Gets summary.
+		 *
+		 * @return the summary
+		 */
+		public String getSummary() {
+			return summary;
+		}
+
+		/**
+		 * Sets summary.
+		 *
+		 * @param summary the summary
+		 */
+		public void setSummary(String summary) {
+			this.summary = summary;
 		}
 	}
 }

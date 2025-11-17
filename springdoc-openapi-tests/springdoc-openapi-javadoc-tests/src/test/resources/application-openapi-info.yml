@@ -1,0 +1,19 @@
+springdoc:
+  api-docs:
+    info:
+      title: Configured API
+      description: Configured via YAML
+      terms-of-service: https://example.org/terms
+      summary: High level summary
+      version: 9.9.9
+      contact:
+        name: Example Support
+        url: https://example.org/support
+        email: support@example.org
+      license:
+        name: Example License
+        url: https://example.org/license
+      extensions:
+        x-company: Example Corp
+        x-service-tier: gold
+
