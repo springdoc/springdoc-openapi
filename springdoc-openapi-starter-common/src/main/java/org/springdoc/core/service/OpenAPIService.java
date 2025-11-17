@@ -254,7 +254,15 @@ public class OpenAPIService implements ApplicationContextAware {
 		}
 		// Set default info
 		else if (calculatedOpenAPI != null && calculatedOpenAPI.getInfo() == null) {
-			Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
+			Info infos = new Info()
+					.title(springDocConfigProperties.getApiDocs().getInfo().getTitle())
+					.description(springDocConfigProperties.getApiDocs().getInfo().getDescription())
+					.termsOfService(springDocConfigProperties.getApiDocs().getInfo().getTermsOfService())
+					.contact(springDocConfigProperties.getApiDocs().getInfo().getContact())
+					.license(springDocConfigProperties.getApiDocs().getInfo().getLicense())
+					.version(springDocConfigProperties.getApiDocs().getInfo().getVersion())
+					.extensions(springDocConfigProperties.getApiDocs().getInfo().getExtensions())
+					.summary(springDocConfigProperties.getApiDocs().getInfo().getSummary());
 			calculatedOpenAPI.setInfo(infos);
 		}
 		// Set default mappings
