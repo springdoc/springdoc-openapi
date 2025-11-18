@@ -47,7 +47,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.webmvc.actuate.endpoint.web.WebMvcEndpointHandlerMapping;
+import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -148,6 +150,8 @@ public class SwaggerConfig {
 	 * Swagger web mvc configurer swagger web mvc configurer.
 	 *
 	 * @param swaggerUiConfigProperties the swagger ui calculated config
+	 * @param springWebProperties       the spring web config
+	 * @param springWebMvcProperties    the spring mvc config
 	 * @param swaggerIndexTransformer   the swagger index transformer
 	 * @param actuatorProvider          the actuator provider
 	 * @param swaggerResourceResolver   the swagger resource resolver
@@ -157,8 +161,10 @@ public class SwaggerConfig {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
-			SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
-		return new SwaggerWebMvcConfigurer(swaggerUiConfigProperties, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
+			WebProperties springWebProperties, WebMvcProperties springWebMvcProperties,
+			SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider,
+			SwaggerResourceResolver swaggerResourceResolver) {
+		return new SwaggerWebMvcConfigurer(swaggerUiConfigProperties, springWebProperties, springWebMvcProperties, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
 	}
 
 	/**

@@ -47,6 +47,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.webflux.actuate.endpoint.web.WebFluxEndpointHandlerMapping;
 import org.springframework.boot.webflux.autoconfigure.WebFluxProperties;
 import org.springframework.context.annotation.Bean;
@@ -121,7 +122,8 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 * Swagger web flux configurer swagger web flux configurer.
 	 *
 	 * @param swaggerUiConfigProperties the swagger ui calculated config
-	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springWebProperties       the spring web config
+	 * @param springWebFluxProperties   the spring webflux config
 	 * @param swaggerIndexTransformer   the swagger index transformer
 	 * @param actuatorProvider          the actuator provider
 	 * @param swaggerResourceResolver   the swagger resource resolver
@@ -131,9 +133,10 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
-			SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer,
-			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
-		return new SwaggerWebFluxConfigurer(swaggerUiConfigProperties, springDocConfigProperties, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
+			WebProperties springWebProperties, WebFluxProperties springWebFluxProperties,
+			SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider,
+			SwaggerResourceResolver swaggerResourceResolver) {
+		return new SwaggerWebFluxConfigurer(swaggerUiConfigProperties, springWebProperties, springWebFluxProperties, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
 	}
 
 	/**
