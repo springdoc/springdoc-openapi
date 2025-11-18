@@ -41,8 +41,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"server.forward-headers-strategy=framework",
 				"server.port=9318",
 				"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
-				"springdoc.api-docs.path=/documentation/v3/api-docs",
-				"springdoc.webjars.prefix= /webjars-pref" })
+				"springdoc.api-docs.path=/documentation/v3/api-docs" })
 
 @Import(SpringDocConfig.class)
 public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
@@ -69,7 +68,7 @@ public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
-		httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH + "/documentation/webjars-pref/swagger-ui/index.html")
+		httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH + "/documentation/swagger-ui/index.html")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);

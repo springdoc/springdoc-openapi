@@ -32,12 +32,13 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
 
+import org.springframework.http.CacheControl;
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
-import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 import static org.springdoc.core.utils.Constants.CLASSPATH_RESOURCE_LOCATION;
 import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
+import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_JS;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_PREFIX;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
@@ -102,28 +103,15 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
 			uiRootPath.append(actuatorProvider.get().getBasePath());
 
-		String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
-		String resourcePath, swaggerUiPrefix, swaggerUiWebjarsPrefix;
-
-		if (DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix)) {
-			swaggerUiPrefix = SWAGGER_UI_PREFIX;
-			resourcePath = webjarsPrefix + SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigProperties.getVersion() + DEFAULT_PATH_SEPARATOR;
-			swaggerUiWebjarsPrefix = webjarsPrefix + swaggerUiPrefix;
-		}
-		else {
-			swaggerUiPrefix = webjarsPrefix;
-			resourcePath = DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR;
-			swaggerUiWebjarsPrefix = swaggerUiPrefix;
-		}
-
-		registry.addResourceHandler(uiRootPath + swaggerUiWebjarsPrefix + ALL_PATTERN)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
+		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/*" + SWAGGER_INITIALIZER_JS)
+				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
+				.setCacheControl(CacheControl.noStore())
 				.resourceChain(false)
 				.addResolver(swaggerResourceResolver)
 				.addTransformer(swaggerIndexTransformer);
 
-		registry.addResourceHandler(uiRootPath + swaggerUiPrefix + ALL_PATTERN)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
+		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/**")
+				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
 				.resourceChain(false)
 				.addResolver(swaggerResourceResolver)
 				.addTransformer(swaggerIndexTransformer);

@@ -42,8 +42,6 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.util.ForwardedHeaderUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
-
 /**
  * The type Swagger welcome common.
  *
@@ -72,15 +70,12 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	protected Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
 		buildFromCurrentContextPath(swaggerUiConfigParameters, request);
-		String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
-		String additionalPrefix = DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix) ? "" : webjarsPrefix;
-		String sbUrl = swaggerUiConfigParameters.getContextPath()
-				+ swaggerUiConfigParameters.getUiRootPath()
-				+ additionalPrefix
-				+ getSwaggerUiUrl();
+		String sbUrl = swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getUiRootPath() + getSwaggerUiUrl();
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(swaggerUiConfigParameters, sbUrl);
+
 		// forward all queryParams from original request
 		request.getQueryParams().forEach(uriBuilder::queryParam);
+
 		response.setStatusCode(HttpStatus.FOUND);
 		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
 		return response.setComplete();
@@ -89,16 +84,9 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	@Override
 	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
 		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
-			String additionalPath = DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix) ? "" : webjarsPrefix;
-			swaggerUiConfigParameters.setOauth2RedirectUrl(
-					uriComponentsBuilder
-							.path(swaggerUiConfigParameters.getUiRootPath())
-							.path(additionalPath)
-							.path(getOauth2RedirectUrl())
-							.build()
-							.toString()
-			);
+			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder
+					.path(swaggerUiConfigParameters.getUiRootPath())
+					.path(getOauth2RedirectUrl()).build().toString());
 		}
 	}
 
