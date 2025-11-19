@@ -253,6 +253,37 @@ Snapshots:
 * [https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/org/springdoc/](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/org/springdoc/)
   .
 
+## Using a separate management port (Spring Boot 3)
+
+Some Spring Boot apps run **Actuator** on a separate management port. In that case:
+
+- **Application port** (e.g., `8080`) serves your app and springdoc endpoints:
+  - `http://localhost:8080/v3/api-docs`
+  - `http://localhost:8080/swagger-ui/index.html`
+
+- **Management port** (e.g., `9090`) serves Actuator:
+  - `http://localhost:9090/actuator`
+  - `http://localhost:9090/actuator/health`
+
+Minimal `application.yml`:
+
+```yaml
+server:
+  port: 8080
+
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# springdoc is enabled by default with the starter;
+# endpoints remain on the application port.
+# (OpenAPI JSON = /v3/api-docs, Swagger UI = /swagger-ui/index.html)
+```
+
 # Acknowledgements
 
 ## Contributors
