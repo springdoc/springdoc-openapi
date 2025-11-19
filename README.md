@@ -56,6 +56,7 @@ This project is sponsored by
     - [Error Handling for REST using @ControllerAdvice](#error-handling-for-rest-using-controlleradvice)
     - [Adding API Information and Security documentation](#adding-api-information-and-security-documentation)
     - [spring-webflux support with Annotated Controllers](#spring-webflux-support-with-annotated-controllers)
+    - [Using a separate management port (Spring Boot 3)](#using-a-separate-management-port-spring-boot-3)
 - [Acknowledgements](#acknowledgements)
     - [Contributors](#contributors)
     - [Additional Support](#additional-support)
