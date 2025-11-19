@@ -57,6 +57,7 @@ This project is sponsored by
     - [Adding API Information and Security documentation](#adding-api-information-and-security-documentation)
     - [spring-webflux support with Annotated Controllers](#spring-webflux-support-with-annotated-controllers)
     - [Using a separate management port (Spring Boot 3)](#using-a-separate-management-port-spring-boot-3)
+    - [When Spring Security is enabled](#when-spring-security-is-enabled)
 - [Acknowledgements](#acknowledgements)
     - [Contributors](#contributors)
     - [Additional Support](#additional-support)
@@ -283,6 +284,28 @@ management:
 # springdoc is enabled by default with the starter;
 # endpoints remain on the application port.
 # (OpenAPI JSON = /v3/api-docs, Swagger UI = /swagger-ui/index.html)
+```
+
+### When Spring Security is enabled
+
+With Spring Boot 3, `/v3/api-docs` and Swagger UI are served on the **application port**, while Actuator runs on the **management port**.  
+If Spring Security is enabled, explicitly permit the docs paths on the **application port**:
+
+```java
+@Bean
+SecurityFilterChain api(HttpSecurity http) throws Exception {
+  http
+    .authorizeHttpRequests(auth -> auth
+      .requestMatchers(
+        "/v3/api-docs/**",   
+        "/v3/api-docs.yaml", 
+        "/swagger-ui/**",
+        "/swagger-ui.html"
+      ).permitAll()
+      .anyRequest().authenticated()
+    );
+  return http.build();
+}
 ```
 
 # Acknowledgements
