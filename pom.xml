@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi</artifactId>
-	<version>3.0.0-RC2-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Spring openapi documentation</name>
 	<description>Spring openapi documentation</description>
@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.0-SNAPSHOT</version>
+		<version>4.0.0</version>
 	</parent>
 
 	<licenses>
