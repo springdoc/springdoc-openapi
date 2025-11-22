@@ -37,10 +37,9 @@ import reactor.core.publisher.Mono;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ServerWebExchange;
 
 import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 import static org.springdoc.core.utils.Constants.DEFAULT_SWAGGER_UI_ACTUATOR_PATH;
@@ -82,29 +81,28 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	/**
 	 * Redirect to ui mono.
 	 *
-	 * @param request  the request
-	 * @param response the response
+	 * @param exchange the exchange
 	 * @return the mono
 	 */
 	@Operation(hidden = true)
 	@GetMapping(DEFAULT_PATH_SEPARATOR)
 	@Override
-	public Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
-		return super.redirectToUi(request, response);
+	public Mono<Void> redirectToUi(ServerWebExchange exchange) {
+		return super.redirectToUi(exchange);
 	}
 
 	/**
 	 * Openapi yaml map.
 	 *
-	 * @param request the request
+	 * @param exchange the exchange
 	 * @return the map
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_ACTUATOR_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Override
-	public Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
-		return super.getSwaggerUiConfig(request);
+	public Map<String, Object> getSwaggerUiConfig(ServerWebExchange exchange) {
+		return super.getSwaggerUiConfig(exchange);
 	}
 
 	@Override

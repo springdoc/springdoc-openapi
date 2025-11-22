@@ -27,9 +27,10 @@
 package org.springdoc.webmvc.ui;
 
 import java.util.List;
-import java.util.Optional;
+
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
-import org.springdoc.core.providers.ActuatorProvider;
+
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 import org.springframework.format.FormatterRegistry;
@@ -75,11 +76,6 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	private final SwaggerIndexTransformer swaggerIndexTransformer;
 
 	/**
-	 * The Actuator provider.
-	 */
-	private final Optional<ActuatorProvider> actuatorProvider;
-
-	/**
 	 * The Swagger resource resolver.
 	 */
 	private final SwaggerResourceResolver swaggerResourceResolver;
@@ -99,6 +95,11 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	 */
 	private final WebMvcProperties springWebMvcProperties;
 
+	/**
+	 * The Swagger welcome common.
+	 */
+	private final SwaggerWelcomeCommon swaggerWelcomeCommon;
+
 	private final PathPatternParser parser = new PathPatternParser();
 
 	/**
@@ -108,19 +109,19 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	 * @param springWebProperties       the spring web config
 	 * @param springWebMvcProperties    the spring mvc config
 	 * @param swaggerIndexTransformer   the swagger index transformer
-	 * @param actuatorProvider          the actuator provider
 	 * @param swaggerResourceResolver   the swagger resource resolver
+	 * @param swaggerWelcomeCommon   the swagger welcome common
 	 */
 	public SwaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
 			WebProperties springWebProperties, WebMvcProperties springWebMvcProperties,
-			SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider,
-			SwaggerResourceResolver swaggerResourceResolver) {
+			SwaggerIndexTransformer swaggerIndexTransformer, SwaggerResourceResolver swaggerResourceResolver,
+			SwaggerWelcomeCommon swaggerWelcomeCommon) {
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
-		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
 		this.swaggerUiConfigProperties = swaggerUiConfigProperties;
 		this.springWebProperties = springWebProperties;
 		this.springWebMvcProperties = springWebMvcProperties;
+		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
@@ -167,18 +168,10 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	 * @return the Swagger UI root path.
 	 */
 	protected String getUiRootPath() {
-		StringBuilder uiRootPath = new StringBuilder();
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfigProperties);
+		swaggerWelcomeCommon.calculateUiRootPath(swaggerUiConfigParameters);
 
-		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort()) {
-			uiRootPath.append(actuatorProvider.get().getBasePath());
-		}
-
-		String swaggerUiPath = swaggerUiConfigProperties.getPath();
-		if (swaggerUiPath.contains(DEFAULT_PATH_SEPARATOR)) {
-			uiRootPath.append(swaggerUiPath, 0, swaggerUiPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		}
-
-		return uiRootPath.toString();
+		return swaggerUiConfigParameters.getUiRootPath();
 	}
 
 	/**

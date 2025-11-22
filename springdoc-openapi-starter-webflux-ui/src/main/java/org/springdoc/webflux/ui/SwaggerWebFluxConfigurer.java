@@ -26,9 +26,9 @@
 
 package org.springdoc.webflux.ui;
 
-import java.util.Optional;
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
-import org.springdoc.core.providers.ActuatorProvider;
+
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.webflux.autoconfigure.WebFluxProperties;
 import org.springframework.http.CacheControl;
@@ -57,11 +57,6 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	private final SwaggerIndexTransformer swaggerIndexTransformer;
 
 	/**
-	 * The Actuator provider.
-	 */
-	private final Optional<ActuatorProvider> actuatorProvider;
-
-	/**
 	 * The Swagger resource resolver.
 	 */
 	private final SwaggerResourceResolver swaggerResourceResolver;
@@ -81,6 +76,11 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	 */
 	private final WebFluxProperties springWebFluxProperties;
 
+	/**
+	 * The Swagger welcome common.
+	 */
+	private final SwaggerWelcomeCommon swaggerWelcomeCommon;
+
 	private final PathPatternParser parser = new PathPatternParser();
 
 	/**
@@ -90,19 +90,19 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	 * @param springWebProperties       the spring web config
 	 * @param springWebFluxProperties   the spring webflux config
 	 * @param swaggerIndexTransformer   the swagger index transformer
-	 * @param actuatorProvider          the actuator provider
 	 * @param swaggerResourceResolver   the swagger resource resolver
+	 * @param swaggerWelcomeCommon   the swagger welcome common
 	 */
 	public SwaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
 			WebProperties springWebProperties, WebFluxProperties springWebFluxProperties,
-			SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider,
-			SwaggerResourceResolver swaggerResourceResolver) {
+			SwaggerIndexTransformer swaggerIndexTransformer, SwaggerResourceResolver swaggerResourceResolver,
+			SwaggerWelcomeCommon swaggerWelcomeCommon) {
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
-		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
 		this.swaggerUiConfigProperties = swaggerUiConfigProperties;
 		this.springWebProperties = springWebProperties;
 		this.springWebFluxProperties = springWebFluxProperties;
+		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
@@ -149,18 +149,10 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	 * @return the Swagger UI root path.
 	 */
 	protected String getUiRootPath() {
-		StringBuilder uiRootPath = new StringBuilder();
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfigProperties);
+		swaggerWelcomeCommon.calculateUiRootPath(swaggerUiConfigParameters);
 
-		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort()) {
-			uiRootPath.append(actuatorProvider.get().getBasePath());
-		}
-
-		String swaggerUiPath = swaggerUiConfigProperties.getPath();
-		if (swaggerUiPath.contains(DEFAULT_PATH_SEPARATOR)) {
-			uiRootPath.append(swaggerUiPath, 0, swaggerUiPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		}
-
-		return uiRootPath.toString();
+		return swaggerUiConfigParameters.getUiRootPath();
 	}
 
 	/**
