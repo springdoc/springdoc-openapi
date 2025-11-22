@@ -32,7 +32,6 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
-import org.springdoc.core.utils.SpringDocUtils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -86,16 +85,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	@Override
 	protected void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls) {
 		StringBuilder sbUrl = new StringBuilder();
-		if (SpringDocUtils.isValidPath(mvcServletPath))
-			sbUrl.append(mvcServletPath);
 		calculateUiRootCommon(swaggerUiConfigParameters, sbUrl, sbUrls);
-	}
-
-	@Override
-	protected String buildUrl(String contextPath, final String docsUrl) {
-		if (SpringDocUtils.isValidPath(mvcServletPath))
-			contextPath += mvcServletPath;
-		return super.buildUrl(contextPath, docsUrl);
 	}
 
 	@Override
@@ -107,7 +97,12 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	protected String buildUrlWithContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl) {
 		if (swaggerUiConfigParameters.getPathPrefix() == null)
 			swaggerUiConfigParameters.setPathPrefix(springWebProvider.findPathPrefix(springDocConfigProperties));
-		return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
+		if (swaggerUiUrl.startsWith(swaggerUiConfigParameters.getPathPrefix())) {
+			return buildUrl(swaggerUiConfigParameters.getContextPath(), swaggerUiUrl);
+		}
+		else {
+			return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
+		}
 	}
 
 	@Override

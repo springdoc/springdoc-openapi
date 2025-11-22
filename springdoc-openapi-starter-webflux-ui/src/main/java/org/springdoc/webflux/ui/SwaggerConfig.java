@@ -33,7 +33,6 @@ import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiOAuthProperties;
-import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.webflux.core.providers.SpringWebFluxProvider;
@@ -125,8 +124,8 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 * @param springWebProperties       the spring web config
 	 * @param springWebFluxProperties   the spring webflux config
 	 * @param swaggerIndexTransformer   the swagger index transformer
-	 * @param actuatorProvider          the actuator provider
 	 * @param swaggerResourceResolver   the swagger resource resolver
+	 * @param swaggerWelcomeCommon   the swagger welcome common
 	 * @return the swagger web flux configurer
 	 */
 	@Bean
@@ -134,9 +133,9 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@Lazy(false)
 	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
 			WebProperties springWebProperties, WebFluxProperties springWebFluxProperties,
-			SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider,
-			SwaggerResourceResolver swaggerResourceResolver) {
-		return new SwaggerWebFluxConfigurer(swaggerUiConfigProperties, springWebProperties, springWebFluxProperties, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
+			SwaggerIndexTransformer swaggerIndexTransformer, SwaggerResourceResolver swaggerResourceResolver,
+			SwaggerWelcomeCommon swaggerWelcomeCommon) {
+		return new SwaggerWebFluxConfigurer(swaggerUiConfigProperties, springWebProperties, springWebFluxProperties, swaggerIndexTransformer, swaggerResourceResolver, swaggerWelcomeCommon);
 	}
 
 	/**

@@ -30,9 +30,9 @@ import java.util.Map;
 import io.swagger.v3.oas.annotations.Operation;
 
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerWebExchange;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_URL;
 
@@ -61,13 +61,13 @@ public class SwaggerConfigResource {
 	/**
 	 * Gets swagger ui config.
 	 *
-	 * @param request the request
+	 * @param exchange the exchange
 	 * @return the swagger ui config
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
-		return swaggerWelcomeCommon.getSwaggerUiConfig(request);
+	public Map<String, Object> getSwaggerUiConfig(ServerWebExchange exchange) {
+		return swaggerWelcomeCommon.getSwaggerUiConfig(exchange);
 	}
 
 }
