@@ -26,9 +26,8 @@
 
 package org.springdoc.core.utils;
 
-import org.springframework.util.ResourceUtils;
-
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
+import static org.springframework.util.ResourceUtils.CLASSPATH_URL_PREFIX;
 
 /**
  * The type Constants.
@@ -70,7 +69,7 @@ public final class Constants {
 	/**
 	 * The constant SWAGGER_CONFIG_URL.
 	 */
-	public static final String SWAGGER_CONFIG_URL = API_DOCS_URL + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
+	public static final String SWAGGER_CONFIG_URL = API_DOCS_URL + "/" + SWAGGER_CONFIG_FILE;
 
 	/**
 	 * The constant YAML.
@@ -177,21 +176,25 @@ public final class Constants {
 	 */
 	public static final String SPRINGDOC_ACTUATOR_DOC_DESCRIPTION = "Spring Boot Actuator Web API Documentation";
 
-	/**
-	 * The constant DEFAULT_WEB_JARS_PREFIX_URL.
-	 */
-	public static final String DEFAULT_WEB_JARS_PREFIX_URL = "/webjars";
+    /**
+     * The constant CLASSPATH_RESOURCE_LOCATION.
+     */
+    public static final String CLASSPATH_RESOURCE_LOCATION = CLASSPATH_URL_PREFIX + "META-INF" + DEFAULT_PATH_SEPARATOR + "resources" + DEFAULT_PATH_SEPARATOR;
 
-	/**
-	 * The constant CLASSPATH_RESOURCE_LOCATION.
-	 */
-	public static final String CLASSPATH_RESOURCE_LOCATION = ResourceUtils.CLASSPATH_URL_PREFIX + "/META-INF/resources";
+    /**
+     * The constant WEBJARS_RESOURCE_LOCATION.
+     */
+    public static final String WEBJARS_RESOURCE_LOCATION = CLASSPATH_RESOURCE_LOCATION + "webjars" + DEFAULT_PATH_SEPARATOR;
 
+    /**
+     * The constant SWAGGER_UI_WEBJAR_NAME.
+     */
+    public static final String SWAGGER_UI_WEBJAR_NAME = "swagger-ui";
 
 	/**
 	 * The constant SWAGGER_UI_PREFIX.
 	 */
-	public static final String SWAGGER_UI_PREFIX = "/swagger-ui";
+	public static final String SWAGGER_UI_PREFIX = "/" + SWAGGER_UI_WEBJAR_NAME;
 
 	/**
 	 * The constant INDEX_PAGE.
@@ -231,7 +234,7 @@ public final class Constants {
 	/**
 	 * The constant DEFAULT_SWAGGER_UI_PATH.
 	 */
-	public static final String DEFAULT_SWAGGER_UI_PATH = DEFAULT_PATH_SEPARATOR + "swagger-ui.html";
+	public static final String DEFAULT_SWAGGER_UI_PATH = "/swagger-ui.html";
 
 	/**
 	 * The constant SWAGGER_UI_PATH.
@@ -363,6 +366,16 @@ public final class Constants {
 	 */
 	public static final String ALL_PATTERN = "/**";
 
+    /**
+     * The constant SWAGGER_UI_WEBJAR_NAME_PATTERN.
+     */
+    public static final String SWAGGER_UI_WEBJAR_NAME_PATTERN = "/*" + SWAGGER_UI_WEBJAR_NAME;
+
+    /**
+     * The constant SWAGGER_INITIALIZER_PATTERN.
+     */
+    public static final String SWAGGER_INITIALIZER_PATTERN = "/*" + SWAGGER_INITIALIZER_JS;
+
 	/**
 	 * The constant HEALTH_PATTERN.
 	 */
@@ -397,7 +410,7 @@ public final class Constants {
 	/**
 	 * The constant DEFAULT_YAML_API_DOCS_ACTUATOR_PATH.
 	 */
-	public static final String DEFAULT_YAML_API_DOCS_ACTUATOR_PATH = DEFAULT_PATH_SEPARATOR + YAML;
+	public static final String DEFAULT_YAML_API_DOCS_ACTUATOR_PATH = "/" + YAML;
 
 	/**
 	 * The constant ACTUATOR_DEFAULT_GROUP.

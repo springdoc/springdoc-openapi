@@ -27,12 +27,14 @@
 package org.springdoc.webmvc.ui;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
-import org.springdoc.core.providers.ActuatorProvider;
 
+import org.springframework.boot.autoconfigure.web.WebProperties;
+import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.CacheControl;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.MessageCodesResolver;
@@ -50,11 +52,15 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.util.pattern.PathPattern;
+import org.springframework.web.util.pattern.PathPatternParser;
 
-import static org.springdoc.core.utils.Constants.CLASSPATH_RESOURCE_LOCATION;
-import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
-import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_JS;
+import static org.springdoc.core.utils.Constants.ALL_PATTERN;
+import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_PATTERN;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_PREFIX;
+import static org.springdoc.core.utils.Constants.SWAGGER_UI_WEBJAR_NAME;
+import static org.springdoc.core.utils.Constants.SWAGGER_UI_WEBJAR_NAME_PATTERN;
+import static org.springdoc.core.utils.Constants.WEBJARS_RESOURCE_LOCATION;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -70,9 +76,9 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	private final SwaggerIndexTransformer swaggerIndexTransformer;
 
 	/**
-	 * The Actuator provider.
+	 * The Swagger resource resolver.
 	 */
-	private final Optional<ActuatorProvider> actuatorProvider;
+	private final SwaggerResourceResolver swaggerResourceResolver;
 
 	/**
 	 * The Swagger ui config properties.
@@ -80,48 +86,106 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	private final SwaggerUiConfigProperties swaggerUiConfigProperties;
 
 	/**
-	 * The Swagger resource resolver.
+	 * The Spring Web config properties.
 	 */
-	private final SwaggerResourceResolver swaggerResourceResolver;
+	private final WebProperties springWebProperties;
+
+	/**
+	 * The Spring MVC config properties.
+	 */
+	private final WebMvcProperties springWebMvcProperties;
+
+	/**
+	 * The Swagger welcome common.
+	 */
+	private final SwaggerWelcomeCommon swaggerWelcomeCommon;
+
+	private final PathPatternParser parser = new PathPatternParser();
 
 	/**
 	 * Instantiates a new Swagger web mvc configurer.
 	 *
 	 * @param swaggerUiConfigProperties the swagger ui calculated config
+	 * @param springWebProperties       the spring web config
+	 * @param springWebMvcProperties    the spring mvc config
 	 * @param swaggerIndexTransformer   the swagger index transformer
-	 * @param actuatorProvider          the actuator provider
 	 * @param swaggerResourceResolver   the swagger resource resolver
+	 * @param swaggerWelcomeCommon   the swagger welcome common
 	 */
 	public SwaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
-			SwaggerIndexTransformer swaggerIndexTransformer,
-			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
+			WebProperties springWebProperties, WebMvcProperties springWebMvcProperties,
+			SwaggerIndexTransformer swaggerIndexTransformer, SwaggerResourceResolver swaggerResourceResolver,
+			SwaggerWelcomeCommon swaggerWelcomeCommon) {
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
-		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
 		this.swaggerUiConfigProperties = swaggerUiConfigProperties;
+		this.springWebProperties = springWebProperties;
+		this.springWebMvcProperties = springWebMvcProperties;
+		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		StringBuilder uiRootPath = new StringBuilder();
-		String swaggerPath = swaggerUiConfigProperties.getPath();
-		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
-			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
-			uiRootPath.append(actuatorProvider.get().getBasePath());
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfigProperties);
+		swaggerWelcomeCommon.calculateUiRootPath(swaggerUiConfigParameters);
 
-		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/*" + SWAGGER_INITIALIZER_JS)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
-				.setCachePeriod(0)
+		String swaggerUiPattern = swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_PREFIX + ALL_PATTERN;
+		String swaggerUiResourceLocation = WEBJARS_RESOURCE_LOCATION + SWAGGER_UI_WEBJAR_NAME + DEFAULT_PATH_SEPARATOR +
+				swaggerUiConfigProperties.getVersion() + DEFAULT_PATH_SEPARATOR;
+
+		addSwaggerUiResourceHandler(registry, swaggerUiPattern,  swaggerUiResourceLocation);
+
+		// Add custom mappings for Swagger UI WebJar resources if Spring resource mapping is enabled
+		if (springWebProperties.getResources().isAddMappings()) {
+			String webjarsPathPattern = springWebMvcProperties.getWebjarsPathPattern();
+
+			String swaggerUiWebjarPattern = mergePatterns(webjarsPathPattern, SWAGGER_UI_WEBJAR_NAME_PATTERN) + ALL_PATTERN;
+			String swaggerUiWebjarResourceLocation = WEBJARS_RESOURCE_LOCATION;
+
+			addSwaggerUiResourceHandler(registry, swaggerUiWebjarPattern, swaggerUiWebjarResourceLocation);
+		}
+	}
+
+	/**
+	 * Adds the resource handlers for serving the Swagger UI resources.
+	 */
+	protected void addSwaggerUiResourceHandler(ResourceHandlerRegistry registry, String pattern, String... resourceLocations) {
+		registry.addResourceHandler(pattern)
+				.addResourceLocations(resourceLocations)
 				.resourceChain(false)
 				.addResolver(swaggerResourceResolver)
 				.addTransformer(swaggerIndexTransformer);
 
-		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/**")
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
+		// Ensure Swagger initializer has "no-store" Cache-Control header
+		registry.addResourceHandler(mergePatterns(pattern, SWAGGER_INITIALIZER_PATTERN))
+				.setCacheControl(CacheControl.noStore())
+				.addResourceLocations(resourceLocations)
 				.resourceChain(false)
 				.addResolver(swaggerResourceResolver)
 				.addTransformer(swaggerIndexTransformer);
+	}
+
+	/**
+	 * Combines two patterns into a new pattern according to the rules of {@link PathPattern#combine}.
+	 *
+	 * <p>For example:
+	 * <ul>
+	 * <li><code>/webjars/&#42;&#42;</code> + <code>/swagger-ui/&#42;&#42;</code> => <code>/webjars/swagger-ui/&#42;&#42;</code></li>
+	 * <li><code>/documentation/swagger-ui&#42;/&#42;&#42;</code> + <code>/&#42;.js</code> => <code>/documentation/swagger-ui&#42;/&#42;.js</code></li>
+	 * </ul>
+	 *
+	 * @param pattern1 the first pattern
+	 * @param pattern2 the second pattern
+	 *
+	 * @return the combination of the two patterns
+	 *
+	 * @see PathPattern#combine
+	 */
+	private String mergePatterns(String pattern1, String pattern2) {
+		PathPattern pathPattern1 = parser.parse(parser.initFullPathPattern(pattern1));
+		PathPattern pathPattern2 = parser.parse(parser.initFullPathPattern(pattern2));
+
+		return pathPattern1.combine(pathPattern2).getPatternString();
 	}
 
 	@Override

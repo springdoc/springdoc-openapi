@@ -48,7 +48,7 @@ import static org.springdoc.core.utils.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 public abstract class AbstractSwaggerUiConfigProperties {
 
 	/**
-	 * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
+	 * The path for the Swagger UI pages to load.
 	 */
 	protected String path = Constants.DEFAULT_SWAGGER_UI_PATH;
 

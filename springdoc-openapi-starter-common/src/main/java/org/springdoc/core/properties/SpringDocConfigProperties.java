@@ -44,7 +44,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 
-import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 
 /**
@@ -63,11 +62,6 @@ public class SpringDocConfigProperties {
 	 * The Show actuator.
 	 */
 	private boolean showActuator;
-
-	/**
-	 * The Webjars.
-	 */
-	private Webjars webjars = new Webjars();
 
 	/**
 	 * The Api docs.
@@ -787,24 +781,6 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
-	 * Gets webjars.
-	 *
-	 * @return the webjars
-	 */
-	public Webjars getWebjars() {
-		return webjars;
-	}
-
-	/**
-	 * Sets webjars.
-	 *
-	 * @param webjars the webjars
-	 */
-	public void setWebjars(Webjars webjars) {
-		this.webjars = webjars;
-	}
-
-	/**
 	 * Gets api docs.
 	 *
 	 * @return the api docs
@@ -1387,36 +1363,6 @@ public class SpringDocConfigProperties {
 		 */
 		public void setEnabled(boolean enabled) {
 			this.enabled = enabled;
-		}
-	}
-
-	/**
-	 * The type Webjars.
-	 *
-	 * @author bnasslahsen
-	 */
-	public static class Webjars {
-		/**
-		 * The Prefix.
-		 */
-		private String prefix = DEFAULT_WEB_JARS_PREFIX_URL;
-
-		/**
-		 * Gets prefix.
-		 *
-		 * @return the prefix
-		 */
-		public String getPrefix() {
-			return prefix;
-		}
-
-		/**
-		 * Sets prefix.
-		 *
-		 * @param prefix the prefix
-		 */
-		public void setPrefix(String prefix) {
-			this.prefix = prefix;
 		}
 	}
 
