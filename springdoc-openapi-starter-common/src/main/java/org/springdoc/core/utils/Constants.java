@@ -377,6 +377,11 @@ public final class Constants {
     public static final String SWAGGER_INITIALIZER_PATTERN = "/*" + SWAGGER_INITIALIZER_JS;
 
 	/**
+	 * The constant SWAGGER_RESOURCE_CACHE_NAME.
+	 */
+	public static final String SWAGGER_RESOURCE_CACHE_NAME = "swagger-resource-chain-cache";
+
+	/**
 	 * The constant HEALTH_PATTERN.
 	 */
 	public static final String HEALTH_PATTERN = "/health/*";
