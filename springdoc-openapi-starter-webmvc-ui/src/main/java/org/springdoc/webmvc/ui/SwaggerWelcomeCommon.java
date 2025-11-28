@@ -41,8 +41,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.ForwardedHeaderUtils;
+import org.springframework.web.util.ServletRequestPathUtils;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.web.util.UrlPathHelper;
 
 /**
  * The type Swagger welcome common.
@@ -50,8 +50,6 @@ import org.springframework.web.util.UrlPathHelper;
  * @author bnasslashen
  */
 public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
-
-	private final UrlPathHelper urlPathHelper = new UrlPathHelper();
 
 	/**
 	 * Instantiates a new Abstract swagger welcome.
@@ -112,11 +110,11 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param request                   the request
 	 */
-	void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, HttpServletRequest request) {
+	protected void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, HttpServletRequest request) {
 		super.init(swaggerUiConfigParameters);
 
-		String pathWithinServletMapping = urlPathHelper.getPathWithinServletMapping(request);
-		String contextPath = request.getContextPath() + (!StringUtils.isBlank(pathWithinServletMapping) ? request.getServletPath() : "");
+		String servletPath = ServletRequestPathUtils.getServletPathPrefix(request);
+		String contextPath = request.getContextPath() + (servletPath != null ? servletPath : "");
 		swaggerUiConfigParameters.setContextPath(contextPath);
 
 		URI uri = URI.create(request.getRequestURL().toString());

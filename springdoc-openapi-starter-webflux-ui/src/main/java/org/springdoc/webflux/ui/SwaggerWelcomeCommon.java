@@ -110,7 +110,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param exchange                  the exchange
 	 */
-	void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, ServerWebExchange exchange) {
+	protected void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, ServerWebExchange exchange) {
 		super.init(swaggerUiConfigParameters);
 
 		String contextPath = exchange.getRequest().getPath().contextPath().value();
