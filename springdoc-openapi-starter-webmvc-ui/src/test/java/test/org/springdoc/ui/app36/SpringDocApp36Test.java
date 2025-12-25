@@ -16,32 +16,32 @@
  *
  */
 
-package test.org.springdoc.ui.app3;
+package test.org.springdoc.ui.app36;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.reactive.server.WebTestClient;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
-		"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
-		"springdoc.api-docs.path=/documentation/v3/api-docs"
+		"springdoc.swagger-ui.disable-swagger-default-url=true",
+		"springdoc.swagger-ui.path=/documentation/swagger-ui.html"
 })
-public class SpringDocApp3RedirectWithPrefixTest extends AbstractSpringDocTest {
+public class SpringDocApp36Test extends AbstractSpringDocTest {
 
 	@Test
-	void shouldRedirectWithPrefix() {
-		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/documentation/swagger-ui.html").exchange()
-				.expectStatus().isFound();
-		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/documentation/swagger-ui/index.html"));
-		webTestClient.get().uri("/documentation/swagger-ui/index.html").exchange()
-				.expectStatus().isOk();
-		webTestClient.get().uri("/documentation/v3/api-docs/swagger-config").exchange()
-				.expectStatus().isOk().expectBody().jsonPath("$.validatorUrl").isEqualTo("");
+	void testWebJarResourceTransformed() throws Exception {
+		mockMvc.perform(get("/webjars/swagger-ui/swagger-initializer.js"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(not(containsString("https://petstore.swagger.io/v2/swagger.json"))))
+				.andExpect(content().string(containsString("/v3/api-docs")));
 	}
 
 	@SpringBootApplication

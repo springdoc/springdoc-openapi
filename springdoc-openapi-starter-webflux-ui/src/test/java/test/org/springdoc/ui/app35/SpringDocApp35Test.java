@@ -21,12 +21,13 @@
  *
  */
 
-package test.org.springdoc.ui.app34;
+package test.org.springdoc.ui.app35;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.CacheControl;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
@@ -34,16 +35,22 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestPropertySource(properties = {
+		"spring.webflux.webjars-path-pattern=/webjars-pref/**",
 		"springdoc.swagger-ui.disable-swagger-default-url=true",
 		"springdoc.swagger-ui.path=/documentation/swagger-ui.html"
 })
-public class SpringDocApp34Test extends AbstractSpringDocTest {
+public class SpringDocApp35Test extends AbstractSpringDocTest {
 
 	@Test
-	void testWebJarResourceTransformed() {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars/swagger-ui/swagger-initializer.js")
+	void testWebJarPrefix() {
+		webTestClient.get().uri("/webjars/swagger-ui/swagger-initializer.js")
+				.exchange()
+				.expectStatus().isNotFound();
+
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars-pref/swagger-ui/swagger-initializer.js")
 				.exchange()
 				.expectStatus().isOk()
+				.expectHeader().cacheControl(CacheControl.noStore())
 				.expectBody().returnResult();
 
 		var responseContent = new String(getResult.getResponseBody());
