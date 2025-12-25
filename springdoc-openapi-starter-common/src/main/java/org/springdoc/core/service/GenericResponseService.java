@@ -58,10 +58,9 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType.Object;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.core.models.ControllerAdviceInfo;
 import org.springdoc.core.models.MethodAdviceInfo;
 import org.springdoc.core.models.MethodAttributes;
@@ -97,7 +96,6 @@ import static org.springdoc.core.utils.Constants.DEFAULT_DESCRIPTION;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.getContent;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
-import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 
 /**
@@ -112,12 +110,7 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * the exception classes.
 	 */
 	private static final String EXTENSION_EXCEPTION_CLASSES = "x-exception-class";
-
-	/**
-	 * The constant LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
-
+	
 	/**
 	 * The Response entity exception handler class.
 	 */
