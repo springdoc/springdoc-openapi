@@ -137,7 +137,7 @@ public class MethodAttributes {
 	/**
 	 * The Use return type schema.
 	 */
-	private boolean useReturnTypeSchema;
+	private final Map<String, Boolean> useReturnTypeSchema = new LinkedHashMap<>();
 
 	/**
 	 * The Spring doc version strategy.
@@ -585,21 +585,22 @@ public class MethodAttributes {
 	}
 
 	/**
-	 * Is use return type schema boolean.
+	 * Gets use return type schema.
 	 *
-	 * @return the boolean
+	 * @return the use return type schema
 	 */
-	public boolean isUseReturnTypeSchema() {
+	public Map<String, Boolean> getUseReturnTypeSchema() {
 		return useReturnTypeSchema;
 	}
 
 	/**
-	 * Sets use return type schema.
+	 * Put use return type schema.
 	 *
+	 * @param responseCode the response code
 	 * @param useReturnTypeSchema the use return type schema
 	 */
-	public void setUseReturnTypeSchema(boolean useReturnTypeSchema) {
-		this.useReturnTypeSchema = useReturnTypeSchema;
+	public void putUseReturnTypeSchema(String responseCode, boolean useReturnTypeSchema) {
+		this.useReturnTypeSchema.put(responseCode, useReturnTypeSchema);
 	}
 
 	/**
