@@ -58,7 +58,6 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType.Object;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.models.ControllerAdviceInfo;
@@ -96,6 +95,7 @@ import static org.springdoc.core.utils.Constants.DEFAULT_DESCRIPTION;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.getContent;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
+import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 
 /**
@@ -110,7 +110,7 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * the exception classes.
 	 */
 	private static final String EXTENSION_EXCEPTION_CLASSES = "x-exception-class";
-	
+
 	/**
 	 * The Response entity exception handler class.
 	 */
@@ -643,7 +643,7 @@ public class GenericResponseService implements ApplicationContextAware {
 	 */
 	private boolean shouldCalculateContent(MethodAttributes methodAttributes, boolean isGeneric, String httpCode) {
 		return useReturnTypeSchema(methodAttributes, httpCode) ||
-			   ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc());
+				((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc());
 	}
 
 	/**
