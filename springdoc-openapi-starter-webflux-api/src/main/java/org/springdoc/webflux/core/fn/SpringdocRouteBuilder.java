@@ -552,12 +552,10 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 *
 	 * @param predicate              the predicate
 	 * @param routerFunctionSupplier the router function supplier
-	 * @param operationsConsumer     the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder nest(RequestPredicate predicate, Supplier<RouterFunction<ServerResponse>> routerFunctionSupplier, Consumer<Builder> operationsConsumer) {
-		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.nest(predicate, routerFunctionSupplier).withAttribute(OPERATION_ATTRIBUTE, builder);
+	public SpringdocRouteBuilder nest(RequestPredicate predicate, Supplier<RouterFunction<ServerResponse>> routerFunctionSupplier) {
+		this.delegate.nest(predicate, routerFunctionSupplier);
 		return this;
 	}
 
@@ -567,12 +565,10 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 *
 	 * @param predicate          the predicate
 	 * @param builderConsumer    the builder consumer
-	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder nest(RequestPredicate predicate, Consumer<RouterFunctions.Builder> builderConsumer, Consumer<Builder> operationsConsumer) {
-		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.nest(predicate, builderConsumer).withAttribute(OPERATION_ATTRIBUTE, builder);
+	public SpringdocRouteBuilder nest(RequestPredicate predicate, Consumer<RouterFunctions.Builder> builderConsumer) {
+		this.delegate.nest(predicate, builderConsumer);
 		return this;
 	}
 
@@ -611,12 +607,10 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * Filter springdoc route builder.
 	 *
 	 * @param filterFunction     the filter function
-	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder filter(HandlerFilterFunction<ServerResponse, ServerResponse> filterFunction, Consumer<Builder> operationsConsumer) {
-		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.filter(filterFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
+	public SpringdocRouteBuilder filter(HandlerFilterFunction<ServerResponse, ServerResponse> filterFunction) {
+		this.delegate.filter(filterFunction);
 		return this;
 	}
 
@@ -624,13 +618,10 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	/**
 	 * Before springdoc route builder.
 	 *
-	 * @param requestProcessor   the request processor
-	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder before(UnaryOperator<ServerRequest> requestProcessor, Consumer<Builder> operationsConsumer) {
-		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.before(requestProcessor).withAttribute(OPERATION_ATTRIBUTE, builder);
+	public SpringdocRouteBuilder before(UnaryOperator<ServerRequest> requestProcessor) {
+		this.delegate.before(requestProcessor);
 		return this;
 	}
 
@@ -639,12 +630,10 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * After springdoc route builder.
 	 *
 	 * @param responseProcessor  the response processor
-	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder after(BiFunction<ServerRequest, ServerResponse, ServerResponse> responseProcessor, Consumer<Builder> operationsConsumer) {
-		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.after(responseProcessor).withAttribute(OPERATION_ATTRIBUTE, builder);
+	public SpringdocRouteBuilder after(BiFunction<ServerRequest, ServerResponse, ServerResponse> responseProcessor) {
+		this.delegate.after(responseProcessor);
 		return this;
 	}
 
