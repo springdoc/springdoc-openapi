@@ -26,37 +26,34 @@
 
 package org.springdoc.webflux.ui;
 
-import java.util.Optional;
-
-import org.springdoc.core.properties.SpringDocConfigProperties;
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
-import org.springdoc.core.providers.ActuatorProvider;
 
+import org.springdoc.ui.AbstractSwaggerConfigurer;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+import org.springframework.boot.webflux.autoconfigure.WebFluxProperties;
+import org.springframework.cache.Cache;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
+import org.springframework.http.CacheControl;
+import org.springframework.web.reactive.config.ResourceChainRegistration;
+import org.springframework.web.reactive.config.ResourceHandlerRegistration;
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.reactive.resource.CachingResourceResolver;
 
-import static org.springdoc.core.utils.Constants.ALL_PATTERN;
-import static org.springdoc.core.utils.Constants.CLASSPATH_RESOURCE_LOCATION;
-import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
-import static org.springdoc.core.utils.Constants.SWAGGER_UI_PREFIX;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
+import static org.springdoc.core.utils.Constants.SWAGGER_RESOURCE_CACHE_NAME;
 
 /**
  * The type Swagger web flux configurer.
  *
  * @author bnasslahsen
  */
-public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
+public class SwaggerWebFluxConfigurer extends AbstractSwaggerConfigurer implements WebFluxConfigurer {
 
 	/**
 	 * The Swagger index transformer.
 	 */
 	private final SwaggerIndexTransformer swaggerIndexTransformer;
-
-	/**
-	 * The Actuator provider.
-	 */
-	private final Optional<ActuatorProvider> actuatorProvider;
 
 	/**
 	 * The Swagger resource resolver.
@@ -69,64 +66,106 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	private final SwaggerUiConfigProperties swaggerUiConfigProperties;
 
 	/**
-	 * The Spring doc config properties.
+	 * The Spring WebFlux config properties.
 	 */
-	private final SpringDocConfigProperties springDocConfigProperties;
+	private final WebFluxProperties springWebFluxProperties;
+
+	/**
+	 * The Swagger welcome common.
+	 */
+	private final SwaggerWelcomeCommon swaggerWelcomeCommon;
+
+	/**
+	 * The Swagger resource chain cache.
+	 */
+	private Cache cache;
 
 	/**
 	 * Instantiates a new Swagger web flux configurer.
 	 *
 	 * @param swaggerUiConfigProperties the swagger ui calculated config
-	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springWebProperties       the spring web config
+	 * @param springWebFluxProperties   the spring webflux config
 	 * @param swaggerIndexTransformer   the swagger index transformer
-	 * @param actuatorProvider          the actuator provider
 	 * @param swaggerResourceResolver   the swagger resource resolver
+	 * @param swaggerWelcomeCommon      the swagger welcome common
 	 */
 	public SwaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
-			SpringDocConfigProperties springDocConfigProperties,
-			SwaggerIndexTransformer swaggerIndexTransformer,
-			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
+			WebProperties springWebProperties, WebFluxProperties springWebFluxProperties,
+			SwaggerIndexTransformer swaggerIndexTransformer, SwaggerResourceResolver swaggerResourceResolver,
+			SwaggerWelcomeCommon swaggerWelcomeCommon) {
+		super(swaggerUiConfigProperties, springWebProperties);
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
-		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
 		this.swaggerUiConfigProperties = swaggerUiConfigProperties;
-		this.springDocConfigProperties = springDocConfigProperties;
+		this.springWebFluxProperties = springWebFluxProperties;
+		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		StringBuilder uiRootPath = new StringBuilder();
-		String swaggerPath = swaggerUiConfigProperties.getPath();
-		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
-			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
-			uiRootPath.append(actuatorProvider.get().getBasePath());
-
-		String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
-		String resourcePath, swaggerUiPrefix, swaggerUiWebjarsPrefix;
-
-		if (DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix)) {
-			swaggerUiPrefix = SWAGGER_UI_PREFIX;
-			resourcePath = webjarsPrefix + SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigProperties.getVersion() + DEFAULT_PATH_SEPARATOR;
-			swaggerUiWebjarsPrefix = webjarsPrefix + swaggerUiPrefix;
-		}
-		else {
-			swaggerUiPrefix = webjarsPrefix;
-			resourcePath = DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR;
-			swaggerUiWebjarsPrefix = swaggerUiPrefix;
-		}
-
-		registry.addResourceHandler(uiRootPath + swaggerUiWebjarsPrefix + ALL_PATTERN)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
-				.resourceChain(false)
-				.addResolver(swaggerResourceResolver)
-				.addTransformer(swaggerIndexTransformer);
-
-		registry.addResourceHandler(uiRootPath + swaggerUiPrefix + ALL_PATTERN)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
-				.resourceChain(false)
-				.addResolver(swaggerResourceResolver)
-				.addTransformer(swaggerIndexTransformer);
+		addSwaggerResourceHandlers(registry, getSwaggerHandlerConfigs());
+		addSwaggerResourceHandlers(registry, getSwaggerWebjarHandlerConfigs());
 	}
 
+	/**
+	 * Add resource handlers that use the Swagger resource resolver and transformer.
+	 *
+	 * @param registry the resource handler registry.
+	 * @param handlerConfigs the swagger handler configs.
+	 */
+	protected void addSwaggerResourceHandlers(ResourceHandlerRegistry registry, SwaggerResourceHandlerConfig... handlerConfigs) {
+		for (SwaggerResourceHandlerConfig handlerConfig : handlerConfigs) {
+			addSwaggerResourceHandler(registry, handlerConfig);
+		}
+	}
+
+	/**
+	 * Add a resource handler that uses the Swagger resource resolver and transformer.
+	 *
+	 * @param registry the resource handler registry.
+	 * @param handlerConfig the swagger handler config.
+	 */
+	protected void addSwaggerResourceHandler(ResourceHandlerRegistry registry, SwaggerResourceHandlerConfig handlerConfig) {
+		ResourceHandlerRegistration handlerRegistration = registry.addResourceHandler(handlerConfig.patterns());
+		handlerRegistration.addResourceLocations(handlerConfig.locations());
+
+		ResourceChainRegistration chainRegistration;
+		if (handlerConfig.cacheResources()) {
+			chainRegistration = handlerRegistration.resourceChain(true, getCache());
+		} else {
+			handlerRegistration.setUseLastModified(false);
+			handlerRegistration.setCacheControl(CacheControl.noStore());
+
+			chainRegistration = handlerRegistration.resourceChain(false);
+			chainRegistration.addResolver(new CachingResourceResolver(getCache())); // only use cache for resolving
+		}
+
+		chainRegistration.addResolver(swaggerResourceResolver);
+		chainRegistration.addTransformer(swaggerIndexTransformer);
+	}
+
+	@Override
+	protected String getUiRootPath() {
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfigProperties);
+		swaggerWelcomeCommon.calculateUiRootPath(swaggerUiConfigParameters);
+
+		return swaggerUiConfigParameters.getUiRootPath();
+	}
+
+	@Override
+	protected String getWebjarsPathPattern() {
+		return springWebFluxProperties.getWebjarsPathPattern();
+	}
+
+	/**
+	 * Gets the Swagger resource chain cache.
+	 *
+	 * @return the cache.
+	 */
+	protected Cache getCache() {
+		if (cache == null) cache = new ConcurrentMapCache(SWAGGER_RESOURCE_CACHE_NAME);
+
+		return cache;
+	}
 }

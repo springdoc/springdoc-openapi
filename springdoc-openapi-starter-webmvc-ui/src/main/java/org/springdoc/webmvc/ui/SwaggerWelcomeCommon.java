@@ -26,6 +26,8 @@
 
 package org.springdoc.webmvc.ui;
 
+import java.net.URI;
+import java.util.Collections;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,9 +37,11 @@ import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.ForwardedHeaderUtils;
+import org.springframework.web.util.ServletRequestPathUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -46,6 +50,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author bnasslashen
  */
 public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
+
 	/**
 	 * Instantiates a new Abstract swagger welcome.
 	 *
@@ -96,16 +101,31 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 					.path(getOauth2RedirectUrl()).build().toString());
 	}
 
+	@Override
+	protected abstract void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls);
+
 	/**
 	 * From current context path.
 	 *
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param request                   the request
 	 */
-	void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, HttpServletRequest request) {
+	protected void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, HttpServletRequest request) {
 		super.init(swaggerUiConfigParameters);
-		swaggerUiConfigParameters.setContextPath(request.getContextPath());
-		buildConfigUrl(swaggerUiConfigParameters, ServletUriComponentsBuilder.fromCurrentContextPath());
+
+		String servletPath = ServletRequestPathUtils.getServletPathPrefix(request);
+		String contextPath = request.getContextPath() + (servletPath != null ? servletPath : "");
+		swaggerUiConfigParameters.setContextPath(contextPath);
+
+		URI uri = URI.create(request.getRequestURL().toString());
+		HttpHeaders headers = new HttpHeaders();
+		for (String name : Collections.list(request.getHeaderNames())) {
+			headers.addAll(name, Collections.list(request.getHeaders(name)));
+		}
+
+		UriComponentsBuilder uriComponentsBuilder = ForwardedHeaderUtils.adaptFromForwardedHeaders(uri, headers)
+				.replacePath(contextPath).replaceQuery(null).fragment(null);
+		buildConfigUrl(swaggerUiConfigParameters, uriComponentsBuilder);
 	}
 
 }

@@ -34,15 +34,13 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.util.ForwardedHeaderUtils;
 import reactor.core.publisher.Mono;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.web.util.ForwardedHeaderUtils;
+import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 
 /**
  * The type Swagger welcome common.
@@ -65,52 +63,44 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	/**
 	 * Redirect to ui mono.
 	 *
-	 * @param request  the request
-	 * @param response the response
+	 * @param exchange the exchange
 	 * @return the mono
 	 */
-	protected Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
+	protected Mono<Void> redirectToUi(ServerWebExchange exchange) {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
-		buildFromCurrentContextPath(swaggerUiConfigParameters, request);
-		String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
-		String additionalPrefix = DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix) ? "" : webjarsPrefix;
-		String sbUrl = swaggerUiConfigParameters.getContextPath()
-				+ swaggerUiConfigParameters.getUiRootPath()
-				+ additionalPrefix
-				+ getSwaggerUiUrl();
+		buildFromCurrentContextPath(swaggerUiConfigParameters, exchange);
+		String sbUrl = swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getUiRootPath() + getSwaggerUiUrl();
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(swaggerUiConfigParameters, sbUrl);
+
 		// forward all queryParams from original request
-		request.getQueryParams().forEach(uriBuilder::queryParam);
-		response.setStatusCode(HttpStatus.FOUND);
-		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
-		return response.setComplete();
+		exchange.getRequest().getQueryParams().forEach(uriBuilder::queryParam);
+
+		exchange.getResponse().setStatusCode(HttpStatus.FOUND);
+		exchange.getResponse().getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
+		return exchange.getResponse().setComplete();
 	}
 
 	@Override
 	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
 		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
-			String additionalPath = DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix) ? "" : webjarsPrefix;
-			swaggerUiConfigParameters.setOauth2RedirectUrl(
-					uriComponentsBuilder
-							.path(swaggerUiConfigParameters.getUiRootPath())
-							.path(additionalPath)
-							.path(getOauth2RedirectUrl())
-							.build()
-							.toString()
-			);
+			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder
+					.path(swaggerUiConfigParameters.getUiRootPath())
+					.path(getOauth2RedirectUrl()).build().toString());
 		}
 	}
+
+	@Override
+	protected abstract void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls);
 
 	/**
 	 * Gets swagger ui config.
 	 *
-	 * @param request the request
+	 * @param exchange the exchange
 	 * @return the swagger ui config
 	 */
-	protected Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
+	protected Map<String, Object> getSwaggerUiConfig(ServerWebExchange exchange) {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
-		this.buildFromCurrentContextPath(swaggerUiConfigParameters, request);
+		this.buildFromCurrentContextPath(swaggerUiConfigParameters, exchange);
 		return swaggerUiConfigParameters.getConfigParameters();
 	}
 
@@ -118,22 +108,20 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * From current context path string.
 	 *
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param request                   the request
-	 * @return the string
+	 * @param exchange                  the exchange
 	 */
-	void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, ServerHttpRequest request) {
+	protected void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, ServerWebExchange exchange) {
 		super.init(swaggerUiConfigParameters);
-		swaggerUiConfigParameters.setContextPath(request.getPath().contextPath().value());
-		String url = ForwardedHeaderUtils.adaptFromForwardedHeaders(request.getURI(), request.getHeaders()).toUriString();
-		String target = UriComponentsBuilder.fromPath(request.getPath().contextPath().value()).toUriString();
-		int endIndex = url.indexOf(target) + target.length();
-		if (endIndex > 0) {
-			url = url.substring(0, endIndex);
-		}
-		else {
-			url = url.replace(request.getPath().toString(), "");
-		}
-		buildConfigUrl(swaggerUiConfigParameters, UriComponentsBuilder.fromUriString(url));
+
+		String contextPath = exchange.getRequest().getPath().contextPath().value();
+		swaggerUiConfigParameters.setContextPath(contextPath);
+
+		URI uri = exchange.getRequest().getURI();
+		HttpHeaders headers = exchange.getRequest().getHeaders();
+
+		UriComponentsBuilder uriComponentsBuilder = ForwardedHeaderUtils.adaptFromForwardedHeaders(uri, headers)
+				.replacePath(contextPath).replaceQuery(null).fragment(null);
+		buildConfigUrl(swaggerUiConfigParameters, uriComponentsBuilder);
 	}
 
 }

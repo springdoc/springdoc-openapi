@@ -21,34 +21,30 @@
  *
  */
 
-package test.org.springdoc.ui.app34;
+package test.org.springdoc.ui.app36;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestPropertySource(properties = {
-		"springdoc.swagger-ui.disable-swagger-default-url=true",
+		"spring.webflux.webjars-path-pattern=/webjars-pref/**",
+		"spring.web.resources.add-mappings=false",
 		"springdoc.swagger-ui.path=/documentation/swagger-ui.html"
 })
-public class SpringDocApp34Test extends AbstractSpringDocTest {
+public class SpringDocApp36Test extends AbstractSpringDocTest {
 
 	@Test
-	void testWebJarResourceTransformed() {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars/swagger-ui/swagger-initializer.js")
+	void testWebJarMappingDisabled() {
+		webTestClient.get().uri("/webjars/swagger-ui/swagger-initializer.js")
 				.exchange()
-				.expectStatus().isOk()
-				.expectBody().returnResult();
+				.expectStatus().isNotFound();
 
-		var responseContent = new String(getResult.getResponseBody());
-		assertFalse(responseContent.contains("https://petstore.swagger.io/v2/swagger.json"));
-		assertTrue(responseContent.contains("/v3/api-docs"));
+		webTestClient.get().uri("/webjars-pref/swagger-ui/swagger-initializer.js")
+				.exchange()
+				.expectStatus().isNotFound();
 	}
 
 	@SpringBootApplication
