@@ -33,6 +33,7 @@ import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
 import reactor.core.publisher.Mono;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ServerWebExchange;
@@ -52,7 +53,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	/**
 	 * The Spring web provider.
 	 */
-	private final SpringWebProvider springWebProvider;
+	private final ObjectProvider<SpringWebProvider> springWebProvider;
 
 	/**
 	 * Instantiates a new Swagger welcome web flux.
@@ -61,7 +62,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springWebProvider         the spring web provider
 	 */
-	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SpringWebProvider springWebProvider) {
+	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, ObjectProvider<SpringWebProvider> springWebProvider) {
 		super(swaggerUiConfig, springDocConfigProperties);
 		this.springWebProvider = springWebProvider;
 	}
@@ -94,7 +95,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	@Override
 	protected String buildUrlWithContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl) {
 		if (swaggerUiConfigParameters.getPathPrefix() == null)
-			swaggerUiConfigParameters.setPathPrefix(springWebProvider.findPathPrefix(springDocConfigProperties));
+			swaggerUiConfigParameters.setPathPrefix(springWebProvider.getIfAvailable().findPathPrefix(springDocConfigProperties));
 		if (swaggerUiUrl.startsWith(swaggerUiConfigParameters.getPathPrefix())) {
 			return buildUrl(swaggerUiConfigParameters.getContextPath(), swaggerUiUrl);
 		}
