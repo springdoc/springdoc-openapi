@@ -26,10 +26,8 @@
 
 package test.org.springdoc.api.v31.app150;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import org.springdoc.core.fn.builders.operation.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
 
 import org.springframework.context.annotation.Bean;
@@ -54,16 +52,13 @@ public class HelloRouter {
 
 						.POST("/titi", HANDLER_FUNCTION, builder -> builder.operationId("create-user-group-special")).build();
 
-		Consumer<Builder> operationsConsumer = builder -> {
-		};
-
 		return RouterFunctions.nest(RequestPredicates.path("/users"), nest(path("/test"), nest(path("/greeter"),
 				SpringdocRouteBuilder.route()
 						.GET(HANDLER_FUNCTION, builder -> builder.operationId("get-users"))
 						.POST("/special", HANDLER_FUNCTION, builder -> builder.operationId("create-user-special"))
-						.nest(path("/groups"), routerFunctionSupplier, operationsConsumer)
-						.nest(path("/groups2"), routerFunctionSupplier, operationsConsumer)
-						.nest(path("/greeter3").or(path("/greeter4")), routerFunctionSupplier, operationsConsumer)
+						.nest(path("/groups"), routerFunctionSupplier)
+						.nest(path("/groups2"), routerFunctionSupplier)
+						.nest(path("/greeter3").or(path("/greeter4")), routerFunctionSupplier)
 						.build())));
 
 	}
