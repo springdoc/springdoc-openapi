@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 
 /**
  * The type Spring doc app initializer.
@@ -76,6 +77,7 @@ public class SpringDocAppInitializer {
 	 * Init.
 	 */
 	@EventListener(ApplicationReadyEvent.class)
+    @Order(0)
 	public void init() {
 		if(!this.springdocEnabled)
 			LOGGER.warn("SpringDoc {} endpoint is enabled by default. To disable it in production, set the property '{}=false'", endpoint, property);
