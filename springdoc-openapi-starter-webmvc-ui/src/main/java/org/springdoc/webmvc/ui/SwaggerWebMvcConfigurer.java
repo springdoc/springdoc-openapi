@@ -27,12 +27,17 @@
 package org.springdoc.webmvc.ui;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
-import org.springdoc.core.providers.ActuatorProvider;
 
+import org.springdoc.ui.AbstractSwaggerConfigurer;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
+import org.springframework.cache.Cache;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.CacheControl;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.MessageCodesResolver;
@@ -46,23 +51,22 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceChainRegistration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.CachingResourceResolver;
 
-import static org.springdoc.core.utils.Constants.CLASSPATH_RESOURCE_LOCATION;
-import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
-import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_JS;
-import static org.springdoc.core.utils.Constants.SWAGGER_UI_PREFIX;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
+import static org.springdoc.core.utils.Constants.SWAGGER_RESOURCE_CACHE_NAME;
 
 /**
  * The type Swagger web mvc configurer.
  *
  * @author bnasslahsen
  */
-public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
+public class SwaggerWebMvcConfigurer extends AbstractSwaggerConfigurer implements WebMvcConfigurer {
 
 	/**
 	 * The Swagger index transformer.
@@ -70,9 +74,9 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	private final SwaggerIndexTransformer swaggerIndexTransformer;
 
 	/**
-	 * The Actuator provider.
+	 * The Swagger resource resolver.
 	 */
-	private final Optional<ActuatorProvider> actuatorProvider;
+	private final SwaggerResourceResolver swaggerResourceResolver;
 
 	/**
 	 * The Swagger ui config properties.
@@ -80,48 +84,107 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	private final SwaggerUiConfigProperties swaggerUiConfigProperties;
 
 	/**
-	 * The Swagger resource resolver.
+	 * The Spring MVC config properties.
 	 */
-	private final SwaggerResourceResolver swaggerResourceResolver;
+	private final WebMvcProperties springWebMvcProperties;
+
+	/**
+	 * The Swagger welcome common.
+	 */
+	private final SwaggerWelcomeCommon swaggerWelcomeCommon;
+
+	/**
+	 * The Swagger resource chain cache.
+	 */
+	private Cache cache;
 
 	/**
 	 * Instantiates a new Swagger web mvc configurer.
 	 *
 	 * @param swaggerUiConfigProperties the swagger ui calculated config
+	 * @param springWebProperties       the spring web config
+	 * @param springWebMvcProperties    the spring mvc config
 	 * @param swaggerIndexTransformer   the swagger index transformer
-	 * @param actuatorProvider          the actuator provider
 	 * @param swaggerResourceResolver   the swagger resource resolver
+	 * @param swaggerWelcomeCommon      the swagger welcome common
 	 */
 	public SwaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
-			SwaggerIndexTransformer swaggerIndexTransformer,
-			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
+			WebProperties springWebProperties, WebMvcProperties springWebMvcProperties,
+			SwaggerIndexTransformer swaggerIndexTransformer, SwaggerResourceResolver swaggerResourceResolver,
+			SwaggerWelcomeCommon swaggerWelcomeCommon) {
+		super(swaggerUiConfigProperties, springWebProperties);
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
-		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
 		this.swaggerUiConfigProperties = swaggerUiConfigProperties;
+		this.springWebMvcProperties = springWebMvcProperties;
+		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		StringBuilder uiRootPath = new StringBuilder();
-		String swaggerPath = swaggerUiConfigProperties.getPath();
-		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
-			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
-			uiRootPath.append(actuatorProvider.get().getBasePath());
+		addSwaggerResourceHandlers(registry, getSwaggerHandlerConfigs());
+		addSwaggerResourceHandlers(registry, getSwaggerWebjarHandlerConfigs());
+	}
 
-		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/*" + SWAGGER_INITIALIZER_JS)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
-				.setCachePeriod(0)
-				.resourceChain(false)
-				.addResolver(swaggerResourceResolver)
-				.addTransformer(swaggerIndexTransformer);
+	/**
+	 * Add resource handlers that use the Swagger resource resolver and transformer.
+	 *
+	 * @param registry the resource handler registry.
+	 * @param handlerConfigs the swagger handler configs.
+	 */
+	protected void addSwaggerResourceHandlers(ResourceHandlerRegistry registry, SwaggerResourceHandlerConfig... handlerConfigs) {
+		for (SwaggerResourceHandlerConfig handlerConfig : handlerConfigs) {
+			addSwaggerResourceHandler(registry, handlerConfig);
+		}
+	}
 
-		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/**")
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
-				.resourceChain(false)
-				.addResolver(swaggerResourceResolver)
-				.addTransformer(swaggerIndexTransformer);
+	/**
+	 * Add a resource handler that uses the Swagger resource resolver and transformer.
+	 *
+	 * @param registry the resource handler registry.
+	 * @param handlerConfig the swagger handler config.
+	 */
+	protected void addSwaggerResourceHandler(ResourceHandlerRegistry registry, SwaggerResourceHandlerConfig handlerConfig) {
+		ResourceHandlerRegistration handlerRegistration = registry.addResourceHandler(handlerConfig.patterns());
+		handlerRegistration.addResourceLocations(handlerConfig.locations());
+
+		ResourceChainRegistration chainRegistration;
+		if (handlerConfig.cacheResources()) {
+			chainRegistration = handlerRegistration.resourceChain(true, getCache());
+		} else {
+			handlerRegistration.setUseLastModified(false);
+			handlerRegistration.setCacheControl(CacheControl.noStore());
+
+			chainRegistration = handlerRegistration.resourceChain(false);
+			chainRegistration.addResolver(new CachingResourceResolver(getCache())); // only use cache for resolving
+		}
+
+		chainRegistration.addResolver(swaggerResourceResolver);
+		chainRegistration.addTransformer(swaggerIndexTransformer);
+	}
+
+	@Override
+	protected String getUiRootPath() {
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfigProperties);
+		swaggerWelcomeCommon.calculateUiRootPath(swaggerUiConfigParameters);
+
+		return swaggerUiConfigParameters.getUiRootPath();
+	}
+
+	@Override
+	protected String getWebjarsPathPattern() {
+		return springWebMvcProperties.getWebjarsPathPattern();
+	}
+
+	/**
+	 * Gets the Swagger resource chain cache.
+	 *
+	 * @return the cache.
+	 */
+	protected Cache getCache() {
+		if (cache == null) cache = new ConcurrentMapCache(SWAGGER_RESOURCE_CACHE_NAME);
+
+		return cache;
 	}
 
 	@Override
