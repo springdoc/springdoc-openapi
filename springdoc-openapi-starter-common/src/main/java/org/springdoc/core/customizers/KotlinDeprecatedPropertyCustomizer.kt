@@ -56,6 +56,10 @@ class KotlinDeprecatedPropertyCustomizer(
 
 		val javaType: JavaType =
 			objectMapperProvider.jsonMapper().constructType(type.type)
+		if (javaType.rawClass.packageName.startsWith("java.")) {
+			return resolvedSchema
+		}
+		
 		val kotlinClass = javaType.rawClass.kotlin
 
 		// Check each property of the class

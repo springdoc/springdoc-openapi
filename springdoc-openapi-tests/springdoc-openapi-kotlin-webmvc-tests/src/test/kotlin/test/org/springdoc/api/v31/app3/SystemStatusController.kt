@@ -18,9 +18,11 @@
 
 package test.org.springdoc.api.v31.app3
 
+import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import test.org.springdoc.api.v31.app22.DemoApp
 
 enum class SystemStatus(val status: String) {
 	OK("OK")
@@ -30,9 +32,17 @@ data class SystemStatusResponse(
 	val status: SystemStatus
 )
 
+data class Foo(
+	val bar: LinkedHashSet<String>,
+)
+
 @RestController
 @RequestMapping("/status")
 class SystemStatusController {
+
+	@GetMapping("/bar")
+	fun getTestData(): Foo = Foo(bar = linkedSetOf("test"))
+	
 	@GetMapping
 	fun index() = SystemStatusResponse(SystemStatus.OK)
 

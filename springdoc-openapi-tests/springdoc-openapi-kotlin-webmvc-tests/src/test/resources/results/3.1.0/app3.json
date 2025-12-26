@@ -51,14 +51,31 @@
         },
         "deprecated": true
       }
+    },
+    "/status/bar": {
+      "get": {
+        "tags": [
+          "system-status-controller"
+        ],
+        "operationId": "getTestData",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Foo"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
       "SystemStatusResponse": {
-        "required": [
-          "status"
-        ],
         "type": "object",
         "properties": {
           "status": {
@@ -67,7 +84,25 @@
               "OK"
             ]
           }
-        }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "Foo": {
+        "type": "object",
+        "properties": {
+          "bar": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "bar"
+        ]
       }
     }
   }
