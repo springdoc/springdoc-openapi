@@ -81,7 +81,7 @@ public class SpringDocSpecPropertiesConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpecificationStringPropertiesCustomizerBeanPostProcessor specificationStringPropertiesCustomizerBeanPostProcessor(
+	static SpecificationStringPropertiesCustomizerBeanPostProcessor specificationStringPropertiesCustomizerBeanPostProcessor(
 			SpringDocConfigProperties springDocConfigProperties
 	) {
 		return new SpecificationStringPropertiesCustomizerBeanPostProcessor(springDocConfigProperties);
