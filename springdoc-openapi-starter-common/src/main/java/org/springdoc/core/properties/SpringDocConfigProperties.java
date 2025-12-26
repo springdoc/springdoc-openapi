@@ -37,11 +37,13 @@ import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.utils.Constants;
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.MediaType;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
@@ -56,6 +58,7 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 @ConfigurationProperties(prefix = Constants.SPRINGDOC_PREFIX)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class SpringDocConfigProperties {
 
 	/**
