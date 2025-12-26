@@ -1,0 +1,2 @@
+org.springframework.aot.hint.RuntimeHintsRegistrar=\
+org.springdoc.webflux.core.configuration.hints.SpringDocWebFluxHints
