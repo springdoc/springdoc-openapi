@@ -30,12 +30,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springdoc.core.configuration.SpringDocWebServerConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
-import org.springframework.boot.web.server.autoconfigure.ServerProperties;
 import org.springframework.boot.webflux.actuate.endpoint.web.ControllerEndpointHandlerMapping;
 import org.springframework.boot.webflux.actuate.endpoint.web.WebFluxEndpointHandlerMapping;
 import org.springframework.context.ApplicationContextAware;
@@ -54,16 +54,16 @@ public class ActuatorWebFluxProvider extends ActuatorProvider implements Applica
 	/**
 	 * Instantiates a new Actuator web flux provider.
 	 *
-	 * @param serverProperties           the server properties
+	 * @param springDocWebServerContext  the server context
 	 * @param springDocConfigProperties  the spring doc config properties
 	 * @param managementServerProperties the management server properties
 	 * @param webEndpointProperties      the web endpoint properties
 	 */
-	public ActuatorWebFluxProvider(ServerProperties serverProperties,
+	public ActuatorWebFluxProvider(SpringDocWebServerConfiguration.SpringDocWebServerContext springDocWebServerContext,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ManagementServerProperties> managementServerProperties,
 			Optional<WebEndpointProperties> webEndpointProperties) {
-		super(managementServerProperties, webEndpointProperties, serverProperties, springDocConfigProperties);
+		super(managementServerProperties, webEndpointProperties, springDocWebServerContext, springDocConfigProperties);
 	}
 
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
@@ -71,12 +71,12 @@ public class ActuatorWebFluxProvider extends ActuatorProvider implements Applica
 
 		WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping = applicationContext.getBeansOfType(WebFluxEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
 		if (webFluxEndpointHandlerMapping == null)
-			webFluxEndpointHandlerMapping = managementApplicationContext.getBean(WebFluxEndpointHandlerMapping.class);
+			webFluxEndpointHandlerMapping = springDocWebServerContext.getManagementApplicationContext().get().getBean(WebFluxEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(webFluxEndpointHandlerMapping.getHandlerMethods());
 
 		ControllerEndpointHandlerMapping controllerEndpointHandlerMapping = applicationContext.getBeansOfType(ControllerEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
 		if (controllerEndpointHandlerMapping == null)
-			controllerEndpointHandlerMapping = managementApplicationContext.getBean(ControllerEndpointHandlerMapping.class);
+			controllerEndpointHandlerMapping = springDocWebServerContext.getManagementApplicationContext().get().getBean(ControllerEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(controllerEndpointHandlerMapping.getHandlerMethods());
 
 		return mappingInfoHandlerMethodMap;

@@ -30,19 +30,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.configuration.SpringDocWebServerConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
-import org.springframework.boot.web.server.autoconfigure.ServerProperties;
 import org.springframework.boot.webmvc.actuate.endpoint.web.ControllerEndpointHandlerMapping;
 import org.springframework.boot.webmvc.actuate.endpoint.web.WebMvcEndpointHandlerMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
  * The type Web mvc actuator provider.
@@ -54,16 +51,16 @@ public class ActuatorWebMvcProvider extends ActuatorProvider {
 	/**
 	 * Instantiates a new Actuator web mvc provider.
 	 *
-	 * @param serverProperties           the server properties
+	 * @param springDocWebServerContext  the server context
 	 * @param springDocConfigProperties  the spring doc config properties
 	 * @param managementServerProperties the management server properties
 	 * @param webEndpointProperties      the web endpoint properties
 	 */
-	public ActuatorWebMvcProvider(ServerProperties serverProperties,
+	public ActuatorWebMvcProvider(SpringDocWebServerConfiguration.SpringDocWebServerContext springDocWebServerContext,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ManagementServerProperties> managementServerProperties,
 			Optional<WebEndpointProperties> webEndpointProperties) {
-		super(managementServerProperties, webEndpointProperties, serverProperties, springDocConfigProperties);
+		super(managementServerProperties, webEndpointProperties, springDocWebServerContext, springDocConfigProperties);
 	}
 
 	@Override
@@ -72,12 +69,12 @@ public class ActuatorWebMvcProvider extends ActuatorProvider {
 
 		WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping = applicationContext.getBeansOfType(WebMvcEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
 		if (webMvcEndpointHandlerMapping == null)
-			webMvcEndpointHandlerMapping = managementApplicationContext.getBean(WebMvcEndpointHandlerMapping.class);
+			webMvcEndpointHandlerMapping = springDocWebServerContext.getManagementApplicationContext().get().getBean(WebMvcEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(webMvcEndpointHandlerMapping.getHandlerMethods());
 
 		ControllerEndpointHandlerMapping controllerEndpointHandlerMapping = applicationContext.getBeansOfType(ControllerEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
 		if (controllerEndpointHandlerMapping == null)
-			controllerEndpointHandlerMapping = managementApplicationContext.getBean(ControllerEndpointHandlerMapping.class);
+			controllerEndpointHandlerMapping = springDocWebServerContext.getManagementApplicationContext().get().getBean(ControllerEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(controllerEndpointHandlerMapping.getHandlerMethods());
 
 		return mappingInfoHandlerMethodMap;
@@ -85,7 +82,7 @@ public class ActuatorWebMvcProvider extends ActuatorProvider {
 
 	@Override
 	public String getContextPath() {
-		return StringUtils.defaultIfEmpty(serverProperties.getServlet().getContextPath(), EMPTY);
+		return springDocWebServerContext.getContextPath();
 	}
 
 }

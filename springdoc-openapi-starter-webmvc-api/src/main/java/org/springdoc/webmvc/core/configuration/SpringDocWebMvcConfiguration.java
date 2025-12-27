@@ -29,6 +29,7 @@ package org.springdoc.webmvc.core.configuration;
 import java.util.Optional;
 
 import org.springdoc.core.configuration.SpringDocConfiguration;
+import org.springdoc.core.configuration.SpringDocWebServerConfiguration;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
@@ -61,7 +62,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.web.server.autoconfigure.ServerProperties;
 import org.springframework.boot.webmvc.actuate.endpoint.web.WebMvcEndpointHandlerMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -196,7 +196,7 @@ public class SpringDocWebMvcConfiguration {
 		/**
 		 * Actuator provider actuator provider.
 		 *
-		 * @param serverProperties           the server properties
+		 * @param springDocWebServerContext  the server context
 		 * @param springDocConfigProperties  the spring doc config properties
 		 * @param managementServerProperties the management server properties
 		 * @param webEndpointProperties      the web endpoint properties
@@ -206,11 +206,11 @@ public class SpringDocWebMvcConfiguration {
 		@ConditionalOnMissingBean
 		@ConditionalOnExpression("${springdoc.show-actuator:false} or ${springdoc.use-management-port:false}")
 		@Lazy(false)
-		ActuatorProvider actuatorProvider(ServerProperties serverProperties,
+		ActuatorProvider actuatorProvider(SpringDocWebServerConfiguration.SpringDocWebServerContext springDocWebServerContext,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<ManagementServerProperties> managementServerProperties,
 				Optional<WebEndpointProperties> webEndpointProperties) {
-			return new ActuatorWebMvcProvider(serverProperties,
+			return new ActuatorWebMvcProvider(springDocWebServerContext,
 					springDocConfigProperties,
 					managementServerProperties,
 					webEndpointProperties);
