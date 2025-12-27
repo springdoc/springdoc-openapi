@@ -7,6 +7,13 @@ assignees: ''
 
 ---
 
+<!--
+**If the issue is NOT a feature request**
+
+- We use GitHub issues to track bugs and enhancements. If you have a general usage question please ask on [Stack Overflow](https://stackoverflow.com/).
+- The springdoc-openapi team and the broader community monitor the [springdoc](https://stackoverflow.com/tags/springdoc) tag.
+-->
+
 **Is your feature request related to a problem? Please describe.**
 
 - A clear and concise description of what the problem is. Ex. I'm always frustrated

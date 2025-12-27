@@ -7,6 +7,13 @@ assignees: ''
 
 ---
 
+<!--
+**If the issue is NOT a bug**
+
+- We use GitHub issues to track bugs and enhancements. If you have a general usage question please ask on [Stack Overflow](https://stackoverflow.com/). 
+- The springdoc-openapi team and the broader community monitor the [springdoc](https://stackoverflow.com/tags/springdoc) tag.
+-->
+
 **Describe the bug**
 
 - If you are reporting a bug, please help to speed up problem diagnosis by providing as
