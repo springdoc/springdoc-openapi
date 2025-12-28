@@ -30,27 +30,34 @@ package org.springdoc.scalar;
  * @author bnasslahsen
  */
 
+import java.util.Set;
+
 import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 
 /**
  * Disable Scalar WebJar AutoConfiguration.
  */
-public class ScalarDisableAutoConfiguration implements AutoConfigurationImportFilter {
+public class ScalarDisableAutoConfiguration
+		implements AutoConfigurationImportFilter {
 
-	/**
-	 * The constant TARGET.
-	 */
-	private static final String TARGET = "com.scalar.maven.webjar.ScalarAutoConfiguration";
+	private static final Set<String> EXCLUDED = Set.of(
+			"com.scalar.maven.webmvc.ScalarWebMvcAutoConfiguration",
+			"com.scalar.maven.webflux.ScalarWebFluxAutoConfiguration"
+	);
 
 	@Override
-	public boolean[] match(String[] candidates, AutoConfigurationMetadata metadata) {
+	public boolean[] match(
+			String[] candidates,
+			AutoConfigurationMetadata metadata) {
+
 		boolean[] matches = new boolean[candidates.length];
+
 		for (int i = 0; i < candidates.length; i++) {
 			String candidate = candidates[i];
-			// keep everything except the target
-			matches[i] = !TARGET.equals(candidate);
+			matches[i] = (candidate == null) || !EXCLUDED.contains(candidate);
 		}
+
 		return matches;
 	}
 }

@@ -63,7 +63,7 @@
 		<spring-cloud-function.version>4.2.2</spring-cloud-function.version>
 		<spring-security-oauth2-authorization-server.version>1.4.3
 		</spring-security-oauth2-authorization-server.version>
-		<scalar.version>0.4.3</scalar.version>
+		<scalar.version>0.5.8</scalar.version>
 		<skipPublishing>false</skipPublishing>
 		<commons-lang3.version>3.18.0</commons-lang3.version>
 	</properties>
@@ -103,7 +103,17 @@
 			</dependency>
 			<dependency>
 				<groupId>com.scalar.maven</groupId>
-				<artifactId>scalar</artifactId>
+				<artifactId>scalar-core</artifactId>
+				<version>${scalar.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.scalar.maven</groupId>
+				<artifactId>scalar-webmvc</artifactId>
+				<version>${scalar.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.scalar.maven</groupId>
+				<artifactId>scalar-webflux</artifactId>
 				<version>${scalar.version}</version>
 			</dependency>
 			<dependency>

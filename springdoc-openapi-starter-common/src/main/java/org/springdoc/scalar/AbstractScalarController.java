@@ -27,19 +27,15 @@
 package org.springdoc.scalar;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.scalar.maven.webjar.ScalarProperties;
-import com.scalar.maven.webjar.internal.ScalarConfiguration;
-import com.scalar.maven.webjar.internal.ScalarConfigurationMapper;
+import com.scalar.maven.core.ScalarHtmlRenderer;
+import com.scalar.maven.core.ScalarProperties;
+import io.swagger.v3.oas.annotations.Operation;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import static org.springdoc.scalar.ScalarConstants.HTML_TEMPLATE_PATH;
 import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_URL;
 import static org.springdoc.scalar.ScalarConstants.SCALAR_JS_FILENAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
@@ -47,7 +43,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 /**
  * The type Abstract scalar controller.
  *
- * @author bnasslahsen This is a copy of the class <a href="com.scalar.maven.webjar.ScalarController">ScalarController</a> from the scalar webjar. It has been slightly modified to fit the springdoc-openapi code base.
+ * @author  bnasslahsen This is a copy of the class <a href="com.scalar.maven.webjar.ScalarController">ScalarController</a> from the scalar webjar. It has been slightly modified to fit the springdoc-openapi code base.
  */
 public abstract class AbstractScalarController {
 
@@ -62,99 +58,72 @@ public abstract class AbstractScalarController {
 	protected final String originalScalarUrl;
 
 	/**
-	 * The Object mapper.
-	 */
-	private final ObjectMapper objectMapper;
-
-	/**
 	 * Instantiates a new Abstract scalar controller.
 	 *
 	 * @param scalarProperties the scalar properties
-	 * @param objectMapper     the object mapper
 	 */
-	protected AbstractScalarController(ScalarProperties scalarProperties, ObjectMapper objectMapper) {
+	protected AbstractScalarController(ScalarProperties scalarProperties) {
 		this.scalarProperties = scalarProperties;
 		this.originalScalarUrl = scalarProperties.getUrl();
-		this.objectMapper = objectMapper;
 	}
 
 	/**
-	 * Serves the main API reference interface.
-	 * <p>This endpoint returns an HTML page that displays the Scalar API Reference
-	 * interface. The page is configured with the OpenAPI specification URL from
-	 * the properties.</p>
+	 * Gets scalar js.
 	 *
-	 * @param requestUrl the request url
-	 * @return a ResponseEntity containing the HTML content for the API reference interface
-	 * @throws IOException if the HTML template cannot be loaded
+	 * @return  the scalar js   
+	 * @throws IOException the io exception
 	 */
-	protected ResponseEntity<String> getDocs(String requestUrl) throws IOException {
-		// Load the template HTML
-		InputStream inputStream = getClass().getResourceAsStream(HTML_TEMPLATE_PATH);
-		if (inputStream == null) {
-			throw new IOException("HTML template not found at: " + HTML_TEMPLATE_PATH);
-		}
-
-		String html = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-
-		// Replace the placeholders with actual values
-		String bundleUrl = buildJsBundleUrl(requestUrl);
-		String injectedHtml = html
-				.replace("__JS_BUNDLE_URL__", bundleUrl)
-				.replace("__CONFIGURATION__", buildConfigurationJson(buildApiDocsUrl(requestUrl)));
-
-		return ResponseEntity.ok()
-				.contentType(MediaType.TEXT_HTML)
-				.body(injectedHtml);
-	}
-
-	/**
-	 * Serves the JavaScript bundle for the Scalar API Reference.
-	 * <p>This endpoint returns the JavaScript file that powers the Scalar API Reference
-	 * interface. The file is served with the appropriate MIME type.</p>
-	 *
-	 * @return a ResponseEntity containing the JavaScript bundle
-	 * @throws IOException if the JavaScript file cannot be loaded
-	 */
-	protected ResponseEntity<byte[]> getScalarJs() throws IOException {
-		// Load the scalar.js file
-		InputStream inputStream = getClass().getResourceAsStream("/META-INF/resources/webjars/scalar/" + SCALAR_JS_FILENAME);
-		if (inputStream == null) {
-			return ResponseEntity.notFound().build();
-		}
-
-		byte[] jsContent = inputStream.readAllBytes();
-
+	@GetMapping({ DEFAULT_PATH_SEPARATOR + SCALAR_JS_FILENAME, SCALAR_JS_FILENAME })
+	@Operation(hidden = true)
+	public ResponseEntity<byte[]> getScalarJs() throws IOException {
+		byte[] jsContent = ScalarHtmlRenderer.getScalarJsContent();
 		return ResponseEntity.ok()
 				.contentType(MediaType.valueOf("application/javascript"))
 				.body(jsContent);
 	}
 
 	/**
-	 * Gets api docs url.
+	 * Gets docs.
 	 *
-	 * @param requestUrl  the request url
-	 * @param apiDocsPath the api docs path
-	 * @return the api docs url
+	 * @param requestUrl the request url 
+	 * @param apiDocsPath the api docs path 
+	 * @param scalarPath the scalar path 
+	 * @return  the docs 
+	 * @throws IOException the io exception
 	 */
-	protected String buildApiDocsUrl(String requestUrl, String apiDocsPath) {
-		String apiDocsUrl = scalarProperties.getUrl();
-		if (SCALAR_DEFAULT_URL.equals(originalScalarUrl)) {
-			String serverUrl = requestUrl.substring(0, requestUrl.length() - scalarProperties.getPath().length());
-			apiDocsUrl = serverUrl + apiDocsPath;
-		}
-		return apiDocsUrl;
+	protected ResponseEntity<String> getDocs(String requestUrl, String apiDocsPath, String scalarPath) throws IOException {
+		ScalarProperties configuredProperties = configureProperties(scalarProperties, requestUrl, apiDocsPath);
+		String html = ScalarHtmlRenderer.render(configuredProperties);
+		String bundleUrl = buildJsBundleUrl(requestUrl, scalarPath);
+		html = html.replaceAll("(<script[^>]*\\s+src\\s*=\\s*\")([^\"]*)(\")", "$1"+bundleUrl+"$3");
+		return ResponseEntity.ok()
+				.contentType(MediaType.TEXT_HTML)
+				.body(html);
+	}
+
+	/**
+	 * Configure properties scalar properties.
+	 *
+	 * @param properties the properties    
+	 * @param requestUrl the request url  
+	 * @param apiDocsPath the api docs path  
+	 * @return  the scalar properties
+	 */
+	private ScalarProperties configureProperties(ScalarProperties properties, String requestUrl, String apiDocsPath ) {
+		String url = buildApiDocsUrl(requestUrl, apiDocsPath);
+		properties.setUrl(url);
+		return properties;
 	}
 
 	/**
 	 * Build js bundle url string.
 	 *
-	 * @param requestUrl the request url
-	 * @param scalarPath the scalar path
-	 * @return the string
+	 * @param requestUrl the request url   
+	 * @param scalarPath the scalar path   
+	 * @return  the string
 	 */
-	protected String buildJsBundleUrl(String requestUrl, String scalarPath) {
-		if (SCALAR_DEFAULT_URL.equals(originalScalarUrl)) {
+	private String buildJsBundleUrl(String requestUrl, String scalarPath) {
+		if (SCALAR_DEFAULT_URL.equals(originalScalarUrl) && requestUrl.contains("://")) {
 			int firstPathSlash = requestUrl.indexOf('/', requestUrl.indexOf("://") + 3);
 			String path = firstPathSlash >= 0 ? requestUrl.substring(firstPathSlash) : "/";
 			if (path.endsWith("/"))
@@ -167,34 +136,16 @@ public abstract class AbstractScalarController {
 	/**
 	 * Gets api docs url.
 	 *
-	 * @param requestUrl the request url
-	 * @return the api docs url
+	 * @param requestUrl the request url   
+	 * @param apiDocsPath the api docs path   
+	 * @return  the api docs url
 	 */
-	protected abstract String buildApiDocsUrl(String requestUrl);
-
-	/**
-	 * Build js bundle url string.
-	 *
-	 * @param requestUrl the request url
-	 * @return the string
-	 */
-	protected abstract String buildJsBundleUrl(String requestUrl);
-
-	/**
-	 * Build configuration json string.
-	 *
-	 * @param requestUrl the request url
-	 * @return the string
-	 */
-	private String buildConfigurationJson(String requestUrl) {
-		try {
-			this.scalarProperties.setUrl(requestUrl);
-			ScalarConfiguration config = ScalarConfigurationMapper.map(scalarProperties);
-			return objectMapper.writeValueAsString(config);
+	private String buildApiDocsUrl(String requestUrl, String apiDocsPath) {
+		String apiDocsUrl = scalarProperties.getUrl();
+		if (SCALAR_DEFAULT_URL.equals(originalScalarUrl)) {
+			String serverUrl = requestUrl.substring(0, requestUrl.length() - scalarProperties.getPath().length());
+			apiDocsUrl = serverUrl + apiDocsPath;
 		}
-		catch (JsonProcessingException e) {
-			throw new RuntimeException("Failed to serialize Scalar configuration", e);
-		}
+		return apiDocsUrl;
 	}
-
 }
