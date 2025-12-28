@@ -25,7 +25,6 @@
 package test.org.springdoc.webmvc.scalar;
 
 
-
 import java.net.http.HttpClient;
 
 import jakarta.annotation.PostConstruct;

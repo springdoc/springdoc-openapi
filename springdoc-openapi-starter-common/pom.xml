@@ -119,7 +119,7 @@
 		<!-- Scalar Support-->
 		<dependency>
 			<groupId>com.scalar.maven</groupId>
-			<artifactId>scalar</artifactId>
+			<artifactId>scalar-core</artifactId>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>

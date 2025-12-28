@@ -28,8 +28,7 @@ package org.springdoc.webmvc.scalar;
 
 import java.io.IOException;
 
-import tools.jackson.databind.ObjectMapper;
-import com.scalar.maven.webjar.ScalarProperties;
+import com.scalar.maven.webmvc.SpringBootScalarProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.scalar.AbstractScalarController;
@@ -40,13 +39,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_PATH;
-import static org.springdoc.scalar.ScalarConstants.SCALAR_JS_FILENAME;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Scalar web mvc controller.
  *
- * @author bnasslahsen
+ * @author  bnasslahsen
  */
 @Controller
 @RequestMapping("${scalar.path:" + SCALAR_DEFAULT_PATH + "}")
@@ -60,39 +57,27 @@ public class ScalarWebMvcController extends AbstractScalarController {
 	/**
 	 * Instantiates a new Scalar web mvc controller.
 	 *
-	 * @param scalarProperties          the scalar properties
+	 * @param scalarProperties the scalar properties 
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param objectMapper              the object mapper
 	 */
-	protected ScalarWebMvcController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties, ObjectMapper objectMapper) {
-		super(scalarProperties, objectMapper);
+	public ScalarWebMvcController(SpringBootScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
+		super(scalarProperties);
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
 	/**
 	 * Gets docs.
 	 *
-	 * @param request the request
-	 * @return the docs
+	 * @param request the request 
+	 * @return  the docs 
 	 * @throws IOException the io exception
 	 */
 	@GetMapping
 	public ResponseEntity<String> getDocs(HttpServletRequest request) throws IOException {
-		return super.getDocs(request.getRequestURL().toString());
-	}
-
-	@GetMapping({DEFAULT_PATH_SEPARATOR + SCALAR_JS_FILENAME, SCALAR_JS_FILENAME})
-	public ResponseEntity<byte[]> getScalarJs() throws IOException {
-		return super.getScalarJs();
-	}
-
-	public String buildApiDocsUrl(String requestUrl) {
 		String apiDocsPath = springDocConfigProperties.getApiDocs().getPath();
-		return buildApiDocsUrl(requestUrl, apiDocsPath);
+		String requestUrl =request.getRequestURL().toString();
+		String scalarPath = scalarProperties.getPath();
+		return getDocs(requestUrl, apiDocsPath, scalarPath);
 	}
 
-	public String buildJsBundleUrl(String requestUrl) {
-		String scalarPath = scalarProperties.getPath();
-		return buildJsBundleUrl(requestUrl, scalarPath);
-	}
 }

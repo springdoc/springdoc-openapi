@@ -15,7 +15,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.scalar.maven</groupId>
-			<artifactId>scalar</artifactId>
+			<artifactId>scalar-webmvc</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.servlet</groupId>

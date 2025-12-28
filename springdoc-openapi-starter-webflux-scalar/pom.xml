@@ -15,7 +15,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.scalar.maven</groupId>
-			<artifactId>scalar</artifactId>
+			<artifactId>scalar-webflux</artifactId>
 		</dependency>
 		<!-- Actuator dependencies -->
 		<dependency>

@@ -21,20 +21,20 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.webflux.scalar;
 
-import com.scalar.maven.webjar.ScalarProperties;
+import com.scalar.maven.webflux.SpringBootScalarProperties;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-import tools.jackson.databind.ObjectMapper;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
+import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -42,7 +42,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.webflux.actuate.endpoint.web.WebFluxEndpointHandlerMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -62,7 +61,7 @@ import static org.springdoc.scalar.ScalarConstants.DEFAULT_SCALAR_ACTUATOR_PATH;
 @ConditionalOnProperty(name = SCALAR_ENABLED, matchIfMissing = true)
 @ConditionalOnWebApplication(type = Type.REACTIVE)
 @ConditionalOnBean(SpringDocConfiguration.class)
-@EnableConfigurationProperties(ScalarProperties.class)
+@EnableConfigurationProperties(SpringBootScalarProperties.class)
 public class ScalarConfiguration {
 
 	/**
@@ -70,15 +69,14 @@ public class ScalarConfiguration {
 	 *
 	 * @param scalarProperties          the scalar properties
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param objectMapper              the object mapper
 	 * @return the scalar web mvc controller
 	 */
 	@Bean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ScalarWebFluxController scalarWebMvcController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties, ObjectMapper objectMapper) {
-		return new ScalarWebFluxController(scalarProperties,springDocConfigProperties, objectMapper);
+	ScalarWebFluxController scalarWebMvcController(SpringBootScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
+		return new ScalarWebFluxController(scalarProperties, springDocConfigProperties);
 	}
 
 	/**
@@ -103,7 +101,7 @@ public class ScalarConfiguration {
 	@ConditionalOnMissingBean(name = "springDocScalarInitializer")
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
-	SpringDocAppInitializer springDocScalarInitializer(ScalarProperties scalarProperties){
+	SpringDocAppInitializer springDocScalarInitializer(SpringBootScalarProperties scalarProperties) {
 		return new SpringDocAppInitializer(scalarProperties.getPath(), SCALAR_ENABLED, scalarProperties.isEnabled());
 	}
 
@@ -120,16 +118,15 @@ public class ScalarConfiguration {
 		 *
 		 * @param properties            the properties
 		 * @param webEndpointProperties the web endpoint properties
-		 * @param objectMapper          the object mapper
 		 * @return the scalar actuator controller
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		ScalarActuatorController scalarActuatorController(ScalarProperties properties,  WebEndpointProperties webEndpointProperties, ObjectMapper objectMapper) {
-			return new ScalarActuatorController(properties,webEndpointProperties, objectMapper);
+		ScalarActuatorController scalarActuatorController(SpringBootScalarProperties properties, WebEndpointProperties webEndpointProperties) {
+			return new ScalarActuatorController(properties, webEndpointProperties);
 		}
-		
+
 		/**
 		 * Spring doc scalar initializer spring doc app initializer.
 		 *
@@ -138,7 +135,7 @@ public class ScalarConfiguration {
 		@Bean
 		@ConditionalOnMissingBean(name = "springDocScalarInitializer")
 		@Lazy(false)
-		SpringDocAppInitializer springDocScalarInitializer(ScalarProperties scalarProperties){
+		SpringDocAppInitializer springDocScalarInitializer(SpringBootScalarProperties scalarProperties) {
 			return new SpringDocAppInitializer(DEFAULT_SCALAR_ACTUATOR_PATH, SCALAR_ENABLED, scalarProperties.isEnabled());
 		}
 	}

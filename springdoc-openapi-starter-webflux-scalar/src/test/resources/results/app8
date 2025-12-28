@@ -16,7 +16,7 @@
 
     <!-- Initialize the Scalar API Reference -->
     <script>
-      Scalar.createApiReference('#app', {"darkMode":false,"defaultOpenAllTags":false,"documentDownloadType":"both","expandAllModelSections":false,"expandAllResponses":false,"favicon":"favicon.svg","hideClientButton":false,"hideDarkModeToggle":false,"hideModels":false,"hideSearch":false,"hideTestRequestButton":false,"layout":"modern","orderRequiredPropertiesFirst":true,"persistAuth":false,"showOperationId":false,"showSidebar":true,"theme":"default","url":"http://localhost:9519/v3/api-docs","withDefaultFonts":true})
+      Scalar.createApiReference('#app', {"url":"http://localhost/v3/api-docs","showSidebar":true,"hideModels":false,"hideTestRequestButton":false,"darkMode":false,"hideDarkModeToggle":false,"withDefaultFonts":true,"defaultOpenAllTags":false,"expandAllModelSections":false,"expandAllResponses":false,"hideSearch":false,"theme":"default","layout":"modern","favicon":"favicon.svg","hideClientButton":false,"persistAuth":false,"telemetry":true,"documentDownloadType":"both","orderRequiredPropertiesFirst":true,"showOperationId":false})
     </script>
   </body>
 </html>

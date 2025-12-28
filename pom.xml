@@ -63,7 +63,7 @@
 		<spring-cloud-function.version>5.0.0-M1</spring-cloud-function.version>
 		<spring-security-oauth2-authorization-server.version>2.0.0-M2
 		</spring-security-oauth2-authorization-server.version>
-		<scalar.version>0.4.3</scalar.version>
+		<scalar.version>0.5.8</scalar.version>
 		<skipPublishing>false</skipPublishing>
 	</properties>
 
@@ -114,6 +114,21 @@
 				<groupId>com.github.therapi</groupId>
 				<artifactId>therapi-runtime-javadoc-scribe</artifactId>
 				<version>${therapi-runtime-javadoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.scalar.maven</groupId>
+				<artifactId>scalar-core</artifactId>
+				<version>${scalar.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.scalar.maven</groupId>
+				<artifactId>scalar-webmvc</artifactId>
+				<version>${scalar.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.scalar.maven</groupId>
+				<artifactId>scalar-webflux</artifactId>
+				<version>${scalar.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

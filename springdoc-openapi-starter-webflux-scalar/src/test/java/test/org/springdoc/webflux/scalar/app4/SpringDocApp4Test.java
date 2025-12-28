@@ -59,7 +59,7 @@ class SpringDocApp4Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void checkContent() {
-		HttpStatusCode httpStatusMono = webClient.get().uri("/application/scalar")
+		HttpStatusCode httpStatusMono = webClient.get().uri(SCALAR_PATH)
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);
 		checkContent(SCALAR_PATH);

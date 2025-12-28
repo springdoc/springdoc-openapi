@@ -21,16 +21,15 @@
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.webmvc.scalar;
 
-import com.scalar.maven.webjar.ScalarProperties;
+import com.scalar.maven.webmvc.SpringBootScalarProperties;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-import tools.jackson.databind.ObjectMapper;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
@@ -56,36 +55,35 @@ import static org.springdoc.scalar.ScalarConstants.DEFAULT_SCALAR_ACTUATOR_PATH;
 /**
  * The type Scalar configuration.
  *
- * @author bnasslahsen
+ * @author  bnasslahsen
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SCALAR_ENABLED, matchIfMissing = true)
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @ConditionalOnBean(SpringDocConfiguration.class)
-@EnableConfigurationProperties(ScalarProperties.class)
+@EnableConfigurationProperties(SpringBootScalarProperties.class)
 public class ScalarConfiguration {
 
 	/**
 	 * Scalar web mvc controller scalar web mvc controller.
 	 *
-	 * @param scalarProperties          the scalar properties
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @param objectMapper              the object mapper
-	 * @return the scalar web mvc controller
+	 * @param scalarProperties the scalar properties 
+	 * @param springDocConfigProperties the spring doc config properties 
+	 * @return  the scalar web mvc controller
 	 */
 	@Bean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ScalarWebMvcController scalarWebMvcController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties, ObjectMapper objectMapper) {
-		return new ScalarWebMvcController(scalarProperties, springDocConfigProperties, objectMapper);
+	ScalarWebMvcController scalarWebMvcController(SpringBootScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
+		return new ScalarWebMvcController(scalarProperties, springDocConfigProperties);
 	}
 
 	/**
 	 * Forwarded header filter filter registration bean.
 	 *
-	 * @return the filter registration bean
+	 * @return  the filter registration bean
 	 */
 	@Bean
 	@ConditionalOnMissingBean
@@ -97,17 +95,17 @@ public class ScalarConfiguration {
 	/**
 	 * Spring doc app initializer spring doc app initializer.
 	 *
-	 * @param scalarProperties the spring doc config properties
-	 * @return the spring doc app initializer
+	 * @param scalarProperties the spring doc config properties 
+	 * @return  the spring doc app initializer
 	 */
 	@Bean
 	@ConditionalOnMissingBean(name = "springDocScalarInitializer")
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
-	SpringDocAppInitializer springDocScalarInitializer(ScalarProperties scalarProperties) {
+	SpringDocAppInitializer springDocScalarInitializer(SpringBootScalarProperties scalarProperties){
 		return new SpringDocAppInitializer(scalarProperties.getPath(), SCALAR_ENABLED, scalarProperties.isEnabled());
 	}
-	
+
 	/**
 	 * The type Swagger actuator welcome configuration.
 	 */
@@ -119,29 +117,28 @@ public class ScalarConfiguration {
 		/**
 		 * Scalar actuator controller scalar actuator controller.
 		 *
-		 * @param properties            the properties
-		 * @param webEndpointProperties the web endpoint properties
-		 * @param objectMapper          the object mapper
-		 * @return the scalar actuator controller
+		 * @param properties the properties 
+		 * @param webEndpointProperties the web endpoint properties 
+		 * @return  the scalar actuator controller
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		ScalarActuatorController scalarActuatorController(ScalarProperties properties, WebEndpointProperties webEndpointProperties, ObjectMapper objectMapper) {
-			return new ScalarActuatorController(properties, webEndpointProperties, objectMapper);
+		ScalarActuatorController scalarActuatorController(SpringBootScalarProperties properties,  WebEndpointProperties webEndpointProperties) {
+			return new ScalarActuatorController(properties,webEndpointProperties);
 		}
-		
-		
+
 		/**
 		 * Spring doc scalar initializer spring doc app initializer.
 		 *
-		 * @return the spring doc app initializer
+		 * @param scalarProperties the scalar properties 
+		 * @return  the spring doc app initializer
 		 */
 		@Bean
 		@ConditionalOnMissingBean(name = "springDocScalarInitializer")
 		@Lazy(false)
-		SpringDocAppInitializer springDocScalarInitializer(ScalarProperties properties) {
-			return new SpringDocAppInitializer(DEFAULT_SCALAR_ACTUATOR_PATH, SCALAR_ENABLED, properties.isEnabled());
+		SpringDocAppInitializer springDocScalarInitializer(SpringBootScalarProperties scalarProperties){
+			return new SpringDocAppInitializer(DEFAULT_SCALAR_ACTUATOR_PATH, SCALAR_ENABLED, scalarProperties.isEnabled());
 		}
 	}
 
