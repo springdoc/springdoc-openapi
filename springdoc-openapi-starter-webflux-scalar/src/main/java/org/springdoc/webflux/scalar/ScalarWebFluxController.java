@@ -43,33 +43,27 @@ import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_PATH;
 /**
  * The type Scalar web mvc controller.
  *
- * @author bnasslahsen
+ * @author  bnasslahsen
  */
 @Controller
 @RequestMapping("${scalar.path:" + SCALAR_DEFAULT_PATH + "}")
 public class ScalarWebFluxController extends AbstractScalarController {
 
 	/**
-	 * The Spring doc config properties.
-	 */
-	private final SpringDocConfigProperties springDocConfigProperties;
-
-	/**
 	 * Instantiates a new Scalar web mvc controller.
 	 *
-	 * @param scalarProperties          the scalar properties
+	 * @param scalarProperties the scalar properties 
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public ScalarWebFluxController(SpringBootScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
-		super(scalarProperties);
-		this.springDocConfigProperties = springDocConfigProperties;
+	public ScalarWebFluxController(SpringBootScalarProperties scalarProperties,SpringDocConfigProperties springDocConfigProperties) {
+		super(scalarProperties, springDocConfigProperties);
 	}
 
 	/**
 	 * Gets docs.
 	 *
-	 * @param serverHttpRequest the server http request
-	 * @return the docs
+	 * @param serverHttpRequest the server http request 
+	 * @return  the docs 
 	 * @throws IOException the io exception
 	 */
 	@GetMapping

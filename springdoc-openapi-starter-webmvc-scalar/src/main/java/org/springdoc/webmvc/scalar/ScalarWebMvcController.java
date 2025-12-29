@@ -50,19 +50,13 @@ import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_PATH;
 public class ScalarWebMvcController extends AbstractScalarController {
 
 	/**
-	 * The Spring doc config properties.
-	 */
-	private final SpringDocConfigProperties springDocConfigProperties;
-
-	/**
 	 * Instantiates a new Scalar web mvc controller.
 	 *
 	 * @param scalarProperties the scalar properties 
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
 	public ScalarWebMvcController(SpringBootScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
-		super(scalarProperties);
-		this.springDocConfigProperties = springDocConfigProperties;
+		super(scalarProperties, springDocConfigProperties);
 	}
 
 	/**
@@ -75,7 +69,7 @@ public class ScalarWebMvcController extends AbstractScalarController {
 	@GetMapping
 	public ResponseEntity<String> getDocs(HttpServletRequest request) throws IOException {
 		String apiDocsPath = springDocConfigProperties.getApiDocs().getPath();
-		String requestUrl =request.getRequestURL().toString();
+		String requestUrl = request.getRequestURL().toString();
 		String scalarPath = scalarProperties.getPath();
 		return getDocs(requestUrl, apiDocsPath, scalarPath);
 	}

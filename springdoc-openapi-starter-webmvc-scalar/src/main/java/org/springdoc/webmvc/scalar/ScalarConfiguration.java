@@ -117,15 +117,16 @@ public class ScalarConfiguration {
 		/**
 		 * Scalar actuator controller scalar actuator controller.
 		 *
-		 * @param properties the properties 
-		 * @param webEndpointProperties the web endpoint properties 
+		 * @param properties the properties  
+		 * @param springDocConfigProperties the spring doc config properties 
+		 * @param webEndpointProperties the web endpoint properties  
 		 * @return  the scalar actuator controller
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		ScalarActuatorController scalarActuatorController(SpringBootScalarProperties properties,  WebEndpointProperties webEndpointProperties) {
-			return new ScalarActuatorController(properties,webEndpointProperties);
+		ScalarActuatorController scalarActuatorController(SpringBootScalarProperties properties, SpringDocConfigProperties springDocConfigProperties,  WebEndpointProperties webEndpointProperties) {
+			return new ScalarActuatorController(properties,springDocConfigProperties, webEndpointProperties);
 		}
 
 		/**

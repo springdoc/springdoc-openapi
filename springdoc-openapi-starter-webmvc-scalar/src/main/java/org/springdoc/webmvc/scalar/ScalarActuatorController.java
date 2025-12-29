@@ -31,6 +31,7 @@ import java.io.IOException;
 import com.scalar.maven.webmvc.SpringBootScalarProperties;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.scalar.AbstractScalarController;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
@@ -56,11 +57,12 @@ public class ScalarActuatorController extends AbstractScalarController {
 	/**
 	 * Instantiates a new Scalar actuator controller.
 	 *
-	 * @param scalarProperties      the scalar properties
+	 * @param scalarProperties the scalar properties 
+	 * @param springDocConfigProperties the spring doc config properties 
 	 * @param webEndpointProperties the web endpoint properties
 	 */
-	public ScalarActuatorController(SpringBootScalarProperties scalarProperties, WebEndpointProperties webEndpointProperties) {
-		super(scalarProperties);
+	public ScalarActuatorController(SpringBootScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties, WebEndpointProperties webEndpointProperties) {
+		super(scalarProperties, springDocConfigProperties);
 		this.webEndpointProperties = webEndpointProperties;
 	}
 
