@@ -23,7 +23,6 @@
             "in": "query",
             "required": true,
             "schema": {
-              "minLength": 1,
               "type": "string"
             }
           }
@@ -55,7 +54,6 @@
             "description": "persons name",
             "required": true,
             "schema": {
-              "minLength": 1,
               "type": "string"
             }
           }
@@ -151,7 +149,6 @@
             "description": "persons name",
             "required": true,
             "schema": {
-              "minLength": 1,
               "type": "string"
             }
           }
@@ -183,7 +180,6 @@
             "description": "persons name",
             "required": true,
             "schema": {
-              "minLength": 1,
               "type": "string"
             }
           }
@@ -205,4 +201,3 @@
   },
   "components": {}
 }
- 

@@ -42,7 +42,7 @@ class CarController {
 	}
 
 	@GetMapping(path = '/cars')
-	List<test.org.springdoc.api.v31.app1.Car> getCars(@ParameterObject CarsFilter filter) {
+	List<test.org.springdoc.api.v31.app2.Car> getCars(@ParameterObject CarsFilter filter) {
 		return carService.getCars()
 	}
 

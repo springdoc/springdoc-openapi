@@ -38,8 +38,7 @@
             "description": "the name",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 1
+              "type": "string"
             }
           }
         ],

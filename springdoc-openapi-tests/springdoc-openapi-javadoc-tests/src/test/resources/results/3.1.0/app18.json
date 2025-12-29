@@ -32,8 +32,7 @@
             "description": "the name",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 1
+              "type": "string"
             }
           }
         ],
@@ -51,49 +50,14 @@
         }
       }
     },
-    "/persons7": {
+    "/persons2": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Persons 7 string.",
-        "description": "Persons 7 string.",
-        "operationId": "persons7",
-        "parameters": [
-          {
-            "name": "age",
-            "in": "query",
-            "description": "the age",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "exclusiveMinimum": 0
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the string",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons6": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Persons 6 string.",
-        "description": "Persons 6 string.",
-        "operationId": "persons6",
+        "summary": "Persons 2 string.",
+        "description": "Persons 2 string.",
+        "operationId": "persons2",
         "parameters": [
           {
             "name": "name",
@@ -101,8 +65,7 @@
             "description": "persons name",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 1
+              "type": "string"
             }
           }
         ],
@@ -120,24 +83,22 @@
         }
       }
     },
-    "/persons5": {
+    "/persons3": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Persons 5 string.",
-        "description": "Persons 5 string.",
-        "operationId": "persons5",
+        "summary": "Persons 3 string.",
+        "description": "Persons 3 string.",
+        "operationId": "persons3",
         "parameters": [
           {
-            "name": "age",
+            "name": "name",
             "in": "query",
-            "description": "the age",
+            "description": "persons name",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32",
-              "maximum": 0
+              "type": "string"
             }
           }
         ],
@@ -190,23 +151,24 @@
         }
       }
     },
-    "/persons3": {
+    "/persons5": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Persons 3 string.",
-        "description": "Persons 3 string.",
-        "operationId": "persons3",
+        "summary": "Persons 5 string.",
+        "description": "Persons 5 string.",
+        "operationId": "persons5",
         "parameters": [
           {
-            "name": "name",
+            "name": "age",
             "in": "query",
-            "description": "persons name",
+            "description": "the age",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 1
+              "type": "integer",
+              "format": "int32",
+              "maximum": 0
             }
           }
         ],
@@ -224,14 +186,14 @@
         }
       }
     },
-    "/persons2": {
+    "/persons6": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Persons 2 string.",
-        "description": "Persons 2 string.",
-        "operationId": "persons2",
+        "summary": "Persons 6 string.",
+        "description": "Persons 6 string.",
+        "operationId": "persons6",
         "parameters": [
           {
             "name": "name",
@@ -239,8 +201,42 @@
             "description": "persons name",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 1
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons7": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Persons 7 string.",
+        "description": "Persons 7 string.",
+        "operationId": "persons7",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "query",
+            "description": "the age",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "exclusiveMinimum": 0
             }
           }
         ],

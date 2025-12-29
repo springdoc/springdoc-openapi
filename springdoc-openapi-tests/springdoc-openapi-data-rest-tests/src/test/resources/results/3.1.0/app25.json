@@ -295,7 +295,7 @@
             "name": "clinic",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/Clinic"
+              "$ref": "#/components/schemas/ClinicRequestBody"
             }
           }
         ],
@@ -1996,25 +1996,22 @@
           }
         }
       },
-      "EntityModelOwner": {
+      "EntityModelPet": {
         "type": "object",
         "properties": {
-          "firstname": {
+          "name": {
             "type": "string"
           },
-          "lastname": {
+          "_type": {
             "type": "string"
-          },
-          "addresses": {
-            "$ref": "#/components/schemas/Address"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
         },
         "required": [
-          "addresses",
-          "lastname"
+          "_type",
+          "name"
         ]
       },
       "PageMetadata": {
@@ -2037,6 +2034,66 @@
             "format": "int64"
           }
         }
+      },
+      "PagedModelEntityModelPet": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "pets": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelPet"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {}
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelOwner": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "addresses": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "required": [
+          "addresses",
+          "lastname"
+        ]
       },
       "PagedModelEntityModelOwner": {
         "type": "object",
@@ -2086,129 +2143,6 @@
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "objects": {
-                "type": "array",
-                "items": {}
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "Clinic": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "addresses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Address"
-            },
-            "maxItems": 2147483647,
-            "minItems": 1,
-            "uniqueItems": true
-          }
-        },
-        "required": [
-          "name"
-        ]
-      },
-      "CollectionModelEntityModelClinic": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "clinics": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelClinic"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelClinic": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "addresses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Address"
-            },
-            "maxItems": 2147483647,
-            "minItems": 1,
-            "uniqueItems": true
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        },
-        "required": [
-          "name"
-        ]
-      },
-      "EntityModelPet": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "_type": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        },
-        "required": [
-          "_type",
-          "name"
-        ]
-      },
-      "PagedModelEntityModelPet": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "pets": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelPet"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          },
-          "page": {
-            "$ref": "#/components/schemas/PageMetadata"
           }
         }
       },
@@ -2345,6 +2279,48 @@
             "$ref": "#/components/schemas/Links"
           }
         }
+      },
+      "CollectionModelEntityModelClinic": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "clinics": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelClinic"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelClinic": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            },
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "required": [
+          "name"
+        ]
       },
       "ClinicRequestBody": {
         "type": "object",
