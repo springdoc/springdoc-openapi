@@ -27,13 +27,17 @@
 package org.springdoc.scalar;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.scalar.maven.core.ScalarHtmlRenderer;
 import com.scalar.maven.core.ScalarProperties;
+import com.scalar.maven.core.config.ScalarSource;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_URL;
@@ -46,6 +50,12 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * @author  bnasslahsen This is a copy of the class <a href="com.scalar.maven.webjar.ScalarController">ScalarController</a> from the scalar webjar. It has been slightly modified to fit the springdoc-openapi code base.
  */
 public abstract class AbstractScalarController {
+
+
+	/**
+	 * The Spring doc config properties.
+	 */
+	protected final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
 	 * The Scalar properties.
@@ -61,8 +71,10 @@ public abstract class AbstractScalarController {
 	 * Instantiates a new Abstract scalar controller.
 	 *
 	 * @param scalarProperties the scalar properties
+	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	protected AbstractScalarController(ScalarProperties scalarProperties) {
+	protected AbstractScalarController(ScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
+		this.springDocConfigProperties = springDocConfigProperties;
 		this.scalarProperties = scalarProperties;
 		this.originalScalarUrl = scalarProperties.getUrl();
 	}
@@ -70,7 +82,7 @@ public abstract class AbstractScalarController {
 	/**
 	 * Gets scalar js.
 	 *
-	 * @return  the scalar js   
+	 * @return  the scalar js    
 	 * @throws IOException the io exception
 	 */
 	@GetMapping({ DEFAULT_PATH_SEPARATOR + SCALAR_JS_FILENAME, SCALAR_JS_FILENAME })
@@ -85,14 +97,23 @@ public abstract class AbstractScalarController {
 	/**
 	 * Gets docs.
 	 *
-	 * @param requestUrl the request url 
-	 * @param apiDocsPath the api docs path 
-	 * @param scalarPath the scalar path 
-	 * @return  the docs 
+	 * @param requestUrl the request url  
+	 * @param apiDocsPath the api docs path  
+	 * @param scalarPath the scalar path  
+	 * @return  the docs  
 	 * @throws IOException the io exception
 	 */
 	protected ResponseEntity<String> getDocs(String requestUrl, String apiDocsPath, String scalarPath) throws IOException {
 		ScalarProperties configuredProperties = configureProperties(scalarProperties, requestUrl, apiDocsPath);
+		String url = configuredProperties.getUrl();
+		List<ScalarSource> scalarSources = springDocConfigProperties.getGroupConfigs().stream()
+				.map(groupConfig -> new ScalarSource(url + DEFAULT_PATH_SEPARATOR + groupConfig.getGroup(), groupConfig.getDisplayName(), null, false)).toList();
+		
+		if(!CollectionUtils.isEmpty(scalarSources))  {
+			scalarProperties.setSources(scalarSources);
+			scalarProperties.setUrl(null);
+		}
+		
 		String html = ScalarHtmlRenderer.render(configuredProperties);
 		String bundleUrl = buildJsBundleUrl(requestUrl, scalarPath);
 		html = html.replaceAll("(<script[^>]*\\s+src\\s*=\\s*\")([^\"]*)(\")", "$1"+bundleUrl+"$3");
@@ -104,9 +125,9 @@ public abstract class AbstractScalarController {
 	/**
 	 * Configure properties scalar properties.
 	 *
-	 * @param properties the properties    
-	 * @param requestUrl the request url  
-	 * @param apiDocsPath the api docs path  
+	 * @param properties the properties     
+	 * @param requestUrl the request url   
+	 * @param apiDocsPath the api docs path   
 	 * @return  the scalar properties
 	 */
 	private ScalarProperties configureProperties(ScalarProperties properties, String requestUrl, String apiDocsPath ) {
@@ -118,8 +139,8 @@ public abstract class AbstractScalarController {
 	/**
 	 * Build js bundle url string.
 	 *
-	 * @param requestUrl the request url   
-	 * @param scalarPath the scalar path   
+	 * @param requestUrl the request url    
+	 * @param scalarPath the scalar path    
 	 * @return  the string
 	 */
 	private String buildJsBundleUrl(String requestUrl, String scalarPath) {
@@ -136,8 +157,8 @@ public abstract class AbstractScalarController {
 	/**
 	 * Gets api docs url.
 	 *
-	 * @param requestUrl the request url   
-	 * @param apiDocsPath the api docs path   
+	 * @param requestUrl the request url    
+	 * @param apiDocsPath the api docs path    
 	 * @return  the api docs url
 	 */
 	private String buildApiDocsUrl(String requestUrl, String apiDocsPath) {

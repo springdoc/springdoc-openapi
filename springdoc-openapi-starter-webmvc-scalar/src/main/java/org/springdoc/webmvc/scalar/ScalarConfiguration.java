@@ -68,8 +68,8 @@ public class ScalarConfiguration {
 	/**
 	 * Scalar web mvc controller scalar web mvc controller.
 	 *
-	 * @param scalarProperties the scalar properties 
-	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param scalarProperties the scalar properties  
+	 * @param springDocConfigProperties the spring doc config properties  
 	 * @return  the scalar web mvc controller
 	 */
 	@Bean
@@ -95,7 +95,7 @@ public class ScalarConfiguration {
 	/**
 	 * Spring doc app initializer spring doc app initializer.
 	 *
-	 * @param scalarProperties the spring doc config properties 
+	 * @param scalarProperties the spring doc config properties  
 	 * @return  the spring doc app initializer
 	 */
 	@Bean
@@ -117,21 +117,22 @@ public class ScalarConfiguration {
 		/**
 		 * Scalar actuator controller scalar actuator controller.
 		 *
-		 * @param properties the properties 
-		 * @param webEndpointProperties the web endpoint properties 
+		 * @param properties the properties  
+		 * @param springDocConfigProperties the spring doc config properties 
+		 * @param webEndpointProperties the web endpoint properties  
 		 * @return  the scalar actuator controller
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		ScalarActuatorController scalarActuatorController(SpringBootScalarProperties properties,  WebEndpointProperties webEndpointProperties) {
-			return new ScalarActuatorController(properties,webEndpointProperties);
+		ScalarActuatorController scalarActuatorController(SpringBootScalarProperties properties, SpringDocConfigProperties springDocConfigProperties,  WebEndpointProperties webEndpointProperties) {
+			return new ScalarActuatorController(properties, springDocConfigProperties, webEndpointProperties);
 		}
 
 		/**
 		 * Spring doc scalar initializer spring doc app initializer.
 		 *
-		 * @param scalarProperties the scalar properties 
+		 * @param scalarProperties the scalar properties  
 		 * @return  the spring doc app initializer
 		 */
 		@Bean

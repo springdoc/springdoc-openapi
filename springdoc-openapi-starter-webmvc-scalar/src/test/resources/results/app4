@@ -16,7 +16,7 @@
 
     <!-- Initialize the Scalar API Reference -->
     <script>
-      Scalar.createApiReference('#app', {"url":"http://localhost/demo/api/v3/api-docs","showSidebar":true,"hideModels":false,"hideTestRequestButton":false,"darkMode":false,"hideDarkModeToggle":false,"withDefaultFonts":true,"defaultOpenAllTags":false,"expandAllModelSections":false,"expandAllResponses":false,"hideSearch":false,"theme":"default","layout":"modern","favicon":"favicon.svg","hideClientButton":false,"persistAuth":false,"telemetry":true,"documentDownloadType":"both","orderRequiredPropertiesFirst":true,"showOperationId":false})
+      Scalar.createApiReference('#app', {"showSidebar":true,"hideModels":false,"hideTestRequestButton":false,"darkMode":false,"hideDarkModeToggle":false,"withDefaultFonts":true,"defaultOpenAllTags":false,"expandAllModelSections":false,"expandAllResponses":false,"hideSearch":false,"theme":"default","layout":"modern","favicon":"favicon.svg","hideClientButton":false,"sources":[{"url":"http://localhost/demo/api/v3/api-docs/springdocDefault","title":"springdocDefault","default":false},{"url":"http://localhost/demo/api/v3/api-docs/x-actuator","title":"x-actuator","default":false}],"persistAuth":false,"telemetry":true,"documentDownloadType":"both","orderRequiredPropertiesFirst":true,"showOperationId":false})
     </script>
   </body>
 </html>
