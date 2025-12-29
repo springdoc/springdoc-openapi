@@ -52,7 +52,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "minLength": 1,
                 "type": "string"
               }
             }

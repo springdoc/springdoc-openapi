@@ -50,7 +50,6 @@
             "in": "query",
             "required": true,
             "schema": {
-              "minLength": 1,
               "type": "string"
             }
           }

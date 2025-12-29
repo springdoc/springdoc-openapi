@@ -25,8 +25,7 @@
             "description": "Description for abc",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 1
+              "type": "string"
             },
             "example": "def"
           },
@@ -70,8 +69,7 @@
             "description": "Description for abc",
             "required": true,
             "schema": {
-              "type": "string",
-              "minLength": 1
+              "type": "string"
             },
             "example": "def"
           },

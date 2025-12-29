@@ -295,7 +295,7 @@
             "name": "clinic",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/Clinic"
+              "$ref": "#/components/schemas/ClinicRequestBody"
             }
           }
         ],
@@ -1965,12 +1965,6 @@
           }
         }
       },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
-        }
-      },
       "RepresentationModelObject": {
         "type": "object",
         "properties": {
@@ -1999,30 +1993,6 @@
           },
           "country": {
             "type": "string"
-          }
-        }
-      },
-      "Clinic": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "addresses": {
-            "maxItems": 2147483647,
-            "minItems": 1,
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Address"
-            }
           }
         }
       },
@@ -2179,18 +2149,21 @@
           }
         }
       },
-      "EntityModelPet": {
+      "EntityModelOwner": {
         "required": [
-          "_type",
-          "name"
+          "addresses",
+          "lastname"
         ],
         "type": "object",
         "properties": {
-          "name": {
+          "firstname": {
             "type": "string"
           },
-          "_type": {
+          "lastname": {
             "type": "string"
+          },
+          "addresses": {
+            "$ref": "#/components/schemas/Address"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -2215,49 +2188,6 @@
           "number": {
             "type": "integer",
             "format": "int64"
-          }
-        }
-      },
-      "PagedModelEntityModelPet": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "pets": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelPet"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          },
-          "page": {
-            "$ref": "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "EntityModelOwner": {
-        "required": [
-          "addresses",
-          "lastname"
-        ],
-        "type": "object",
-        "properties": {
-          "firstname": {
-            "type": "string"
-          },
-          "lastname": {
-            "type": "string"
-          },
-          "addresses": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
           }
         }
       },
@@ -2309,6 +2239,46 @@
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelPet": {
+        "required": [
+          "_type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "_type": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelPet": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "pets": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelPet"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
           }
         }
       },
@@ -2715,6 +2685,12 @@
           "templated": {
             "type": "boolean"
           }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
         }
       }
     }
