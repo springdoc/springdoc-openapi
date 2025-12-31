@@ -41,6 +41,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
@@ -63,6 +64,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.converters.KotlinInlineParameterResolver;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.models.ParameterInfo;
@@ -79,6 +81,7 @@ import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.core.KotlinDetector;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -391,15 +394,33 @@ public class GenericParameterService {
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+				Annotation[] paramAnnotations = getParameterAnnotations(methodParameter);
+			Annotation[] typeAnnotations = new Annotation[0];
+			if (KotlinDetector.isKotlinPresent()
+					&& KotlinDetector.isKotlinReflectPresent()
+					&& KotlinDetector.isKotlinType(methodParameter.getContainingClass())
+					&& type == String.class) {
+				Class<?> restored = KotlinInlineParameterResolver
+						.resolveInlineType(methodParameter, type);
+				if (restored != null) {
+					type = restored;
+					typeAnnotations = ((Class<?>) type).getAnnotations();
+				}
+			}
+			Annotation[] mergedAnnotations =
+					Stream.concat(
+							Arrays.stream(paramAnnotations),
+							Arrays.stream(typeAnnotations)
+					).toArray(Annotation[]::new);
 			if (type instanceof Class && !((Class<?>) type).isEnum() && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
-				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
-					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
+				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && Arrays.stream(mergedAnnotations)
+						.noneMatch(a -> a.annotationType() == io.swagger.v3.oas.annotations.media.Schema.class)) {					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
 					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()) && requestBodyInfo == null)
 						type = springConvertedType;
 				}
 			}
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, getParameterAnnotations(methodParameter), propertyResolverUtils.getSpecVersion());
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, mergedAnnotations, propertyResolverUtils.getSpecVersion());
 		}
 		else
 			schemaN = parameterInfo.getParameterModel().getSchema();
