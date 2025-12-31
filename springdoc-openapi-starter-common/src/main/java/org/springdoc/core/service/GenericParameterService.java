@@ -41,6 +41,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
@@ -49,8 +50,10 @@ import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.Content;
@@ -58,10 +61,12 @@ import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.Parameter.StyleEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.converters.KotlinInlineParameterResolver;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.models.ParameterInfo;
@@ -78,6 +83,7 @@ import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.core.KotlinDetector;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -152,7 +158,7 @@ public class GenericParameterService {
 	 * @param objectMapperProvider                         the object mapper provider
 	 * @param javadocProviderOptional                      the javadoc provider
 	 */
-	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, 
+	public GenericParameterService(PropertyResolverUtils propertyResolverUtils,
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProviderOptional) {
 		this.propertyResolverUtils = propertyResolverUtils;
 		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
@@ -367,15 +373,34 @@ public class GenericParameterService {
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+			Annotation[] paramAnnotations = getParameterAnnotations(methodParameter);
+			Annotation[] typeAnnotations = new Annotation[0];
+			if (KotlinDetector.isKotlinPresent()
+					&& KotlinDetector.isKotlinReflectPresent()
+					&& KotlinDetector.isKotlinType(methodParameter.getContainingClass())
+					&& type == String.class) {
+				Class<?> restored = KotlinInlineParameterResolver
+						.resolveInlineType(methodParameter, type);
+				if (restored != null) {
+					type = restored;
+					typeAnnotations = ((Class<?>) type).getAnnotations();
+				}
+			}
+			Annotation[] mergedAnnotations =
+					Stream.concat(
+							Arrays.stream(paramAnnotations),
+							Arrays.stream(typeAnnotations)
+					).toArray(Annotation[]::new);
 			if (type instanceof Class && !((Class<?>) type).isEnum() && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
-				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
+				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && Arrays.stream(mergedAnnotations)
+								.noneMatch(a -> a.annotationType() == io.swagger.v3.oas.annotations.media.Schema.class)) {
 					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
 					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()) && requestBodyInfo == null)
 						type = springConvertedType;
 				}
 			}
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, getParameterAnnotations(methodParameter), propertyResolverUtils.getSpecVersion());
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, mergedAnnotations, propertyResolverUtils.getSpecVersion());
 		}
 		else
 			schemaN = parameterInfo.getParameterModel().getSchema();
@@ -505,7 +530,7 @@ public class GenericParameterService {
 	 */
 	private void setParameterStyle(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (StringUtils.isNotBlank(p.style().toString())) {
-			parameter.setStyle(Parameter.StyleEnum.valueOf(p.style().toString().toUpperCase()));
+			parameter.setStyle(StyleEnum.valueOf(p.style().toString().toUpperCase()));
 		}
 	}
 
@@ -517,7 +542,7 @@ public class GenericParameterService {
 	 */
 	private boolean isExplodable(io.swagger.v3.oas.annotations.Parameter p) {
 		io.swagger.v3.oas.annotations.media.Schema schema = p.schema();
-		io.swagger.v3.oas.annotations.media.ArraySchema arraySchema = p.array();
+		ArraySchema arraySchema = p.array();
 
 		boolean explode = true;
 		Class<?> implementation = schema.implementation();
@@ -665,7 +690,7 @@ public class GenericParameterService {
 			}
 
 			@Override
-			public io.swagger.v3.oas.annotations.media.ArraySchema array() {
+			public ArraySchema array() {
 				return null;
 			}
 
@@ -722,9 +747,9 @@ public class GenericParameterService {
 	 * @return the boolean
 	 */
 	public boolean isRequestBodyPresent(ParameterInfo parameterInfo) {
-		return parameterInfo.getMethodParameter().getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
+		return parameterInfo.getMethodParameter().getParameterAnnotation(RequestBody.class) != null
 				|| parameterInfo.getMethodParameter().getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
-				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(parameterInfo.getMethodParameter().getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null;
+				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(parameterInfo.getMethodParameter().getMethod()), RequestBody.class) != null;
 	}
 
 	/**

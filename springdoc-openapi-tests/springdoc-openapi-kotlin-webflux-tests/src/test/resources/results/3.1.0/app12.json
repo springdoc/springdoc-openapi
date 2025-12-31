@@ -1,0 +1,48 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/v1/offices/{officeId}": {
+      "get": {
+        "tags": [
+          "office-controller"
+        ],
+        "operationId": "getOffice-mB_CmrA",
+        "parameters": [
+          {
+            "name": "officeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Office ID",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
