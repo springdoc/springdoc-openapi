@@ -24,8 +24,9 @@
 
 package test.org.springdoc.api.v30.app244;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp244Test extends AbstractSpringDocV30Test {
 

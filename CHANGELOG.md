@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.15] - 2026-01-01
+
+### Added
+
+- #3122 – Add log notifications when SpringDocs / Scalar are enabled by default
+- #3123 – Add support for serving static resources
+- #3151 – Add `@Order` to `ApplicationReadyEvent` listener
+- #3158 – Add support for API groups in Scalar
+- #3187 – Add Scalar WebMVC and WebFlux support
+- #3185 – Disable creation of blank GitHub issues (GitHub settings & workflow)
+- #3186 – Decouple Web Server APIs following Spring Boot modularization
+- #3131 - Improve warning messages when documentation is explicitly enabled
+- #3183 - Remove unused operations consumer from route builder methods
+- #3141 - Change handling so `useReturnTypeSchema` is evaluated at HTTP status code level instead of method level
+
+### Changed
+
+- Upgrade Spring Boot to version **3.5.9**
+- Upgrade swagger-core to version **2.2.41** 
+- Upgrade swagger-ui to version **5.31.0**
+- Upgrade Scalar to version **0.4.3**
+
+### Fixed
+
+- #3133 – Fix regression where content type from Swagger `@RequestBody` did not take precedence
+- #3146 – Fix WebJar resource handler mappings for Swagger UI resources
+- #3168 – Support `@Schema` annotations on Kotlin value classes
+- #3178 – Fix regression when generating documentation for Kotlin `LinkedHashSet`
+- #3170 – Fix warnings when setting title and description in `application.yml`
+- #3187 – Add scalar scalar-webmvc and scalar-webflux support
+
 ## [2.8.14] - 2025-11-02
 
 ### Added

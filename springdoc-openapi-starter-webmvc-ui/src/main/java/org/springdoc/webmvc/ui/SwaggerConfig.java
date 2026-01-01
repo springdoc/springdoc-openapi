@@ -26,8 +26,6 @@
 
 package org.springdoc.webmvc.ui;
 
-import java.util.Optional;
-
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
