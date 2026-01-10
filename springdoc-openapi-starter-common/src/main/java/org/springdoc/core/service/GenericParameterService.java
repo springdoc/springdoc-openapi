@@ -303,7 +303,7 @@ public class GenericParameterService {
 			optionalContent.ifPresent(parameter::setContent);
 		}
 		else
-			setSchema(parameterDoc, components, jsonView, parameter);
+			setSchema(parameterDoc, components, jsonView, parameter, locale);
 
 		setExamples(parameterDoc, parameter);
 		setExtensions(parameterDoc, parameter, locale);
@@ -320,8 +320,9 @@ public class GenericParameterService {
 	 * @param components   the components
 	 * @param jsonView     the json view
 	 * @param parameter    the parameter
+	 * @param locale       the locale
 	 */
-	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
+	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter, Locale locale) {
 		if (StringUtils.isNotBlank(parameterDoc.ref()))
 			parameter.$ref(parameterDoc.ref());
 		else {
@@ -335,7 +336,11 @@ public class GenericParameterService {
 					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
 					if (primitiveType != null) {
 						Schema<?> primitiveSchema = primitiveType.createProperty();
-						primitiveSchema.setDefault(schema.getDefault());
+						if (schema.getDefault() instanceof String stringValue) {
+							primitiveSchema.setDefault(propertyResolverUtils.resolve(stringValue, locale));
+						} else {
+							primitiveSchema.setDefault(schema.getDefault());
+						}
 						schema.setDefault(primitiveSchema.getDefault());
 					}
 				}
