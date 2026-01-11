@@ -181,7 +181,18 @@ public class PolymorphicModelConverter implements ModelConverter {
 		Class<?> clazz = javaType.getRawClass();
 		if (TYPES_TO_SKIP.stream().noneMatch(typeToSkip -> typeToSkip.equals(clazz.getSimpleName())))
 			composedSchemas.forEach(result::addOneOfItem);
-		return result;
+
+        // Remove _links from child schemas to prevent duplication in allOf
+        // The _links field is inherited from RepresentationModel and handled by HateoasLinksConverter
+        boolean hasParentReference = schemas.stream()
+                .anyMatch(s -> s.get$ref() != null);
+
+        if (hasParentReference && schema != null && schema.getProperties() != null) {
+            schema.getProperties().remove("_links");
+        }
+
+        // ... rest of existing code ...
+        return schema;
 	}
 
 	/**

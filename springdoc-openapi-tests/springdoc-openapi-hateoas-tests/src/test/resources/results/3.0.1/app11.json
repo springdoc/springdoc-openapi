@@ -1,0 +1,129 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Hateoas",
+      "description": "HATEOAS with allOf composition test"
+    }
+  ],
+  "paths": {
+    "/test-dto": {
+      "get": {
+        "tags": ["Hateoas"],
+        "summary": "Get Test DTO",
+        "description": "Returns a TestDto with HATEOAS links",
+        "operationId": "getTestDto",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/extended-test-dto": {
+      "get": {
+        "tags": ["Hateoas"],
+        "summary": "Get Extended Test DTO",
+        "description": "Returns an ExtendedTestDto with HATEOAS links",
+        "operationId": "getExtendedTestDto",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtendedTestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TestDto": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "description": "Parent DTO extending RepresentationModel"
+      },
+      "ExtendedTestDto": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TestDto"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "otherField": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "description": "Extended DTO with allOf composition"
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "hreflang": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "deprecation": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
