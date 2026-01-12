@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
-@Tag(name = "Hateoas", description = "HATEOAS with allOf composition test")
+@Tag(name = "hateoas-controller", description = "Hateoas Controller")
 public class HateoasController {
 
     @GetMapping(path = "/test-dto", produces = "application/json")

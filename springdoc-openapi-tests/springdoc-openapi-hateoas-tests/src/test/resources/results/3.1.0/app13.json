@@ -13,14 +13,16 @@
   ],
   "tags": [
     {
-      "name": "Hateoas",
-      "description": "HATEOAS with allOf composition test"
+      "name": "hateoas-controller",
+      "description": "Hateoas Controller"
     }
   ],
   "paths": {
     "/test-dto": {
       "get": {
-        "tags": ["Hateoas"],
+        "tags": [
+          "hateoas-controller"
+        ],
         "summary": "Get Test DTO",
         "description": "Returns a TestDto with HATEOAS links",
         "operationId": "getTestDto",
@@ -30,7 +32,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TestDto"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TestDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExtendedTestDto"
+                    }
+                  ]
                 }
               }
             }
@@ -40,7 +49,9 @@
     },
     "/extended-test-dto": {
       "get": {
-        "tags": ["Hateoas"],
+        "tags": [
+          "hateoas-controller"
+        ],
         "summary": "Get Extended Test DTO",
         "description": "Returns an ExtendedTestDto with HATEOAS links",
         "operationId": "getExtendedTestDto",
@@ -68,7 +79,10 @@
             "type": "string"
           },
           "_links": {
-            "$ref": "#/components/schemas/Links"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
           }
         },
         "description": "Parent DTO extending RepresentationModel"
@@ -77,15 +91,17 @@
         "allOf": [
           {
             "$ref": "#/components/schemas/TestDto"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "otherField": {
+                "type": "string"
+              }
+            }
           }
         ],
         "description": "Extended DTO with allOf composition"
-      },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
-        }
       },
       "Link": {
         "type": "object",

@@ -8,8 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * ensuring _links is not duplicated in the child schema.
  */
 @Schema(
-        description = "Extended DTO with allOf composition",
-        allOf = {TestDto.class}
+        description = "Extended DTO with allOf composition"
 )
 public class ExtendedTestDto extends TestDto {
 

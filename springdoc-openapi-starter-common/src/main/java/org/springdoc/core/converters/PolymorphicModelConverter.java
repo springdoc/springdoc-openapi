@@ -120,6 +120,28 @@ public class PolymorphicModelConverter implements ModelConverter {
 		return resolvedSchema;
 	}
 
+    /**
+     * Removes _links from allOf child schemas to prevent duplication.
+     * In allOf composition, child schemas (allOf[1+]) should not redefine
+     * inherited properties like _links that come from the parent (allOf[0]).
+     *
+     * @param composedSchema the composed schema with allOf structure
+     */
+    private void removeLinksFromAllOfChild(ComposedSchema composedSchema) {
+        List<Schema> allOf = composedSchema.getAllOf();
+        if (allOf != null && allOf.size() > 1) {
+            // allOf[0]는 부모 스키마 (allOf 첫 번째)
+            // allOf[1+]는 자식의 고유 속성들 (allOf 두 번째부터)
+            for (int i = 1; i < allOf.size(); i++) {
+                Schema childSchema = allOf.get(i);
+                if (childSchema != null && childSchema.getProperties() != null) {
+                    // _links 제거 (부모로부터 상속됨)
+                    childSchema.getProperties().remove("_links");
+                }
+            }
+        }
+    }
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
@@ -147,7 +169,14 @@ public class PolymorphicModelConverter implements ModelConverter {
 					type.resolveAsRef(true);
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
 				resolvedSchema = getResolvedSchema(javaType, resolvedSchema);
-				if (resolvedSchema == null || resolvedSchema.get$ref() == null) {
+
+                if (resolvedSchema instanceof ComposedSchema composedSchema &&
+                        composedSchema.getAllOf() != null &&
+                        !composedSchema.getAllOf().isEmpty()) {
+                    removeLinksFromAllOfChild(composedSchema);
+                }
+
+                if (resolvedSchema == null || resolvedSchema.get$ref() == null) {
 					return resolvedSchema;
 				}
 				if (resolvedSchema.get$ref().contains(Components.COMPONENTS_SCHEMAS_REF)) {
@@ -175,24 +204,21 @@ public class PolymorphicModelConverter implements ModelConverter {
 		String ref = schema.get$ref();
 		List<Schema> composedSchemas = findComposedSchemas(ref, schemas);
 		if (composedSchemas.isEmpty()) return schema;
-		ComposedSchema result = new ComposedSchema();
+        ComposedSchema result = new ComposedSchema();
 		if (isConcreteClass(type)) result.addOneOfItem(schema);
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		Class<?> clazz = javaType.getRawClass();
 		if (TYPES_TO_SKIP.stream().noneMatch(typeToSkip -> typeToSkip.equals(clazz.getSimpleName())))
 			composedSchemas.forEach(result::addOneOfItem);
 
-        // Remove _links from child schemas to prevent duplication in allOf
-        // The _links field is inherited from RepresentationModel and handled by HateoasLinksConverter
-        boolean hasParentReference = schemas.stream()
-                .anyMatch(s -> s.get$ref() != null);
-
-        if (hasParentReference && schema != null && schema.getProperties() != null) {
-            schema.getProperties().remove("_links");
+        // Remove _links from result (composed schema) to prevent duplication
+        if (result.getOneOf() != null) {
+            result.getOneOf().stream()
+                    .filter(s -> s.getProperties() != null)
+                    .forEach(s -> s.getProperties().remove("_links"));
         }
 
-        // ... rest of existing code ...
-        return schema;
+        return result;
 	}
 
 	/**
