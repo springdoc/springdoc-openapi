@@ -130,12 +130,12 @@ public class PolymorphicModelConverter implements ModelConverter {
     private void removeLinksFromAllOfChild(ComposedSchema composedSchema) {
         List<Schema> allOf = composedSchema.getAllOf();
         if (allOf != null && allOf.size() > 1) {
-            // allOf[0]는 부모 스키마 (allOf 첫 번째)
-            // allOf[1+]는 자식의 고유 속성들 (allOf 두 번째부터)
+            // allOf[0] is the parent schema (first element in allOf)
+            // allOf[1+] are the child's own properties (second element onwards in allOf)
             for (int i = 1; i < allOf.size(); i++) {
                 Schema childSchema = allOf.get(i);
                 if (childSchema != null && childSchema.getProperties() != null) {
-                    // _links 제거 (부모로부터 상속됨)
+                    // Remove _links (inherited from parent)
                     childSchema.getProperties().remove("_links");
                 }
             }
