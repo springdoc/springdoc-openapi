@@ -41,6 +41,7 @@
             "description": "parameter from child of RequestParams",
             "required": true,
             "schema": {
+              "minLength": 1,
               "type": "string"
             }
           },
