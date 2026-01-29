@@ -178,7 +178,7 @@ Maven
 Gradle
 
 ```groovy
-implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
+implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:latest'
 ```
 
 * This step is optional: For custom path of the OpenAPI documentation in Json format, add
@@ -231,7 +231,7 @@ Maven
 Gradle
 
 ```groovy
-implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
+implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:latest'
 ```
 
 * This step is optional: For custom path of the swagger documentation in HTML format, add
@@ -243,11 +243,11 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ```
 
 The `springdoc-openapi` libraries are hosted on maven central repository.
-The artifacts can be viewed accessed at the following locations:
+The artifacts can be accessed at the following locations:
 
 Releases:
 
-* [https://central.sonatype.com/search?q=g:org.springdoc)](https://central.sonatype.com/search?q=g:org.springdoc)
+* [https://central.sonatype.com/search?q=g:org.springdoc](https://central.sonatype.com/search?q=g:org.springdoc)
   .
 
 Snapshots:
@@ -319,7 +319,7 @@ its [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contrib
   <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" width="50%"/>
 </a>
 
-Thanks you all for your support!
+Thank you all for your support!
 
 ## Additional Support
 
@@ -328,4 +328,4 @@ Thanks you all for your support!
 * [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) - Thanks a lot for
   supporting springdoc-openapi project.
 
-![JenBrains logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)
+![JetBrains logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)
