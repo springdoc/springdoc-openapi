@@ -385,6 +385,8 @@ public class GenericParameterService {
 					type = restored;
 					typeAnnotations = ((Class<?>) type).getAnnotations();
 				}
+			} else {
+				typeAnnotations = methodParameter.getParameterType().getAnnotations();
 			}
 			Annotation[] mergedAnnotations =
 					Stream.concat(
@@ -394,7 +396,7 @@ public class GenericParameterService {
 			if (type instanceof Class && !((Class<?>) type).isEnum() && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
 				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && Arrays.stream(mergedAnnotations)
-								.noneMatch(a -> a.annotationType() == io.swagger.v3.oas.annotations.media.Schema.class)) {
+						.noneMatch(a -> a.annotationType() == io.swagger.v3.oas.annotations.media.Schema.class)) {
 					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
 					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()) && requestBodyInfo == null)
 						type = springConvertedType;
