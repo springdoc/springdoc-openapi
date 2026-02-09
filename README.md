@@ -102,7 +102,7 @@ Pivotal)
   official [swagger-ui jars](https://github.com/swagger-api/swagger-ui.git).
 * The Swagger UI page should then be available at
   http://server:port/context-path/swagger-ui.html and the OpenAPI description will be
-  available at the following url for json format:
+  available at the following url for JSON format:
   http://server:port/context-path/v3/api-docs
     * `server`: The server name or IP
     * `port`: The server port
@@ -156,7 +156,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
 
 ## Integration of the library in a Spring Boot 3.x project without the swagger-ui:
 
-* Documentation will be available at the following url for json format: http://server:
+* Documentation will be available at the following url for JSON format: http://server:
   port/context-path/v3/api-docs
     * `server`: The server name or IP
     * `port`: The server port
