@@ -57,6 +57,22 @@
               "type": "string",
               "default": "default-text"
             }
+          },
+          {
+            "name" : "parameter",
+            "in" : "query",
+            "schema" : {
+              "type" : "string",
+              "default": "parameter-text"
+            }
+          },
+          {
+            "name" : "parameter-boolean",
+            "in" : "query",
+            "schema" : {
+              "type" : "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
