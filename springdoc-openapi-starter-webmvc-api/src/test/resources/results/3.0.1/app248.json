@@ -1,0 +1,121 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/class-works3/{itemId}" : {
+      "get" : {
+        "tags" : [ "hello-controller" ],
+        "operationId" : "dataClass3",
+        "parameters" : [ {
+          "name" : "itemId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid",
+            "description" : "Unique item identifier",
+            "example" : "9d9d46e5-d41c-4774-885d-8e9dbc67735c"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/class-works2/{pathSchema}" : {
+      "get" : {
+        "tags" : [ "hello-controller" ],
+        "operationId" : "dataClass2",
+        "parameters" : [ {
+          "name" : "pathSchema",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/components/schemas/PathSchema"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/class-works/{regularSchema}" : {
+      "get" : {
+        "tags" : [ "hello-controller" ],
+        "operationId" : "dataClass1",
+        "parameters" : [ {
+          "name" : "regularSchema",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/components/schemas/RegularSchema"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RegularSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "PathSchema" : {
+        "type" : "object",
+        "description" : "pathSchema",
+        "example" : 123,
+        "properties" : {
+          "value" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        }
+      },
+      "RegularSchema" : {
+        "type" : "object",
+        "description" : "regularSchema",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
