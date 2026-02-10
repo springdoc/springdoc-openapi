@@ -17,32 +17,6 @@
     }
   ],
   "paths": {
-    "/persons": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Persons.",
-        "description": "Persons.",
-        "operationId": "persons",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "description": "the name",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/test": {
       "get": {
         "tags": [
@@ -61,6 +35,33 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/persons": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Persons.",
+        "description": "Persons.",
+        "operationId": "persons",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "the name",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
