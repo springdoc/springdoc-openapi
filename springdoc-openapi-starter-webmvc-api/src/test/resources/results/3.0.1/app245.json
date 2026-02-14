@@ -1,0 +1,87 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost",
+            "description": "Generated server url"
+        }
+    ],
+    "paths": {
+        "/unload": {
+            "post": {
+                "tags": [
+                    "hello-controller"
+                ],
+                "operationId": "unload",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UnloadAmountRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UnloadAmountRequest": {
+                "required": [
+                    "amount"
+                ],
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "exclusiveMinimum": true,
+                        "minimum": 0,
+                        "type": "number"
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "transactionReference": {
+                        "maxLength": 40,
+                        "minLength": 0,
+                        "type": "string",
+                        "pattern": "^[a-zA-Z0-9-]+$"
+                    },
+                    "fee": {
+                        "minimum": 0,
+                        "type": "number"
+                    },
+                    "discount": {
+                        "maximum": 0,
+                        "type": "number"
+                    },
+                    "adjustment": {
+                        "exclusiveMaximum": true,
+                        "maximum": 0,
+                        "type": "number"
+                    }
+                }
+            }
+        }
+    }
+}
