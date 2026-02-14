@@ -58,6 +58,7 @@ import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
+import org.springdoc.core.converters.SchemaPropertyValidationConverter;
 import org.springdoc.core.converters.WebFluxSupportConverter;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
@@ -273,6 +274,19 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	SchemaPropertyDeprecatingConverter schemaPropertyDeprecatingConverter() {
 		return new SchemaPropertyDeprecatingConverter();
+	}
+
+	/**
+	 * Schema property validation converter schema property validation converter.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the schema property validation converter
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	SchemaPropertyValidationConverter schemaPropertyValidationConverter(SpringDocConfigProperties springDocConfigProperties) {
+		return new SchemaPropertyValidationConverter(springDocConfigProperties);
 	}
 
 	/**

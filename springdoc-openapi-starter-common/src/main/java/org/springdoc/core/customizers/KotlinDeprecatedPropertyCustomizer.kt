@@ -34,7 +34,6 @@ import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.media.Schema
 import org.springdoc.core.providers.ObjectMapperProvider
 import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.full.hasAnnotation
 import kotlin.reflect.full.memberProperties
 
 /**
@@ -52,7 +51,14 @@ class KotlinDeprecatedPropertyCustomizer(
 	): Schema<*>? {
 		if (!chain.hasNext()) return null
 		// Resolve the next model in the chain
-		val resolvedSchema = chain.next().resolve(type, context, chain)
+		val resolvedSchema = try {
+			chain.next().resolve(type, context, chain)
+		}
+		catch (_: NullPointerException) {
+			// Some swagger-core subtype resolution paths can throw NPE (e.g. Spring Boot 4 + oneOf usage).
+			// Keep schema generation graceful and continue without this schema.
+			return null
+		}
 
 		val javaType: JavaType =
 			objectMapperProvider.jsonMapper().constructType(type.type)
@@ -65,7 +71,6 @@ class KotlinDeprecatedPropertyCustomizer(
 		// Check each property of the class
 		for (prop in kotlinClass.memberProperties) {
 			val deprecatedAnnotation = prop.findAnnotation<Deprecated>()
-			prop.hasAnnotation<Deprecated>()
 			if (deprecatedAnnotation != null) {
 				val fieldName = prop.name
 				if (resolvedSchema!=null && resolvedSchema.`$ref` != null) {
