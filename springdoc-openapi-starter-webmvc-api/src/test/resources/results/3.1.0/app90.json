@@ -116,11 +116,11 @@
           },
           "password": {
             "type": "string",
-            "example": 12345
+            "example": "12345"
           },
           "phone": {
             "type": "string",
-            "example": 12345
+            "example": "12345"
           },
           "userStatus": {
             "type": "integer",

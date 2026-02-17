@@ -134,12 +134,12 @@
           "password": {
             "type": "string",
             "description": "The Password.",
-            "example": 12345
+            "example": "12345"
           },
           "phone": {
             "type": "string",
             "description": "The Phone.",
-            "example": 12345
+            "example": "12345"
           },
           "userStatus": {
             "type": "integer",
