@@ -99,8 +99,7 @@ The formatter does not cover all rules (such as order of imports) and an additio
 * Select "`IntelliJ IDEA`" -> "`Preferences`".
 * Select "`Editor`" -> "`Code Style`".
 * Select the wheel and "`Import Scheme`" -> "`IntelliJ IDEA code style XML`".
-* Select https://github.com/spring-projects/spring-boot/blob/master/idea/codeStyleConfig.xml[`idea/codeStyleConfig.xml`] from this repository.
-
+* Select https://github.com/spring-projects/spring-boot/blob/main/.idea/codeStyles/codeStyleConfig.xml[`.idea/codeStyles/codeStyleConfig.xml`] from this repository.
 ==== Importing into Eclipse
 
 You can use Spring Boot project specific source formatting settings.

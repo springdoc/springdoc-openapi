@@ -48,6 +48,8 @@ This project is sponsored by
     - [Error Handling for REST using @ControllerAdvice](#error-handling-for-rest-using-controlleradvice)
     - [Adding API Information and Security documentation](#adding-api-information-and-security-documentation)
     - [spring-webflux support with Annotated Controllers](#spring-webflux-support-with-annotated-controllers)
+    - [Using a separate management port (Spring Boot 4)](#using-a-separate-management-port-spring-boot-3)
+    - [When Spring Security is enabled](#when-spring-security-is-enabled)
 - [Acknowledgements](#acknowledgements)
     - [Contributors](#contributors)
     - [Additional Support](#additional-support)
@@ -221,7 +223,7 @@ Maven
 Gradle
 
 ```groovy
-implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
+implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:latest'
 ```
 
 * This step is optional: For custom path of the swagger documentation in HTML format, add
@@ -245,6 +247,59 @@ Snapshots:
 * [https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/org/springdoc/](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/org/springdoc/)
   .
 
+## Using a separate management port (Spring Boot 4)
+
+Some Spring Boot apps run **Actuator** on a separate management port. In that case:
+
+- **Application port** (e.g., `8080`) serves your app and springdoc endpoints:
+    - `http://localhost:8080/v3/api-docs`
+    - `http://localhost:8080/swagger-ui/index.html`
+
+- **Management port** (e.g., `9090`) serves Actuator:
+    - `http://localhost:9090/actuator`
+    - `http://localhost:9090/actuator/health`
+
+Minimal `application.yml`:
+
+```yaml
+server:
+  port: 8080
+
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# springdoc is enabled by default with the starter;
+# endpoints remain on the application port.
+# (OpenAPI JSON = /v3/api-docs, Swagger UI = /swagger-ui/index.html)
+```
+
+### When Spring Security is enabled
+
+With Spring Boot 3, `/v3/api-docs` and Swagger UI are served on the **application port**, while Actuator runs on the **management port**.  
+If Spring Security is enabled, explicitly permit the docs paths on the **application port**:
+
+```java
+@Bean
+SecurityFilterChain api(HttpSecurity http) throws Exception {
+  http
+    .authorizeHttpRequests(auth -> auth
+      .requestMatchers(
+        "/v3/api-docs/**",   
+        "/v3/api-docs.yaml", 
+        "/swagger-ui/**",
+        "/swagger-ui.html"
+      ).permitAll()
+      .anyRequest().authenticated()
+    );
+  return http.build();
+}
+```
+
 # Acknowledgements
 
 ## Contributors
@@ -256,7 +311,7 @@ its [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contrib
   <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" width="50%"/>
 </a>
 
-Thanks you all for your support!
+Thank you all for your support!
 
 ## Additional Support
 
