@@ -24,6 +24,9 @@
 
 package test.org.springdoc.api.v30.app139;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +36,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
 	@GetMapping(produces = MediaType.TEXT_PLAIN_VALUE, path = "/test1")
+	@Parameter(name = "parameter", in = ParameterIn.QUERY,
+			schema = @Schema(type = "string", defaultValue = "${test.parameter-default-value}"))
+	@Parameter(name = "parameter-boolean", in = ParameterIn.QUERY,
+			schema = @Schema(type = "boolean", defaultValue = "${test.parameter-boolean-default-value}"))
 	public String echo1(@RequestParam(name = "${test.name}", defaultValue = "${test.default-value}") String text) {
 		return text;
 	}
