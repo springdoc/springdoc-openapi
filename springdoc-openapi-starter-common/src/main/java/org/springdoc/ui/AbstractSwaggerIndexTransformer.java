@@ -60,6 +60,11 @@ public class AbstractSwaggerIndexTransformer {
 	private static final String PRESETS = "presets: [";
 
 	/**
+	 * The constant EDITOR_FOLD_MARKER.
+	 */
+	private static final String EDITOR_FOLD_MARKER = "//</editor-fold>";
+
+	/**
 	 * The Swagger ui o auth properties.
 	 */
 	protected SwaggerUiOAuthProperties swaggerUiOAuthProperties;
@@ -177,6 +182,9 @@ public class AbstractSwaggerIndexTransformer {
 		if (StringUtils.isNotEmpty(swaggerUiConfig.getUrl()) && StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
 			html = setConfiguredApiDocsUrl(html);
 		}
+
+		if (StringUtils.isNotEmpty(swaggerUiConfig.getDocumentTitle()))
+			html = addDocumentTitle(html);
 
 		return html;
 	}
@@ -323,6 +331,43 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("},\n");
 		stringBuilder.append(PRESETS);
 		return html.replace(PRESETS, stringBuilder.toString());
+	}
+
+	/**
+	 * Add document title script.
+	 *
+	 * @param html the html
+	 * @return the string
+	 */
+	protected String addDocumentTitle(String html) {
+		if (!html.contains(EDITOR_FOLD_MARKER)) {
+			return html;
+		}
+		StringBuilder stringBuilder = new StringBuilder("document.title = '");
+		stringBuilder.append(escapeJavaScriptString(swaggerUiConfig.getDocumentTitle()));
+		stringBuilder.append("';\n\n  ");
+		stringBuilder.append(EDITOR_FOLD_MARKER);
+		return html.replace(EDITOR_FOLD_MARKER, stringBuilder.toString());
+	}
+
+	/**
+	 * Escape special characters for JavaScript string literal.
+	 *
+	 * @param input the input string
+	 * @return the escaped string
+	 */
+	private String escapeJavaScriptString(String input) {
+		if (input == null) {
+			return "";
+		}
+		return input
+				.replace("\\", "\\\\")
+				.replace("'", "\\'")
+				.replace("\n", "\\n")
+				.replace("\r", "\\r")
+				.replace("\t", "\\t")
+				.replace("<", "\\u003c")
+				.replace(">", "\\u003e");
 	}
 
 }
