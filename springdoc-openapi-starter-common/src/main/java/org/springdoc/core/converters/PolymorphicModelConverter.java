@@ -120,6 +120,28 @@ public class PolymorphicModelConverter implements ModelConverter {
 		return resolvedSchema;
 	}
 
+	/**
+	 * Removes _links from allOf child schemas to prevent duplication.
+	 * In allOf composition, child schemas (allOf[1+]) should not redefine
+	 * inherited properties like _links that come from the parent (allOf[0]).
+	 *
+	 * @param composedSchema the composed schema with allOf structure
+	 */
+	private void removeLinksFromAllOfChild(ComposedSchema composedSchema) {
+		List<Schema> allOf = composedSchema.getAllOf();
+		if (allOf != null && allOf.size() > 1) {
+			// allOf[0] is the parent schema (first element in allOf)
+			// allOf[1+] are the child's own properties (second element onwards in allOf)
+			for (int i = 1; i < allOf.size(); i++) {
+				Schema childSchema = allOf.get(i);
+				if (childSchema != null && childSchema.getProperties() != null) {
+					// Remove _links (inherited from parent)
+					childSchema.getProperties().remove("_links");
+				}
+			}
+		}
+	}
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
@@ -147,6 +169,12 @@ public class PolymorphicModelConverter implements ModelConverter {
 					type.resolveAsRef(true);
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
 				resolvedSchema = getResolvedSchema(javaType, resolvedSchema);
+
+				if (resolvedSchema instanceof ComposedSchema composedSchema &&
+						composedSchema.getAllOf() != null &&
+						!composedSchema.getAllOf().isEmpty()) {
+					removeLinksFromAllOfChild(composedSchema);
+				}
 				if (resolvedSchema == null || resolvedSchema.get$ref() == null) {
 					return resolvedSchema;
 				}
@@ -181,6 +209,14 @@ public class PolymorphicModelConverter implements ModelConverter {
 		Class<?> clazz = javaType.getRawClass();
 		if (TYPES_TO_SKIP.stream().noneMatch(typeToSkip -> typeToSkip.equals(clazz.getSimpleName())))
 			composedSchemas.forEach(result::addOneOfItem);
+
+		// Remove _links from result (composed schema) to prevent duplication
+		if (result.getOneOf() != null) {
+			result.getOneOf().stream()
+					.filter(s -> s.getProperties() != null)
+					.forEach(s -> s.getProperties().remove("_links"));
+		}
+
 		return result;
 	}
 
