@@ -50,16 +50,18 @@ import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.Parameter.StyleEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -151,10 +153,10 @@ public class GenericParameterService {
 	/**
 	 * Instantiates a new Generic parameter builder.
 	 *
-	 * @param propertyResolverUtils                the property resolver utils
-	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
-	 * @param objectMapperProvider                 the object mapper provider
-	 * @param javadocProviderOptional              the javadoc provider
+	 * @param propertyResolverUtils                        the property resolver utils
+	 * @param optionalWebConversionServiceProvider         the optional web conversion service provider
+	 * @param objectMapperProvider                         the object mapper provider
+	 * @param javadocProviderOptional                      the javadoc provider
 	 */
 	public GenericParameterService(PropertyResolverUtils propertyResolverUtils,
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProviderOptional) {
@@ -241,7 +243,7 @@ public class GenericParameterService {
 			paramDoc.setAllowReserved(paramCalcul.getAllowReserved());
 
 		if (StringUtils.isBlank(paramDoc.get$ref()))
-			paramDoc.set$ref(paramCalcul.get$ref());
+			paramDoc.set$ref(paramDoc.get$ref());
 
 		if (paramDoc.getSchema() == null && paramDoc.getContent() == null)
 			paramDoc.setSchema(paramCalcul.getSchema());
@@ -257,29 +259,6 @@ public class GenericParameterService {
 
 		if (paramDoc.getExplode() == null)
 			paramDoc.setExplode(paramCalcul.getExplode());
-
-		if (paramDoc.getSchema() instanceof StringSchema existingSchema &&
-				paramCalcul.getSchema() instanceof StringSchema newSchema) {
-
-			List<String> existingEnums = existingSchema.getEnum() != null
-					? new ArrayList<>(existingSchema.getEnum())
-					: new ArrayList<>();
-
-			List<String> newEnums = newSchema.getEnum();
-
-			if (newEnums != null && !newEnums.isEmpty()) {
-				for (String val : newEnums) {
-					if (!existingEnums.contains(val)) {
-						existingEnums.add(val);
-					}
-				}
-				existingSchema.setEnum(existingEnums);
-			}
-
-			if (newSchema.getDefault() != null) {
-				existingSchema.setDefault(newSchema.getDefault());
-			}
-		}
 	}
 
 	/**
@@ -324,7 +303,7 @@ public class GenericParameterService {
 			optionalContent.ifPresent(parameter::setContent);
 		}
 		else
-			setSchema(parameterDoc, components, jsonView, parameter, locale);
+			setSchema(parameterDoc, components, jsonView, parameter);
 
 		setExamples(parameterDoc, parameter);
 		setExtensions(parameterDoc, parameter, locale);
@@ -337,13 +316,12 @@ public class GenericParameterService {
 	/**
 	 * Sets schema.
 	 *
-	 * @param parameterDoc the parameter doc 
-	 * @param components the components 
-	 * @param jsonView the json view 
-	 * @param parameter the parameter
-	 * @param locale the locale
+	 * @param parameterDoc the parameter doc
+	 * @param components   the components
+	 * @param jsonView     the json view
+	 * @param parameter    the parameter
 	 */
-	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter, Locale locale) {
+	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
 		if (StringUtils.isNotBlank(parameterDoc.ref()))
 			parameter.$ref(parameterDoc.ref());
 		else {
@@ -357,11 +335,7 @@ public class GenericParameterService {
 					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
 					if (primitiveType != null) {
 						Schema<?> primitiveSchema = primitiveType.createProperty();
-						if (schema.getDefault() instanceof String stringValue) {
-							primitiveSchema.setDefault(propertyResolverUtils.resolve(stringValue, locale));
-						} else {
-							primitiveSchema.setDefault(schema.getDefault());
-						}
+						primitiveSchema.setDefault(schema.getDefault());
 						schema.setDefault(primitiveSchema.getDefault());
 					}
 				}
@@ -399,7 +373,7 @@ public class GenericParameterService {
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
-				Annotation[] paramAnnotations = getParameterAnnotations(methodParameter);
+			Annotation[] paramAnnotations = getParameterAnnotations(methodParameter);
 			Annotation[] typeAnnotations = new Annotation[0];
 			if (KotlinDetector.isKotlinPresent()
 					&& KotlinDetector.isKotlinReflectPresent()
@@ -411,6 +385,8 @@ public class GenericParameterService {
 					type = restored;
 					typeAnnotations = ((Class<?>) type).getAnnotations();
 				}
+			} else {
+				typeAnnotations = methodParameter.getParameterType().getAnnotations();
 			}
 			Annotation[] mergedAnnotations =
 					Stream.concat(
@@ -420,7 +396,8 @@ public class GenericParameterService {
 			if (type instanceof Class && !((Class<?>) type).isEnum() && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
 				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && Arrays.stream(mergedAnnotations)
-						.noneMatch(a -> a.annotationType() == io.swagger.v3.oas.annotations.media.Schema.class)) {					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
+						.noneMatch(a -> a.annotationType() == io.swagger.v3.oas.annotations.media.Schema.class)) {
+					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
 					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()) && requestBodyInfo == null)
 						type = springConvertedType;
 				}
@@ -555,7 +532,7 @@ public class GenericParameterService {
 	 */
 	private void setParameterStyle(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (StringUtils.isNotBlank(p.style().toString())) {
-			parameter.setStyle(Parameter.StyleEnum.valueOf(p.style().toString().toUpperCase()));
+			parameter.setStyle(StyleEnum.valueOf(p.style().toString().toUpperCase()));
 		}
 	}
 
@@ -567,7 +544,7 @@ public class GenericParameterService {
 	 */
 	private boolean isExplodable(io.swagger.v3.oas.annotations.Parameter p) {
 		io.swagger.v3.oas.annotations.media.Schema schema = p.schema();
-		io.swagger.v3.oas.annotations.media.ArraySchema arraySchema = p.array();
+		ArraySchema arraySchema = p.array();
 
 		boolean explode = true;
 		Class<?> implementation = schema.implementation();
@@ -715,7 +692,7 @@ public class GenericParameterService {
 			}
 
 			@Override
-			public io.swagger.v3.oas.annotations.media.ArraySchema array() {
+			public ArraySchema array() {
 				return null;
 			}
 
@@ -772,9 +749,9 @@ public class GenericParameterService {
 	 * @return the boolean
 	 */
 	public boolean isRequestBodyPresent(ParameterInfo parameterInfo) {
-		return parameterInfo.getMethodParameter().getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
+		return parameterInfo.getMethodParameter().getParameterAnnotation(RequestBody.class) != null
 				|| parameterInfo.getMethodParameter().getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
-				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(parameterInfo.getMethodParameter().getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null;
+				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(parameterInfo.getMethodParameter().getMethod()), RequestBody.class) != null;
 	}
 
 	/**
