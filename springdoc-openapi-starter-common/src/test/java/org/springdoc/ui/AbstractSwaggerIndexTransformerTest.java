@@ -18,6 +18,7 @@ import org.springdoc.core.providers.ObjectMapperProvider;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractSwaggerIndexTransformerTest {
@@ -66,5 +67,64 @@ class AbstractSwaggerIndexTransformerTest {
 	void setApiDocUrlCorrectly() throws IOException {
 		var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), is);
 		assertThat(html, containsString(apiDocUrl));
+	}
+
+	@Test
+	void documentTitle_whenSet_addsDocumentTitleScript() throws IOException {
+		swaggerUiConfig.setDocumentTitle("My Custom API Documentation");
+		InputStream inputStream = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
+		var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), inputStream);
+		assertThat(html, containsString("document.title = 'My Custom API Documentation';"));
+	}
+
+	@Test
+	void documentTitle_whenNotSet_doesNotAddScript() throws IOException {
+		swaggerUiConfig.setDocumentTitle(null);
+		InputStream inputStream = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
+		var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), inputStream);
+		assertThat(html, not(containsString("document.title")));
+	}
+
+	@Test
+	void documentTitle_whenEmpty_doesNotAddScript() throws IOException {
+		swaggerUiConfig.setDocumentTitle("");
+		InputStream inputStream = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
+		var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), inputStream);
+		assertThat(html, not(containsString("document.title")));
+	}
+
+	@Test
+	void documentTitle_escapesSpecialCharacters() throws IOException {
+		swaggerUiConfig.setDocumentTitle("Test's API \\ Documentation");
+		InputStream inputStream = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
+		var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), inputStream);
+		assertThat(html, containsString("document.title = 'Test\\'s API \\\\ Documentation';"));
+	}
+
+	@Test
+	void documentTitle_escapesNewlines() throws IOException {
+		swaggerUiConfig.setDocumentTitle("Test\nAPI\rDocs\tTitle");
+		InputStream inputStream = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
+		var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), inputStream);
+		assertThat(html, containsString("document.title = 'Test\\nAPI\\rDocs\\tTitle';"));
+	}
+
+	@Test
+	void documentTitle_escapesScriptTags() throws IOException {
+		swaggerUiConfig.setDocumentTitle("</script><script>alert('xss')</script>");
+		InputStream inputStream = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
+		var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), inputStream);
+		assertThat(html, not(containsString("</script><script>")));
+		assertThat(html, containsString("\\u003c/script\\u003e\\u003cscript\\u003ealert"));
+	}
+
+	@Test
+	void documentTitle_whenMarkerMissing_returnsOriginalHtml() throws IOException {
+		String htmlWithoutMarker = "window.onload = function() { window.ui = SwaggerUIBundle({}); };";
+		swaggerUiConfig.setDocumentTitle("My Title");
+		swaggerUiConfig.setUrl(null);
+		InputStream inputStream = new ByteArrayInputStream(htmlWithoutMarker.getBytes(StandardCharsets.UTF_8));
+		var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), inputStream);
+		assertThat(html, not(containsString("document.title")));
 	}
 }

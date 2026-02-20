@@ -186,6 +186,29 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	protected Boolean withCredentials;
 
 	/**
+	 * The Document title.
+	 */
+	protected String documentTitle;
+
+	/**
+	 * Gets document title.
+	 *
+	 * @return the document title
+	 */
+	public String getDocumentTitle() {
+		return documentTitle;
+	}
+
+	/**
+	 * Sets document title.
+	 *
+	 * @param documentTitle the document title
+	 */
+	public void setDocumentTitle(String documentTitle) {
+		this.documentTitle = documentTitle;
+	}
+	
+	/**
 	 * Gets with credentials.
 	 *
 	 * @return the with credentials
