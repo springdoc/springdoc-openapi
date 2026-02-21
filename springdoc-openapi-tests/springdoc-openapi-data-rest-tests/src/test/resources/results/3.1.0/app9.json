@@ -198,7 +198,7 @@
           "id": {
             "type": "string",
             "description": "Some ID",
-            "example": 1
+            "example": "1"
           },
           "payload": {
             "type": "string",
