@@ -1239,15 +1239,25 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if(methodAttributes.getSpringDocVersionStrategy() != null)
 				versionDefaultMap= methodAttributes.getSpringDocVersionStrategy().getVersionDefaultMap();
 			for (Entry<String, String> entry : queryParams.entrySet()) {
-				Parameter parameter = new Parameter();
 				String name = entry.getKey();
 				String value = entry.getValue();
 				String defaultValue = (versionDefaultMap != null) ? versionDefaultMap.get(name) : value;
-				parameter.setName(name);
-				parameter.setSchema(new StringSchema()._default(defaultValue)._enum(Collections.singletonList(value)));
-				parameter.setRequired(true);
-				parameter.setIn(ParameterIn.QUERY.toString());
-				GenericParameterService.mergeParameter(parametersList, parameter);
+				Optional<Parameter> existingParam = parametersList.stream()
+						.filter(p -> name.equals(p.getName()) && ParameterIn.QUERY.toString().equals(p.getIn()))
+						.findAny();
+				if (existingParam.isPresent() && existingParam.get().getSchema() != null
+						&& existingParam.get().getSchema().getEnum() != null
+						&& !existingParam.get().getSchema().getEnum().contains(value)) {
+					existingParam.get().getSchema().getEnum().add(value);
+				}
+				else {
+					Parameter parameter = new Parameter();
+					parameter.setName(name);
+					parameter.setSchema(new StringSchema()._default(defaultValue)._enum(new ArrayList<>(Collections.singletonList(value))));
+					parameter.setRequired(true);
+					parameter.setIn(ParameterIn.QUERY.toString());
+					GenericParameterService.mergeParameter(parametersList, parameter);
+				}
 			}
 			operation.setParameters(parametersList);
 		}

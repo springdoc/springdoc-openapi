@@ -64,7 +64,7 @@
             "required": false,
             "schema": {
               "type": "number",
-              "example": 10
+              "example": "10"
             }
           }
         ],

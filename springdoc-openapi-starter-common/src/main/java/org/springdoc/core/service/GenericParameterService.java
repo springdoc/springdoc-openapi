@@ -332,6 +332,8 @@ public class GenericParameterService {
 				}
 				// Cast default value
 				if (schema != null && schema.getDefault() != null) {
+					Object resolvedDefault = resolveEmbeddedValuesAndExpressions(schema.getDefault().toString());
+					schema.setDefault(resolvedDefault);
 					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
 					if (primitiveType != null) {
 						Schema<?> primitiveSchema = primitiveType.createProperty();

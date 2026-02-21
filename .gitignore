@@ -144,3 +144,5 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+/CLAUDE.md
+/.claude/

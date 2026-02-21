@@ -77,7 +77,7 @@
             "type": "number",
             "description": "The data value",
             "format": "double",
-            "example": 19.0
+            "example": "19.0"
           }
         },
         "description": "The type Tracker data."

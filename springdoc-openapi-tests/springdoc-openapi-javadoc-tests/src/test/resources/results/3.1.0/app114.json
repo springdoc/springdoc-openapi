@@ -68,7 +68,7 @@
         "properties": {
           "amount": {
             "type": "number",
-            "example": 99.96
+            "example": "99.96"
           },
           "currency": {
             "type": "string",
