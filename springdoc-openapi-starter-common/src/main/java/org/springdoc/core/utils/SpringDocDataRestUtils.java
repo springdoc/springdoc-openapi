@@ -26,8 +26,8 @@
 
 package org.springdoc.core.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -131,10 +131,10 @@ public class SpringDocDataRestUtils {
 			final PersistentEntity<?, ?> entity = persistentEntities.getRequiredPersistentEntity(domainType);
 			EntityInfo entityInfo = new EntityInfo();
 			entityInfo.setDomainType(domainType);
-			List<String> ignoredFields = getIgnoredFields(resourceMetadata, entity);
+			Set<String> ignoredFields = getIgnoredFields(resourceMetadata, entity);
 			if (!repositoryRestConfiguration.isIdExposedFor(entity.getType()))
 				entityInfo.setIgnoredFields(ignoredFields);
-			List<String> associationsFields = getAssociationsFields(resourceMetadata, entity);
+			Set<String> associationsFields = getAssociationsFields(resourceMetadata, entity);
 			entityInfo.setAssociationsFields(associationsFields);
 			entityInoMap.put(domainType.getSimpleName(), entityInfo);
 		}
@@ -433,9 +433,9 @@ public class SpringDocDataRestUtils {
 	 * @param entity           the entity
 	 * @return the associations fields
 	 */
-	private List<String> getAssociationsFields(ResourceMetadata
+	private Set<String> getAssociationsFields(ResourceMetadata
 			resourceMetadata, PersistentEntity<?, ?> entity) {
-		List<String> associationsFields = new ArrayList<>();
+		Set<String> associationsFields = new HashSet<>();
 		entity.doWithAssociations((SimpleAssociationHandler) association -> {
 			PersistentProperty<?> property = association.getInverse();
 			ResourceMapping mapping = resourceMetadata.getMappingFor(property);
@@ -454,9 +454,9 @@ public class SpringDocDataRestUtils {
 	 * @param entity           the entity
 	 * @return the ignored fields
 	 */
-	private List<String> getIgnoredFields(ResourceMetadata
+	private Set<String> getIgnoredFields(ResourceMetadata
 			resourceMetadata, PersistentEntity<?, ?> entity) {
-		List<String> ignoredFields = new ArrayList<>();
+		Set<String> ignoredFields = new HashSet<>();
 		if (entity != null && entity.getIdProperty() != null) {
 			String idField = Objects.requireNonNull(entity.getIdProperty()).getName();
 			ignoredFields.add(idField);

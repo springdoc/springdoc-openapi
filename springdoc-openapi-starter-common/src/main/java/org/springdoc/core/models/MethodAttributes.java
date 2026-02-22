@@ -436,15 +436,17 @@ public class MethodAttributes {
 	private void setHeaders(String[] headers) {
 		if (ArrayUtils.isNotEmpty(headers))
 			for (String header : headers) {
-				if (!header.contains("!=")) {
-					String[] keyValueHeader = header.split("=");
-					String headerValue = keyValueHeader.length > 1 ? keyValueHeader[1] : "";
-					this.headers.put(keyValueHeader[0], headerValue);
+				int neqIdx = header.indexOf("!=");
+				if (neqIdx < 0) {
+					int eqIdx = header.indexOf('=');
+					String key = eqIdx >= 0 ? header.substring(0, eqIdx) : header;
+					String headerValue = eqIdx >= 0 ? header.substring(eqIdx + 1) : "";
+					this.headers.put(key, headerValue);
 				}
 				else {
-					String[] keyValueHeader = header.split("!=");
-					if (!this.headers.containsKey(keyValueHeader[0]))
-						this.headers.put(keyValueHeader[0], StringUtils.EMPTY);
+					String key = header.substring(0, neqIdx);
+					if (!this.headers.containsKey(key))
+						this.headers.put(key, StringUtils.EMPTY);
 				}
 			}
 	}

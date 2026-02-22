@@ -93,7 +93,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * The constant ANNOTATIONS_TO_IGNORE.
 	 */
-	private static final List<Class> ANNOTATIONS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class> ANNOTATIONS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>(3));
 
 	/**
 	 * The reusable context

@@ -128,7 +128,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * The constant PARAM_TYPES_TO_IGNORE.
 	 */
-	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>(19));
 
 	static {
 		PARAM_TYPES_TO_IGNORE.add(WebRequest.class);

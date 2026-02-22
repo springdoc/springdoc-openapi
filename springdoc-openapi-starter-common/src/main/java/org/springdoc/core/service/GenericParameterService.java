@@ -107,7 +107,7 @@ public class GenericParameterService {
 	/**
 	 * The constant FILE_TYPES.
 	 */
-	private static final List<Class<?>> FILE_TYPES = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class<?>> FILE_TYPES = Collections.synchronizedList(new ArrayList<>(3));
 
 	/**
 	 * The constant LOGGER.

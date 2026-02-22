@@ -27,7 +27,6 @@
 package org.springdoc.core.configurer;
 
 import java.util.List;
-import java.util.Optional;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import org.apache.commons.lang3.StringUtils;
@@ -103,7 +102,7 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 							builder.packagesToExclude(elt.getPackagesToExclude().toArray(new String[0]));
 						if (StringUtils.isNotEmpty(elt.getDisplayName()))
 							builder.displayName(elt.getDisplayName());
-						if (Optional.ofNullable(elt.getOpenApi()).isPresent()) {
+						if (elt.getOpenApi() != null) {
 							builder.addOpenApiCustomizer(new SpecPropertiesCustomizer(elt.getOpenApi()));
 						}
 						return builder.group(elt.getGroup()).build();

@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.models.SpecVersion;
@@ -53,6 +54,11 @@ public class PropertyResolverUtils {
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyResolverUtils.class);
+
+	/**
+	 * The constant LINE_SPLIT_PATTERN.
+	 */
+	private static final Pattern LINE_SPLIT_PATTERN = Pattern.compile("\\r?\\n");
 
 	/**
 	 * The Factory.
@@ -125,7 +131,7 @@ public class PropertyResolverUtils {
 			return null;
 		}
 		final String newLine = "\n";
-		String[] lines = text.split("\\r?\\n");
+		String[] lines = LINE_SPLIT_PATTERN.split(text);
 		int minIndent = resolveMinIndent(lines);
 		try {
 			return Arrays.stream(lines)

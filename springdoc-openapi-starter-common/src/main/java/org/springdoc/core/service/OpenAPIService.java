@@ -44,6 +44,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -112,6 +113,12 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIService.class);
+
+	/**
+	 * The constant CAMEL_CASE_PATTERN.
+	 */
+	private static final Pattern CAMEL_CASE_PATTERN = Pattern.compile(
+			"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])");
 
 	/**
 	 * The Basic error controller.
@@ -220,13 +227,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @return the string
 	 */
 	public static String splitCamelCase(String str) {
-		return str.replaceAll(
-						String.format(
-								"%s|%s|%s",
-								"(?<=[A-Z])(?=[A-Z][a-z])",
-								"(?<=[^A-Z])(?=[A-Z])",
-								"(?<=[A-Za-z])(?=[^A-Za-z])"),
-						"-")
+		return CAMEL_CASE_PATTERN.matcher(str).replaceAll("-")
 				.toLowerCase(Locale.ROOT);
 	}
 
@@ -277,7 +278,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	private void initializeHiddenRestController() {
 		if (basicErrorController != null)
 			getConfig().addHiddenRestControllers(basicErrorController);
-		List<Class<?>> hiddenRestControllers = this.mappingsMap.entrySet().parallelStream()
+		List<Class<?>> hiddenRestControllers = this.mappingsMap.entrySet().stream()
 				.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 						Hidden.class) != null)).map(controller -> controller.getValue().getClass())
 				.collect(Collectors.toList());
@@ -295,9 +296,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		if (!isServersPresent && serverBaseUrl != null)        // default server value
 		{
 			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-			List<Server> servers = new ArrayList<>();
-			servers.add(server);
-			openAPI.setServers(servers);
+			openAPI.setServers(new ArrayList<>(Collections.singletonList(server)));
 		}
 	}
 
@@ -551,7 +550,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			}
 		}
 
-		return allWebhooks.toArray(new Webhooks[0]);
+		return allWebhooks.toArray(new Webhooks[allWebhooks.size()]);
 	}
 
 
@@ -595,7 +594,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			}
 		}
 
-		return allWebhookClassesToScan.toArray(new Class<?>[0]);
+		return allWebhookClassesToScan.toArray(new Class<?>[allWebhookClassesToScan.size()]);
 	}
 
 

@@ -192,9 +192,10 @@ public class GenericResponseService implements ApplicationContextAware {
 			if (optionalContent.isPresent()) {
 				Content newContent = optionalContent.get();
 				if (methodAttributes.isMethodOverloaded() && existingContent != null) {
-					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> {
-						if (newContent.get(mediaTypeStr).getSchema() != null)
-							mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr);
+					Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> {
+						io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
+						if (mediaType != null && mediaType.getSchema() != null)
+							mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
 					});
 					apiResponse.content(existingContent);
 				}

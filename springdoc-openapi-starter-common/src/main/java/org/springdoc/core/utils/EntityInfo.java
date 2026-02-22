@@ -26,8 +26,8 @@
 
 package org.springdoc.core.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The type Entity info.
@@ -39,12 +39,12 @@ public class EntityInfo {
 	/**
 	 * The Ignored fields.
 	 */
-	private List<String> ignoredFields = new ArrayList<>();
+	private Set<String> ignoredFields = new HashSet<>();
 
 	/**
 	 * The Associations fields.
 	 */
-	private List<String> associationsFields;
+	private Set<String> associationsFields;
 
 	/**
 	 * The Domain type.
@@ -56,7 +56,7 @@ public class EntityInfo {
 	 *
 	 * @return the ignored fields
 	 */
-	public List<String> getIgnoredFields() {
+	public Set<String> getIgnoredFields() {
 		return ignoredFields;
 	}
 
@@ -65,7 +65,7 @@ public class EntityInfo {
 	 *
 	 * @param ignoredFields the ignored fields
 	 */
-	public void setIgnoredFields(List<String> ignoredFields) {
+	public void setIgnoredFields(Set<String> ignoredFields) {
 		this.ignoredFields = ignoredFields;
 	}
 
@@ -74,7 +74,7 @@ public class EntityInfo {
 	 *
 	 * @return the associations fields
 	 */
-	public List<String> getAssociationsFields() {
+	public Set<String> getAssociationsFields() {
 		return associationsFields;
 	}
 
@@ -83,7 +83,7 @@ public class EntityInfo {
 	 *
 	 * @param associationsFields the associations fields
 	 */
-	public void setAssociationsFields(List<String> associationsFields) {
+	public void setAssociationsFields(Set<String> associationsFields) {
 		this.associationsFields = associationsFields;
 	}
 
