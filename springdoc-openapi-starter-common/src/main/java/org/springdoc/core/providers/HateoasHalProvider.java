@@ -32,8 +32,6 @@ import java.util.Optional;
 import org.springdoc.core.data.SpringDocJackson2HalModule;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.hateoas.autoconfigure.HateoasProperties;
-import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -51,7 +49,7 @@ public class HateoasHalProvider implements InitializingBean {
 	/**
 	 * The Hateoas properties optional.
 	 */
-	private final Optional<HateoasProperties> hateoasPropertiesOptional;
+	private final Optional<?> hateoasPropertiesOptional;
 
 	/**
 	 * Instantiates a new Hateoas hal provider.
@@ -59,17 +57,17 @@ public class HateoasHalProvider implements InitializingBean {
 	 * @param hateoasPropertiesOptional the hateoas properties optional
 	 * @param objectMapperProvider      the object mapper provider
 	 */
-	public HateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
+	public HateoasHalProvider(Optional<?> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
 		this.hateoasPropertiesOptional = hateoasPropertiesOptional;
 		this.objectMapperProvider = objectMapperProvider;
 	}
 
-	private static boolean isHalEnabled(@NonNull HateoasProperties hateoasProperties) {
+	private static boolean isHalEnabled(Object hateoasProperties) {
 		// In spring-boot 3.5, the method name was changed from getUseHalAsDefaultJsonMediaType to isUseHalAsDefaultJsonMediaType
 		var possibleMethodNames = List.of("isUseHalAsDefaultJsonMediaType", "getUseHalAsDefaultJsonMediaType");
 
 		for (var methodName : possibleMethodNames) {
-			var method = ReflectionUtils.findMethod(HateoasProperties.class, methodName);
+			var method = ReflectionUtils.findMethod(hateoasProperties.getClass(), methodName);
 			if (method != null) {
 				var result = ReflectionUtils.invokeMethod(method, hateoasProperties);
 				if (result instanceof Boolean halEnabled) {

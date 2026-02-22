@@ -51,6 +51,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.hateoas.autoconfigure.HateoasProperties;
 import org.springframework.context.annotation.Bean;
@@ -84,19 +85,63 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 public class SpringDocDataRestConfiguration {
 
 	/**
-	 * Hal provider data rest hal provider.
+	 * Configuration for DataRestHalProvider when HateoasProperties is on the classpath.
 	 *
-	 * @param repositoryRestConfiguration the repository rest configuration
-	 * @param hateoasPropertiesOptional   the hateoas properties optional
-	 * @param objectMapperProvider        the object mapper provider
-	 * @return the data rest hal provider
+	 * @author bnasslahsen
 	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Primary
-	@Lazy(false)
-	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration, Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
-		return new DataRestHalProvider(repositoryRestConfiguration, hateoasPropertiesOptional, objectMapperProvider);
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass(name = {
+			"org.springframework.boot.hateoas.autoconfigure.HateoasProperties",
+			"org.springframework.data.rest.core.config.RepositoryRestConfiguration"
+	})
+	static class DataRestHateoasPropertiesConfiguration {
+
+		/**
+		 * Hal provider data rest hal provider.
+		 *
+		 * @param repositoryRestConfiguration the repository rest configuration
+		 * @param hateoasPropertiesOptional the hateoas properties optional
+		 * @param objectMapperProvider the object mapper provider
+		 * @return the data rest hal provider
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Primary
+		@Lazy(false)
+		DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration,
+				Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
+			return new DataRestHalProvider(repositoryRestConfiguration, hateoasPropertiesOptional,
+					objectMapperProvider);
+		}
+
+	}
+
+	/**
+	 * Fallback configuration for DataRestHalProvider when HateoasProperties is absent.
+	 *
+	 * @author bnasslahsen
+	 */
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass(name = "org.springframework.data.rest.core.config.RepositoryRestConfiguration")
+	@ConditionalOnMissingClass("org.springframework.boot.hateoas.autoconfigure.HateoasProperties")
+	static class DataRestNoHateoasPropertiesConfiguration {
+
+		/**
+		 * Hal provider data rest hal provider.
+		 *
+		 * @param repositoryRestConfiguration the repository rest configuration
+		 * @param objectMapperProvider the object mapper provider
+		 * @return the data rest hal provider
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Primary
+		@Lazy(false)
+		DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration,
+				ObjectMapperProvider objectMapperProvider) {
+			return new DataRestHalProvider(repositoryRestConfiguration, Optional.empty(), objectMapperProvider);
+		}
+
 	}
 
 	/**
