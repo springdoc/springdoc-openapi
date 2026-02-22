@@ -212,7 +212,11 @@ class AbstractOpenApiResourceTest {
 		);
 
 		// wait for executor to be done
-		Thread.sleep(1_000);
+		long deadline = System.currentTimeMillis() + 5_000;
+		while (openAPIService.getCachedOpenAPI(Locale.getDefault()) == null
+				&& System.currentTimeMillis() < deadline) {
+			Thread.sleep(50);
+		}
 
 		// emulate generating base url
 		String serverBaseUrl = openAPIService.calculateServerBaseUrl(generatedUrl, new MockClientHttpRequest());
@@ -244,7 +248,11 @@ class AbstractOpenApiResourceTest {
 		);
 
 		// wait for executor to be done
-		Thread.sleep(1_000);
+		long deadline = System.currentTimeMillis() + 5_000;
+		while (openAPIService.getCachedOpenAPI(Locale.getDefault()) == null
+				&& System.currentTimeMillis() < deadline) {
+			Thread.sleep(50);
+		}
 
 		Locale locale = Locale.US;
 

@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -112,6 +113,12 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIService.class);
+
+	/**
+	 * The constant CAMEL_CASE_PATTERN.
+	 */
+	private static final Pattern CAMEL_CASE_PATTERN = Pattern.compile(
+			"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])");
 
 	/**
 	 * The Basic error controller.
@@ -220,13 +227,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @return the string
 	 */
 	public static String splitCamelCase(String str) {
-		return str.replaceAll(
-						String.format(
-								"%s|%s|%s",
-								"(?<=[A-Z])(?=[A-Z][a-z])",
-								"(?<=[^A-Z])(?=[A-Z])",
-								"(?<=[A-Za-z])(?=[^A-Za-z])"),
-						"-")
+		return CAMEL_CASE_PATTERN.matcher(str).replaceAll("-")
 				.toLowerCase(Locale.ROOT);
 	}
 

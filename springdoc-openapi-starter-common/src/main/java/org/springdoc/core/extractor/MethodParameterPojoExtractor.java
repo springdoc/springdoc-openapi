@@ -46,6 +46,7 @@ import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,7 @@ import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.swagger.v3.core.util.PrimitiveType;
@@ -153,9 +155,18 @@ public class MethodParameterPojoExtractor {
 	 * @return the stream
 	 */
 	private Stream<MethodParameter> extractFrom(Class<?> clazz, String fieldNamePrefix, boolean parentRequired) {
+		Map<String, PropertyDescriptor> propertyDescriptorMap;
+		try {
+			propertyDescriptorMap = Arrays.stream(Introspector.getBeanInfo(clazz).getPropertyDescriptors())
+					.collect(Collectors.toMap(PropertyDescriptor::getName, pd -> pd, (a, b) -> a));
+		}
+		catch (IntrospectionException e) {
+			propertyDescriptorMap = Collections.emptyMap();
+		}
+		Map<String, PropertyDescriptor> finalPropertyDescriptorMap = propertyDescriptorMap;
 		return allFieldsOf(clazz).stream()
 				.filter(field -> !field.getType().equals(clazz))
-				.flatMap(f -> fromGetterOfField(clazz, f, fieldNamePrefix, parentRequired))
+				.flatMap(f -> fromGetterOfField(clazz, f, fieldNamePrefix, parentRequired, finalPropertyDescriptorMap))
 				.filter(Objects::nonNull);
 	}
 
@@ -168,14 +179,14 @@ public class MethodParameterPojoExtractor {
 	 * @param parentRequired  whether the field that holds the class currently being examined was required or optional
 	 * @return the stream
 	 */
-	private Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix, boolean parentRequired) {
+	private Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix, boolean parentRequired, Map<String, PropertyDescriptor> propertyDescriptorMap) {
 		Class<?> type = extractType(paramClass, field);
 
 		if (Objects.isNull(type))
 			return Stream.empty();
 
 		if (isSimpleType(type))
-			return fromSimpleClass(paramClass, field, fieldNamePrefix, parentRequired);
+			return fromSimpleClass(paramClass, field, fieldNamePrefix, parentRequired, propertyDescriptorMap);
 		else {
 			Parameter parameter = field.getAnnotation(Parameter.class);
 			Schema schema = field.getAnnotation(Schema.class);
@@ -242,33 +253,28 @@ public class MethodParameterPojoExtractor {
 	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
-	private Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix, boolean parentRequired) {
+	private Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix, boolean parentRequired, Map<String, PropertyDescriptor> propertyDescriptorMap) {
 		Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
-		try {
-			Parameter parameter = field.getAnnotation(Parameter.class);
-			Schema schema = field.getAnnotation(Schema.class);
-			boolean fieldRequired =  this.schemaUtils.fieldRequired(field, schema, parameter);
+		Parameter parameter = field.getAnnotation(Parameter.class);
+		Schema schema = field.getAnnotation(Schema.class);
+		boolean fieldRequired = this.schemaUtils.fieldRequired(field, schema, parameter);
 
-			boolean paramRequired = parentRequired && fieldRequired;
-			if (paramClass.getSuperclass() != null && paramClass.isRecord()) {
-				return Stream.of(paramClass.getRecordComponents())
-						.filter(d -> d.getName().equals(field.getName()))
-						.map(RecordComponent::getAccessor)
-						.map(method -> new MethodParameter(method, -1))
-						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), true, field, !paramRequired));
-			}
-			else
-				return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
-						.filter(d -> d.getName().equals(field.getName()))
-						.map(PropertyDescriptor::getReadMethod)
-						.filter(Objects::nonNull)
-						.map(method -> new MethodParameter(method, -1))
-						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), true, field, !paramRequired));
+		boolean paramRequired = parentRequired && fieldRequired;
+		if (paramClass.getSuperclass() != null && paramClass.isRecord()) {
+			return Stream.of(paramClass.getRecordComponents())
+					.filter(d -> d.getName().equals(field.getName()))
+					.map(RecordComponent::getAccessor)
+					.map(method -> new MethodParameter(method, -1))
+					.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
+					.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), true, field, !paramRequired));
 		}
-		catch (IntrospectionException e) {
-			return Stream.of();
+		else {
+			PropertyDescriptor pd = propertyDescriptorMap.get(field.getName());
+			if (pd == null || pd.getReadMethod() == null)
+				return Stream.of();
+			MethodParameter methodParameter = new MethodParameter(pd.getReadMethod(), -1);
+			methodParameter = DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass);
+			return Stream.of(new DelegatingMethodParameter(methodParameter, fieldNamePrefix + field.getName(), fieldAnnotations, methodParameter.getMethodAnnotations(), true, field, !paramRequired));
 		}
 	}
 

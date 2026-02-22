@@ -225,6 +225,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private final Pattern pathPattern = Pattern.compile("\\{(.*?)}");
 
 	/**
+	 * The resolved group config.
+	 */
+	private final GroupConfig resolvedGroupConfig;
+
+	/**
 	 * The Open api builder.
 	 */
 	protected OpenAPIService openAPIService;
@@ -256,6 +261,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.springDocProviders = springDocProviders;
 		this.springDocCustomizers = springDocCustomizers;
 		this.springDocConfigProperties = springDocConfigProperties;
+		this.resolvedGroupConfig = springDocConfigProperties.getGroupConfigs().stream()
+				.filter(groupConfig -> this.groupName.equals(groupConfig.getGroup()))
+				.findAny()
+				.orElse(null);
 		if (springDocConfigProperties.isPreLoadingEnabled()) {
 			if (CollectionUtils.isEmpty(springDocConfigProperties.getPreLoadingLocales())) {
 				Executors.newSingleThreadExecutor().execute(this::getOpenApi);
@@ -324,7 +333,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	public static boolean isHiddenRestControllers(Class<?> rawClass) {
-		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> ClassUtils.getUserClass(clazz).isAssignableFrom(rawClass));
+		List<Class<?>> snapshot;
+		synchronized (HIDDEN_REST_CONTROLLERS) {
+			snapshot = new ArrayList<>(HIDDEN_REST_CONTROLLERS);
+		}
+		return snapshot.stream().anyMatch(clazz -> ClassUtils.getUserClass(clazz).isAssignableFrom(rawClass));
 	}
 
 	/**
@@ -910,10 +923,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected boolean isConditionToMatch(String[] existingConditions, ConditionType conditionType) {
 		List<String> conditionsToMatch = getConditionsToMatch(conditionType);
-		if (CollectionUtils.isEmpty(conditionsToMatch)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
-			if (optionalGroupConfig.isPresent())
-				conditionsToMatch = getConditionsToMatch(conditionType, optionalGroupConfig.get());
+		if (CollectionUtils.isEmpty(conditionsToMatch) && resolvedGroupConfig != null) {
+			conditionsToMatch = getConditionsToMatch(conditionType, resolvedGroupConfig);
 		}
 		return CollectionUtils.isEmpty(conditionsToMatch)
 				|| (!ArrayUtils.isEmpty(existingConditions) && conditionsToMatch.size() == existingConditions.length && conditionsToMatch.containsAll(Arrays.asList(existingConditions)));
@@ -931,15 +942,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		final String packageName = aPackage.getName();
 		List<String> packagesToScan = springDocConfigProperties.getPackagesToScan();
 		List<String> packagesToExclude = springDocConfigProperties.getPackagesToExclude();
-		if (CollectionUtils.isEmpty(packagesToScan)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
-			if (optionalGroupConfig.isPresent())
-				packagesToScan = optionalGroupConfig.get().getPackagesToScan();
+		if (CollectionUtils.isEmpty(packagesToScan) && resolvedGroupConfig != null) {
+			packagesToScan = resolvedGroupConfig.getPackagesToScan();
 		}
-		if (CollectionUtils.isEmpty(packagesToExclude)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
-			if (optionalGroupConfig.isPresent())
-				packagesToExclude = optionalGroupConfig.get().getPackagesToExclude();
+		if (CollectionUtils.isEmpty(packagesToExclude) && resolvedGroupConfig != null) {
+			packagesToExclude = resolvedGroupConfig.getPackagesToExclude();
 		}
 		boolean include = CollectionUtils.isEmpty(packagesToScan)
 				|| packagesToScan.stream().anyMatch(pack -> packageName.equals(pack)
@@ -960,15 +967,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected boolean isPathToMatch(String operationPath) {
 		List<String> pathsToMatch = springDocConfigProperties.getPathsToMatch();
 		List<String> pathsToExclude = springDocConfigProperties.getPathsToExclude();
-		if (CollectionUtils.isEmpty(pathsToMatch)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
-			if (optionalGroupConfig.isPresent())
-				pathsToMatch = optionalGroupConfig.get().getPathsToMatch();
+		if (CollectionUtils.isEmpty(pathsToMatch) && resolvedGroupConfig != null) {
+			pathsToMatch = resolvedGroupConfig.getPathsToMatch();
 		}
-		if (CollectionUtils.isEmpty(pathsToExclude)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
-			if (optionalGroupConfig.isPresent())
-				pathsToExclude = optionalGroupConfig.get().getPathsToExclude();
+		if (CollectionUtils.isEmpty(pathsToExclude) && resolvedGroupConfig != null) {
+			pathsToExclude = resolvedGroupConfig.getPathsToExclude();
 		}
 		boolean include = CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
 		boolean exclude = !CollectionUtils.isEmpty(pathsToExclude) && pathsToExclude.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
@@ -997,7 +1000,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	protected boolean isAdditionalRestController(Class<?> rawClass) {
-		return ADDITIONAL_REST_CONTROLLERS.stream().anyMatch(clazz -> ClassUtils.getUserClass(clazz).isAssignableFrom(rawClass));
+		List<Class<?>> snapshot;
+		synchronized (ADDITIONAL_REST_CONTROLLERS) {
+			snapshot = new ArrayList<>(ADDITIONAL_REST_CONTROLLERS);
+		}
+		return snapshot.stream().anyMatch(clazz -> ClassUtils.getUserClass(clazz).isAssignableFrom(rawClass));
 	}
 
 	/**

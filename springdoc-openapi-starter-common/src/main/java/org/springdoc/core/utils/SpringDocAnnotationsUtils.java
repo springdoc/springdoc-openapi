@@ -283,15 +283,20 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static boolean isAnnotationToIgnore(MethodParameter parameter) {
-		boolean annotationFirstCheck = ANNOTATIONS_TO_IGNORE.stream().anyMatch(annotation ->
+		List<Class> snapshot;
+		synchronized (ANNOTATIONS_TO_IGNORE) {
+			snapshot = new ArrayList<>(ANNOTATIONS_TO_IGNORE);
+		}
+		boolean annotationFirstCheck = snapshot.stream().anyMatch(annotation ->
 				(parameter.getParameterIndex() != -1 && AnnotationUtils.findAnnotation(parameter.getMethod().getParameters()[parameter.getParameterIndex()], annotation) != null)
 						|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
 
-		boolean annotationSecondCheck = Arrays.stream(parameter.getParameterAnnotations()).anyMatch(annotation ->
-				ANNOTATIONS_TO_IGNORE.contains(annotation.annotationType())
-						|| ANNOTATIONS_TO_IGNORE.stream().anyMatch(annotationToIgnore -> annotation.annotationType().getDeclaredAnnotation(annotationToIgnore) != null));
+		if (annotationFirstCheck)
+			return true;
 
-		return annotationFirstCheck || annotationSecondCheck;
+		return Arrays.stream(parameter.getParameterAnnotations()).anyMatch(annotation ->
+				snapshot.contains(annotation.annotationType())
+						|| snapshot.stream().anyMatch(annotationToIgnore -> annotation.annotationType().getDeclaredAnnotation(annotationToIgnore) != null));
 	}
 
 	/**
@@ -301,7 +306,11 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * @return the boolean
 	 */
 	public static boolean isAnnotationToIgnore(Type type) {
-		return ANNOTATIONS_TO_IGNORE.stream().anyMatch(
+		List<Class> snapshot;
+		synchronized (ANNOTATIONS_TO_IGNORE) {
+			snapshot = new ArrayList<>(ANNOTATIONS_TO_IGNORE);
+		}
+		return snapshot.stream().anyMatch(
 				annotation -> (type instanceof Class
 						&& AnnotationUtils.findAnnotation((Class<?>) type, annotation) != null));
 	}

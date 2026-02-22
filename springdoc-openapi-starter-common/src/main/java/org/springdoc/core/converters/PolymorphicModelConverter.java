@@ -30,12 +30,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JavaType;
@@ -65,12 +64,12 @@ public class PolymorphicModelConverter implements ModelConverter {
 	/**
 	 * The constant PARENT_TYPES_TO_IGNORE.
 	 */
-	private static final Set<String> PARENT_TYPES_TO_IGNORE = Collections.synchronizedSet(new HashSet<>());
+	private static final Set<String> PARENT_TYPES_TO_IGNORE = new CopyOnWriteArraySet<>();
 
 	/**
-	 * The constant PARENT_TYPES_TO_IGNORE.
+	 * The constant TYPES_TO_SKIP.
 	 */
-	private static final Set<String> TYPES_TO_SKIP = Collections.synchronizedSet(new HashSet<>());
+	private static final Set<String> TYPES_TO_SKIP = new CopyOnWriteArraySet<>();
 
 	static {
 		PARENT_TYPES_TO_IGNORE.add("JsonSchema");
