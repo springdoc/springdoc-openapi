@@ -269,7 +269,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Open api.
 	 */
-	private OpenAPI OpenApi;
+	private OpenAPI openApi;
 
 	/**
 	 * The Enable extra schemas resolution.
@@ -312,7 +312,7 @@ public class SpringDocConfigProperties {
 	 * @return the open api
 	 */
 	public OpenAPI getOpenApi() {
-		return OpenApi;
+		return openApi;
 	}
 
 	/**
@@ -321,7 +321,7 @@ public class SpringDocConfigProperties {
 	 * @param openApi the open api
 	 */
 	public void setOpenApi(OpenAPI openApi) {
-		this.OpenApi = openApi;
+		this.openApi = openApi;
 	}
 
 	/**
