@@ -202,7 +202,9 @@ public class DataRestOperationService {
 			HandlerMethod repositoryHandlerMethod = new HandlerMethod(methodResourceMapping.getMethod().getDeclaringClass(), methodResourceMapping.getMethod());
 			MethodParameter[] parameters = repositoryHandlerMethod.getMethodParameters();
 			for (MethodParameter methodParameter : parameters) {
-				dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameter.getParameterName() }, new MethodParameter[] { methodParameter }, dataRestRepository);
+				Param paramAnnotation = methodParameter.getParameterAnnotation(Param.class);
+				String paramName = (paramAnnotation != null) ? paramAnnotation.value() : methodParameter.getParameterName();
+				dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, new String[] { paramName }, new MethodParameter[] { methodParameter }, dataRestRepository);
 			}
 		}
 
