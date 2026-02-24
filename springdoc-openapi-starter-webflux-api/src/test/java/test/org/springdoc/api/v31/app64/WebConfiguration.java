@@ -12,6 +12,7 @@ public class WebConfiguration implements WebFluxConfigurer {
 
 	public void configureApiVersioning(ApiVersionConfigurer configurer) {
 		configurer.setVersionRequired(false);
+		configurer.setDefaultVersion("1.0");
 		configurer.useQueryParam("API-Version");
 	}
 }
