@@ -90,6 +90,7 @@
             "name": "firstName",
             "in": "query",
             "description": "this is for first Name",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -136,6 +137,7 @@
           {
             "name": "lastName",
             "in": "query",
+            "required": true,
             "schema": {
               "type": "string"
             }

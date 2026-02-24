@@ -149,6 +149,7 @@
           {
             "name": "code",
             "in": "query",
+            "required": true,
             "schema": {
               "type": "string"
             }

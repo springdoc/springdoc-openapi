@@ -21,6 +21,7 @@
           {
             "name": "enumField",
             "in": "query",
+            "required": true,
             "schema": {
               "type": "string",
               "enum": [
@@ -57,6 +58,7 @@
           {
             "name": "enumFields",
             "in": "query",
+            "required": true,
             "schema": {
               "type": "array",
               "items": {

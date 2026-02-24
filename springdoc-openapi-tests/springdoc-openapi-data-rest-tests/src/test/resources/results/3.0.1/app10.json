@@ -81,6 +81,7 @@
           {
             "name": "customer",
             "in": "query",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/Customer"
             }
@@ -550,6 +551,7 @@
           {
             "name": "lastname",
             "in": "query",
+            "required": true,
             "schema": {
               "type": "string"
             }

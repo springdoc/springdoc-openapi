@@ -215,9 +215,8 @@ public class DataRestOperationService {
 				Parameter parameter = getParameterFromAnnotations(openAPI, methodAttributes, method, pName);
 				if (parameter == null) {
 					parameter = new Parameter().name(pName).in(ParameterIn.QUERY.toString()).schema(schema);
-					operation.addParametersItem(parameter);
 				}
-				else if (CollectionUtils.isEmpty(operation.getParameters()))
+				if (CollectionUtils.isEmpty(operation.getParameters()))
 					operation.addParametersItem(parameter);
 				else
 					GenericParameterService.mergeParameter(operation.getParameters(), parameter);

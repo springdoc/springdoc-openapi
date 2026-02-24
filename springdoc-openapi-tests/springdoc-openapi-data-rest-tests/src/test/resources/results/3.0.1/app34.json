@@ -96,8 +96,9 @@
           {
             "name": "customer",
             "in": "query",
+            "required": true,
             "schema": {
-              "$ref": "#/components/schemas/CustomerRequestBody"
+              "$ref": "#/components/schemas/Customer"
             }
           }
         ],
@@ -649,6 +650,7 @@
           {
             "name": "lastname",
             "in": "query",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -1187,6 +1189,43 @@
         "properties": {
           "_links": {
             "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          },
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            }
           }
         }
       },
