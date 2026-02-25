@@ -34,5 +34,6 @@ public class SpringDocApp5Test extends AbstractCommonTest {
 	@Test
 	void checkContent() throws Exception {
 		checkContent(SCALAR_DEFAULT_PATH);
+		checkContent(SCALAR_DEFAULT_PATH);
 	}
 }
