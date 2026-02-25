@@ -33,6 +33,8 @@ import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.RequestBodyService;
 
+import org.springframework.web.servlet.function.ServerRequest;
+
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
@@ -48,7 +50,8 @@ public class RequestService extends AbstractRequestService {
 				.addRequestWrapperToIgnore(jakarta.servlet.http.HttpServletRequest.class)
 				.addRequestWrapperToIgnore(jakarta.servlet.http.HttpServletResponse.class)
 				.addRequestWrapperToIgnore(jakarta.servlet.http.HttpSession.class)
-				.addRequestWrapperToIgnore(jakarta.servlet.http.HttpSession.class);
+				.addRequestWrapperToIgnore(jakarta.servlet.http.HttpSession.class)
+				.addRequestWrapperToIgnore(ServerRequest.class);
 	}
 
 	/**

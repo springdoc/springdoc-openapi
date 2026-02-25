@@ -114,6 +114,11 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	private SpringDocVersionStrategy springDocVersionStrategy;
 
 	/**
+	 * The Version.
+	 */
+	private String version;
+
+	/**
 	 * Instantiates a new Router operation.
 	 */
 	public RouterOperation() {
@@ -155,6 +160,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 		this.headers = ArrayUtils.isEmpty(routerOperationAnnotation.headers()) ? routerFunctionData.getHeaders() : routerOperationAnnotation.headers();
 		this.params = routerOperationAnnotation.params();
 		this.queryParams = routerFunctionData.getQueryParams();
+		this.version = routerFunctionData.getVersion();
 	}
 
 	/**
@@ -191,6 +197,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 		this.headers = routerFunctionData.getHeaders();
 		this.params = routerFunctionData.getParams();
 		this.queryParams = routerFunctionData.getQueryParams();
+		this.version = routerFunctionData.getVersion();
 
 		Map<String, Object> attributes = routerFunctionData.getAttributes();
 		if (attributes.containsKey(OPERATION_ATTRIBUTE)) {
@@ -446,6 +453,24 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 */
 	public void setVersionStrategy(SpringDocVersionStrategy springDocVersionStrategy) {
 		this.springDocVersionStrategy = springDocVersionStrategy;
+	}
+
+	/**
+	 * Gets version.
+	 *
+	 * @return the version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * Sets version.
+	 *
+	 * @param version the version
+	 */
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	@Override

@@ -105,6 +105,7 @@ import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringDocProviders;
+import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.GenericResponseService;
@@ -585,6 +586,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		String[] headers = routerOperation.getHeaders();
 		Map<String, String> queryParams = routerOperation.getQueryParams();
 		SpringDocVersionStrategy springDocVersionStrategy = routerOperation.getSpringDocVersionStrategy();
+		if (springDocVersionStrategy == null && routerOperation.getVersion() != null) {
+			Optional<SpringWebProvider> springWebProviderOpt = springDocProviders.getSpringWebProvider();
+			if (springWebProviderOpt.isPresent()) {
+				springDocVersionStrategy = springWebProviderOpt.get().getSpringDocVersionStrategy(
+						routerOperation.getVersion(), routerOperation.getParams());
+			}
+		}
 		if (springDocVersionStrategy != null)
 			queryParams = springDocVersionStrategy.updateQueryParams(queryParams);
 		Components components = openAPI.getComponents();
@@ -880,14 +888,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (routerOperationList.size() == 1) {
 				List<RouterFunctionData> datas = routerFunctionVisitor.getRouterFunctionDatas();
 				List<RouterOperation> operationList = routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, datas.get(0))).collect(Collectors.toList());
-				resolveRouterFunctionVersionStrategies(datas, operationList);
 				calculatePath(operationList, locale, openAPI);
 			}
 			else {
 				List<RouterFunctionData> datas = routerFunctionVisitor.getRouterFunctionDatas();
 				List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
 				mergeRouters(datas, operationList);
-				resolveRouterFunctionVersionStrategies(datas, operationList);
 				calculatePath(operationList, locale, openAPI);
 			}
 		}
@@ -907,13 +913,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					RouterOperation op = operations.get(i);
 					SpringDocVersionStrategy strategy = springWebProvider.getSpringDocVersionStrategy(version, datas.get(i).getParams());
 					if (strategy != null) {
-						// Ensure version is set for functional routes where params may be empty
-						if (strategy.getVersion() == null) {
-							strategy.setVersion(version);
-						}
 						op.setPath(strategy.updateOperationPath(op.getPath(), version));
 					}
-					op.setVersionStrategy(strategy);
+					op.setVersion(version);
 				}
 			}
 		});

@@ -42,17 +42,15 @@ public class UserRouterConfig {
 
 	/**
 	 * Routes router function.
-	 *
 	 * @param handler the handler
 	 * @return the router function
 	 */
 	@Bean
 	RouterFunction<ServerResponse> routes(UserHandler handler) {
 		return SpringdocRouteBuilder.route()
-				.GET("/api/{version}/users", RequestPredicates.version("1.0"),
-						handler::findAll,
-						ops -> ops.beanClass(UserHandler.class).beanMethod("findAll"))
-				.build();
+			.GET("/api/{version}/users", RequestPredicates.version("1.0"), handler::findAll,
+					ops -> ops.beanClass(UserHandler.class).beanMethod("findAll"))
+			.build();
 	}
 
 }
