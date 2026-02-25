@@ -108,11 +108,6 @@ public class RouterFunctionWebMvcProvider implements RouterFunctionProvider, App
 		}
 
 		@Override
-		public void version(String version) {
-			// Not yet needed
-		}
-
-		@Override
 		public void unknown(RequestPredicate predicate) {
 			// Not yet needed
 		}

@@ -84,6 +84,11 @@ public class RouterFunctionData {
 	private RequestMethod[] methods;
 
 	/**
+	 * The Version.
+	 */
+	private String version;
+
+	/**
 	 * The Attributes.
 	 */
 	private Map<String, Object> attributes = new LinkedHashMap<>();
@@ -109,6 +114,7 @@ public class RouterFunctionData {
 		this.queryParams = functionData.getQueryParams();
 		this.methods = functionData.getMethods();
 		this.attributes = functionData.getAttributes();
+		this.version = functionData.getVersion();
 	}
 
 	/**
@@ -311,5 +317,23 @@ public class RouterFunctionData {
 	 */
 	public void addAttributes(Map<String, Object> attributes) {
 		this.attributes.putAll(attributes);
+	}
+
+	/**
+	 * Gets version.
+	 *
+	 * @return the version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * Sets version.
+	 *
+	 * @param version the version
+	 */
+	public void setVersion(String version) {
+		this.version = version;
 	}
 }

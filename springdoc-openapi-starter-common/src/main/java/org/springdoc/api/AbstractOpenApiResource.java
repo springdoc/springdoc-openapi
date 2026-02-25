@@ -861,7 +861,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		boolean withRouterOperation = routerFunctionVisitor.getRouterFunctionDatas().stream()
 				.anyMatch(routerFunctionData -> routerFunctionData.getAttributes().containsKey(OPERATION_ATTRIBUTE));
 		if (withRouterOperation) {
-			List<RouterOperation> operationList = routerFunctionVisitor.getRouterFunctionDatas().stream().map(RouterOperation::new).collect(Collectors.toList());
+			List<RouterFunctionData> datas = routerFunctionVisitor.getRouterFunctionDatas();
+			List<RouterOperation> operationList = datas.stream().map(RouterOperation::new).collect(Collectors.toList());
+			resolveRouterFunctionVersionStrategies(datas, operationList);
 			calculatePath(operationList, locale, openAPI);
 		}
 		else {
@@ -875,14 +877,46 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 			else
 				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
-			if (routerOperationList.size() == 1)
-				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()), locale, openAPI);
+			if (routerOperationList.size() == 1) {
+				List<RouterFunctionData> datas = routerFunctionVisitor.getRouterFunctionDatas();
+				List<RouterOperation> operationList = routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, datas.get(0))).collect(Collectors.toList());
+				resolveRouterFunctionVersionStrategies(datas, operationList);
+				calculatePath(operationList, locale, openAPI);
+			}
 			else {
+				List<RouterFunctionData> datas = routerFunctionVisitor.getRouterFunctionDatas();
 				List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
-				mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
+				mergeRouters(datas, operationList);
+				resolveRouterFunctionVersionStrategies(datas, operationList);
 				calculatePath(operationList, locale, openAPI);
 			}
 		}
+	}
+
+	/**
+	 * Resolve version strategies for router function operations.
+	 *
+	 * @param datas      the router function datas
+	 * @param operations the router operations
+	 */
+	private void resolveRouterFunctionVersionStrategies(List<RouterFunctionData> datas, List<RouterOperation> operations) {
+		springDocProviders.getSpringWebProvider().ifPresent(springWebProvider -> {
+			for (int i = 0; i < operations.size() && i < datas.size(); i++) {
+				String version = datas.get(i).getVersion();
+				if (version != null) {
+					RouterOperation op = operations.get(i);
+					SpringDocVersionStrategy strategy = springWebProvider.getSpringDocVersionStrategy(version, datas.get(i).getParams());
+					if (strategy != null) {
+						// Ensure version is set for functional routes where params may be empty
+						if (strategy.getVersion() == null) {
+							strategy.setVersion(version);
+						}
+						op.setPath(strategy.updateOperationPath(op.getPath(), version));
+					}
+					op.setVersionStrategy(strategy);
+				}
+			}
+		});
 	}
 
 	/**

@@ -92,6 +92,11 @@ public class AbstractRouterFunctionVisitor {
 	protected Map<String, Object> attributes = new LinkedHashMap<>();
 
 	/**
+	 * The Version.
+	 */
+	private String version;
+
+	/**
 	 * The Level.
 	 */
 	private int level;
@@ -176,6 +181,15 @@ public class AbstractRouterFunctionVisitor {
 			queryParams.put(name, value);
 		else
 			currentRouterFunctionDatas.forEach(routerFunctionData -> routerFunctionData.addQueryParams(name, value));
+	}
+
+	/**
+	 * Version.
+	 *
+	 * @param version the version
+	 */
+	public void version(String version) {
+		this.version = version;
 	}
 
 	/**
@@ -282,8 +296,15 @@ public class AbstractRouterFunctionVisitor {
 	 * Common route.
 	 */
 	protected void commonRoute() {
+		String currentVersion = this.version;
+		this.version = null;
 		this.routerFunctionDatas.addAll(currentRouterFunctionDatas);
-		currentRouterFunctionDatas.forEach(routerFunctionData -> routerFunctionData.addAttributes(this.attributes));
+		currentRouterFunctionDatas.forEach(routerFunctionData -> {
+			routerFunctionData.addAttributes(this.attributes);
+			if (currentVersion != null) {
+				routerFunctionData.setVersion(currentVersion);
+			}
+		});
 		this.attributes = new HashMap<>();
 	}
 
