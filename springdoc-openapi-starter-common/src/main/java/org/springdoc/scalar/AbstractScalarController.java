@@ -167,7 +167,7 @@ public abstract class AbstractScalarController {
 	 * @return  the api docs url
 	 */
 	private String buildApiDocsUrl(String requestUrl, String apiDocsPath) {
-		String apiDocsUrl = scalarProperties.getUrl();
+		String apiDocsUrl = originalScalarUrl;
 		if (SCALAR_DEFAULT_URL.equals(originalScalarUrl)) {
 			String serverUrl = requestUrl.substring(0, requestUrl.length() - scalarProperties.getPath().length());
 			apiDocsUrl = serverUrl + apiDocsPath;
