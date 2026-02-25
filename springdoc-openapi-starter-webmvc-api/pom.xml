@@ -49,6 +49,12 @@
 			<artifactId>spring-boot-health</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- For Enhanced Pageable Support -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
