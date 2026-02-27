@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Upgrade Spring Boot to version **4.0.3**
 - Upgrade swagger-core to version **2.2.43**
-- Upgrade swagger-ui to version **5.31.2**
+- Upgrade swagger-ui to version **5.32.0**
 - Upgrade Scalar to version **0.5.55**
 
 ### Fixed
