@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.2] - 2026-02-27
+
+### Added
+
+- #3229 – Add support for Spring Framework API Versioning with Functional Endpoints
+- #3208 – Add `springdoc.swagger-ui.document-title` property
+
+### Changed
+
+- Upgrade Spring Boot to version **4.0.3**
+- Upgrade swagger-core to version **2.2.43**
+- Upgrade swagger-ui to version **5.31.2**
+- Upgrade Scalar to version **0.5.55**
+
+### Fixed
+
+- #3232 – Gracefully handle springdoc endpoint paths during API version resolution
+- #3230 – Scalar source URLs resolve to `null/<groupName>` on second request when using `GroupedOpenApi`
+- #3226 – Propagate `JsonView` context when resolving `Page<T>` schema
+- #3228 – springdoc-openapi-starter 3.x doesn't depend on `org.springframework.boot:spring-boot-starter`
+- #3220 – Reachability metadata not compatible with GraalVM 25
+- #3195 – Application won't compile when OpenApi and spring-boot-data-rest is present
+- #3193 – `OpenApi` field in `SpringDocConfigProperties` does not comply with camel case naming conventions
+- #3215 – Type annotation not considered when Kotlin is not present
+- #3199 – Prevent duplicate `_links` in `allOf` child schemas
+- #3198 – Property resolution for parameter default values
+- #3206 – Upgrade swagger-core from version 2.2.41 to 2.2.42
+
 ## [3.0.1] - 2026-01-01
 
 ### Added
