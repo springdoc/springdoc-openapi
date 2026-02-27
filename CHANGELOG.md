@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.16] - 2026-02-27
+
+### Added
+
+- Add support for `springdoc.swagger-ui.document-title` property to customize the browser tab title
+
+### Changed
+
+- Upgrade Spring Boot to version **3.5.11**
+- Upgrade swagger-core to version **2.2.43**
+- Upgrade swagger-ui to version **5.31.2**
+- Upgrade Scalar to version **0.5.55**
+
+### Fixed
+
+- #3230 – Scalar source URLs resolve to `null/<groupName>` on second request when using `GroupedOpenApi`
+- #3226 – Propagate `@JsonView` context when resolving `Page<T>` schema in `PageOpenAPIConverter`
+- #3205 – springdoc-ui does not work with native compile GraalVM 25
+- #3219 – Upgrade swagger-core from 2.2.42 to 2.2.43 (fixes schema resolution issues)
+- #3193 – OpenApi field in `SpringDocConfigProperties` does not comply with camelCase naming conventions
+- #3161 – Prevent duplicate `_links` in `allOf` child schemas extending `RepresentationModel`
+- Fix type annotation not considered when Kotlin is not present
+- Fix property resolution for parameter default values
+
 ## [2.8.15] - 2026-01-01
 
 ### Added
