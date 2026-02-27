@@ -114,6 +114,7 @@ import org.springdoc.core.service.OperationService;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 import org.springdoc.core.utils.SpringDocUtils;
+import org.springdoc.core.versions.MediaTypeVersionStrategy;
 import org.springdoc.core.versions.SpringDocVersionStrategy;
 
 import org.springframework.aop.support.AopUtils;
@@ -780,11 +781,25 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		String operationPath = routerOperation.getPath();
 		io.swagger.v3.oas.annotations.Operation apiOperation = routerOperation.getOperation();
 		String[] methodConsumes = routerOperation.getConsumes();
-		String[] methodProduces = routerOperation.getProduces();
 		String[] headers = routerOperation.getHeaders();
 		Map<String, String> queryParams = routerOperation.getQueryParams();
 		SpringDocVersionStrategy springDocVersionStrategy = routerOperation.getSpringDocVersionStrategy();
-		if(springDocVersionStrategy != null)
+		if (springDocVersionStrategy == null && routerOperation.getVersion() != null) {
+			Optional<SpringWebProvider> springWebProviderOpt = springDocProviders.getSpringWebProvider();
+			if (springWebProviderOpt.isPresent()) {
+				springDocVersionStrategy = springWebProviderOpt.get().getSpringDocVersionStrategy(
+						routerOperation.getVersion(), routerOperation.getParams());
+			}
+		}
+		String[] methodProduces = routerOperation.getProduces();
+		if (springDocVersionStrategy instanceof MediaTypeVersionStrategy mediaTypeVersionStrategy
+				&& mediaTypeVersionStrategy.getVersion() != null) {
+			methodProduces = mediaTypeVersionStrategy.buildProduces();
+		}
+		else if (ArrayUtils.isEmpty(methodProduces)) {
+			methodProduces = new String[] { springDocConfigProperties.getDefaultProducesMediaType() };
+		}
+		if (springDocVersionStrategy != null)
 			queryParams = springDocVersionStrategy.updateQueryParams(queryParams);
 		Paths paths = openAPI.getPaths();
 		Map<HttpMethod, Operation> operationMap = null;
@@ -803,7 +818,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			String operationId = operation.getOperationId();
 			operation.setOperationId(operationId);
 
-			fillParametersList(operation, queryParams, methodAttributes);
+			fillParametersList(operation, queryParams, methodAttributes, true);
 			if (!CollectionUtils.isEmpty(operation.getParameters()))
 				operation.getParameters().stream()
 						.filter(parameter -> StringUtils.isEmpty(parameter.get$ref()))
@@ -1265,16 +1280,46 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param methodAttributes the method attributes
 	 */
 	private void fillParametersList(Operation operation, Map<String, String> queryParams, MethodAttributes methodAttributes) {
+		fillParametersList(operation, queryParams, methodAttributes, false);
+	}
+
+	/**
+	 * Fill parameters list.
+	 *
+	 * @param operation             the operation
+	 * @param queryParams           the query params
+	 * @param methodAttributes      the method attributes
+	 * @param addHeadersWhenEmpty   whether to add headers when operation has no parameters
+	 */
+	private void fillParametersList(Operation operation, Map<String, String> queryParams, MethodAttributes methodAttributes, boolean addHeadersWhenEmpty) {
 		List<Parameter> parametersList = operation.getParameters();
 		if (parametersList == null)
 			parametersList = new ArrayList<>();
 		Collection<Parameter> headersMap = AbstractRequestService.getHeaders(methodAttributes, new LinkedHashMap<>());
 		headersMap.forEach(parameter -> {
-			Optional<Parameter> existingParam;
 			if (!CollectionUtils.isEmpty(operation.getParameters())) {
-				existingParam = operation.getParameters().stream().filter(p -> parameter.getName().equals(p.getName())).findAny();
-				if (existingParam.isEmpty())
+				if (operation.getParameters().stream().noneMatch(p -> parameter.getName().equals(p.getName()))) {
 					operation.addParametersItem(parameter);
+				}
+				else {
+					operation.getParameters().stream()
+							.filter(p -> parameter.getName().equals(p.getName()))
+							.findFirst()
+							.ifPresent(existingParam -> {
+								if (existingParam.getSchema() != null && parameter.getSchema() != null
+										&& parameter.getSchema().getEnum() != null) {
+									for (Object enumValue : parameter.getSchema().getEnum()) {
+										if (existingParam.getSchema().getEnum() == null
+												|| !existingParam.getSchema().getEnum().contains(enumValue)) {
+											existingParam.getSchema().addEnumItemObject(enumValue);
+										}
+									}
+								}
+							});
+				}
+			}
+			else if (addHeadersWhenEmpty) {
+				operation.addParametersItem(parameter);
 			}
 		});
 		if (!CollectionUtils.isEmpty(queryParams)) {
