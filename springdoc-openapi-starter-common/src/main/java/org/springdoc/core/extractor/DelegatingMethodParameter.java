@@ -144,7 +144,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 
 			boolean hasFlatAnnotation = p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class);
 			boolean hasNotFlatAnnotation = Arrays.stream(p.getParameterAnnotations())
-					.anyMatch(annotation -> Arrays.asList(RequestBody.class, RequestPart.class).contains(annotation.annotationType()));
+					.anyMatch(annotation -> RequestBody.class == annotation.annotationType() || RequestPart.class == annotation.annotationType());
 			if (!MethodParameterPojoExtractor.isSimpleType(paramClass)
 					&& (hasFlatAnnotation || (defaultFlatParamObject && !hasNotFlatAnnotation && !AbstractRequestService.isRequestTypeToIgnore(paramClass)))) {
 				List<MethodParameter> flatParams = new CopyOnWriteArrayList<>();

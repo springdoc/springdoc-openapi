@@ -283,7 +283,7 @@ public class OpenAPIService implements ApplicationContextAware {
 						Hidden.class) != null)).map(controller -> controller.getValue().getClass())
 				.collect(Collectors.toList());
 		if (!CollectionUtils.isEmpty(hiddenRestControllers))
-			getConfig().addHiddenRestControllers(hiddenRestControllers.toArray(new Class<?>[hiddenRestControllers.size()]));
+			getConfig().addHiddenRestControllers(hiddenRestControllers.toArray(new Class<?>[0]));
 	}
 
 	/**

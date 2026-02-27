@@ -139,7 +139,7 @@ public class SpringDocDataRestUtils {
 			entityInoMap.put(domainType.getSimpleName(), entityInfo);
 		}
 
-		openAPI.getPaths().entrySet().stream()
+		openAPI.getPaths().entrySet()
 				.forEach(stringPathItemEntry -> {
 					PathItem pathItem = stringPathItemEntry.getValue();
 					pathItem.readOperations().forEach(operation -> {
@@ -245,7 +245,8 @@ public class SpringDocDataRestUtils {
 			while (it.hasNext()) {
 				Entry<String, Schema> entry = it.next();
 				String propId = entry.getKey();
-				if (entityInoMap.containsKey(key) && entityInoMap.get(key).getAssociationsFields().contains(propId)) {
+				EntityInfo entityInfoForKey = entityInoMap.get(key);
+				if (entityInfoForKey != null && entityInfoForKey.getAssociationsFields().contains(propId)) {
 					if (entry.getValue().getItems() != null)
 						referencedSchema.addProperty(propId, new ArraySchema().items(new StringSchema()));
 					else
@@ -360,7 +361,8 @@ public class SpringDocDataRestUtils {
 			while (it.hasNext()) {
 				Entry<String, Schema> entry = it.next();
 				String propId = entry.getKey();
-				if (entityInoMap.containsKey(key) && entityInoMap.get(key).getIgnoredFields().contains(propId)) {
+				EntityInfo entityInfoForKey = entityInoMap.get(key);
+				if (entityInfoForKey != null && entityInfoForKey.getIgnoredFields().contains(propId)) {
 					it.remove();
 				}
 			}

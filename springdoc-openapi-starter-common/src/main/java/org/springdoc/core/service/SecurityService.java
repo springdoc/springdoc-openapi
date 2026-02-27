@@ -144,7 +144,7 @@ public class SecurityService {
 	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(Method method, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
 		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = AnnotatedElementUtils.findMergedAnnotation(method, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (methodSecurity != null)
-			allSecurityTags = addSecurityRequirements(allSecurityTags, new HashSet<>(Arrays.asList(methodSecurity.value())));
+			allSecurityTags = addSecurityRequirements(allSecurityTags, new HashSet<>(List.of(methodSecurity.value())));
 		if (CollectionUtils.isEmpty(allSecurityTags)) {
 			// handlerMethod SecurityRequirement
 			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList = AnnotatedElementUtils.findMergedRepeatableAnnotations(method,
@@ -165,7 +165,7 @@ public class SecurityService {
 		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = null;
 		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = AnnotatedElementUtils.findMergedAnnotation(beanType, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (classSecurity != null)
-			allSecurityTags = new HashSet<>(Arrays.asList(classSecurity.value()));
+			allSecurityTags = new HashSet<>(List.of(classSecurity.value()));
 		if (CollectionUtils.isEmpty(allSecurityTags)) {
 			// class SecurityRequirement
 			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = AnnotatedElementUtils.findMergedRepeatableAnnotations(
@@ -363,7 +363,8 @@ public class SecurityService {
 	 */
 	private Optional<Scopes> getScopes(OAuthScope[] scopes) {
 		Scopes scopesObject = new Scopes();
-		Arrays.stream(scopes).forEach(scope -> scopesObject.addString(scope.name(), scope.description()));
+		for (OAuthScope scope : scopes)
+			scopesObject.addString(scope.name(), scope.description());
 		return Optional.of(scopesObject);
 	}
 

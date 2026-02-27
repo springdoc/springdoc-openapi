@@ -184,7 +184,11 @@ public class GenericParameterService {
 	 * @return the boolean
 	 */
 	public static boolean isFile(Class type) {
-		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
+		for (Class<?> clazz : FILE_TYPES) {
+			if (clazz.isAssignableFrom(type))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -783,8 +787,9 @@ public class GenericParameterService {
 		Class cls = ((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass();
 		if (cls.getSuperclass() != null && cls.isRecord()) {
 			Map<String, String> recordParamMap = javadocProvider.getRecordClassParamJavadoc(cls);
-			if (recordParamMap.containsKey(fieldName)) {
-				paramJavadocDescription = recordParamMap.get(fieldName);
+			String recordDesc = recordParamMap.get(fieldName);
+			if (recordDesc != null) {
+				paramJavadocDescription = recordDesc;
 			}
 		}
 

@@ -84,9 +84,12 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	 */
 	public static boolean isDeprecated(Method method) {
 		Class<?> declaringClass = method.getDeclaringClass();
-		boolean deprecatedMethod = DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(method, annoClass) != null);
-		boolean deprecatedClass = DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(declaringClass, annoClass) != null);
-		return deprecatedClass || deprecatedMethod;
+		for (Class<? extends Annotation> annoClass : DEPRECATED_ANNOTATIONS) {
+			if (AnnotatedElementUtils.findMergedAnnotation(method, annoClass) != null
+					|| AnnotatedElementUtils.findMergedAnnotation(declaringClass, annoClass) != null)
+				return true;
+		}
+		return false;
 	}
 
 	@Override

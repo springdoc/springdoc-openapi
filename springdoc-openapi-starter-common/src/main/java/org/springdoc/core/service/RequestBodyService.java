@@ -168,11 +168,11 @@ public class RequestBodyService {
 			if (optionalContent.isPresent() && existingContent != null) {
 				Content newContent = optionalContent.get();
 				if (methodAttributes.isMethodOverloaded()) {
-					Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> {
+					for (String mediaTypeStr : methodAttributes.getMethodProduces()) {
 						io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
 						if (mediaType != null && mediaType.getSchema() != null)
 							mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
-					});
+					}
 					requestBodyObject.content(existingContent);
 				}
 				else

@@ -192,11 +192,11 @@ public class GenericResponseService implements ApplicationContextAware {
 			if (optionalContent.isPresent()) {
 				Content newContent = optionalContent.get();
 				if (methodAttributes.isMethodOverloaded() && existingContent != null) {
-					Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> {
+					for (String mediaTypeStr : methodAttributes.getMethodProduces()) {
 						io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
 						if (mediaType != null && mediaType.getSchema() != null)
 							mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
-					});
+					}
 					apiResponse.content(existingContent);
 				}
 				else
@@ -433,8 +433,7 @@ public class GenericResponseService implements ApplicationContextAware {
 			// available
 			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), true);
 			if (Objects.nonNull(httpCode)) {
-				apiResponse = methodAttributes.getGenericMapResponse().containsKey(httpCode) ? methodAttributes.getGenericMapResponse().get(httpCode)
-						: new ApiResponse();
+				apiResponse = methodAttributes.getGenericMapResponse().getOrDefault(httpCode, new ApiResponse());
 				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, true);
 			}
 		}
@@ -583,7 +582,8 @@ public class GenericResponseService implements ApplicationContextAware {
 	 */
 	private void setContent(String[] methodProduces, Content content,
 			io.swagger.v3.oas.models.media.MediaType mediaType) {
-		Arrays.stream(methodProduces).forEach(mediaTypeStr -> content.addMediaType(mediaTypeStr, mediaType));
+		for (String mediaTypeStr : methodProduces)
+			content.addMediaType(mediaTypeStr, mediaType);
 	}
 
 	/**
@@ -623,7 +623,8 @@ public class GenericResponseService implements ApplicationContextAware {
 			Schema<?> schemaN = calculateSchema(components, type,
 					methodAttributes.getJsonViewAnnotation(), getParameterAnnotations(methodParameter));
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces()))
-				Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
+				for (String mediaTypeStr : methodAttributes.getMethodProduces())
+					mergeSchema(existingContent, schemaN, mediaTypeStr);
 		}
 		if (springDocConfigProperties.isOverrideWithGenericResponse()
 				&& methodParameter.getExecutable().isAnnotationPresent(ExceptionHandler.class)) {
@@ -729,9 +730,10 @@ public class GenericResponseService implements ApplicationContextAware {
 					})
 					.toList();
 
-			Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
-					.map(ControllerAdviceInfo::getApiResponseMap)
-					.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
+			Map<String, ApiResponse> genericApiResponseMap = new LinkedHashMap<>();
+			for (ControllerAdviceInfo info : controllerAdviceInfosInThisBean) {
+				genericApiResponseMap.putAll(info.getApiResponseMap());
+			}
 
 			List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
 					.filter(controllerAdviceInfo ->
@@ -750,9 +752,7 @@ public class GenericResponseService implements ApplicationContextAware {
 
 					for (Class<?> exception : exceptions) {
 						if (isGlobalException(exception) ||
-								Arrays.stream(methodExceptions).anyMatch(methodException ->
-										methodException.isAssignableFrom(exception) ||
-												exception.isAssignableFrom(methodException))) {
+								matchesAnyMethodException(methodExceptions, exception)) {
 
 							addToGenericMap = true;
 							break;
@@ -760,10 +760,8 @@ public class GenericResponseService implements ApplicationContextAware {
 					}
 
 					if (addToGenericMap || exceptions.isEmpty()) {
-						methodAdviceInfo.getApiResponses().forEach((key, apiResponse) -> {
-							if (!genericApiResponseMap.containsKey(key))
-								genericApiResponseMap.put(key, apiResponse);
-						});
+						methodAdviceInfo.getApiResponses().forEach((key, apiResponse) ->
+								genericApiResponseMap.putIfAbsent(key, apiResponse));
 					}
 				}
 			}
@@ -838,6 +836,21 @@ public class GenericResponseService implements ApplicationContextAware {
 		return exceptions;
 	}
 
+
+	/**
+	 * Matches any method exception boolean.
+	 *
+	 * @param methodExceptions the method exceptions
+	 * @param exception        the exception
+	 * @return the boolean
+	 */
+	private boolean matchesAnyMethodException(Class<?>[] methodExceptions, Class<?> exception) {
+		for (Class<?> methodException : methodExceptions) {
+			if (methodException.isAssignableFrom(exception) || exception.isAssignableFrom(methodException))
+				return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Is unchecked exception boolean.

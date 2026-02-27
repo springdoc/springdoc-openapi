@@ -6,7 +6,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -57,14 +56,14 @@ public class SchemaUtils {
 	 * The constant ANNOTATIONS_FOR_REQUIRED.
 	 */
 	// using string litterals to support both validation-api v1 and v2
-	public static final List<String> ANNOTATIONS_FOR_REQUIRED = Arrays.asList("NotNull", "NonNull", "NotBlank",
+	public static final List<String> ANNOTATIONS_FOR_REQUIRED = List.of("NotNull", "NonNull", "NotBlank",
 			"NotEmpty");
 
 	/**
 	 * The constant ANNOTATIONS_FOR_NULLABLE.
 	 */
 	public static final List<String> ANNOTATIONS_FOR_NULLABLE =
-			Arrays.asList("Nullable");
+			List.of("Nullable");
 	/**
 	 * The constant OPTIONAL_TYPES.
 	 */

@@ -244,7 +244,11 @@ public abstract class AbstractRequestService {
 	 * @return the boolean
 	 */
 	public static boolean isRequestTypeToIgnore(Class<?> rawClass) {
-		return PARAM_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : PARAM_TYPES_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -262,8 +266,9 @@ public abstract class AbstractRequestService {
 				schema.addEnumItem(entry.getValue());
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
 			ParameterId parameterId = new ParameterId(parameter);
-			if (map.containsKey(parameterId)) {
-				parameter = map.get(parameterId);
+			Parameter existing = map.get(parameterId);
+			if (existing != null) {
+				parameter = existing;
 				List existingEnum = null;
 				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
 					existingEnum = parameter.getSchema().getEnum();

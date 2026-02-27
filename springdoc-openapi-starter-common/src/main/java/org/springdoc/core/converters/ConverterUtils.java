@@ -101,7 +101,11 @@ public class ConverterUtils {
 	 * @return the boolean
 	 */
 	public static boolean isResponseTypeWrapper(Class<?> rawClass) {
-		return RESULT_WRAPPERS_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : RESULT_WRAPPERS_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -111,7 +115,11 @@ public class ConverterUtils {
 	 * @return the boolean
 	 */
 	public static boolean isResponseTypeToIgnore(Class<?> rawClass) {
-		return RESPONSE_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : RESPONSE_TYPES_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -143,7 +151,11 @@ public class ConverterUtils {
 	 * @return the boolean
 	 */
 	public static boolean isFluxTypeWrapper(Class<?> rawClass) {
-		return FLUX_WRAPPERS_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : FLUX_WRAPPERS_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -193,7 +205,11 @@ public class ConverterUtils {
 	 * @return the boolean
 	 */
 	public static boolean isJavaTypeToIgnore(Class<?> rawClass) {
-		return JAVA_TYPE_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : JAVA_TYPE_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 }
