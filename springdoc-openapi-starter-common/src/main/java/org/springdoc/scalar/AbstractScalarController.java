@@ -28,6 +28,7 @@ package org.springdoc.scalar;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.scalar.maven.core.ScalarHtmlRenderer;
 import com.scalar.maven.core.ScalarProperties;
@@ -51,6 +52,10 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  */
 public abstract class AbstractScalarController {
 
+	/**
+	 * The constant SCRIPT_SRC_PATTERN.
+	 */
+	private static final Pattern SCRIPT_SRC_PATTERN = Pattern.compile("(<script[^>]*\\s+src\\s*=\\s*\")([^\"]*)(\")" );
 
 	/**
 	 * The Spring doc config properties.
@@ -116,7 +121,7 @@ public abstract class AbstractScalarController {
 		
 		String html = ScalarHtmlRenderer.render(configuredProperties);
 		String bundleUrl = buildJsBundleUrl(requestUrl, scalarPath);
-		html = html.replaceAll("(<script[^>]*\\s+src\\s*=\\s*\")([^\"]*)(\")", "$1"+bundleUrl+"$3");
+		html = SCRIPT_SRC_PATTERN.matcher(html).replaceAll("$1" + bundleUrl + "$3");
 		return ResponseEntity.ok()
 				.contentType(MediaType.TEXT_HTML)
 				.body(html);

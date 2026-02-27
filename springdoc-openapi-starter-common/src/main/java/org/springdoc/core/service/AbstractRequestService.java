@@ -39,7 +39,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -51,6 +50,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -137,7 +137,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * The constant PARAM_TYPES_TO_IGNORE.
 	 */
-	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = new CopyOnWriteArrayList<>();
 
 	static {
 		PARAM_TYPES_TO_IGNORE.add(WebRequest.class);
@@ -253,7 +253,11 @@ public abstract class AbstractRequestService {
 	 * @return the boolean
 	 */
 	public static boolean isRequestTypeToIgnore(Class<?> rawClass) {
-		return PARAM_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : PARAM_TYPES_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -735,7 +739,7 @@ public abstract class AbstractRequestService {
 					.filter(annotation -> io.swagger.v3.oas.annotations.parameters.RequestBody.class.equals(annotation.annotationType()))
 					.anyMatch(annotation -> ((io.swagger.v3.oas.annotations.parameters.RequestBody) annotation).required());
 		}
-		boolean validationExists = SchemaUtils.annotatedNotNull(annos.values().stream().toList());
+		boolean validationExists = SchemaUtils.annotatedNotNull(new ArrayList<>(annos.values()));
 
 		if (validationExists || (!isOptional && (springRequestBodyRequired || swaggerRequestBodyRequired)))
 			requestBody.setRequired(true);

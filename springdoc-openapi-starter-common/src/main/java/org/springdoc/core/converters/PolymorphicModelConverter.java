@@ -109,11 +109,15 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 */
 	private Schema<?> getResolvedSchema(JavaType javaType, Schema<?> resolvedSchema) {
 		if (resolvedSchema instanceof ObjectSchema && resolvedSchema.getProperties() != null) {
-			if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getName())) {
-				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getName());
+			Schema<?> found = resolvedSchema.getProperties().get(javaType.getRawClass().getName());
+			if (found != null) {
+				resolvedSchema = found;
 			}
-			else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName())) {
-				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
+			else {
+				found = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
+				if (found != null) {
+					resolvedSchema = found;
+				}
 			}
 		}
 		return resolvedSchema;
@@ -206,7 +210,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 		if (isConcreteClass(type)) result.addOneOfItem(schema);
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		Class<?> clazz = javaType.getRawClass();
-		if (TYPES_TO_SKIP.stream().noneMatch(typeToSkip -> typeToSkip.equals(clazz.getSimpleName())))
+		if (!TYPES_TO_SKIP.contains(clazz.getSimpleName()))
 			composedSchemas.forEach(result::addOneOfItem);
 
 		// Remove _links from result (composed schema) to prevent duplication

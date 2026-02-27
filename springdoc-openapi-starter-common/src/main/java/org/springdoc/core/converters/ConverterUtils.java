@@ -26,12 +26,11 @@
 
 package org.springdoc.core.converters;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -46,22 +45,22 @@ public class ConverterUtils {
 	/**
 	 * The constant RESULT_WRAPPERS_TO_IGNORE.
 	 */
-	private static final List<Class<?>> RESULT_WRAPPERS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class<?>> RESULT_WRAPPERS_TO_IGNORE = new CopyOnWriteArrayList<>();
 
 	/**
 	 * The constant RESPONSE_TYPES_TO_IGNORE.
 	 */
-	private static final List<Class<?>> RESPONSE_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class<?>> RESPONSE_TYPES_TO_IGNORE = new CopyOnWriteArrayList<>();
 
 	/**
 	 * The constant FLUX_WRAPPERS_TO_IGNORE.
 	 */
-	private static final List<Class<?>> FLUX_WRAPPERS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class<?>> FLUX_WRAPPERS_TO_IGNORE = new CopyOnWriteArrayList<>();
 
 	/**
 	 * The constant JAVA_TYPE_TO_IGNORE.
 	 */
-	private static final List<Class<?>> JAVA_TYPE_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class<?>> JAVA_TYPE_TO_IGNORE = new CopyOnWriteArrayList<>();
 
 	static {
 		RESULT_WRAPPERS_TO_IGNORE.add(Callable.class);
@@ -101,7 +100,11 @@ public class ConverterUtils {
 	 * @return the boolean
 	 */
 	public static boolean isResponseTypeWrapper(Class<?> rawClass) {
-		return RESULT_WRAPPERS_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : RESULT_WRAPPERS_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -111,7 +114,11 @@ public class ConverterUtils {
 	 * @return the boolean
 	 */
 	public static boolean isResponseTypeToIgnore(Class<?> rawClass) {
-		return RESPONSE_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : RESPONSE_TYPES_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -122,7 +129,7 @@ public class ConverterUtils {
 	public static void removeResponseWrapperToIgnore(Class<?> classes) {
 		List classesToIgnore = Arrays.asList(classes);
 		if (RESULT_WRAPPERS_TO_IGNORE.containsAll(classesToIgnore))
-			RESULT_WRAPPERS_TO_IGNORE.removeAll(Arrays.asList(classes));
+			RESULT_WRAPPERS_TO_IGNORE.removeAll(classesToIgnore);
 	}
 
 	/**
@@ -133,7 +140,7 @@ public class ConverterUtils {
 	public static void removeResponseTypeToIgnore(Class<?> classes) {
 		List classesToIgnore = Arrays.asList(classes);
 		if (RESPONSE_TYPES_TO_IGNORE.containsAll(classesToIgnore))
-			RESPONSE_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
+			RESPONSE_TYPES_TO_IGNORE.removeAll(classesToIgnore);
 	}
 
 	/**
@@ -143,7 +150,11 @@ public class ConverterUtils {
 	 * @return the boolean
 	 */
 	public static boolean isFluxTypeWrapper(Class<?> rawClass) {
-		return FLUX_WRAPPERS_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : FLUX_WRAPPERS_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -154,7 +165,7 @@ public class ConverterUtils {
 	public static void removeFluxWrapperToIgnore(Class<?> classes) {
 		List classesToIgnore = Arrays.asList(classes);
 		if (FLUX_WRAPPERS_TO_IGNORE.containsAll(classesToIgnore))
-			FLUX_WRAPPERS_TO_IGNORE.removeAll(Arrays.asList(classes));
+			FLUX_WRAPPERS_TO_IGNORE.removeAll(classesToIgnore);
 	}
 
 	/**
@@ -183,7 +194,7 @@ public class ConverterUtils {
 	public static void removeJavaTypeToIgnore(Class<?> classes) {
 		List classesToIgnore = Arrays.asList(classes);
 		if (JAVA_TYPE_TO_IGNORE.containsAll(classesToIgnore))
-			JAVA_TYPE_TO_IGNORE.removeAll(Arrays.asList(classes));
+			JAVA_TYPE_TO_IGNORE.removeAll(classesToIgnore);
 	}
 
 	/**
@@ -193,7 +204,11 @@ public class ConverterUtils {
 	 * @return the boolean
 	 */
 	public static boolean isJavaTypeToIgnore(Class<?> rawClass) {
-		return JAVA_TYPE_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+		for (Class<?> clazz : JAVA_TYPE_TO_IGNORE) {
+			if (clazz.isAssignableFrom(rawClass))
+				return true;
+		}
+		return false;
 	}
 
 }

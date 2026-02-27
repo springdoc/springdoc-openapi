@@ -84,7 +84,7 @@ public class MediaTypeVersionStrategy extends SpringDocVersionStrategy {
 	public String[] buildProduces() {
 		String type = mediaType.getType();
 		String subtype = mediaType.getSubtype();
-		String produces = String.format("%s/%s;%s=%s", type, subtype, parameterName, version);
+		String produces = type + "/" + subtype + ";" + parameterName + "=" + version;
 		return new String[] { produces };
 	}
 

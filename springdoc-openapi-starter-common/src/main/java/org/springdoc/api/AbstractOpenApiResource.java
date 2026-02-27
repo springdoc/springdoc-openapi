@@ -223,7 +223,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * The Path pattern.
 	 */
-	private final Pattern pathPattern = Pattern.compile("\\{(.*?)}");
+	private static final Pattern PATH_PATTERN = Pattern.compile("\\{(.*?)}");
 
 	/**
 	 * The resolved group config.
@@ -690,7 +690,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			operation = customizeOperation(operation, components, handlerMethod);
 
 			if (StringUtils.contains(operationPath, "*")) {
-				Matcher matcher = pathPattern.matcher(operationPath);
+				Matcher matcher = PATH_PATTERN.matcher(operationPath);
 				while (matcher.find()) {
 					String pathParam = matcher.group(1);
 					String newPathParam = pathParam.replace("*", "");

@@ -32,15 +32,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -107,7 +106,7 @@ public class GenericParameterService {
 	/**
 	 * The constant FILE_TYPES.
 	 */
-	private static final List<Class<?>> FILE_TYPES = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class<?>> FILE_TYPES = new CopyOnWriteArrayList<>();
 
 	/**
 	 * The constant LOGGER.
@@ -184,7 +183,11 @@ public class GenericParameterService {
 	 * @return the boolean
 	 */
 	public static boolean isFile(Class type) {
-		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
+		for (Class<?> clazz : FILE_TYPES) {
+			if (clazz.isAssignableFrom(type))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -243,7 +246,7 @@ public class GenericParameterService {
 			paramDoc.setAllowReserved(paramCalcul.getAllowReserved());
 
 		if (StringUtils.isBlank(paramDoc.get$ref()))
-			paramDoc.set$ref(paramDoc.get$ref());
+			paramDoc.set$ref(paramCalcul.get$ref());
 
 		if (paramDoc.getSchema() == null && paramDoc.getContent() == null)
 			paramDoc.setSchema(paramCalcul.getSchema());

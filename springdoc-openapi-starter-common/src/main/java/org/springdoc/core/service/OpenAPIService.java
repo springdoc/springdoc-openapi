@@ -278,12 +278,12 @@ public class OpenAPIService implements ApplicationContextAware {
 	private void initializeHiddenRestController() {
 		if (basicErrorController != null)
 			getConfig().addHiddenRestControllers(basicErrorController);
-		List<Class<?>> hiddenRestControllers = this.mappingsMap.entrySet().parallelStream()
+		List<Class<?>> hiddenRestControllers = this.mappingsMap.entrySet().stream()
 				.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 						Hidden.class) != null)).map(controller -> controller.getValue().getClass())
 				.collect(Collectors.toList());
 		if (!CollectionUtils.isEmpty(hiddenRestControllers))
-			getConfig().addHiddenRestControllers(hiddenRestControllers.toArray(new Class<?>[hiddenRestControllers.size()]));
+			getConfig().addHiddenRestControllers(hiddenRestControllers.toArray(new Class<?>[0]));
 	}
 
 	/**
