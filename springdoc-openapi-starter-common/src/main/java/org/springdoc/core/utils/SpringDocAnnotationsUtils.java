@@ -321,7 +321,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * @param classes the classes
 	 */
 	public static void addAnnotationsToIgnore(Class<?>... classes) {
-		ANNOTATIONS_TO_IGNORE.addAll(Arrays.asList(classes));
+		ANNOTATIONS_TO_IGNORE.addAll(List.of(classes));
 	}
 
 	/**
@@ -330,9 +330,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * @param classes the classes
 	 */
 	public static void removeAnnotationsToIgnore(Class<?>... classes) {
-		List classesToIgnore = Arrays.asList(classes);
-		if (ANNOTATIONS_TO_IGNORE.containsAll(classesToIgnore))
-			ANNOTATIONS_TO_IGNORE.removeAll(Arrays.asList(classes));
+		ANNOTATIONS_TO_IGNORE.removeAll(List.of(classes));
 	}
 
 	/**

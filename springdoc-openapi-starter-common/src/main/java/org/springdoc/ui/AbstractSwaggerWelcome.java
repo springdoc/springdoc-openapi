@@ -37,6 +37,7 @@ import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_FILE;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
@@ -180,7 +181,10 @@ public abstract class AbstractSwaggerWelcome {
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param sbUrls                    the sb urls
 	 */
-	protected abstract void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls);
+	protected void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls) {
+		StringBuilder sbUrl = new StringBuilder();
+		calculateUiRootCommon(swaggerUiConfigParameters, sbUrl, sbUrls);
+	}
 
 	/**
 	 * Calculate ui root common.
@@ -203,14 +207,18 @@ public abstract class AbstractSwaggerWelcome {
 	 *
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	protected abstract void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters);
+	protected void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		swaggerUiConfigParameters.setApiDocsUrl(buildUrlWithContextPath(swaggerUiConfigParameters, springDocConfigProperties.getApiDocs().getPath()));
+	}
 
 	/**
 	 * Build swagger config url string.
 	 *
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	protected abstract void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters);
+	protected void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getApiDocsUrl() + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
+	}
 
 	/**
 	 * Gets oauth2 redirect url.

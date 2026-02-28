@@ -275,7 +275,7 @@ public class RouterFunctionData {
 	 * @return the string [ ]
 	 */
 	public String[] getProduces() {
-		return produces.toArray(new String[produces.size()]);
+		return produces.toArray(new String[0]);
 	}
 
 	/**

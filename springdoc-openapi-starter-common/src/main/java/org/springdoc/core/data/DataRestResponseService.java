@@ -167,29 +167,26 @@ public class DataRestResponseService {
 	 */
 	private void addResponse(RequestMethod requestMethod, String operationPath, ApiResponses apiResponses, ApiResponse apiResponse) {
 		switch (requestMethod) {
-			case GET:
+			case GET -> {
 				addResponse200(apiResponses, apiResponse);
 				if (operationPath.contains("/{id}"))
 					addResponse404(apiResponses);
-				break;
-			case POST:
-				apiResponses.put(String.valueOf(HttpStatus.CREATED.value()), apiResponse.description(HttpStatus.CREATED.getReasonPhrase()));
-				break;
-			case DELETE:
+			}
+			case POST -> apiResponses.put(String.valueOf(HttpStatus.CREATED.value()), apiResponse.description(HttpStatus.CREATED.getReasonPhrase()));
+			case DELETE -> {
 				addResponse204(apiResponses);
 				addResponse404(apiResponses);
-				break;
-			case PUT:
+			}
+			case PUT -> {
 				addResponse200(apiResponses, apiResponse);
 				apiResponses.put(String.valueOf(HttpStatus.CREATED.value()), new ApiResponse().content(apiResponse.getContent()).description(HttpStatus.CREATED.getReasonPhrase()));
 				addResponse204(apiResponses);
-				break;
-			case PATCH:
+			}
+			case PATCH -> {
 				addResponse200(apiResponses, apiResponse);
 				addResponse204(apiResponses);
-				break;
-			default:
-				throw new IllegalArgumentException(requestMethod.name());
+			}
+			default -> throw new IllegalArgumentException(requestMethod.name());
 		}
 	}
 

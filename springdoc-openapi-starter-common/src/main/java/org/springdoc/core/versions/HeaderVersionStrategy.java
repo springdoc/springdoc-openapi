@@ -30,7 +30,7 @@ package org.springdoc.core.versions;
  *
  * @author bnasslahsen
  */
-public class HeaderVersionStrategy extends SpringDocVersionStrategy {
+public final class HeaderVersionStrategy extends SpringDocVersionStrategy {
 
 	/**
 	 * The Header name.

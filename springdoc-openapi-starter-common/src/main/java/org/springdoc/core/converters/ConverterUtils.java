@@ -26,7 +26,6 @@
 
 package org.springdoc.core.converters;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionStage;
@@ -127,9 +126,7 @@ public class ConverterUtils {
 	 * @param classes the classes
 	 */
 	public static void removeResponseWrapperToIgnore(Class<?> classes) {
-		List classesToIgnore = Arrays.asList(classes);
-		if (RESULT_WRAPPERS_TO_IGNORE.containsAll(classesToIgnore))
-			RESULT_WRAPPERS_TO_IGNORE.removeAll(classesToIgnore);
+		RESULT_WRAPPERS_TO_IGNORE.remove(classes);
 	}
 
 	/**
@@ -138,9 +135,7 @@ public class ConverterUtils {
 	 * @param classes the classes
 	 */
 	public static void removeResponseTypeToIgnore(Class<?> classes) {
-		List classesToIgnore = Arrays.asList(classes);
-		if (RESPONSE_TYPES_TO_IGNORE.containsAll(classesToIgnore))
-			RESPONSE_TYPES_TO_IGNORE.removeAll(classesToIgnore);
+		RESPONSE_TYPES_TO_IGNORE.remove(classes);
 	}
 
 	/**
@@ -163,9 +158,7 @@ public class ConverterUtils {
 	 * @param classes the classes
 	 */
 	public static void removeFluxWrapperToIgnore(Class<?> classes) {
-		List classesToIgnore = Arrays.asList(classes);
-		if (FLUX_WRAPPERS_TO_IGNORE.containsAll(classesToIgnore))
-			FLUX_WRAPPERS_TO_IGNORE.removeAll(classesToIgnore);
+		FLUX_WRAPPERS_TO_IGNORE.remove(classes);
 	}
 
 	/**
@@ -192,9 +185,7 @@ public class ConverterUtils {
 	 * @param classes the classes
 	 */
 	public static void removeJavaTypeToIgnore(Class<?> classes) {
-		List classesToIgnore = Arrays.asList(classes);
-		if (JAVA_TYPE_TO_IGNORE.containsAll(classesToIgnore))
-			JAVA_TYPE_TO_IGNORE.removeAll(classesToIgnore);
+		JAVA_TYPE_TO_IGNORE.remove(classes);
 	}
 
 	/**

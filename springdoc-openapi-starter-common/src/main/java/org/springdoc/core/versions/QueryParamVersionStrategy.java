@@ -35,7 +35,7 @@ import org.apache.commons.lang3.ArrayUtils;
  *
  * @author bnasslahsen
  */
-public class QueryParamVersionStrategy extends SpringDocVersionStrategy {
+public final class QueryParamVersionStrategy extends SpringDocVersionStrategy {
 
 	/**
 	 * The Parameter name.

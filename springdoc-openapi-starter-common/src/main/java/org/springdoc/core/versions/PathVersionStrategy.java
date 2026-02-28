@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author bnasslahsen
  */
-public class PathVersionStrategy extends SpringDocVersionStrategy {
+public final class PathVersionStrategy extends SpringDocVersionStrategy {
 
 	/**
 	 * The Path segment index.

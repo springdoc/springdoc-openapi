@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author bnasslahsen
  */
-public abstract class SpringDocVersionStrategy {
+public abstract sealed class SpringDocVersionStrategy permits HeaderVersionStrategy, MediaTypeVersionStrategy, PathVersionStrategy, QueryParamVersionStrategy {
 
 	/**
 	 * The Version.

@@ -207,7 +207,7 @@ public class SecurityService {
 				continue;
 			SecurityRequirement securityRequirement = new SecurityRequirement();
 			if (securityRequirementApi.scopes().length > 0)
-				securityRequirement.addList(securityRequirementApi.name(), Arrays.asList(securityRequirementApi.scopes()));
+				securityRequirement.addList(securityRequirementApi.name(), List.of(securityRequirementApi.scopes()));
 			else
 				securityRequirement.addList(securityRequirementApi.name());
 			securityRequirements.add(securityRequirement);

@@ -32,7 +32,7 @@ import org.springframework.http.MediaType;
  *
  * @author bnasslahsen
  */
-public class MediaTypeVersionStrategy extends SpringDocVersionStrategy {
+public final class MediaTypeVersionStrategy extends SpringDocVersionStrategy {
 
 	/**
 	 * The Media type.
