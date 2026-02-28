@@ -67,6 +67,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -223,7 +224,7 @@ public abstract class AbstractRequestService {
 	 * @param classes the classes
 	 */
 	public static void addRequestWrapperToIgnore(Class<?>... classes) {
-		PARAM_TYPES_TO_IGNORE.addAll(Arrays.asList(classes));
+		PARAM_TYPES_TO_IGNORE.addAll(List.of(classes));
 	}
 
 	/**
@@ -232,9 +233,7 @@ public abstract class AbstractRequestService {
 	 * @param classes the classes
 	 */
 	public static void removeRequestWrapperToIgnore(Class<?>... classes) {
-		List<Class<?>> classesToIgnore = Arrays.asList(classes);
-		if (PARAM_TYPES_TO_IGNORE.containsAll(classesToIgnore))
-			PARAM_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
+		PARAM_TYPES_TO_IGNORE.removeAll(List.of(classes));
 	}
 
 	/**
@@ -575,7 +574,7 @@ public abstract class AbstractRequestService {
 	 * @return the boolean
 	 */
 	public boolean isValidParameter(Parameter parameter, MethodAttributes methodAttributes) {
-		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null) && !(Arrays.asList(methodAttributes.getMethodConsumes()).contains(APPLICATION_FORM_URLENCODED_VALUE) && ParameterIn.QUERY.toString().equals(parameter.getIn()));
+		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null) && !(ArrayUtils.contains(methodAttributes.getMethodConsumes(), APPLICATION_FORM_URLENCODED_VALUE) && ParameterIn.QUERY.toString().equals(parameter.getIn()));
 	}
 
 	/**
@@ -796,7 +795,7 @@ public abstract class AbstractRequestService {
 				(checkRequestBodyAnnotation(methodParameter)
 						|| checkOperationRequestBody(methodParameter)
 						|| checkFile(methodParameter)
-						|| Arrays.asList(methodAttributes.getMethodConsumes()).contains(MULTIPART_FORM_DATA_VALUE));
+						|| ArrayUtils.contains(methodAttributes.getMethodConsumes(), MULTIPART_FORM_DATA_VALUE));
 	}
 
 	/**

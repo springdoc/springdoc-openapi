@@ -240,33 +240,15 @@ public class OperationService {
 	 */
 	private void setPathItemOperation(PathItem pathItemObject, String method, Operation operation) {
 		switch (method) {
-			case POST_METHOD:
-				pathItemObject.post(operation);
-				break;
-			case GET_METHOD:
-				pathItemObject.get(operation);
-				break;
-			case DELETE_METHOD:
-				pathItemObject.delete(operation);
-				break;
-			case PUT_METHOD:
-				pathItemObject.put(operation);
-				break;
-			case PATCH_METHOD:
-				pathItemObject.patch(operation);
-				break;
-			case TRACE_METHOD:
-				pathItemObject.trace(operation);
-				break;
-			case HEAD_METHOD:
-				pathItemObject.head(operation);
-				break;
-			case OPTIONS_METHOD:
-				pathItemObject.options(operation);
-				break;
-			default:
-				// Do nothing here
-				break;
+			case POST_METHOD -> pathItemObject.post(operation);
+			case GET_METHOD -> pathItemObject.get(operation);
+			case DELETE_METHOD -> pathItemObject.delete(operation);
+			case PUT_METHOD -> pathItemObject.put(operation);
+			case PATCH_METHOD -> pathItemObject.patch(operation);
+			case TRACE_METHOD -> pathItemObject.trace(operation);
+			case HEAD_METHOD -> pathItemObject.head(operation);
+			case OPTIONS_METHOD -> pathItemObject.options(operation);
+			default -> { }
 		}
 	}
 

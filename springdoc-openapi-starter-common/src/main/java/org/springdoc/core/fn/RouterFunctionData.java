@@ -154,7 +154,7 @@ public class RouterFunctionData {
 	 * @return the string [ ]
 	 */
 	public String[] getHeaders() {
-		return headers.toArray(new String[headers.size()]);
+		return headers.toArray(new String[0]);
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class RouterFunctionData {
 	 * @return the string [ ]
 	 */
 	public String[] getConsumes() {
-		return consumes.toArray(new String[consumes.size()]);
+		return consumes.toArray(new String[0]);
 	}
 
 	/**
@@ -200,7 +200,7 @@ public class RouterFunctionData {
 	 * @return the string [ ]
 	 */
 	public String[] getParams() {
-		return params.toArray(new String[params.size()]);
+		return params.toArray(new String[0]);
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class RouterFunctionData {
 	 * @return the string [ ]
 	 */
 	public String[] getProduces() {
-		return produces.toArray(new String[produces.size()]);
+		return produces.toArray(new String[0]);
 	}
 
 	/**

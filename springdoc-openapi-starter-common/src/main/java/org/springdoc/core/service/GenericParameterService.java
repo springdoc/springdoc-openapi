@@ -174,7 +174,7 @@ public class GenericParameterService {
 	 * @param classes the classes
 	 */
 	public static void addFileType(Class<?>... classes) {
-		FILE_TYPES.addAll(Arrays.asList(classes));
+		FILE_TYPES.addAll(List.of(classes));
 	}
 
 	/**
@@ -572,8 +572,7 @@ public class GenericParameterService {
 	 * @return the boolean
 	 */
 	public boolean isFile(MethodParameter methodParameter) {
-		if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
+		if (methodParameter.getGenericParameterType() instanceof ParameterizedType parameterizedType) {
 			return isFile(parameterizedType);
 		}
 		else {

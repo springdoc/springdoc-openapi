@@ -102,7 +102,9 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	}
 
 	@Override
-	protected abstract void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls);
+	protected void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls) {
+		super.calculateUiRootPath(swaggerUiConfigParameters, sbUrls);
+	}
 
 	/**
 	 * From current context path.

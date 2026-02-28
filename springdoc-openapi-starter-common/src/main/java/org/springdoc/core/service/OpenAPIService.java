@@ -550,7 +550,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			}
 		}
 
-		return allWebhooks.toArray(new Webhooks[allWebhooks.size()]);
+		return allWebhooks.toArray(new Webhooks[0]);
 	}
 
 
@@ -594,7 +594,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			}
 		}
 
-		return allWebhookClassesToScan.toArray(new Class<?>[allWebhookClassesToScan.size()]);
+		return allWebhookClassesToScan.toArray(new Class<?>[0]);
 	}
 
 

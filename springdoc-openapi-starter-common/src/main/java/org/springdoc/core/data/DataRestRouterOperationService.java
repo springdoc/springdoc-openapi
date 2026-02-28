@@ -26,7 +26,6 @@
 
 package org.springdoc.core.data;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -70,7 +69,7 @@ public class DataRestRouterOperationService {
 	/**
 	 * The constant UNDOCUMENTED_REQUEST_METHODS.
 	 */
-	private static final List<RequestMethod> UNDOCUMENTED_REQUEST_METHODS = Arrays.asList(RequestMethod.OPTIONS, RequestMethod.HEAD);
+	private static final List<RequestMethod> UNDOCUMENTED_REQUEST_METHODS = List.of(RequestMethod.OPTIONS, RequestMethod.HEAD);
 
 	/**
 	 * The constant REPOSITORY_PATH.

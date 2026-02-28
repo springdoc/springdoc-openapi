@@ -131,7 +131,7 @@ public class SecurityService {
 		Method method = handlerMethod.getMethod();
 		allSecurityTags = getSecurityRequirementsForMethod(method, allSecurityTags);
 
-		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[allSecurityTags.size()]) : null;
+		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
 	}
 
 	/**
@@ -207,7 +207,7 @@ public class SecurityService {
 				continue;
 			SecurityRequirement securityRequirement = new SecurityRequirement();
 			if (securityRequirementApi.scopes().length > 0)
-				securityRequirement.addList(securityRequirementApi.name(), Arrays.asList(securityRequirementApi.scopes()));
+				securityRequirement.addList(securityRequirementApi.name(), List.of(securityRequirementApi.scopes()));
 			else
 				securityRequirement.addList(securityRequirementApi.name());
 			securityRequirements.add(securityRequirement);

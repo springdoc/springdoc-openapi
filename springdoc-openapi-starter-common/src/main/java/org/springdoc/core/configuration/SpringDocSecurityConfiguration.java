@@ -166,8 +166,8 @@ public class SpringDocSecurityConfiguration {
 
 							String loginPath = null;
 
-							if (requestMatcher instanceof AntPathRequestMatcher) {
-								loginPath = ((AntPathRequestMatcher) requestMatcher).getPattern();
+							if (requestMatcher instanceof AntPathRequestMatcher antMatcher) {
+								loginPath = antMatcher.getPattern();
 							}
 							else if (requestMatcher instanceof PathPatternRequestMatcher) {
 								PathPattern pathPattern = (PathPattern) FieldUtils.readField(

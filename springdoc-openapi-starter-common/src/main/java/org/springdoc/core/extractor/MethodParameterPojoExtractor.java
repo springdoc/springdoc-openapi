@@ -322,7 +322,7 @@ public class MethodParameterPojoExtractor {
 	 * @param classes the classes
 	 */
 	public static void addSimpleTypes(Class<?>... classes) {
-		SIMPLE_TYPES.addAll(Arrays.asList(classes));
+		SIMPLE_TYPES.addAll(List.of(classes));
 	}
 
 	/**
@@ -331,7 +331,7 @@ public class MethodParameterPojoExtractor {
 	 * @param classes the classes
 	 */
 	public static void removeSimpleTypes(Class<?>... classes) {
-		SIMPLE_TYPES.removeAll(Arrays.asList(classes));
+		SIMPLE_TYPES.removeAll(List.of(classes));
 	}
 
 }

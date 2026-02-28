@@ -38,9 +38,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ServerWebExchange;
 
-import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_FILE;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_PATH;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Swagger welcome.
@@ -82,17 +80,6 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	}
 
 	@Override
-	protected void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls) {
-		StringBuilder sbUrl = new StringBuilder();
-		calculateUiRootCommon(swaggerUiConfigParameters, sbUrl, sbUrls);
-	}
-
-	@Override
-	protected void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		swaggerUiConfigParameters.setApiDocsUrl(buildUrlWithContextPath(swaggerUiConfigParameters, springDocConfigProperties.getApiDocs().getPath()));
-	}
-
-	@Override
 	protected String buildUrlWithContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl) {
 		if (swaggerUiConfigParameters.getPathPrefix() == null)
 			swaggerUiConfigParameters.setPathPrefix(springWebProvider.getIfAvailable().findPathPrefix(springDocConfigProperties));
@@ -102,11 +89,6 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 		else {
 			return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
 		}
-	}
-
-	@Override
-	protected void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getApiDocsUrl() + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
 	}
 
 }

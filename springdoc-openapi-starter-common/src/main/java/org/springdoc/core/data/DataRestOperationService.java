@@ -324,23 +324,12 @@ public class DataRestOperationService {
 	 */
 	private void addOperationDescription(Operation operation, RequestMethod requestMethod, String entity, DataRestRepository dataRestRepository) {
 		switch (requestMethod) {
-			case GET:
-				operation.setDescription(createDescription("get-", entity, dataRestRepository));
-				break;
-			case POST:
-				operation.setDescription(createDescription("create-", entity, dataRestRepository));
-				break;
-			case DELETE:
-				operation.setDescription(createDescription("delete-", entity, dataRestRepository));
-				break;
-			case PUT:
-				operation.setDescription(createDescription("update-", entity, dataRestRepository));
-				break;
-			case PATCH:
-				operation.setDescription(createDescription("patch-", entity, dataRestRepository));
-				break;
-			default:
-				throw new IllegalArgumentException(requestMethod.name());
+			case GET -> operation.setDescription(createDescription("get-", entity, dataRestRepository));
+			case POST -> operation.setDescription(createDescription("create-", entity, dataRestRepository));
+			case DELETE -> operation.setDescription(createDescription("delete-", entity, dataRestRepository));
+			case PUT -> operation.setDescription(createDescription("update-", entity, dataRestRepository));
+			case PATCH -> operation.setDescription(createDescription("patch-", entity, dataRestRepository));
+			default -> throw new IllegalArgumentException(requestMethod.name());
 		}
 	}
 
