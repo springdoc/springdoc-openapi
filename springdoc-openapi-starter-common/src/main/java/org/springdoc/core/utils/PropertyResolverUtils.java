@@ -233,7 +233,12 @@ public class PropertyResolverUtils {
 					Map<String, Object> valueResolved = new HashMap<>();
 					valueAsMap.forEach((key1, value1) -> {
 						String key1Resolved = resolve(key1.toString(), locale);
-						String value1Resolved = resolve(value1.toString(), locale);
+						Object value1Resolved;
+						if (value1 instanceof String valueAsString) {
+							value1Resolved = resolve(valueAsString, locale);
+						} else {
+							value1Resolved = value1;
+						}
 						valueResolved.put(key1Resolved, value1Resolved);
 					});
 					extensionsResolved.put(keyResolved, valueResolved);
