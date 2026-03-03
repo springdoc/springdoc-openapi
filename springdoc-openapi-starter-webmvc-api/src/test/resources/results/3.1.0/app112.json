@@ -107,6 +107,75 @@
         }
       }
     },
+    "/persons": {
+      "get": {
+        "tags": [
+          "person-controller"
+        ],
+        "operationId": "findPersons",
+        "parameters": [
+          {
+            "name": "setsOfShoes",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 4,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 200,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "age",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 9223372036854775807,
+              "minimum": 2
+            }
+          },
+          {
+            "name": "oneToTen",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 10,
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/personByLastName": {
       "get": {
         "tags": [
