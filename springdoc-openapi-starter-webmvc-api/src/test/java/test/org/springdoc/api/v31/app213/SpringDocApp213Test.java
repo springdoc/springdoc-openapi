@@ -22,14 +22,12 @@ import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 /**
  * <p>
  * A test for {@link SpecPropertiesCustomizer}
  */
-@SpringBootTest
 @ActiveProfiles("213")
 public class SpringDocApp213Test extends AbstractSpringDocTest {
 

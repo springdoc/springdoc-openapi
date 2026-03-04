@@ -30,6 +30,7 @@ package test.org.springdoc.api.v30.app92;
 import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * The type Spring doc app 92 test.
@@ -40,6 +41,7 @@ class SpringDocApp92Test extends AbstractSpringDocTest {
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v30.app92")
 	static class SpringDocTestApp {}
 
 }

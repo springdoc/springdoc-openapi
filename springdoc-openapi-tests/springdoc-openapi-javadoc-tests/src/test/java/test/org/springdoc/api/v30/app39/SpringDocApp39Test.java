@@ -26,7 +26,14 @@
 
 package test.org.springdoc.api.v30.app39;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v30.AbstractSpringDocTest;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.HeaderParameter;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springframework.context.annotation.Bean;
 
 /**
  * The type Spring doc app 39 test.
@@ -34,4 +41,36 @@ import test.org.springdoc.api.v30.AbstractSpringDocTest;
 class SpringDocApp39Test extends AbstractSpringDocTest {
 
 
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+		/**
+		 * The entry point of application.
+		 *
+		 * @param args the input arguments
+		 */
+
+		/**
+		 * Custom open api open api.
+		 *
+		 * @return the open api
+		 */
+		@Bean
+		public OpenAPI customOpenAPI() {
+			StringSchema schema = new StringSchema();
+			return new OpenAPI()
+					.components(new Components().addParameters("myGlobalHeader", new HeaderParameter().required(true).name("My-Global-Header").description("My Global Header").schema(schema)));
+		}
+
+		/**
+		 * Customer global header open api customiser open api customiser.
+		 *
+		 * @return the open api customiser
+		 */
+		@Bean
+		public OpenApiCustomizer customerGlobalHeaderOpenApiCustomizer() {
+			return openApi -> openApi.getPaths().values().stream().flatMap(pathItem -> pathItem.readOperations().stream())
+					.forEach(operation -> operation.addParametersItem(new HeaderParameter().$ref("#/components/parameters/myGlobalHeader")));
+		}
+	}
 }

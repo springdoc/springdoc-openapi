@@ -19,12 +19,15 @@
 package test.org.springdoc.webmvc.scalar.app5;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.webmvc.scalar.AbstractCommonTest;
 
 import org.springframework.test.context.TestPropertySource;
 
 import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_PATH;
 import static test.org.springdoc.webmvc.scalar.app5.SpringDocApp5Test.API_DOCS_URL;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
 
 @TestPropertySource(properties = "scalar.url=" + API_DOCS_URL)
 public class SpringDocApp5Test extends AbstractCommonTest {
@@ -35,5 +38,27 @@ public class SpringDocApp5Test extends AbstractCommonTest {
 	void checkContent() throws Exception {
 		checkContent(SCALAR_DEFAULT_PATH);
 		checkContent(SCALAR_DEFAULT_PATH);
+	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+
+		@Bean
+		public GroupedOpenApi storeOpenApi() {
+			String paths[] = { "/store/**" };
+			return GroupedOpenApi.builder()
+					.group("stores")
+					.pathsToMatch(paths)
+					.build();
+		}
+
+		@Bean
+		public GroupedOpenApi groupOpenApi() {
+			String paths[] = { "/pet/**" };
+			return GroupedOpenApi.builder()
+					.group("pets")
+					.pathsToMatch(paths)
+					.build();
+		}
 	}
 }

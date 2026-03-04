@@ -24,9 +24,31 @@
 
 package test.org.springdoc.api.v30.app50;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 
 public class SpringDocApp50Test extends AbstractSpringDocV30Test {
 
 
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+
+		@Bean
+		public OpenAPI defineOpenApi() {
+			OpenAPI api = new OpenAPI();
+			api.components(new Components().addResponses("Unauthorized",
+					new ApiResponse().description("Unauthorized")
+							.content(new Content().addMediaType(MediaType.APPLICATION_JSON_VALUE,
+									new io.swagger.v3.oas.models.media.MediaType().schema(new StringSchema())))));
+			return api;
+		}
+	}
 }

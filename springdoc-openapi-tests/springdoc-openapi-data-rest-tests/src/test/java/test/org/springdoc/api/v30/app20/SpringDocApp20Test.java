@@ -26,12 +26,21 @@
 
 package test.org.springdoc.api.v30.app20;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@OpenAPIDefinition(
+		info = @Info(
+				title = "Core API"
+		)
+)
 public class SpringDocApp20Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
+	
+	
 }

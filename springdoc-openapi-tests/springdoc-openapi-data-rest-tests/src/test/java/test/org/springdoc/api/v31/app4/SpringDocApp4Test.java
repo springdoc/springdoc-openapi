@@ -28,7 +28,18 @@ package test.org.springdoc.api.v31.app4;
 
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.hateoas.server.core.EvoInflectorLinkRelationProvider;
+
 public class SpringDocApp4Test extends AbstractSpringDocTest {
 
+	@Bean
+	EvoInflectorLinkRelationProvider relProvider() {
+		return new EvoInflectorLinkRelationProvider();
+	}
 
+	@SpringBootApplication
+	static class SpringDocTestApp {}
+	
 }

@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.AbstractCommonTest;
 
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -40,12 +39,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * A common base for OpenAPI 3.1 tests which provides the necessary foundation for OpenAPI 3.1 tests, 
+ * A common base for OpenAPI 3.1 tests which provides the necessary foundation for OpenAPI 3.1 tests,
  * making the test setup cleaner and more consistent.
  *
  * @author zdary
  */
-@SpringBootTest
 @TestPropertySource(properties = { SPRINGDOC_CACHE_DISABLED + "=true", "springdoc.api-docs.version=OPENAPI_3_1" })
 public abstract class AbstractSpringDocV31Test extends AbstractCommonTest {
 

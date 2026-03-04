@@ -30,6 +30,7 @@ import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -112,5 +113,6 @@ class SpringDocApp134Test extends AbstractSpringDocTest {
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v30.app134")
 	static class SpringDocTestApp {}
 }

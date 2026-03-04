@@ -30,6 +30,7 @@ import test.org.springdoc.api.AbstractCommonTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.apache.commons.lang3.SystemUtils.isJavaVersionAtLeast;
@@ -39,7 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = { "springdoc.api-docs.version=openapi_3_1", "springdoc.remove-broken-reference-definitions=false"})
+@TestPropertySource(properties = { "springdoc.api-docs.version=openapi_3_1", "springdoc.remove-broken-reference-definitions=false"})
 public class SpringDocApp193Test extends AbstractCommonTest {
 
 	@Test

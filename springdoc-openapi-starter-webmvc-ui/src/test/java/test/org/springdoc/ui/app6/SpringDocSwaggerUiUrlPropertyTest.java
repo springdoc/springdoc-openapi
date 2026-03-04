@@ -19,6 +19,7 @@
 package test.org.springdoc.ui.app6;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.test.context.TestPropertySource;
@@ -27,6 +28,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
 
 @TestPropertySource(properties = "springdoc.swagger-ui.url=http://myserver:8080/v3/api-docs")
 public class SpringDocSwaggerUiUrlPropertyTest extends AbstractSpringDocTest {
@@ -36,5 +39,27 @@ public class SpringDocSwaggerUiUrlPropertyTest extends AbstractSpringDocTest {
 		mockMvc.perform(get("/v3/api-docs/swagger-config"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("url", equalTo("http://myserver:8080/v3/api-docs")));
+	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+
+		@Bean
+		public GroupedOpenApi storeOpenApi() {
+			String paths[] = { "/store/**" };
+			return GroupedOpenApi.builder()
+					.group("stores")
+					.pathsToMatch(paths)
+					.build();
+		}
+
+		@Bean
+		public GroupedOpenApi groupOpenApi() {
+			String paths[] = { "/pet/**" };
+			return GroupedOpenApi.builder()
+					.group("pets")
+					.pathsToMatch(paths)
+					.build();
+		}
 	}
 }

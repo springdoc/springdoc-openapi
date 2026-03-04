@@ -29,6 +29,7 @@ import org.junit.jupiter.api.BeforeAll;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLE_EXTRA_SCHEMAS;
@@ -49,6 +50,7 @@ public class SpringDocApp115Test extends AbstractSpringDocTest {
 
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v31.app115")
 	static class SpringDocTestApp {}
 
 }

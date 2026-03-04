@@ -35,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * <p>
  * A test for {@link SpecPropertiesCustomizer}
  */
-@SpringBootTest
 @TestPropertySource(properties = { "springdoc.group-configs[0].group=Group0",
 		"springdoc.group-configs[0].packages-to-scan=com.my-package",
 		"springdoc.group-configs[1].group=Group1",
@@ -44,7 +43,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		"springdoc.group-configs[2].packages-to-scan=com.my-package",
 		"springdoc.group-configs[3].group=Group3",
 		"springdoc.group-configs[3].packages-to-scan=com.my-package" })
-
 public class SpringDocApp214Test extends AbstractCommonTest {
 
 	@Autowired

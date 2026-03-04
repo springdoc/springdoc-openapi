@@ -34,6 +34,7 @@ import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
@@ -71,5 +72,6 @@ public class SpringDocApp157Test extends AbstractSpringDocV30Test {
 	}
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v30.app157")
 	static class SpringBootApp {}
 }

@@ -28,7 +28,16 @@ package test.org.springdoc.api.v30.app66;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v30.AbstractSpringDocTest;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 public class SpringDocApp66Test extends AbstractSpringDocTest {
 
@@ -40,5 +49,26 @@ public class SpringDocApp66Test extends AbstractSpringDocTest {
 	void testApp2() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "streams").exchange()
 				.expectStatus().isNotFound();
+	}
+
+	@SpringBootApplication
+	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v30.app66" })
+	static class SpringDocTestApp {
+		@Bean
+		public OpenAPI customOpenAPI() {
+			return new OpenAPI()
+					.components(new Components().addSecuritySchemes("basicScheme",
+							new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
+					.info(new Info().title("Tweet API").version("v0")
+							.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+		}
+
+		@Bean
+		public GroupedOpenApi streamOpenApi() {
+			String[] paths = { "/stream/**" };
+			String[] packagedToMatch = { "test.org.springdoc.api.v30.app66" };
+			return GroupedOpenApi.builder().group("stream").pathsToMatch(paths)
+					.build();
+		}
 	}
 }

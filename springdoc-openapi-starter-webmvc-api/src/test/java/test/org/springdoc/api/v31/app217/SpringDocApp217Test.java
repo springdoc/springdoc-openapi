@@ -24,7 +24,6 @@ import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.hamcrest.Matchers.is;
@@ -37,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * <p>
  * A test for {@link SpecPropertiesCustomizer}
  */
-@SpringBootTest
 @ActiveProfiles("217")
 public class SpringDocApp217Test extends AbstractSpringDocTest {
 

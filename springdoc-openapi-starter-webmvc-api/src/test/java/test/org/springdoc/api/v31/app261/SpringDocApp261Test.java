@@ -27,6 +27,7 @@ package test.org.springdoc.api.v31.app261;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Tests path-segment versioning support for functional router endpoints.
@@ -36,6 +37,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringDocApp261Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v31.app261")
 	static class SpringDocTestApp {
 
 	}

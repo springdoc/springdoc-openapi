@@ -27,6 +27,7 @@ package test.org.springdoc.api.v31.app259;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Tests request-header versioning support for functional router endpoints with multiple
@@ -37,6 +38,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringDocApp259Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v31.app259")
 	static class SpringDocTestApp {
 
 	}

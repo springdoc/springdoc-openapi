@@ -28,7 +28,6 @@ import org.springframework.boot.test.context.SpringBootTest;
  * <p>
  * A test for {@link SpecPropertiesCustomizer}
  */
-@SpringBootTest
 public class SpringDocApp218Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication

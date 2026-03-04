@@ -27,9 +27,11 @@ package test.org.springdoc.api.v30.app179;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 public class SpringDocApp179Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v30.app179")
 	static class SpringDocTestApp {}
 }

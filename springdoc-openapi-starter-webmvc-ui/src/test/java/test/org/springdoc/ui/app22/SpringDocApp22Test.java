@@ -19,6 +19,7 @@
 package test.org.springdoc.ui.app22;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.test.context.TestPropertySource;
@@ -27,6 +28,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springdoc.core.configuration.SpringDocConfiguration;
+import org.springdoc.core.properties.SpringDocConfigProperties;
+import org.springdoc.core.providers.ObjectMapperProvider;
+import org.springframework.context.annotation.Bean;
 
 @TestPropertySource(properties = {
 		"springdoc.api-docs.enabled=false",
@@ -43,5 +48,24 @@ public class SpringDocApp22Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("configUrl", equalTo("/api-docs/swagger-config")))
 				.andExpect(jsonPath("validatorUrl", equalTo("")))
 				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/swagger-ui/oauth2-redirect.html")));
+	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+
+		@Bean
+		SpringDocConfiguration springDocConfiguration() {
+			return new SpringDocConfiguration();
+		}
+
+		@Bean
+		SpringDocConfigProperties springDocConfigProperties() {
+			return new SpringDocConfigProperties();
+		}
+
+		@Bean
+		ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
+			return new ObjectMapperProvider(springDocConfigProperties);
+		}
 	}
 }

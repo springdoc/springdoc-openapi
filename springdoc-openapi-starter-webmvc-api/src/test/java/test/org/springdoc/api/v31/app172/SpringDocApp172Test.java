@@ -32,6 +32,7 @@ import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.autoconfigure.OverrideAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
 
@@ -43,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = { "springdoc.show-actuator=true", "management.endpoints.enabled-by-default=true",
 		"management.endpoints.web.exposure.include = tenant" })
+@OverrideAutoConfiguration(enabled = true)
 public class SpringDocApp172Test extends AbstractSpringDocTest {
 
 	@Test

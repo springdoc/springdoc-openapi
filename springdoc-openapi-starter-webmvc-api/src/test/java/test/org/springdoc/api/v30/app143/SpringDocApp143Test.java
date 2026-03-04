@@ -27,6 +27,7 @@ package test.org.springdoc.api.v30.app143;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.autoconfigure.OverrideAutoConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 /**
@@ -36,6 +37,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = { "management.endpoints.enabled-by-default=true",
 		"springdoc.show-actuator=true", "management.endpoints.web.exposure.exclude=functions"
 })
+@OverrideAutoConfiguration(enabled = true)
 public class SpringDocApp143Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication

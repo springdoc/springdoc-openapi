@@ -27,6 +27,7 @@ package test.org.springdoc.api.v31.app265;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Tests query-param versioning support for functional router endpoints using
@@ -37,6 +38,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringDocApp265Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v31.app265")
 	static class SpringDocTestApp {
 
 	}

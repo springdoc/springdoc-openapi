@@ -24,9 +24,33 @@
 
 package test.org.springdoc.api.v30.app39;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.HeaderParameter;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springframework.context.annotation.Bean;
 
 public class SpringDocApp39Test extends AbstractSpringDocV30Test {
 
 
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+
+		@Bean
+		public OpenAPI customOpenAPI() {
+			StringSchema schema = new StringSchema();
+			return new OpenAPI()
+					.components(new Components().addParameters("myGlobalHeader", new HeaderParameter().required(true).name("My-Global-Header").description("My Global Header").schema(schema)));
+		}
+
+		@Bean
+		public OpenApiCustomizer customerGlobalHeaderOpenApiCustomizer() {
+			return openApi -> openApi.getPaths().values().stream().flatMap(pathItem -> pathItem.readOperations().stream())
+					.forEach(operation -> operation.addParametersItem(new HeaderParameter().$ref("#/components/parameters/myGlobalHeader")));
+		}
+	}
 }

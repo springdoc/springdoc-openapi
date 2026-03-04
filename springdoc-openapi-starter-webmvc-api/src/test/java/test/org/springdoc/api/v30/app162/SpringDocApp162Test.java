@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 public class SpringDocApp162Test extends AbstractSpringDocV30Test {
 
@@ -37,6 +38,7 @@ public class SpringDocApp162Test extends AbstractSpringDocV30Test {
 	}
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v30.app162")
 	static class SpringDocTestApp {}
 
 }

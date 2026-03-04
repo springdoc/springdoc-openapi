@@ -28,10 +28,20 @@ package test.org.springdoc.api.v30.app6;
 
 import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.hateoas.server.core.EvoInflectorLinkRelationProvider;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "springdoc.remove-broken-reference-definitions=false")
 public class SpringDocApp6Test extends AbstractSpringDocTest {
 
-
+	@SpringBootApplication
+	static class SpringDocTestApp {}
+	
+	@Bean
+	EvoInflectorLinkRelationProvider relProvider() {
+		return new EvoInflectorLinkRelationProvider();
+	}
+	
 }

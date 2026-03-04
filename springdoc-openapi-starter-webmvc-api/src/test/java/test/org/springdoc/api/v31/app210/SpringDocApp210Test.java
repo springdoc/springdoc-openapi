@@ -33,7 +33,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
 public class SpringDocApp210Test extends AbstractCommonTest {
 
 	@Test

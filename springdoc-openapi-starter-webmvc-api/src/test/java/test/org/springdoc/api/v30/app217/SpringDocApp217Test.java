@@ -37,7 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * <p>
  * A test for {@link SpecPropertiesCustomizer}
  */
-@SpringBootTest
 @ActiveProfiles("217")
 public class SpringDocApp217Test extends AbstractSpringDocV30Test {
 

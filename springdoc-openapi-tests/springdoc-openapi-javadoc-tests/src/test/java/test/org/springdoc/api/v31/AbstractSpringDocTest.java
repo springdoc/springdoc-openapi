@@ -35,8 +35,12 @@ import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.OverrideAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureWebMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -50,9 +54,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * The type Abstract spring doc test.
  */
-@ActiveProfiles("test")
-@SpringBootTest
+@WebMvcTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public abstract class AbstractSpringDocTest {
 
 	/**

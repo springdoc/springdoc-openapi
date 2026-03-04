@@ -31,6 +31,7 @@ import org.junit.jupiter.api.AfterAll;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "springdoc.use-fqn=true")
@@ -42,5 +43,6 @@ public class SpringDocApp237Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v31.app237")
 	static class SpringDocTestApp {}
 }

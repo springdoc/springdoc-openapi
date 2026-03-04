@@ -31,12 +31,21 @@ import java.time.Duration;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v31.AbstractCommonTest;
 
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 @WebFluxTest
 public class SpringDocApp189Test extends AbstractCommonTest {
@@ -61,4 +70,26 @@ public class SpringDocApp189Test extends AbstractCommonTest {
 		assertEquals(expected, result, true);
 	}
 
+
+	@SpringBootApplication
+	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v31.app189" })
+	static class SpringDocTestApp {
+		@Bean
+		public OpenAPI customOpenAPI() {
+			return new OpenAPI()
+					.components(new Components().addSecuritySchemes("basicScheme",
+							new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
+					.info(new Info().title("Tweet API").version("v0")
+							.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+		}
+
+		@Bean
+		OpenApiCustomizer serverUrlCustomizer() {
+			return openApi ->
+					openApi.getServers().forEach(server -> {
+						server.setDescription("customized description");
+						server.setUrl("https://customized.url");
+					});
+		}
+	}
 }

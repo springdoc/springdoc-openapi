@@ -34,6 +34,7 @@ import org.springdoc.core.customizers.OpenApiCustomizer;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Bean;
 
 
@@ -43,6 +44,7 @@ import org.springframework.context.annotation.Bean;
 public class SpringDocApp126Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v31.app126")
 	static class SpringDocTestApp {
 
 		@Bean

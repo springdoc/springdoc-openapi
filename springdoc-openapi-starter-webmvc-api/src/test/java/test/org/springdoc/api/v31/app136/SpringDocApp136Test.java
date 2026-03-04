@@ -39,6 +39,7 @@ import test.org.springdoc.api.AbstractCommonTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -52,7 +53,7 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_CACHE_DISABLED;
 /**
  * Tests deterministic creation of operationIds
  */
-@SpringBootTest(properties = { SPRINGDOC_CACHE_DISABLED + "=true", "springdoc.api-docs.version=openapi_3_1" })
+@TestPropertySource(properties = { SPRINGDOC_CACHE_DISABLED + "=true", "springdoc.api-docs.version=openapi_3_1" })
 public class SpringDocApp136Test extends AbstractCommonTest {
 
 	@Autowired

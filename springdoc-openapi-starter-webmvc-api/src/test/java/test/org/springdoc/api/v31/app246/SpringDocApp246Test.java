@@ -5,7 +5,7 @@ import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.v31.AbstractSpringDocV31Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.hamcrest.Matchers.is;
@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * are included in the OpenAPI specification, and webhooks from packages in
  * {@code springdoc.packages-to-exclude} are correctly omitted.
  */
-@SpringBootTest(classes = SpringDocApp246Test.SpringDocApp246.class)
 @TestPropertySource(properties = {
 		"springdoc.packages-to-scan=test.org.springdoc.api.v31.app246",
 		"springdoc.packages-to-exclude=test.org.springdoc.api.v31.app246.excluded",
@@ -29,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp246Test extends AbstractSpringDocV31Test {
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = "test.org.springdoc.api.v31.app246")
 	static class SpringDocApp246 {
 	}
 

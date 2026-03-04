@@ -29,7 +29,6 @@ import org.springframework.test.context.ActiveProfiles;
  * <p>
  * A test for {@link SpecPropertiesCustomizer}
  */
-@SpringBootTest
 @ActiveProfiles("213")
 public class SpringDocApp213Test extends AbstractSpringDocV30Test {
 
