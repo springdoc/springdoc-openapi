@@ -23,7 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - #3232 – Gracefully handle springdoc endpoint paths during API version resolution
 - #3230 – Scalar source URLs resolve to `null/<groupName>` on second request when using `GroupedOpenApi`
-- #3226 – Propagate `JsonView` context when resolving `Page<T>` schema
 - #3228 – springdoc-openapi-starter 3.x doesn't depend on `org.springframework.boot:spring-boot-starter`
 - #3220 – Reachability metadata not compatible with GraalVM 25
 - #3195 – Application won't compile when OpenApi and spring-boot-data-rest is present

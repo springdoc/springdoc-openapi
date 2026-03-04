@@ -94,7 +94,7 @@ public class PageOpenAPIConverter implements ModelConverter {
 			Class<?> cls = javaType.getRawClass();
 			if (replacePageWithPagedModel && PAGE_TO_REPLACE.equals(cls.getCanonicalName())) {
 				if (!type.isSchemaProperty())
-					type = resolvePagedModelType(javaType);
+					type = resolvePagedModelType(javaType, type);
 				else
 					type.name(getParentTypeName(type, cls));
 			}
@@ -108,13 +108,15 @@ public class PageOpenAPIConverter implements ModelConverter {
 	 * @param type the type
 	 * @return the annotated type
 	 */
-	private AnnotatedType resolvePagedModelType(JavaType type) {
+	private AnnotatedType resolvePagedModelType(JavaType type, AnnotatedType originalType) {
 		if (type.hasGenericTypes()) {
 			JavaType innerType = type.containedType(0);
 			Type pagedModelType = ResolvableType
 					.forClassWithGenerics(PagedModel.class, ResolvableType.forType(innerType))
 					.getType();
-			return new AnnotatedType(pagedModelType).resolveAsRef(true);
+			return new AnnotatedType(pagedModelType)
+					.resolveAsRef(true)
+					.ctxAnnotations(originalType.getCtxAnnotations());
 		}
 		else {
 			return PAGED_MODEL;
