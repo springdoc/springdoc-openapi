@@ -64,12 +64,12 @@
           "required": true
         },
         "responses": {
-          "415": {
-            "description": "Unsupported Media Type",
+          "500": {
+            "description": "Internal Server Error",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -84,12 +84,12 @@
               }
             }
           },
-          "500": {
-            "description": "Internal Server Error",
+          "415": {
+            "description": "Unsupported Media Type",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "$ref": "#/components/schemas/ErrorMessage"
                 }
               }
             }
@@ -100,6 +100,75 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons": {
+      "get": {
+        "tags": [
+          "person-controller"
+        ],
+        "operationId": "findPersons",
+        "parameters": [
+          {
+            "name": "setsOfShoes",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maximum": 4,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maximum": 200,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "age",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maximum": 9223372036854775807,
+              "minimum": 2,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "oneToTen",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maximum": 10,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
                 }
               }
             }
@@ -161,12 +230,12 @@
           }
         ],
         "responses": {
-          "415": {
-            "description": "Unsupported Media Type",
+          "500": {
+            "description": "Internal Server Error",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -181,12 +250,12 @@
               }
             }
           },
-          "500": {
-            "description": "Internal Server Error",
+          "415": {
+            "description": "Unsupported Media Type",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "$ref": "#/components/schemas/ErrorMessage"
                 }
               }
             }
@@ -210,17 +279,6 @@
   },
   "components": {
     "schemas": {
-      "ErrorMessage": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "Problem": {
         "type": "object",
         "properties": {
@@ -229,6 +287,17 @@
           },
           "message": {
             "type": "string"
+          }
+        }
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
