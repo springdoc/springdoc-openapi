@@ -470,6 +470,16 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return isArray;
 	}
 
+    /**
+     * Whether the schema has defined a default value.
+     *
+     * @param schema The schema annotation
+     * @return Whether the schema annotation has defined a default value
+     */
+    public static boolean hasADefaultValue(io.swagger.v3.oas.annotations.media.Schema schema) {
+        return schema != null && !schema.defaultValue().equals(io.swagger.v3.oas.annotations.media.Schema.DEFAULT_SENTINEL);
+    }
+
 	/**
 	 * Attempt to cast the default value so that it matches the {@link Schema} type.
 	 * If the value cannot be cast then the provided default value is returned as-is.
@@ -546,7 +556,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	public static void clearCache(JavadocProvider javadocProvider) {
 		if (javadocProvider != null)
 			javadocProvider.clearCache();
-		MODEL_CONVERTER_CONTEXT_MAP.remove();;
+		MODEL_CONVERTER_CONTEXT_MAP.remove();
 	}
 	
 	/**

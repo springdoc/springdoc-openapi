@@ -1122,7 +1122,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 * @return the default value
 	 */
 	private String getDefaultValue(String parameterName, PageableDefault pageableDefault, String defaultSchemaVal) {
-		String defaultValue = null;
+		String defaultValue = defaultSchemaVal;
 		switch (parameterName) {
 			case "size":
 				if (pageableDefault != null) {

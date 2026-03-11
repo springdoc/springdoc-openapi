@@ -78,7 +78,7 @@
         "description": "Represents a Cat class.",
         "properties": {
           "name": {
-            "type": "string",
+            "type": [ "string", "null" ],
             "description": "The name."
           }
         }

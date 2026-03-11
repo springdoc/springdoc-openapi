@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "TEST": "HELLO"
+    "x-TEST": "HELLO"
   },
   "servers": [
     {
@@ -25,5 +25,5 @@
     }
   },
   "components": {},
-  "TEST": "HELLO"
+  "x-TEST": "HELLO"
 }

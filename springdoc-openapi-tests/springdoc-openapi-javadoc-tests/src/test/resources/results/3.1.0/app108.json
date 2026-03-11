@@ -73,6 +73,7 @@
             "description": "The Message."
           },
           "errorValue": {
+            "type": "object",
             "description": "The Error value."
           },
           "targetUrl": {

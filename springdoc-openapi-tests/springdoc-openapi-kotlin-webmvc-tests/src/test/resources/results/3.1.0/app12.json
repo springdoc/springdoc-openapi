@@ -23,7 +23,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
+              "type" : [ "string", "null" ],
               "enum": [
                 "A",
                 "B"
