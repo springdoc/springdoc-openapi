@@ -70,8 +70,8 @@ public class SpringDocApp173Test extends AbstractSpringDocV30Test {
 		@Bean
 		public OpenAPI openAPI() {
 			return new OpenAPI()
-					.info(new Info().extensions(Map.of("TEST", "HELLO")))
-					.extensions(Map.of("TEST", "HELLO"));
+					.info(new Info().extensions(Map.of("x-TEST", "HELLO")))
+					.extensions(Map.of("x-TEST", "HELLO"));
 		}
 	}
 

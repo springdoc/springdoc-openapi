@@ -357,7 +357,7 @@ public class GenericParameterService {
 			if (schema == null && parameterDoc.array() != null) {
 				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView, propertyResolverUtils.isOpenapi31()).orElse(null);
 				// default value not set by swagger-core for array !
-				if (schema != null) {
+				if (schema != null && SpringDocAnnotationsUtils.hasADefaultValue(parameterDoc.array().arraySchema())) {
 					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue(), objectMapperProvider.jsonMapper());
 					schema.setDefault(defaultValue);
 				}

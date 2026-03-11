@@ -38,7 +38,9 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {}
+                  "items": {
+                    "type": "object"
+                  }
                 }
               }
             }

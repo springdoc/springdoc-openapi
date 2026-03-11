@@ -30,7 +30,8 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.swagger.v3.core.jackson.SwaggerAnnotationIntrospector;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.apache.commons.lang3.StringUtils;
+
+import static org.springdoc.core.utils.SpringDocAnnotationsUtils.hasADefaultValue;
 
 /**
  * The type Spring doc required module.
@@ -57,7 +58,7 @@ public class SpringDocRequiredModule extends SimpleModule {
 				if (schemaAnnotation.required() || requiredMode == Schema.RequiredMode.REQUIRED) {
 					return true;
 				}
-				else if (requiredMode == Schema.RequiredMode.NOT_REQUIRED || StringUtils.isNotEmpty(schemaAnnotation.defaultValue())) {
+				else if (requiredMode == Schema.RequiredMode.NOT_REQUIRED || hasADefaultValue(schemaAnnotation)) {
 					return false;
 				}
 			}

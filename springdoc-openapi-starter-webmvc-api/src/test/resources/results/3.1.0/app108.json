@@ -57,7 +57,9 @@
           "message": {
             "type": "string"
           },
-          "errorValue": {},
+          "errorValue": {
+            "type": "object"
+          },
           "targetUrl": {
             "type": "string"
           }

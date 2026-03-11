@@ -35,22 +35,10 @@ import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -639,19 +627,34 @@ public abstract class AbstractRequestService {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null,
 					jsonView);
 			if (parameterInfo.getDefaultValue() != null && schema != null) {
-				Object defaultValue = parameterInfo.getDefaultValue();
-				// Cast default value
 				PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
-				if (primitiveType != null) {
-					Schema<?> primitiveSchema = primitiveType.createProperty();
-					primitiveSchema.setDefault(parameterInfo.getDefaultValue());
-					defaultValue = primitiveSchema.getDefault();
-				}
+				Object defaultValue = castDefaultValue(primitiveType, parameterInfo.getDefaultValue());
 				schema.setDefault(defaultValue);
 			}
 			parameter.setSchema(schema);
 		}
 		return parameter;
+	}
+
+	/**
+	 * Cast the default value so that it matches the {@link PrimitiveType}
+	 *
+	 * @param primitiveType the primitive type
+	 * @param defaultValue the default value
+	 * @return the cast default value
+	 */
+	private Object castDefaultValue(PrimitiveType primitiveType, Object defaultValue) {
+		if (primitiveType != null) {
+			Schema<?> primitiveSchema = primitiveType.createProperty();
+			if (primitiveType.equals(PrimitiveType.DATE) && defaultValue instanceof LocalDate localDate) {
+				defaultValue = localDate.toString();
+			}
+			primitiveSchema.setDefault(defaultValue);
+			if (primitiveSchema.getDefault() != null) {
+				defaultValue = primitiveSchema.getDefault();
+			}
+		}
+		return defaultValue;
 	}
 
 	/**

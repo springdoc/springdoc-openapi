@@ -56,7 +56,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -128,7 +130,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -161,7 +165,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -202,7 +208,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -252,7 +260,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -296,7 +306,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -335,7 +347,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -374,7 +388,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -409,7 +425,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -459,7 +477,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -545,7 +565,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -596,7 +618,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -669,7 +693,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -709,7 +735,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -754,7 +782,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -805,7 +835,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -866,7 +898,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -892,7 +926,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -947,7 +983,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }
@@ -1013,7 +1051,9 @@
               "*/*": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": {}
+                  "additionalProperties": {
+                    "type" : "object"
+                  }
                 }
               }
             }

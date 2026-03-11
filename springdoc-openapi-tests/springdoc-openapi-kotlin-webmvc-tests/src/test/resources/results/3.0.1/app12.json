@@ -24,6 +24,7 @@
             "required": false,
             "schema": {
               "type": "string",
+              "nullable": true,
               "enum": [
                 "A",
                 "B"

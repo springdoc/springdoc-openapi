@@ -62,8 +62,10 @@
   "components": {
     "schemas": {
       "FeedResponse": {
+        "type": "object",
         "properties": {
           "_links": {
+            "type": "object",
             "properties": {
               "next": {
                 "$ref": "#/components/schemas/Link"
@@ -106,22 +108,28 @@
             "type": "string"
           },
           "hreflang": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "deprecation": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "profile": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "templated": {
             "type": "boolean"
