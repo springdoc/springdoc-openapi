@@ -74,22 +74,24 @@
             "format": "uri"
           },
           "title": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "status": {
             "type": "integer",
             "format": "int32"
           },
           "detail": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "instance": {
-            "type": "string",
+            "type" : [ "string", "null" ],
             "format": "uri"
           },
           "properties": {
-            "type": "object",
-            "additionalProperties": {}
+            "type" : [ "object", "null" ],
+            "additionalProperties": {
+              "type" : [ "object", "null" ]
+            }
           }
         }
       }

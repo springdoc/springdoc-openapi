@@ -29,6 +29,7 @@ package org.springdoc.core.fn.builders.securityrequirement;
 import java.lang.annotation.Annotation;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirementEntry;
 
 /**
  * The type Security requirement builder.
@@ -47,6 +48,12 @@ public class Builder {
 	 */
 	private String[] scopes = {};
 
+	/**
+	 * If multiple requirements apply at the same time, use this value instead of {@link #name} and {@link #scopes}.
+	 * If any one of multiple security schemes is required, use multiple {@link SecurityRequirement} annotations instead.
+	 * <p>Exactly one of this and {@link #name} must be set.</p>
+	 */
+	private SecurityRequirementEntry[] securityRequirementEntries = {};
 
 	/**
 	 * Instantiates a new Security requirement builder.
@@ -86,6 +93,17 @@ public class Builder {
 	}
 
 	/**
+	 * SecurityRequirementEntries security requirement builder.
+	 *
+	 * @param securityRequirementEntries the securityRequirementEntries
+	 * @return the security requirement builder
+	 */
+	public Builder securityRequirementEntries(SecurityRequirementEntry[] securityRequirementEntries) {
+		this.securityRequirementEntries = securityRequirementEntries;
+		return this;
+	}
+
+	/**
 	 * Build security requirement.
 	 *
 	 * @return the security requirement
@@ -105,6 +123,11 @@ public class Builder {
 			@Override
 			public String[] scopes() {
 				return scopes;
+			}
+
+			@Override
+			public SecurityRequirementEntry[] combine() {
+				return securityRequirementEntries;
 			}
 		};
 	}

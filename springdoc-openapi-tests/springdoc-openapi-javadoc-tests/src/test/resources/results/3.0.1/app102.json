@@ -32,7 +32,8 @@
             "description": "the param",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "nullable": true
             }
           },
           {
@@ -98,7 +99,8 @@
             "description": "The Int param 3.",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "nullable": true
             }
           },
           {

@@ -47,7 +47,6 @@
           "subject": {
             "type": "string",
             "description": "subject",
-            "example": "Hello",
             "examples": [
               "Hello",
               "World"

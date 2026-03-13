@@ -89,7 +89,9 @@
           },
           "data": {
             "type": "object",
-            "additionalProperties": {},
+            "additionalProperties": {
+              "type": "object"
+            },
             "example": {
               "param1": "val1",
               "param2": "val2"

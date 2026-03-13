@@ -24,24 +24,25 @@
 package test.org.springdoc.api.v31.app245;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
-@RestController
-public class HelloController {
+public class HelloWorld {
 
         @JsonView(Views.Hello.class)
-        @GetMapping(value = "/hello-paged", produces = APPLICATION_JSON_VALUE)
-        public ResponseEntity<Page<HelloWorld>> getHelloWorldPaged(@ParameterObject Pageable pageable) {
-                return ResponseEntity.ok(new PageImpl<>(List.of(new HelloWorld("hello", "world")), pageable, 1));
+        private String hello;
+
+        @JsonView(Views.World.class)
+        private String world;
+
+        public HelloWorld(String hello, String world) {
+                this.hello = hello;
+                this.world = world;
+        }
+
+        public String getHello() {
+                return hello;
+        }
+
+        public String getWorld() {
+                return world;
         }
 }

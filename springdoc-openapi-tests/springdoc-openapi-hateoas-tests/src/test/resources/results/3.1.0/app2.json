@@ -94,7 +94,7 @@
         }
       },
       "PageMetadata": {
-        "type": "object",
+        "type" : "null",
         "properties": {
           "size": {
             "type": "integer",
@@ -143,22 +143,22 @@
             "type": "string"
           },
           "hreflang": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "title": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "type": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "deprecation": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "profile": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "name": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "templated": {
             "type": "boolean"

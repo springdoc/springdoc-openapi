@@ -32,7 +32,7 @@
             "description": "the param",
             "required": false,
             "schema": {
-              "type": "string"
+              "type" : [ "string", "null" ]
             }
           },
           {
@@ -98,7 +98,7 @@
             "description": "The Int param 3.",
             "required": false,
             "schema": {
-              "type": "string"
+              "type" : [ "string", "null" ]
             }
           },
           {

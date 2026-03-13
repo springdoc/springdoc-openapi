@@ -81,7 +81,7 @@
         "description": "Represents a Cat class.",
         "properties": {
           "name": {
-            "type": "string",
+            "type": [ "string", "null" ],
             "description": "The name."
           }
         }
@@ -93,22 +93,22 @@
             "type": "string"
           },
           "hreflang": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "title": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "type": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "deprecation": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "profile": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "name": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
           "templated": {
             "type": "boolean"

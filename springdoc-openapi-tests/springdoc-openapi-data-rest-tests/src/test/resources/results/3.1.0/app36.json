@@ -130,29 +130,29 @@
       "Link": {
         "type": "object",
         "properties": {
-          "deprecation": {
-            "type": "string"
-          },
           "href": {
             "type": "string"
           },
           "hreflang": {
-            "type": "string"
+            "type" : [ "string", "null" ]
           },
-          "name": {
-            "type": "string"
+          "title": {
+            "type" : [ "string", "null" ]
+          },
+          "type": {
+            "type" : [ "string", "null" ]
+          },
+          "deprecation": {
+            "type" : [ "string", "null" ]
           },
           "profile": {
-            "type": "string"
+            "type" : [ "string", "null" ]
+          },
+          "name": {
+            "type" : [ "string", "null" ]
           },
           "templated": {
             "type": "boolean"
-          },
-          "title": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
           }
         }
       },

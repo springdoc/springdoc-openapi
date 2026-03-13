@@ -276,7 +276,8 @@
             "type": "integer",
             "format": "int64"
           }
-        }
+        },
+        "nullable": true
       },
       "PagedModelEntityModelPerson": {
         "type": "object",
@@ -326,22 +327,28 @@
             "type": "string"
           },
           "hreflang": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "deprecation": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "profile": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "templated": {
             "type": "boolean"
