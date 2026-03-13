@@ -29,6 +29,7 @@ package org.springdoc.core.utils;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,6 +51,7 @@ import io.swagger.v3.core.converter.ModelConverterContextImpl;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -466,6 +468,31 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			}
 		}
 		return isArray;
+	}
+
+	/**
+	 * Attempt to cast the default value so that it matches the {@link Schema} type.
+	 * If the value cannot be cast then the provided default value is returned as-is.
+	 *
+	 * @param schema       the schema that will have the default value
+	 * @param defaultValue the default value
+	 * @return the cast default value
+	 */
+	public static Object castDefaultValue(Schema schema, Object defaultValue) {
+		if (schema != null && defaultValue != null) {
+			PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
+			if (primitiveType != null) {
+				Schema<?> primitiveSchema = primitiveType.createProperty();
+				if (primitiveType.equals(PrimitiveType.DATE) && defaultValue instanceof LocalDate localDate) {
+					defaultValue = localDate.toString();
+				}
+				primitiveSchema.setDefault(defaultValue);
+				if (primitiveSchema.getDefault() != null) {
+					defaultValue = primitiveSchema.getDefault();
+				}
+			}
+		}
+		return defaultValue;
 	}
 
 	/**
