@@ -1,0 +1,3 @@
+org.springdoc.ai.configuration.SpringDocAiAutoConfiguration
+org.springdoc.ai.dashboard.McpDashboardAutoConfiguration
+org.springdoc.ai.properties.SpringDocAiProperties

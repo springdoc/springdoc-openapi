@@ -46,6 +46,9 @@
 		<module>springdoc-openapi-starter-webflux-ui</module>
 		<module>springdoc-openapi-starter-webmvc-scalar</module>
 		<module>springdoc-openapi-starter-webflux-scalar</module>
+		<module>springdoc-openapi-starter-common-mcp</module>
+		<module>springdoc-openapi-starter-webmvc-mcp</module>
+		<module>springdoc-openapi-starter-webflux-mcp</module>
 		<module>springdoc-openapi-bom</module>
 	</modules>
 
@@ -64,7 +67,12 @@
 		<spring-security-oauth2-authorization-server.version>2.0.0-M2
 		</spring-security-oauth2-authorization-server.version>
 		<scalar.version>0.5.55</scalar.version>
+		<spring-ai.version>1.1.2</spring-ai.version>
+		<mcp-sdk.version>0.17.0</mcp-sdk.version>
 		<skipPublishing>false</skipPublishing>
+		<skip.npm>true</skip.npm>
+		<frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
+		<node.version>v22.14.0</node.version>
 	</properties>
 
 	<dependencyManagement>
@@ -120,6 +128,20 @@
 				<artifactId>scalar-core</artifactId>
 				<version>${scalar.version}</version>
 			</dependency>
+			<!-- MCP SDK -->
+			<dependency>
+				<groupId>io.modelcontextprotocol.sdk</groupId>
+				<artifactId>mcp-core</artifactId>
+				<version>${mcp-sdk.version}</version>
+			</dependency>
+			<!-- Spring AI -->
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-bom</artifactId>
+				<version>${spring-ai.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>com.scalar.maven</groupId>
 				<artifactId>scalar-webmvc</artifactId>
@@ -140,6 +162,15 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>${frontend-maven-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -176,6 +207,9 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<properties>
+				<skip.npm>false</skip.npm>
+			</properties>
 			<modules>
 				<module>springdoc-openapi-starter-common</module>
 				<module>springdoc-openapi-starter-webmvc-api</module>
@@ -266,6 +300,14 @@
 			<url>https://repo.spring.io/snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 	</repositories>

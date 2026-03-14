@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* JSON Schema Form overrides */
+.rjsf .form-group {
+  @apply mb-3;
+}
+
+.rjsf label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+}
+
+.rjsf input[type="text"],
+.rjsf input[type="number"],
+.rjsf input[type="email"],
+.rjsf input[type="url"],
+.rjsf textarea,
+.rjsf select {
+  @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md
+    bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+    text-sm;
+}
+
+.rjsf .checkbox label {
+  @apply flex items-center gap-2;
+}
+
+.rjsf .checkbox input[type="checkbox"] {
+  @apply w-4 h-4;
+}
+
+.rjsf .field-description {
+  @apply text-xs text-gray-500 dark:text-gray-400 mt-1;
+}
+
+.rjsf .text-danger {
+  @apply text-red-500 text-xs mt-1;
+}
+
+.rjsf .array-item {
+  @apply border border-gray-200 dark:border-gray-700 rounded p-3 mb-2;
+}
+
+.rjsf .btn-add,
+.rjsf .array-item-add button {
+  @apply px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600;
+}
+
+.rjsf .btn-remove,
+.rjsf .array-item-remove button {
+  @apply px-3 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600;
+}
