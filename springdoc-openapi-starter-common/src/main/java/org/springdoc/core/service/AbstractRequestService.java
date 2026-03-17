@@ -684,7 +684,11 @@ public abstract class AbstractRequestService {
 	 * @param isParameterObject the is parameter object
 	 * @param openapiVersion    the openapi version
 	 */
-	public void applyBeanValidatorAnnotations(final MethodParameter methodParameter, final Parameter parameter, final List<Annotation> annotations, final boolean isParameterObject, String openapiVersion) {
+	public void applyBeanValidatorAnnotations(final MethodParameter methodParameter,
+											  final Parameter parameter,
+											  final List<Annotation> annotations,
+											  final boolean isParameterObject,
+											  String openapiVersion) {
 		boolean annotatedNotNull = annotations != null && SchemaUtils.annotatedNotNull(annotations);
 		if (annotatedNotNull && !isParameterObject) {
 			parameter.setRequired(true);
