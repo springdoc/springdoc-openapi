@@ -31,8 +31,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 										name = "uri",
 										value = "${api.extensions.properties.uri}/testcontroller/getTest"),
 								@ExtensionProperty(name = "passthroughBehavior", value = "${api.extensions.properties.passthroughBehavior}"),
-								@ExtensionProperty(name = "connectionType", value = "${api.extensions.properties.connectionType}") }) },
-
+								@ExtensionProperty(name = "connectionType", value = "${api.extensions.properties.connectionType}")
+						})
+				},
 				title = "${api.info.title}",
 				version = "${api.info.version}",
 				description = "${api.info.description}",
@@ -57,7 +58,10 @@ public class HelloController {
 									name = "uri",
 									value = "${api.extensions.properties.uri}/testcontroller/getTest"),
 							@ExtensionProperty(name = "passthroughBehavior", value = "${api.extensions.properties.passthroughBehavior}"),
-							@ExtensionProperty(name = "connectionType", value = "${api.extensions.properties.connectionType}") }) })
+							@ExtensionProperty(name = "connectionType", value = "${api.extensions.properties.connectionType}"),
+							@ExtensionProperty(name = "jsonProperty", parseValue = true, value = "{ \"key\": \"value\", \"key2\": \"value2\" }")
+					})
+			})
 
 	public PersonDTO queryMyDto() {
 		// This return a PageImpl with the data, the method parameter 'query' is a pojo containg filter properties
