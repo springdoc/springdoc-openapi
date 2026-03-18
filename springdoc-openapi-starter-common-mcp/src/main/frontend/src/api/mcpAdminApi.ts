@@ -1,6 +1,13 @@
 import type { McpToolInfo, McpToolExecutionRequest, McpToolExecutionResponse } from '../types'
 
-const BASE_PATH = '/api/mcp-admin'
+function resolveBasePath(): string {
+  const { pathname } = window.location
+  const mcpUiIndex = pathname.indexOf('/mcp-ui')
+  const prefix = mcpUiIndex > 0 ? pathname.substring(0, mcpUiIndex) : ''
+  return `${prefix}/api/mcp-admin`
+}
+
+const BASE_PATH = resolveBasePath()
 
 export async function fetchTools(): Promise<McpToolInfo[]> {
   const res = await fetch(`${BASE_PATH}/tools`)
