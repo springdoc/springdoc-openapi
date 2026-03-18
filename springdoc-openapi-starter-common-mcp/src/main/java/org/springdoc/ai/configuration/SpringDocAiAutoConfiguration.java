@@ -53,6 +53,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 
 import static org.springdoc.ai.properties.SpringDocAiProperties.SPRINGDOC_MCP_ENABLED;
 
@@ -96,15 +97,16 @@ public class SpringDocAiAutoConfiguration {
 	 * @param springDocConfigProperties the springdoc config properties
 	 * @param aiProperties the AI properties
 	 * @param mcpToolCustomizers the MCP tool customizers
+	 * @param environment the Spring environment
 	 * @return the tool callback provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	OpenApiMcpToolCallbackProvider openApiMcpToolCallbackProvider(OpenAPIService openAPIService,
 			SpringDocConfigProperties springDocConfigProperties, SpringDocAiProperties aiProperties,
-			Optional<List<McpToolCustomizer>> mcpToolCustomizers) {
+			Optional<List<McpToolCustomizer>> mcpToolCustomizers, Environment environment) {
 		return new OpenApiMcpToolCallbackProvider(openAPIService, springDocConfigProperties, aiProperties,
-				mcpToolCustomizers);
+				mcpToolCustomizers, environment);
 	}
 
 	/**

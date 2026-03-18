@@ -44,6 +44,7 @@ import org.springdoc.core.service.OpenAPIService;
 
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
+import org.springframework.core.env.Environment;
 
 /**
  * A {@link ToolCallbackProvider} that bridges springdoc-openapi with Spring AI. It
@@ -87,6 +88,11 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 	private final Optional<List<McpToolCustomizer>> mcpToolCustomizers;
 
 	/**
+	 * The Spring environment for resolving server port.
+	 */
+	private final Environment environment;
+
+	/**
 	 * Cached tool callbacks, built lazily from the OpenAPI specification.
 	 */
 	private volatile ToolCallback[] cachedToolCallbacks;
@@ -97,14 +103,16 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 	 * @param springDocConfigProperties the springdoc config properties
 	 * @param aiProperties the AI properties
 	 * @param mcpToolCustomizers the MCP tool customizers
+	 * @param environment the Spring environment
 	 */
 	public OpenApiMcpToolCallbackProvider(OpenAPIService openAPIService,
 			SpringDocConfigProperties springDocConfigProperties, SpringDocAiProperties aiProperties,
-			Optional<List<McpToolCustomizer>> mcpToolCustomizers) {
+			Optional<List<McpToolCustomizer>> mcpToolCustomizers, Environment environment) {
 		this.openAPIService = openAPIService;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.aiProperties = aiProperties;
 		this.mcpToolCustomizers = mcpToolCustomizers;
+		this.environment = environment;
 	}
 
 	@Override
@@ -187,7 +195,8 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 		if (aiProperties.getBaseUrl() != null && !aiProperties.getBaseUrl().isEmpty()) {
 			return aiProperties.getBaseUrl();
 		}
-		return "http://localhost:8080";
+		String port = environment.getProperty("server.port", "8080");
+		return "http://localhost:" + port;
 	}
 
 }
