@@ -1,155 +1,136 @@
 {
-    "openapi": "3.1.0",
-    "info": {
-        "title": "OpenAPI definition",
-        "version": "v0"
-    },
-    "servers": [
-        {
-            "url": "http://localhost",
-            "description": "Generated server url"
-        }
-    ],
-    "tags": [
-        {
-            "name": "hateoas-controller",
-            "description": "Hateoas Controller"
-        }
-    ],
-    "paths": {
-        "/test-dto": {
-            "get": {
-                "tags": [
-                    "hateoas-controller"
-                ],
-                "summary": "Get Test DTO",
-                "description": "Returns a TestDto with HATEOAS links",
-                "operationId": "getTestDto",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "oneOf": [
-                                        {
-                                            "$ref": "#/components/schemas/TestDto"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ExtendedTestDto"
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/extended-test-dto": {
-            "get": {
-                "tags": [
-                    "hateoas-controller"
-                ],
-                "summary": "Get Extended Test DTO",
-                "description": "Returns an ExtendedTestDto with HATEOAS links",
-                "operationId": "getExtendedTestDto",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ExtendedTestDto"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "ExtendedTestDto": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/TestDto"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "otherField": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                ],
-                "description": "Extended DTO with allOf composition"
-            },
-            "Link": {
-                "type": "object",
-                "properties": {
-                    "href": {
-                        "type": "string"
-                    },
-                    "hreflang": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "title": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "type": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "deprecation": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "profile": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "name": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "templated": {
-                        "type": "boolean"
-                    }
-                }
-            },
-            "TestDto": {
-                "type": "object",
-                "description": "Parent DTO extending RepresentationModel",
-                "properties": {
-                    "field": {
-                        "type": "string"
-                    },
-                    "_links": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Link"
-                        }
-                    }
-                }
-            }
-        }
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
     }
+  ],
+  "tags": [
+    {
+      "name": "hateoas-controller",
+      "description": "Hateoas Controller"
+    }
+  ],
+  "paths": {
+    "/test-dto": {
+      "get": {
+        "tags": [
+          "hateoas-controller"
+        ],
+        "summary": "Get Test DTO",
+        "description": "Returns a TestDto with HATEOAS links",
+        "operationId": "getTestDto",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TestDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExtendedTestDto"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/extended-test-dto": {
+      "get": {
+        "tags": [
+          "hateoas-controller"
+        ],
+        "summary": "Get Extended Test DTO",
+        "description": "Returns an ExtendedTestDto with HATEOAS links",
+        "operationId": "getExtendedTestDto",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtendedTestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ExtendedTestDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TestDto"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "otherField": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "description": "Extended DTO with allOf composition"
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "hreflang": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "deprecation": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TestDto": {
+        "type": "object",
+        "description": "Parent DTO extending RepresentationModel",
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "_links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
+          }
+        }
+      }
+    }
+  }
 }
-

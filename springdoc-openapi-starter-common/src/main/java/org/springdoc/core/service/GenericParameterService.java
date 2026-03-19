@@ -340,11 +340,7 @@ public class GenericParameterService {
 					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
 					if (primitiveType != null) {
 						Schema<?> primitiveSchema = primitiveType.createProperty();
-						if (schema.getDefault() instanceof String stringValue) {
-							primitiveSchema.setDefault(propertyResolverUtils.resolve(stringValue, locale));
-						} else {
-							primitiveSchema.setDefault(schema.getDefault());
-						}
+						primitiveSchema.setDefault(schema.getDefault());
 						if (primitiveSchema.getDefault() != null)
 							schema.setDefault(primitiveSchema.getDefault());
 					}
