@@ -6,20 +6,15 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.OptionalLong;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import io.swagger.v3.oas.models.media.Schema;
+import jakarta.validation.Constraint;
+import jakarta.validation.OverridesAttribute;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
@@ -30,6 +25,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.Range;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 
 import org.springframework.lang.Nullable;
@@ -229,7 +225,7 @@ public class SchemaUtils {
 	 * @param openapiVersion the openapi version
 	 */
 	public static void applyValidationsToSchema(Schema<?> schema, List<Annotation> annotations, String openapiVersion) {
-		annotations.forEach(anno -> {
+		removeComposingConstraints(annotations).forEach(anno -> {
 			String annotationName = anno.annotationType().getSimpleName();
 			if (annotationName.equals(Positive.class.getSimpleName())) {
 				if (OpenApiVersion.OPENAPI_3_1.getVersion().equals(openapiVersion)) {
@@ -295,6 +291,10 @@ public class SchemaUtils {
 			if (annotationName.equals(Pattern.class.getSimpleName())) {
 				schema.setPattern(((Pattern) anno).regexp());
 			}
+			if (annotationName.equals(Range.class.getSimpleName())) {
+				schema.setMinimum(BigDecimal.valueOf(((Range) anno).min()));
+				schema.setMaximum(BigDecimal.valueOf(((Range) anno).max()));
+			}
 		});
 		if (schema!=null && annotatedNotNull(annotations)) {
 			String specVersion = schema.getSpecVersion().name();
@@ -302,6 +302,50 @@ public class SchemaUtils {
 				schema.setNullable(false);
 			}
 		}
+	}
+
+	/**
+	 * Remove the composing constraints from the annotations. This is necessary since otherwise the annotations may
+	 * default to the composing constraints' default value (dependent on the annotation ordering).
+	 * An example is {@link Range} being a composed constraint for {@link Min} and {@link Max}.
+	 * So {@link Min} and {@link Max} are removed to ensure that the constraint values are read from {@link Range}.
+	 *
+	 * @param constraintAnnotations constraint annotations
+	 * @return the annotations where known composing constraints have been removed
+	 */
+	private static List<Annotation> removeComposingConstraints(List<Annotation> constraintAnnotations) {
+		Set<Class<? extends Annotation>> composingTypes = new HashSet<>();
+		for (Annotation ann : constraintAnnotations) {
+			Class<? extends Annotation> type = ann.annotationType();
+			List<Class<? extends Annotation>> annotationOverrides = findOverrides(ann);
+			for (Annotation meta : type.getAnnotations()) {
+				if (annotationOverrides.contains(meta.annotationType())) {
+					composingTypes.add(meta.annotationType());
+				}
+			}
+		}
+		return constraintAnnotations.stream().filter(annotation -> !composingTypes.contains(annotation.annotationType())).toList();
+	}
+
+	/**
+	 *
+	 * @param annotation the composed constraint annotation
+	 * @return the composing annotations that are overridden with {@link OverridesAttribute}
+	 */
+	private static List<Class<? extends Annotation>> findOverrides(Annotation annotation) {
+		List<Class<? extends Annotation>> overriddenConstraintAnnotations = new ArrayList<>();
+
+		Class<? extends Annotation> type = annotation.annotationType();
+
+		for (Method method : type.getDeclaredMethods()) {
+			OverridesAttribute oa = method.getAnnotation(OverridesAttribute.class);
+
+			if (oa != null) {
+				overriddenConstraintAnnotations.add(oa.constraint());
+			}
+		}
+
+		return overriddenConstraintAnnotations;
 	}
 
 	/**

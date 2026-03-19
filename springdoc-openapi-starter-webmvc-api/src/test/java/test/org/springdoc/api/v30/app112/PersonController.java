@@ -24,21 +24,23 @@
 
 package test.org.springdoc.api.v30.app112;
 
+import java.lang.annotation.Retention;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
+import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @RestController
 @Validated
@@ -71,5 +73,22 @@ public class PersonController {
 		hardCoded.add(person);
 		return hardCoded;
 
+	}
+
+	@RequestMapping(path = "/persons", method = RequestMethod.GET)
+	public List<Person> findPersons(
+			@RequestParam(name = "setsOfShoes") @Range(min = 1, max = 4) int setsOfShoes,
+			@RequestParam(name = "height") @Range(max = 200) int height,
+			@RequestParam(name = "age") @Range(min = 2) int age,
+			@RequestParam(name = "oneToTen") @ComposedInterfaceWithStaticDefinitions int oneToTen
+	) {
+		return List.of();
+
+	}
+
+	@Min(1)
+	@Max(10)
+	@Retention(RUNTIME)
+	public @interface ComposedInterfaceWithStaticDefinitions {
 	}
 }
