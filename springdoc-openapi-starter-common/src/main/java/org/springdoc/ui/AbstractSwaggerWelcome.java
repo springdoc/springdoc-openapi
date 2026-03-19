@@ -107,8 +107,8 @@ public abstract class AbstractSwaggerWelcome {
 		if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
 			buildApiDocUrl(swaggerUiConfigParameters);
 			buildSwaggerConfigUrl(swaggerUiConfigParameters);
+			String swaggerUiUrl = swaggerUiConfig.getUrl();
 			if (CollectionUtils.isEmpty(swaggerUiConfigParameters.getUrls())) {
-				String swaggerUiUrl = swaggerUiConfig.getUrl();
 				if (StringUtils.isEmpty(swaggerUiUrl))
 					swaggerUiConfigParameters.setUrl(swaggerUiConfigParameters.getApiDocsUrl());
 				else if (swaggerUiConfigParameters.isValidUrl(swaggerUiUrl))
@@ -117,7 +117,7 @@ public abstract class AbstractSwaggerWelcome {
 					swaggerUiConfigParameters.setUrl(buildUrlWithContextPath(swaggerUiConfigParameters, swaggerUiUrl));
 			}
 			else
-				swaggerUiConfigParameters.addUrl(swaggerUiConfigParameters.getApiDocsUrl());
+				swaggerUiConfigParameters.addUrl(resolveGroupedApiDocsUrl(swaggerUiConfigParameters, swaggerUiUrl));
 			if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls())) {
 				swaggerUiConfig.cloneUrls()
 						.stream()
@@ -134,6 +134,16 @@ public abstract class AbstractSwaggerWelcome {
 			}
 		}
 		calculateOauth2RedirectUrl(swaggerUiConfigParameters, uriComponentsBuilder);
+	}
+
+	private String resolveGroupedApiDocsUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl) {
+		if (StringUtils.isEmpty(swaggerUiUrl)) {
+			return swaggerUiConfigParameters.getApiDocsUrl();
+		}
+		if (swaggerUiConfigParameters.isValidUrl(swaggerUiUrl)) {
+			return swaggerUiUrl;
+		}
+		return buildUrlWithContextPath(swaggerUiConfigParameters, swaggerUiUrl);
 	}
 
 	/**
