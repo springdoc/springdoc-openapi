@@ -366,7 +366,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 
 						@Override
 						public String defaultValue() {
-							return getDefaultValue(parameterName, pageableDefault, parameterSchema.defaultValue());
+							String defaultValue = getDefaultValue(parameterName, pageableDefault, parameterSchema.defaultValue());
+						return defaultValue != null ? defaultValue : io.swagger.v3.oas.annotations.media.Schema.DEFAULT_SENTINEL;
 						}
 
 						@Override
@@ -757,8 +758,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 
 								@Override
 								public String defaultValue() {
-									return getArrayDefaultValue(parameterName, pageableDefault, sortDefault, schema.defaultValue());
-
+									String defaultValue = getArrayDefaultValue(parameterName, pageableDefault, sortDefault, schema.defaultValue());
+									return defaultValue != null ? defaultValue : io.swagger.v3.oas.annotations.media.Schema.DEFAULT_SENTINEL;
 								}
 
 								@Override

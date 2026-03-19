@@ -402,6 +402,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				}
 				getPaths(mappingsMap, finalLocale, openAPI);
 
+				if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion())
+					handleComponentSchemaTypes(openAPI);
+
 				if (springDocConfigProperties.isTrimKotlinIndent())
 					this.trimIndent(openAPI);
 
@@ -470,6 +473,20 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private void trimIndent(OpenAPI openAPI) {
 		trimComponents(openAPI);
 		trimPaths(openAPI);
+	}
+
+	/**
+	 * Fix component schemas for OAS 3.1 post-processing.
+	 *
+	 * @param openAPI the open api
+	 */
+	private static void handleComponentSchemaTypes(OpenAPI openAPI) {
+		if (openAPI.getComponents() == null || openAPI.getComponents().getSchemas() == null) {
+			return;
+		}
+		for (Schema<?> schema : openAPI.getComponents().getSchemas().values()) {
+			SpringDocUtils.fixNullOnlyAdditionalProperties(schema);
+		}
 	}
 
 	/**

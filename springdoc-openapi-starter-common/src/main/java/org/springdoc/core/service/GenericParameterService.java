@@ -340,8 +340,13 @@ public class GenericParameterService {
 					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
 					if (primitiveType != null) {
 						Schema<?> primitiveSchema = primitiveType.createProperty();
-						primitiveSchema.setDefault(schema.getDefault());
-						schema.setDefault(primitiveSchema.getDefault());
+						if (schema.getDefault() instanceof String stringValue) {
+							primitiveSchema.setDefault(propertyResolverUtils.resolve(stringValue, locale));
+						} else {
+							primitiveSchema.setDefault(schema.getDefault());
+						}
+						if (primitiveSchema.getDefault() != null)
+							schema.setDefault(primitiveSchema.getDefault());
 					}
 				}
 			}
@@ -353,7 +358,8 @@ public class GenericParameterService {
 				// default value not set by swagger-core for array !
 				if (schema != null) {
 					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue(), objectMapperProvider.jsonMapper());
-					schema.setDefault(defaultValue);
+					if (defaultValue != null)
+						schema.setDefault(defaultValue);
 				}
 			}
 			if (isOpenapi31())

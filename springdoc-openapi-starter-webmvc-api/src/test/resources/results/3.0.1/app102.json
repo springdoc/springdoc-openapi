@@ -23,6 +23,7 @@
             "in": "query",
             "required": false,
             "schema": {
+              "nullable": true,
               "type": "string"
             }
           },
@@ -77,6 +78,7 @@
             "in": "query",
             "required": false,
             "schema": {
+              "nullable": true,
               "type": "string"
             }
           },

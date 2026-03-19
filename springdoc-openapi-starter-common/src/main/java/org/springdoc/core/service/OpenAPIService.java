@@ -247,7 +247,8 @@ public class OpenAPIService implements ApplicationContextAware {
 			calculatedOpenAPI.setPaths(new Paths());
 		}
 		else {
-			calculatedOpenAPI = cloneViaJson(openAPI, OpenAPI.class, new ObjectMapper());
+			calculatedOpenAPI = cloneViaJson(openAPI, OpenAPI.class, new ObjectMapper()
+				.setDefaultPropertyInclusion(com.fasterxml.jackson.annotation.JsonInclude.Value.construct(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL, com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS)));
 		}
 
 		if (apiDef.isPresent()) {
