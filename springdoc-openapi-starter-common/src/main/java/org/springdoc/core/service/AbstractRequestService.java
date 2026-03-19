@@ -666,7 +666,8 @@ public abstract class AbstractRequestService {
 					jsonView);
 			if (parameterInfo.getDefaultValue() != null && schema != null) {
 				Object defaultValue = SpringDocAnnotationsUtils.castDefaultValue(schema, parameterInfo.getDefaultValue());
-				schema.setDefault(defaultValue);
+				if (defaultValue != null)
+					schema.setDefault(defaultValue);
 			}
 			parameter.setSchema(schema);
 		}
