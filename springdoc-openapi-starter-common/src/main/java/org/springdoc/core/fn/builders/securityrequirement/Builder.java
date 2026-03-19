@@ -29,6 +29,7 @@ package org.springdoc.core.fn.builders.securityrequirement;
 import java.lang.annotation.Annotation;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirementEntry;
 
 /**
  * The type Security requirement builder.
@@ -105,6 +106,11 @@ public class Builder {
 			@Override
 			public String[] scopes() {
 				return scopes;
+			}
+
+			@Override
+			public SecurityRequirementEntry[] combine() {
+				return new SecurityRequirementEntry[0];
 			}
 		};
 	}

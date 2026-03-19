@@ -347,7 +347,8 @@ public class GenericParameterService {
 						} else {
 							primitiveSchema.setDefault(schema.getDefault());
 						}
-						schema.setDefault(primitiveSchema.getDefault());
+						if (primitiveSchema.getDefault() != null)
+							schema.setDefault(primitiveSchema.getDefault());
 					}
 				}
 			}
@@ -359,7 +360,8 @@ public class GenericParameterService {
 				// default value not set by swagger-core for array !
 				if (schema != null) {
 					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue(), objectMapperProvider.jsonMapper());
-					schema.setDefault(defaultValue);
+					if (defaultValue != null)
+						schema.setDefault(defaultValue);
 				}
 			}
 			if (isOpenapi31())

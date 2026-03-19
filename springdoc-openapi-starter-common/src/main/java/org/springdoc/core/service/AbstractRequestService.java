@@ -647,7 +647,8 @@ public abstract class AbstractRequestService {
 					primitiveSchema.setDefault(parameterInfo.getDefaultValue());
 					defaultValue = primitiveSchema.getDefault();
 				}
-				schema.setDefault(defaultValue);
+				if (defaultValue != null)
+					schema.setDefault(defaultValue);
 			}
 			parameter.setSchema(schema);
 		}
