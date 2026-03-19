@@ -27,6 +27,7 @@ package test.org.springdoc.api.v31.app27;
 import io.swagger.v3.oas.annotations.Hidden;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -37,14 +38,14 @@ public class Advice {
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public Foo handleException(Exception ex, WebRequest request) {
-		return new Foo();
+	public ResponseEntity<Foo> handleException(Exception ex, WebRequest request) {
+		return new ResponseEntity<>(new Foo(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(MyException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public Bar handleMyException(MyException ex, WebRequest request) {
-		return new Bar();
+	public ResponseEntity<Bar> handleMyException(MyException ex, WebRequest request) {
+		return new ResponseEntity<>(new Bar(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Hidden
