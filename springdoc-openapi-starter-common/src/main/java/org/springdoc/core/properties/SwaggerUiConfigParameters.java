@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.springdoc.core.utils.SpringDocPropertiesUtils;
 import org.springframework.util.CollectionUtils;
 
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
@@ -289,7 +290,8 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		if (supportedSubmitMethods != null)
 			org.springdoc.core.utils.SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);
-		org.springdoc.core.utils.SpringDocPropertiesUtils.put(URL_PROPERTY, url, params);
+		if (CollectionUtils.isEmpty(urls))
+			org.springdoc.core.utils.SpringDocPropertiesUtils.put(URL_PROPERTY, url, params);
 		put(URLS_PROPERTY, urls, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(TRY_IT_ENABLED_PROPERTY, tryItOutEnabled, params);
