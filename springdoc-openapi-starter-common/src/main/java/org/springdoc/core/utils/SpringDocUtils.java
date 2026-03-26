@@ -647,6 +647,22 @@ public class SpringDocUtils {
 		}
 	}
 
+	/**
+     * Attempts to extract the declaring class from an AnnotatedType.
+     * Returns null if not available.
+     */
+    public static Class<?> getDeclaringClass(AnnotatedType type) {
+        if (type == null || type.getType() == null)
+            return null;
+        if (type.getType() instanceof ParameterizedType pType) {
+            if (pType.getRawType() instanceof Class<?> cType) {
+                return cType;
+            }
+        } else if (type.getType() instanceof Class<?> cType) {
+            return cType;
+        }
+        return null;
+    }
 }
 
 

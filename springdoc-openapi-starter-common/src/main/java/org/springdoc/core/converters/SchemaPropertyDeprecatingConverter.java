@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
+import org.springdoc.core.utils.SpringDocUtils;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -96,8 +97,14 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		if (chain.hasNext()) {
 			Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
-			if (type.isSchemaProperty() && containsDeprecatedAnnotation(type.getCtxAnnotations()))
-				resolvedSchema.setDeprecated(true);
+			if (type.isSchemaProperty() && containsDeprecatedAnnotation(type.getCtxAnnotations())) {
+				Class<?> declaringClass = SpringDocUtils.getDeclaringClass(type);
+				// Only set deprecated if the declaring class matches or is not available (fallback)
+				if (declaringClass == null || type.getParent() == null || type.getParent().getType() == null ||
+					declaringClass.equals(type.getParent().getType()) || declaringClass.equals(type.getType())) {
+					resolvedSchema.setDeprecated(true);
+				}
+			}
 			return resolvedSchema;
 		}
 		return null;
