@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.11</version>
+		<version>3.5.13</version>
 	</parent>
 
 	<licenses>
@@ -61,8 +61,6 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
 		<spring-cloud-function.version>4.2.2</spring-cloud-function.version>
-		<spring-security-oauth2-authorization-server.version>1.4.3
-		</spring-security-oauth2-authorization-server.version>
 		<scalar.version>0.5.55</scalar.version>
 		<skipPublishing>false</skipPublishing>
 		<commons-lang3.version>3.18.0</commons-lang3.version>
@@ -94,12 +92,6 @@
 				<version>${spring-cloud-function.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<!-- spring Security Oauth2 Authorization Server-->
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-oauth2-authorization-server</artifactId>
-				<version>${spring-security-oauth2-authorization-server.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.scalar.maven</groupId>
