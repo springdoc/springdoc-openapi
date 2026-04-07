@@ -1,0 +1,78 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/nullable": {
+      "get": {
+        "tags": [
+          "nullable-controller"
+        ],
+        "operationId": "getNullableFields",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/NullableFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NestedObject": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "NullableFieldsResponse": {
+        "required": [
+          "requiredField"
+        ],
+        "type": "object",
+        "properties": {
+          "requiredField": {
+            "type": "string"
+          },
+          "nullableString": {
+            "type": "string",
+            "nullable": true
+          },
+          "nullableInt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "nullableNested": {
+            "nullable": true,
+            "$ref": "#/components/schemas/NestedObject"
+          }
+        }
+      }
+    }
+  }
+}
