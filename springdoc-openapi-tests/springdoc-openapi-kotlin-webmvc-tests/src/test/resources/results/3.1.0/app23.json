@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
     "title": "OpenAPI definition",
     "version": "v0"
@@ -35,47 +35,55 @@
   "components": {
     "schemas": {
       "NestedObject": {
-        "required": [
-          "name"
-        ],
         "type": "object",
         "properties": {
           "name": {
             "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "type": [
+              "string",
+              "null"
+            ]
           }
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "NullableFieldsResponse": {
-        "required": [
-          "requiredField"
-        ],
         "type": "object",
         "properties": {
           "requiredField": {
             "type": "string"
           },
           "nullableString": {
-            "type": "string",
-            "nullable": true
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "nullableInt": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32"
           },
           "nullableNested": {
-            "nullable": true,
-            "allOf": [
+            "oneOf": [
               {
                 "$ref": "#/components/schemas/NestedObject"
+              },
+              {
+                "type": "null"
               }
             ]
           }
-        }
+        },
+        "required": [
+          "requiredField"
+        ]
       }
     }
   }
