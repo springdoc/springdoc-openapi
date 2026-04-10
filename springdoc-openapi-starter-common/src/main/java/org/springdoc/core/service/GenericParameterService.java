@@ -28,6 +28,8 @@ package org.springdoc.core.service;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -385,22 +387,10 @@ public class GenericParameterService {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
-			Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
 			Annotation[] paramAnnotations = getParameterAnnotations(methodParameter);
-			Annotation[] typeAnnotations = new Annotation[0];
-			if (KotlinDetector.isKotlinPresent()
-					&& KotlinDetector.isKotlinReflectPresent()
-					&& KotlinDetector.isKotlinType(methodParameter.getContainingClass())
-					&& type == String.class) {
-				Class<?> restored = KotlinInlineParameterResolver
-						.resolveInlineType(methodParameter, type);
-				if (restored != null) {
-					type = restored;
-					typeAnnotations = ((Class<?>) type).getAnnotations();
-				}
-			} else {
-				typeAnnotations = methodParameter.getParameterType().getAnnotations();
-			}
+			TypeAndTypeAnnotations resolved = resolveTypeAndTypeAnnotationsForParameter(methodParameter);
+			Type type = resolved.type();
+			Annotation[] typeAnnotations = resolved.typeAnnotations();
 			Annotation[] mergedAnnotations =
 					Stream.concat(
 							Arrays.stream(paramAnnotations),
@@ -435,6 +425,56 @@ public class GenericParameterService {
 		}
 
 		return schemaN;
+	}
+
+	/**
+	 * Resolves type and type annotations for schema extraction (flattened {@code @ParameterObject} field,
+	 * Kotlin inline {@code String}, or default).
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the resolved type and type annotations
+	 */
+	private TypeAndTypeAnnotations resolveTypeAndTypeAnnotationsForParameter(MethodParameter methodParameter) {
+		if (methodParameter instanceof DelegatingMethodParameter delegatingMethodParameter
+				&& delegatingMethodParameter.getField() != null) {
+			AnnotatedType annotated = delegatingMethodParameter.getField().getAnnotatedType();
+			Type type = GenericTypeResolver.resolveType(annotated.getType(), methodParameter.getContainingClass());
+			return new TypeAndTypeAnnotations(type, annotationsFromAnnotatedTypeArguments(annotated));
+		}
+
+		Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+		if (KotlinDetector.isKotlinPresent()
+				&& KotlinDetector.isKotlinReflectPresent()
+				&& KotlinDetector.isKotlinType(methodParameter.getContainingClass())
+				&& type == String.class) {
+			Class<?> restored = KotlinInlineParameterResolver.resolveInlineType(methodParameter, type);
+			return restored != null
+					? new TypeAndTypeAnnotations(restored, restored.getAnnotations())
+					: new TypeAndTypeAnnotations(type, new Annotation[0]);
+		}
+
+		return new TypeAndTypeAnnotations(type, methodParameter.getParameterType().getAnnotations());
+	}
+
+	/**
+	 * Pair of resolved Java type and type annotations merged with parameter annotations for {@code extractSchema}.
+	 */
+	private record TypeAndTypeAnnotations(Type type, Annotation[] typeAnnotations) {
+	}
+
+	/**
+	 * Collects annotations declared on each type argument of an {@link AnnotatedParameterizedType}.
+	 *
+	 * @param annotatedType the annotated type
+	 * @return a new array, possibly empty
+	 */
+	private static Annotation[] annotationsFromAnnotatedTypeArguments(AnnotatedType annotatedType) {
+		if (!(annotatedType instanceof AnnotatedParameterizedType apt)) {
+			return new Annotation[0];
+		}
+		return Arrays.stream(apt.getAnnotatedActualTypeArguments())
+				.flatMap(typeArg -> Arrays.stream(typeArg.getAnnotations()))
+				.toArray(Annotation[]::new);
 	}
 
 	/**
