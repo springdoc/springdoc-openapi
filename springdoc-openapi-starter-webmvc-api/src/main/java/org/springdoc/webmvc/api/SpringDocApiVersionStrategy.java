@@ -35,6 +35,7 @@ import org.springdoc.core.versions.AbstractSpringDocApiVersionStrategy;
 
 import org.springframework.web.accept.ApiVersionStrategy;
 import org.springframework.web.accept.InvalidApiVersionException;
+import org.springframework.web.accept.MissingApiVersionException;
 
 /**
  * Servlet-based delegating {@link ApiVersionStrategy} that gracefully handles springdoc endpoint paths.
@@ -67,9 +68,32 @@ public class SpringDocApiVersionStrategy extends AbstractSpringDocApiVersionStra
 		}
 		catch (InvalidApiVersionException ex) {
 			if (isSpringDocPath(request)) {
+				return resolveVersionForSpringDocPath(ex);
+			}
+			throw ex;
+		}
+		catch (MissingApiVersionException ex) {
+			if (isSpringDocPath(request)) {
 				return delegate.getDefaultVersion();
 			}
 			throw ex;
+		}
+	}
+
+	/**
+	 * Resolve a version for springdoc paths when validation fails.
+	 * <p>Re-parses the invalid version string without validation, since springdoc
+	 * endpoints have no version condition and will match any version.
+	 *
+	 * @param ex the invalid API version exception
+	 * @return the parsed version, or the default version as fallback
+	 */
+	private @Nullable Comparable<?> resolveVersionForSpringDocPath(InvalidApiVersionException ex) {
+		try {
+			return delegate.parseVersion(ex.getVersion());
+		}
+		catch (Exception parseEx) {
+			return delegate.getDefaultVersion();
 		}
 	}
 

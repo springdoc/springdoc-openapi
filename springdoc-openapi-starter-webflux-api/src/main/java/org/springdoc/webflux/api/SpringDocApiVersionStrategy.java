@@ -33,6 +33,7 @@ import org.springdoc.core.versions.AbstractSpringDocApiVersionStrategy;
 import reactor.core.publisher.Mono;
 
 import org.springframework.web.accept.InvalidApiVersionException;
+import org.springframework.web.accept.MissingApiVersionException;
 import org.springframework.web.reactive.accept.ApiVersionStrategy;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -67,6 +68,12 @@ public class SpringDocApiVersionStrategy extends AbstractSpringDocApiVersionStra
 		}
 		catch (InvalidApiVersionException ex) {
 			if (isSpringDocPath(exchange)) {
+				return resolveVersionForSpringDocPath(ex);
+			}
+			throw ex;
+		}
+		catch (MissingApiVersionException ex) {
+			if (isSpringDocPath(exchange)) {
 				return delegate.getDefaultVersion();
 			}
 			throw ex;
@@ -76,13 +83,38 @@ public class SpringDocApiVersionStrategy extends AbstractSpringDocApiVersionStra
 	@Override
 	public Mono<Comparable<?>> resolveParseAndValidateApiVersion(ServerWebExchange exchange) {
 		return delegate.resolveParseAndValidateApiVersion(exchange)
-				.onErrorResume(InvalidApiVersionException.class, ex -> {
+				.onErrorResume(ex -> {
 					if (isSpringDocPath(exchange)) {
-						Comparable<?> defaultVersion = delegate.getDefaultVersion();
-						return defaultVersion != null ? Mono.just(defaultVersion) : Mono.empty();
+						if (ex instanceof InvalidApiVersionException invalidEx) {
+							return Mono.just(resolveVersionForSpringDocPath(invalidEx));
+						}
+						else if (ex instanceof MissingApiVersionException) {
+							Comparable<?> defaultVersion = delegate.getDefaultVersion();
+							return defaultVersion != null ? Mono.just(defaultVersion) : Mono.just((Comparable<?>) "");
+						}
 					}
 					return Mono.error(ex);
 				});
+	}
+
+	/**
+	 * Resolve a version for springdoc paths when validation fails.
+	 * <p>Re-parses the invalid version string without validation, since springdoc
+	 * endpoints have no version condition and will match any version. This ensures
+	 * a non-null value is returned, which is required for the reactive handler
+	 * mapping to proceed with handler lookup.
+	 *
+	 * @param ex the invalid API version exception
+	 * @return the parsed version, or the default version as fallback
+	 */
+	private Comparable<?> resolveVersionForSpringDocPath(InvalidApiVersionException ex) {
+		try {
+			return delegate.parseVersion(ex.getVersion());
+		}
+		catch (Exception parseEx) {
+			Comparable<?> defaultVersion = delegate.getDefaultVersion();
+			return defaultVersion != null ? defaultVersion : (Comparable<?>) ex.getVersion();
+		}
 	}
 
 	@Override
