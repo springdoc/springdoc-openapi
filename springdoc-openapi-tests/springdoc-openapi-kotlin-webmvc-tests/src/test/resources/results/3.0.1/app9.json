@@ -60,10 +60,12 @@
         "properties": {
           "requiredNullableDefault": {
             "type": "string",
+            "nullable": true,
             "default": "a default value"
           },
           "requiredNullableNoDefault": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "requiredNoNullableDefault": {
             "type": "string",
@@ -74,10 +76,12 @@
           },
           "requiredNullableDefault1": {
             "type": "string",
+            "nullable": true,
             "default": "a default value"
           },
           "requiredNullableNoDefault1": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "requiredNoNullableDefault1": {
             "type": "string",
@@ -88,10 +92,12 @@
           },
           "noRequiredNullableDefault2": {
             "type": "string",
+            "nullable": true,
             "default": "a default value"
           },
           "noRequiredNullableNoDefault2": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "noRequiredNoNullableDefault2": {
             "type": "string",
@@ -102,10 +108,12 @@
           },
           "noRequiredNullableDefault": {
             "type": "string",
+            "nullable": true,
             "default": "a default value"
           },
           "noRequiredNullableNoDefault": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "noRequiredNoNullableDefault": {
             "type": "string",
