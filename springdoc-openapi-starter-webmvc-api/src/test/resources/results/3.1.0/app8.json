@@ -68,8 +68,8 @@
             "format": "int32",
             "description": "foo",
             "examples": [
-              "1",
-              "2"
+              1,
+              2
             ]
           }
         },
@@ -94,8 +94,8 @@
             "format": "int32",
             "description": "The user's age",
             "examples": [
-              "114",
-              "514"
+              114,
+              514
             ]
           },
           "fooBar": {
