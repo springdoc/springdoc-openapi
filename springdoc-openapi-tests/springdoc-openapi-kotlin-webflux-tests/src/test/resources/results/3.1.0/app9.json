@@ -59,11 +59,17 @@
         "type": "object",
         "properties": {
           "requiredNullableDefault": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "default": "a default value"
           },
           "requiredNullableNoDefault": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "requiredNoNullableDefault": {
             "type": "string",
@@ -73,11 +79,17 @@
             "type": "string"
           },
           "requiredNullableDefault1": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "default": "a default value"
           },
           "requiredNullableNoDefault1": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "requiredNoNullableDefault1": {
             "type": "string",
@@ -87,11 +99,17 @@
             "type": "string"
           },
           "noRequiredNullableDefault2": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "default": "a default value"
           },
           "noRequiredNullableNoDefault2": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "noRequiredNoNullableDefault2": {
             "type": "string",
@@ -101,11 +119,17 @@
             "type": "string"
           },
           "noRequiredNullableDefault": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "default": "a default value"
           },
           "noRequiredNullableNoDefault": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "noRequiredNoNullableDefault": {
             "type": "string",
