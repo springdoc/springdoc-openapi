@@ -698,7 +698,7 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	/**
 	 * The enum Direction.
 	 */
-	enum Direction {
+	public enum Direction {
 		/**
 		 * Asc direction.
 		 */
