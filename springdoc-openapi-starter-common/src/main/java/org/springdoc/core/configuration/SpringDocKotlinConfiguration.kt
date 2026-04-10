@@ -28,6 +28,7 @@ package org.springdoc.core.configuration
 
 import org.springdoc.core.converters.KotlinInlineClassUnwrappingConverter
 import org.springdoc.core.customizers.KotlinDeprecatedPropertyCustomizer
+import org.springdoc.core.customizers.KotlinNullablePropertyCustomizer
 import org.springdoc.core.providers.ObjectMapperProvider
 import org.springdoc.core.utils.Constants
 import org.springdoc.core.utils.SpringDocKotlinUtils
@@ -75,6 +76,13 @@ class SpringDocKotlinConfiguration() {
 		@ConditionalOnMissingBean
 		fun kotlinDeprecatedPropertyCustomizer(objectMapperProvider: ObjectMapperProvider): KotlinDeprecatedPropertyCustomizer {
 			return KotlinDeprecatedPropertyCustomizer(objectMapperProvider)
+		}
+
+		@Bean
+		@Lazy(false)
+		@ConditionalOnMissingBean
+		fun kotlinNullablePropertyCustomizer(objectMapperProvider: ObjectMapperProvider): KotlinNullablePropertyCustomizer {
+			return KotlinNullablePropertyCustomizer(objectMapperProvider)
 		}
 
 		@Bean
