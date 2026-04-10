@@ -59,10 +59,12 @@
         "type": "object",
         "properties": {
           "requiredNullableDefault": {
+            "nullable": true,
             "type": "string",
             "default": "a default value"
           },
           "requiredNullableNoDefault": {
+            "nullable": true,
             "type": "string"
           },
           "requiredNoNullableDefault": {
@@ -73,10 +75,12 @@
             "type": "string"
           },
           "requiredNullableDefault1": {
+            "nullable": true,
             "type": "string",
             "default": "a default value"
           },
           "requiredNullableNoDefault1": {
+            "nullable": true,
             "type": "string"
           },
           "requiredNoNullableDefault1": {
@@ -87,10 +91,12 @@
             "type": "string"
           },
           "noRequiredNullableDefault2": {
+            "nullable": true,
             "type": "string",
             "default": "a default value"
           },
           "noRequiredNullableNoDefault2": {
+            "nullable": true,
             "type": "string"
           },
           "noRequiredNoNullableDefault2": {
@@ -101,10 +107,12 @@
             "type": "string"
           },
           "noRequiredNullableDefault": {
+            "nullable": true,
             "type": "string",
             "default": "a default value"
           },
           "noRequiredNullableNoDefault": {
+            "nullable": true,
             "type": "string"
           },
           "noRequiredNoNullableDefault": {

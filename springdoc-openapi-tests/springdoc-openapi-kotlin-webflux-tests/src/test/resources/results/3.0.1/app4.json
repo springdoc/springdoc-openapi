@@ -54,6 +54,7 @@
             "type": "string"
           },
           "nickname": {
+            "nullable": true,
             "type": "string"
           }
         }

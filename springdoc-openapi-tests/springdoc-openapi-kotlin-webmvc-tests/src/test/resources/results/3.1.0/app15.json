@@ -48,19 +48,28 @@
         "type": "object",
         "properties": {
           "field11true": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "field10true": {
             "type": "string"
           },
           "field01false": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "field00false": {
             "type": "string"
           },
           "fieldN1false": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "fieldN0true": {
             "type": "string"
