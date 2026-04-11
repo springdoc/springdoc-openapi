@@ -56,7 +56,7 @@ import org.springframework.hateoas.server.LinkRelationProvider;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-hateoas:true}")
-@ConditionalOnClass(LinkRelationProvider.class)
+@ConditionalOnClass({LinkRelationProvider.class, HateoasProperties.class})
 @ConditionalOnWebApplication
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocHateoasConfiguration {
