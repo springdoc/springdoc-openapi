@@ -27,12 +27,16 @@
 package org.springdoc.webmvc.ai;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
+import org.springdoc.ai.mcp.McpRequestContextHolder;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -90,13 +94,36 @@ public class McpAuditMdcFilter extends OncePerRequestFilter {
 		if (sessionId != null && !sessionId.isBlank()) {
 			MDC.put(MDC_SESSION_ID, sessionId);
 		}
+		McpRequestContextHolder.setHeaders(extractForwardableHeaders(request));
 		try {
 			filterChain.doFilter(request, response);
 		}
 		finally {
 			MDC.remove(MDC_CLIENT_IP);
 			MDC.remove(MDC_SESSION_ID);
+			McpRequestContextHolder.clear();
 		}
+	}
+
+	/**
+	 * Extracts headers from the servlet request that should be forwarded to downstream
+	 * REST API calls, filtering out standard HTTP transport/browser headers.
+	 * @param request the HTTP servlet request
+	 * @return the forwardable headers map
+	 */
+	private Map<String, String> extractForwardableHeaders(HttpServletRequest request) {
+		Map<String, String> headers = new HashMap<>();
+		Enumeration<String> headerNames = request.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+			String name = headerNames.nextElement();
+			if (!McpRequestContextHolder.SKIP_HEADERS.contains(name.toLowerCase())) {
+				String value = request.getHeader(name);
+				if (value != null && !value.isEmpty()) {
+					headers.put(name, value);
+				}
+			}
+		}
+		return headers;
 	}
 
 	/**

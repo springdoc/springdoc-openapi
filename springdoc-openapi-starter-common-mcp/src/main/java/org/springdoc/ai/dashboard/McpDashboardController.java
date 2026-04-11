@@ -30,9 +30,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.springdoc.ai.mcp.McpRequestContextHolder;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -89,13 +89,6 @@ public class McpDashboardController {
 		return List.copyOf(toolsByName.values());
 	}
 
-	/**
-	 * Headers to skip when forwarding to tool execution.
-	 */
-	private static final Set<String> SKIP_HEADERS = Set.of("content-type", "content-length", "host", "connection",
-			"accept", "accept-encoding", "accept-language", "user-agent", "origin", "referer", "cookie",
-			"sec-fetch-dest", "sec-fetch-mode", "sec-fetch-site", "sec-ch-ua", "sec-ch-ua-mobile",
-			"sec-ch-ua-platform");
 
 	/**
 	 * Executes an MCP tool by name, forwarding any authentication headers (Authorization,
@@ -110,7 +103,7 @@ public class McpDashboardController {
 			@RequestHeader Map<String, String> allHeaders) {
 		Map<String, String> extraHeaders = new HashMap<>();
 		for (Map.Entry<String, String> entry : allHeaders.entrySet()) {
-			if (!SKIP_HEADERS.contains(entry.getKey().toLowerCase()) && entry.getValue() != null
+			if (!McpRequestContextHolder.SKIP_HEADERS.contains(entry.getKey().toLowerCase()) && entry.getValue() != null
 					&& !entry.getValue().isEmpty()) {
 				extraHeaders.put(entry.getKey(), entry.getValue());
 			}

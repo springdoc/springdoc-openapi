@@ -67,6 +67,18 @@ import static org.springdoc.ai.properties.SpringDocAiProperties.SPRINGDOC_MCP_UI
 public class McpWebFluxAiAutoConfiguration {
 
 	/**
+	 * Creates the {@link McpAuditMdcWebFilter} that populates MDC and
+	 * {@link org.springdoc.ai.mcp.McpRequestContextHolder} for MCP requests.
+	 * @param aiProperties the AI properties (used to scope the filter to the MCP path)
+	 * @return the WebFilter bean
+	 */
+	@Bean
+	@ConditionalOnMissingBean(McpAuditMdcWebFilter.class)
+	McpAuditMdcWebFilter mcpAuditMdcWebFilter(SpringDocAiProperties aiProperties) {
+		return new McpAuditMdcWebFilter(aiProperties.getMcpEndpoint());
+	}
+
+	/**
 	 * Creates the {@link McpToolDescriptionCustomizer} bean that scans WebFlux handler
 	 * methods for {@link org.springdoc.ai.annotations.McpToolDescription} annotations.
 	 * @param requestMappingHandlerMapping the WebFlux request mapping handler mapping

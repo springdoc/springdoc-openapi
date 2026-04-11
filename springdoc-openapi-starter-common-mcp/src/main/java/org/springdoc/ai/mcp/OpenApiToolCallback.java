@@ -402,6 +402,12 @@ public class OpenApiToolCallback implements ToolCallback {
 			if (extraHeaders != null) {
 				extraHeaders.forEach(requestBuilder::header);
 			}
+			else {
+				Map<String, String> contextHeaders = McpRequestContextHolder.getHeaders();
+				if (contextHeaders != null) {
+					contextHeaders.forEach(requestBuilder::header);
+				}
+			}
 
 			String bodyString = buildBodyString(input);
 			HttpRequest.BodyPublisher bodyPublisher = bodyString != null
