@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.17] - 2026-04-12
+
+### Added
+
+- Add support for the `@Range` constraint validation annotation
+- Auto-set `nullable: true` for Kotlin nullable types in schema properties
+
+### Changed
+
+- Upgrade Spring Boot to version **3.5.13**
+- Upgrade swagger-core to version **2.2.47**
+- Upgrade swagger-ui to version **5.32.2**
+
+### Fixed
+
+- #3259 – Fix an issue with annotated types with generics on parameters
+- #3255 – Handle `$ref` nullable wrapping and OAS 3.1 support
+- #3245 – Upgrade swagger-core from 2.2.43 to 2.2.45 (fixes schema resolution issues)
+- #3241 – Generic error responses from multiple `@ControllerAdvice` are still nondeterministic across OS
+- #3236 – Preserve YAML group URLs in Swagger UI
+- Fix `PropertyResolverUtils` to retain a `JsonNode` when reading an `ExtensionProperty` annotation
+- Fix handling of default values for `LocalDate`
+
 ## [2.8.16] - 2026-02-27
 
 ### Added
