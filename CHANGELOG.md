@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.3] - 2026-04-12
+
+### Added
+
+- #3246 – Add Springdoc OpenAPI MCP (Model Context Protocol) support
+- #3256 – Auto-set `nullable: true` for Kotlin nullable types in schema properties
+- #3239 – Add support for the `@Range` constraint validation annotation
+- #3244 – Handle default values for `LocalDate`
+
+### Changed
+
+- Upgrade Spring Boot to version **4.0.5**
+- Upgrade swagger-core to version **2.2.47**
+- Upgrade swagger-ui to version **5.32.2**
+- #3260 – `@ConditionalOnClass(HateoasProperties.class)` in `SpringDocHateoasConfiguration`
+- Forwards all MCP non-transport headers to downstream methods
+- Dynamically resolve the base path from `window.location.pathname` for MCP UI
+
+### Fixed
+
+- #3258 – Setting API Version Required when using WebFlux breaks the Swagger UI
+- #3259 – Annotated Generic properties getting applied to sibling properties
+- #3255 – `Direction` enum: fixed visibility scope of group order so that `setGroupsOrder` method can be used
+- #3247 – Preserve YAML group URLs in Swagger UI
+- #3245 – Upgrade swagger-core from version 2.2.43 to 2.2.45
+- #3235 – `PropertyResolverUtils` retains a `JsonNode` when reading an `ExtensionProperty` annotation
+- #3226 – Propagate `JsonView` context when resolving `Page<T>` schema
+
 ## [3.0.2] - 2026-02-27
 
 ### Added
