@@ -212,10 +212,15 @@
 			</properties>
 			<modules>
 				<module>springdoc-openapi-starter-common</module>
+				<module>springdoc-openapi-starter-common-mcp</module>
 				<module>springdoc-openapi-starter-webmvc-api</module>
 				<module>springdoc-openapi-starter-webflux-api</module>
 				<module>springdoc-openapi-starter-webmvc-ui</module>
 				<module>springdoc-openapi-starter-webflux-ui</module>
+				<module>springdoc-openapi-starter-webmvc-scalar</module>
+				<module>springdoc-openapi-starter-webflux-scalar</module>
+				<module>springdoc-openapi-starter-webmvc-mcp</module>
+				<module>springdoc-openapi-starter-webflux-mcp</module>
 				<module>springdoc-openapi-tests</module>
 			</modules>
 		</profile>
