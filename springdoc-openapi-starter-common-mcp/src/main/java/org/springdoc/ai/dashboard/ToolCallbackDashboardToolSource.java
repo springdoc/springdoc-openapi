@@ -95,14 +95,21 @@ public class ToolCallbackDashboardToolSource implements McpDashboardToolSource {
 
 	@Override
 	public McpToolExecutionResponse executeTool(String toolName, String arguments, Map<String, String> extraHeaders) {
+		return executeTool(toolName, arguments, extraHeaders, false);
+	}
+
+	@Override
+	public McpToolExecutionResponse executeTool(String toolName, String arguments, Map<String, String> extraHeaders,
+			boolean approved) {
 		for (ToolCallbackProvider provider : toolCallbackProviders) {
 			for (ToolCallback callback : provider.getToolCallbacks()) {
 				if (callback.getToolDefinition().name().equals(toolName)) {
 					long start = System.currentTimeMillis();
 					try {
 						if (callback instanceof OpenApiToolCallback openApiToolCallback) {
-							HttpResponse<String> httpResponse = openApiToolCallback.callWithStatusCode(arguments,
-									extraHeaders);
+							HttpResponse<String> httpResponse = approved
+									? openApiToolCallback.callWithStatusCodeApproved(arguments, extraHeaders)
+									: openApiToolCallback.callWithStatusCode(arguments, extraHeaders);
 							long duration = System.currentTimeMillis() - start;
 							int statusCode = httpResponse.statusCode();
 							boolean success = statusCode >= 200 && statusCode < 300;

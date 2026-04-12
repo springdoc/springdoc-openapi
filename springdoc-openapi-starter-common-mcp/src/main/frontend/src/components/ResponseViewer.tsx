@@ -4,9 +4,11 @@ import JsonTreeView from './JsonTreeView'
 
 interface ResponseViewerProps {
   response: McpToolExecutionResponse
+  onApprove?: () => void
+  isApproving?: boolean
 }
 
-export default function ResponseViewer({ response }: ResponseViewerProps) {
+export default function ResponseViewer({ response, onApprove, isApproving }: ResponseViewerProps) {
   const [tab, setTab] = useState<'pretty' | 'raw'>('pretty')
 
   const parsedResult = useMemo(() => {
@@ -95,10 +97,19 @@ export default function ResponseViewer({ response }: ResponseViewerProps) {
                 d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
               />
             </svg>
-            <div>
+            <div className="flex-1">
               <p className="text-sm font-medium text-amber-800 dark:text-amber-300">Human Approval Required</p>
               <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">{response.error}</p>
             </div>
+            {onApprove && (
+              <button
+                onClick={onApprove}
+                disabled={isApproving}
+                className="flex-shrink-0 self-center px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors"
+              >
+                {isApproving ? 'Executing...' : 'Approve & Execute'}
+              </button>
+            )}
           </div>
         ) : !response.success ? (
           <pre className="text-sm text-red-500 font-mono whitespace-pre-wrap break-all">{displayText}</pre>

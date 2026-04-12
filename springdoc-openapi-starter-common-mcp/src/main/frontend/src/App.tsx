@@ -16,6 +16,7 @@ function App() {
   const [selectedTool, setSelectedTool] = useState<McpToolInfo | null>(null)
   const [response, setResponse] = useState<McpToolExecutionResponse | null>(null)
   const [activeTab, setActiveTab] = useState<ActiveTab>('tools')
+  const [lastExecutedArgs, setLastExecutedArgs] = useState<{ toolName: string; args: string } | null>(null)
 
   const { data: tools, isLoading, error } = useTools()
   const execution = useToolExecution()
@@ -23,8 +24,23 @@ function App() {
   const { metrics, recordExecution, clearMetrics } = useToolMetrics()
 
   const handleExecute = (toolName: string, args: string) => {
+    setLastExecutedArgs({ toolName, args })
     execution.mutate(
       { request: { toolName, arguments: args }, authHeaders: security.getAuthHeaders() },
+      {
+        onSuccess: (data) => {
+          setResponse(data)
+          recordExecution(toolName, data)
+        },
+      },
+    )
+  }
+
+  const handleApprove = () => {
+    if (!lastExecutedArgs) return
+    const { toolName, args } = lastExecutedArgs
+    execution.mutate(
+      { request: { toolName, arguments: args, approved: true }, authHeaders: security.getAuthHeaders() },
       {
         onSuccess: (data) => {
           setResponse(data)
@@ -64,7 +80,13 @@ function App() {
                     onExecute={handleExecute}
                     isExecuting={execution.isPending}
                   />
-                  {response && <ResponseViewer response={response} />}
+                  {response && (
+                    <ResponseViewer
+                      response={response}
+                      onApprove={response.requiresApproval ? handleApprove : undefined}
+                      isApproving={execution.isPending}
+                    />
+                  )}
                 </div>
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500">

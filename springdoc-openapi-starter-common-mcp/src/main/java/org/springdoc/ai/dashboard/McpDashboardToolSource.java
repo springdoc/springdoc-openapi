@@ -53,4 +53,18 @@ public interface McpDashboardToolSource {
 	 */
 	McpToolExecutionResponse executeTool(String toolName, String arguments, Map<String, String> extraHeaders);
 
+	/**
+	 * Executes a tool by name with an explicit human approval flag. When
+	 * {@code approved} is {@code true}, the HITL guardrail is bypassed.
+	 * @param toolName the tool name
+	 * @param arguments the JSON arguments string
+	 * @param extraHeaders extra HTTP headers to forward (e.g. Authorization)
+	 * @param approved whether human approval has been granted
+	 * @return the execution response, or null if tool not found in this source
+	 */
+	default McpToolExecutionResponse executeTool(String toolName, String arguments, Map<String, String> extraHeaders,
+			boolean approved) {
+		return executeTool(toolName, arguments, extraHeaders);
+	}
+
 }

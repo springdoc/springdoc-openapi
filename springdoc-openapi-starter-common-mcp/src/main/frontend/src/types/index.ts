@@ -12,6 +12,7 @@ export interface McpToolInfo {
 export interface McpToolExecutionRequest {
   toolName: string
   arguments: string
+  approved?: boolean
 }
 
 export interface McpToolExecutionResponse {

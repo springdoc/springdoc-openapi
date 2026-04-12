@@ -373,6 +373,17 @@ public class OpenApiToolCallback implements ToolCallback {
 	}
 
 	/**
+	 * Executes the tool with explicit human approval, bypassing the HITL guardrail.
+	 * Used by the dashboard when a human operator clicks "Approve &amp; Execute".
+	 * @param toolInput the tool input JSON string
+	 * @param extraHeaders additional headers to include (e.g. Authorization)
+	 * @return the HTTP response with body and status code
+	 */
+	public HttpResponse<String> callWithStatusCodeApproved(String toolInput, Map<String, String> extraHeaders) {
+		return executeHttp(toolInput, extraHeaders, "APPROVED");
+	}
+
+	/**
 	 * Performs the actual HTTP call without any approval guard. Used internally by
 	 * {@link #call} (after approval) and {@link #callWithStatusCode} (when guardrails are
 	 * disabled).

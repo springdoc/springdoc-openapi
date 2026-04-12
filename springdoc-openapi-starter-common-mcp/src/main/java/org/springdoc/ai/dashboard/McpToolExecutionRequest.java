@@ -44,6 +44,11 @@ public class McpToolExecutionRequest {
 	private String arguments;
 
 	/**
+	 * Whether human approval has been granted for this execution.
+	 */
+	private boolean approved;
+
+	/**
 	 * Gets tool name.
 	 * @return the tool name
 	 */
@@ -73,6 +78,22 @@ public class McpToolExecutionRequest {
 	 */
 	public void setArguments(String arguments) {
 		this.arguments = arguments;
+	}
+
+	/**
+	 * Returns whether human approval has been granted.
+	 * @return true if approved
+	 */
+	public boolean isApproved() {
+		return approved;
+	}
+
+	/**
+	 * Sets whether human approval has been granted.
+	 * @param approved true if approved
+	 */
+	public void setApproved(boolean approved) {
+		this.approved = approved;
 	}
 
 }

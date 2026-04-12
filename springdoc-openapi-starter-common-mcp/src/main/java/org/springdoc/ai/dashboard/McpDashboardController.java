@@ -111,7 +111,7 @@ public class McpDashboardController {
 		McpToolExecutionResponse firstError = null;
 		for (McpDashboardToolSource source : toolSources) {
 			McpToolExecutionResponse response = source.executeTool(request.getToolName(), request.getArguments(),
-					extraHeaders);
+					extraHeaders, request.isApproved());
 			if (response != null) {
 				if (response.isSuccess()) {
 					return ResponseEntity.ok(response);
