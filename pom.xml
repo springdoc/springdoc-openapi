@@ -46,7 +46,6 @@
 		<module>springdoc-openapi-starter-webflux-ui</module>
 		<module>springdoc-openapi-starter-webmvc-scalar</module>
 		<module>springdoc-openapi-starter-webflux-scalar</module>
-		<module>springdoc-openapi-bom</module>
 	</modules>
 
 	<properties>
@@ -170,6 +169,9 @@
 				<module>springdoc-openapi-starter-webflux-api</module>
 				<module>springdoc-openapi-starter-webmvc-ui</module>
 				<module>springdoc-openapi-starter-webflux-ui</module>
+				<module>springdoc-openapi-starter-webmvc-scalar</module>
+				<module>springdoc-openapi-starter-webflux-scalar</module>
+				<module>springdoc-openapi-bom</module>
 				<module>springdoc-openapi-tests</module>
 			</modules>
 		</profile>
