@@ -504,7 +504,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 */
 	public static Object resolveDefaultValue(String defaultValueStr, ObjectMapper objectMapper) {
 		Object defaultValue = null;
-		if (StringUtils.isNotEmpty(defaultValueStr) && !io.swagger.v3.oas.annotations.media.Schema.DEFAULT_SENTINEL.equals(defaultValueStr)) {
+		if (StringUtils.isNotEmpty(defaultValueStr)) {
 			try {
 				defaultValue = objectMapper.readTree(defaultValueStr);
 			}
