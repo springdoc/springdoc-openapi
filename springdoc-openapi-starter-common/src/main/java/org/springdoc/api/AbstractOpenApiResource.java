@@ -407,6 +407,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 					this.removeBrokenReferenceDefinitions(openAPI);
 
+				SpringDocUtils.removeNullKeySchemas(openAPI);
+
 				// run the optional customizers
 				List<Server> servers = openAPI.getServers();
 				List<Server> serversCopy = cloneViaJson(servers,  new TypeReference<List<Server>>() {},  springDocProviders.jsonMapper());

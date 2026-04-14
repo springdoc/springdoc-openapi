@@ -37,6 +37,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.util.PrimitiveType;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
@@ -213,6 +214,36 @@ public class SpringDocUtils {
 		if (schema.getProperties() != null) {
 			schema.getProperties().values().forEach(prop -> fixNullOnlyAdditionalProperties((Schema<?>) prop));
 		}
+	}
+
+	/**
+	 * Remove null-key entries from all component schema properties maps.
+	 * Guards against a swagger-core bug where @JsonUnwrapped properties can produce
+	 * null-named schemas that get inserted as null keys, causing Jackson serialization to fail.
+	 *
+	 * @param openAPI the open api
+	 */
+	public static void removeNullKeySchemas(OpenAPI openAPI) {
+		if (openAPI == null || openAPI.getComponents() == null
+				|| openAPI.getComponents().getSchemas() == null) {
+			return;
+		}
+		openAPI.getComponents().getSchemas().values()
+				.forEach(schema -> removeNullKeyFromSchemaProperties((Schema<?>) schema));
+	}
+
+	/**
+	 * Recursively remove null-key entries from the given schema's properties map.
+	 *
+	 * @param schema the schema
+	 */
+	private static void removeNullKeyFromSchemaProperties(Schema<?> schema) {
+		if (schema == null || schema.getProperties() == null) {
+			return;
+		}
+		schema.getProperties().entrySet().removeIf(entry -> entry.getKey() == null);
+		schema.getProperties().values()
+				.forEach(prop -> removeNullKeyFromSchemaProperties((Schema<?>) prop));
 	}
 
 	/**
