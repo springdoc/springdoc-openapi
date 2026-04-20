@@ -81,6 +81,7 @@ class SpringDocKotlinConfiguration() {
 		@Bean
 		@Lazy(false)
 		@ConditionalOnMissingBean
+		@ConditionalOnProperty(name = [Constants.SPRINGDOC_KOTLIN_NULLABLE_PROPERTY_CUSTOMIZER_ENABLED], matchIfMissing = true)
 		fun kotlinNullablePropertyCustomizer(objectMapperProvider: ObjectMapperProvider): KotlinNullablePropertyCustomizer {
 			return KotlinNullablePropertyCustomizer(objectMapperProvider)
 		}
