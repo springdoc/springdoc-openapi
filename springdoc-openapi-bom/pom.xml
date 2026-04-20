@@ -45,6 +45,13 @@
 				<artifactId>springdoc-openapi-starter-webflux-scalar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>io.swagger.core.v3</groupId>
+				<artifactId>swagger-bom</artifactId>
+				<version>${swagger-api.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -69,7 +76,7 @@
 							<pomElements>
 								<properties>remove</properties>
 								<distributionManagement>remove</distributionManagement>
-								<dependencyManagement>keep</dependencyManagement>
+								<dependencyManagement>extended_interpolate</dependencyManagement>
 								<repositories>remove</repositories>
 								<issueManagement>remove</issueManagement>
 							</pomElements>
