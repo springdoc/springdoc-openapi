@@ -202,6 +202,11 @@ public final class Constants {
 	public static final String INDEX_PAGE = "/index.html";
 
 	/**
+	 * The constant INDEX_PAGE_PATTERN.
+	 */
+	public static final String INDEX_PAGE_PATTERN = "/*index.html";
+
+	/**
 	 * The constant SWAGGER_UI_URL.
 	 */
 	public static final String SWAGGER_UI_URL = SWAGGER_UI_PREFIX + INDEX_PAGE;
