@@ -216,6 +216,36 @@ public class SpringDocUtils {
 	}
 
 	/**
+	 * Fix component schemas that have been incorrectly mutated to {@code type: "null"} when they
+	 * have properties, which indicates they should be {@code type: "object"}.
+	 *
+	 * <p>This can happen when {@code @Nullable} is applied to a field whose type is represented
+	 * as a {@code $ref} component schema. swagger-core may propagate the nullable marker onto
+	 * the shared component schema itself, corrupting it for all references. This method restores
+	 * such schemas to {@code type: "object"} based on the presence of {@code properties}.
+	 *
+	 * @param schema the schema to fix
+	 * @see <a href="https://github.com/springdoc/springdoc-openapi/issues/3275">Issue #3275</a>
+	 */
+	public static void fixNullMutatedObjectSchema(Schema<?> schema) {
+		if (schema == null || schema.getProperties() == null || schema.getProperties().isEmpty()) {
+			return;
+		}
+		Set<String> types = schema.getTypes();
+		boolean isNullOnly = (types != null && types.size() == 1 && types.contains("null"))
+				|| (types == null && "null".equals(schema.getType()));
+		if (isNullOnly) {
+			if (types != null) {
+				types.remove("null");
+				types.add("object");
+			}
+			else {
+				schema.setType("object");
+			}
+		}
+	}
+
+	/**
 	 * Handle schema types.
 	 *
 	 * @param content the content
