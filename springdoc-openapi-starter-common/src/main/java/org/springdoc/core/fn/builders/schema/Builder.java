@@ -197,7 +197,7 @@ public class Builder {
 	/**
 	 * Provides a default value.
 	 */
-	private String defaultValue = Schema.DEFAULT_SENTINEL;
+	private String defaultValue = "";
 
 	/**
 	 * Provides a discriminator property value.
