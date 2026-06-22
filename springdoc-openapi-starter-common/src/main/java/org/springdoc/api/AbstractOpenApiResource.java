@@ -469,6 +469,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 		for (Schema<?> schema : openAPI.getComponents().getSchemas().values()) {
 			SpringDocUtils.fixNullOnlyAdditionalProperties(schema);
+			SpringDocUtils.fixNullMutatedObjectSchema(schema);
 		}
 	}
 
