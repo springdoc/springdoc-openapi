@@ -35,7 +35,6 @@ import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.core.util.Yaml31;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.mixins.SortedOpenAPIMixin;
 import org.springdoc.core.mixins.SortedOpenAPIMixin31;
@@ -81,14 +80,10 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 			if (springDocConfigProperties.isExplicitObjectSchema()) {
 				System.setProperty(Schema.EXPLICIT_OBJECT_SCHEMA_PROPERTY, "true");
 			}
-			else {
-				PrimitiveType.explicitObjectType = false;
-			}
 		}
 		else {
 			jsonMapper = Json.mapper();
 			yamlMapper = Yaml.mapper();
-			PrimitiveType.explicitObjectType = null;
 		}
 	}
 

@@ -187,6 +187,8 @@ public class SpringDocUtils {
 	/**
 	 * Fix additionalProperties incorrectly set to {"type": "null"} when @Nullable
 	 * propagates from a Map field to its Object value type (resolved as "any type" = {}).
+	 * <p>
+	 * Tracked under <a href="https://github.com/swagger-api/swagger-core/issues/5115">swagger-core#5115</a>.
 	 *
 	 * @param schema the schema to fix
 	 */
