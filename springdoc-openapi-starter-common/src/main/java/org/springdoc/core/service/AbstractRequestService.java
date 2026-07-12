@@ -655,6 +655,12 @@ public abstract class AbstractRequestService {
 		if (StringUtils.isBlank(parameter.getIn()))
 			parameter.setIn(parameterInfo.getParamType());
 
+		// A parameter object property defaults to a query parameter. Assign it here (rather
+		// than only when finalizing the parameter map) so that mergeParameter does not collapse
+		// it into a same-named path/header parameter of the same operation (see issue #3270).
+		if (StringUtils.isBlank(parameter.getIn()) && parameterInfo.isParameterObject())
+			parameter.setIn(ParameterIn.QUERY.toString());
+
 		if (parameter.getRequired() == null)
 			parameter.setRequired(parameterInfo.isRequired());
 
@@ -694,6 +700,15 @@ public abstract class AbstractRequestService {
 		}
 		if (annotations != null) {
 			Schema<?> schema = parameter.getSchema();
+			// The resolved schema may be a shared instance cached by swagger-core's
+			// ModelConverterContext (keyed by type). Applying constraints in place would leak
+			// them to every parameter of the same type, even across unrelated controllers (see
+			// issue #3270). Copy an inline schema before mutating it, but only when there is a
+			// constraint to apply, to avoid perturbing schemas that are left untouched.
+			if (schema != null && schema.get$ref() == null && SchemaUtils.hasValidationConstraints(annotations)) {
+				schema = cloneViaJson(schema, schema.getClass(), parameterBuilder.getObjectMapperProvider().jsonMapper());
+				parameter.setSchema(schema);
+			}
 			SchemaUtils.applyValidationsToSchema(schema, annotations, openapiVersion);
 			if (schema instanceof ArraySchema && methodParameter instanceof DelegatingMethodParameter mp) {
 				java.lang.reflect.AnnotatedType annotatedType = null;

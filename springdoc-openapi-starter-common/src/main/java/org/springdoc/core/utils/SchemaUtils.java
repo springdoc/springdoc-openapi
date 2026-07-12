@@ -315,6 +315,27 @@ public class SchemaUtils {
 	}
 
 	/**
+	 * Whether the given annotations contain a bean-validation constraint that
+	 * {@link #applyValidationsToSchema(Schema, List, String)} would apply to a schema.
+	 *
+	 * @param annotations the annotations
+	 * @return true if at least one validation constraint is present
+	 */
+	public static boolean hasValidationConstraints(List<Annotation> annotations) {
+		if (annotations == null) {
+			return false;
+		}
+		return annotations.stream().anyMatch(anno -> {
+			Class<? extends Annotation> type = anno.annotationType();
+			return type == Positive.class || type == PositiveOrZero.class
+					|| type == Negative.class || type == NegativeOrZero.class
+					|| type == Min.class || type == Max.class
+					|| type == DecimalMin.class || type == DecimalMax.class
+					|| type == Size.class || type == Pattern.class || type == Range.class;
+		});
+	}
+
+	/**
 	 * Remove the composing constraints from the annotations. This is necessary since otherwise the annotations may
 	 * default to the composing constraints' default value (dependent on the annotation ordering).
 	 * An example is {@link Range} being a composed constraint for {@link Min} and {@link Max}.
