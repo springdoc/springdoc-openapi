@@ -28,11 +28,15 @@ package org.springdoc.core.converters;
 
 import java.lang.reflect.Type;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
@@ -57,6 +61,23 @@ public class PageOpenAPIConverter implements ModelConverter {
 	 * The constant PAGED_MODEL.
 	 */
 	private static final AnnotatedType PAGED_MODEL = new AnnotatedType(PagedModel.class).resolveAsRef(true);
+
+	/**
+	 * The standard page response property order.
+	 */
+	private static final List<String> PAGE_PROPERTY_ORDER = List.of(
+			"totalPages",
+			"totalElements",
+			"size",
+			"content",
+			"number",
+			"sort",
+			"pageable",
+			"numberOfElements",
+			"first",
+			"last",
+			"empty"
+	);
 
 	/**
 	 * The Spring doc object mapper.
@@ -90,16 +111,22 @@ public class PageOpenAPIConverter implements ModelConverter {
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
+		boolean isPageType = false;
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
-			if (replacePageWithPagedModel && PAGE_TO_REPLACE.equals(cls.getCanonicalName())) {
+			isPageType = PAGE_TO_REPLACE.equals(cls.getCanonicalName());
+			if (replacePageWithPagedModel && isPageType) {
 				if (!type.isSchemaProperty())
 					type = resolvePagedModelType(javaType, type);
 				else
 					type.name(getParentTypeName(type, cls));
 			}
 		}
-		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
+		Schema schema = (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
+
+		if (isPageType && !replacePageWithPagedModel)
+			sortPageSchemaProperties(schema, context);
+		return schema;
 	}
 
 	/**
@@ -121,6 +148,45 @@ public class PageOpenAPIConverter implements ModelConverter {
 		else {
 			return PAGED_MODEL;
 		}
+	}
+
+	/**
+	 * Sort page schema properties.
+	 *
+	 * @param schema  the schema
+	 * @param context the context
+	 */
+	private void sortPageSchemaProperties(Schema schema, ModelConverterContext context) {
+		Schema pageSchema = resolveReferencedSchema(schema, context);
+		if (pageSchema == null || pageSchema.getProperties() == null)
+			return;
+
+		Map<String, Schema> properties = pageSchema.getProperties();
+		if (!properties.keySet().containsAll(PAGE_PROPERTY_ORDER))
+			return;
+
+		Map<String, Schema> sortedProperties = new LinkedHashMap<>();
+		PAGE_PROPERTY_ORDER.forEach(property -> sortedProperties.put(property, properties.get(property)));
+		properties.forEach(sortedProperties::putIfAbsent);
+		pageSchema.setProperties(sortedProperties);
+	}
+
+	/**
+	 * Resolve referenced schema.
+	 *
+	 * @param schema  the schema
+	 * @param context the context
+	 * @return the schema
+	 */
+	private Schema resolveReferencedSchema(Schema schema, ModelConverterContext context) {
+		if (schema == null || schema.get$ref() == null)
+			return schema;
+
+		String ref = schema.get$ref();
+		if (!ref.startsWith(Components.COMPONENTS_SCHEMAS_REF))
+			return schema;
+
+		return context.getDefinedModels().get(ref.substring(Components.COMPONENTS_SCHEMAS_REF.length()));
 	}
 
 }
