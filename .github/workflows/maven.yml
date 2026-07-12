@@ -9,9 +9,6 @@
 name: Java CI with Maven
 
 on:
-  push:
-    branches:
-      - spring-boot-4
   pull_request:
 
 jobs:
