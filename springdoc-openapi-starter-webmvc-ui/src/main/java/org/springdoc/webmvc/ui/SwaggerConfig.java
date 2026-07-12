@@ -149,21 +149,24 @@ public class SwaggerConfig {
 	/**
 	 * Swagger web mvc configurer swagger web mvc configurer.
 	 *
-	 * @param swaggerUiConfigProperties the swagger ui calculated config
-	 * @param springWebProperties       the spring web config
-	 * @param springWebMvcProperties    the spring mvc config
-	 * @param swaggerIndexTransformer   the swagger index transformer
-	 * @param swaggerResourceResolver   the swagger resource resolver
-	 * @param swaggerWelcomeCommon   the swagger welcome common
+	 * @param swaggerUiConfigProperties         the swagger ui calculated config
+	 * @param springWebPropertiesProvider       the spring web config provider
+	 * @param springWebMvcPropertiesProvider    the spring mvc config provider
+	 * @param swaggerIndexTransformer           the swagger index transformer
+	 * @param swaggerResourceResolver           the swagger resource resolver
+	 * @param swaggerWelcomeCommon              the swagger welcome common
 	 * @return the swagger web mvc configurer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
-			WebProperties springWebProperties, WebMvcProperties springWebMvcProperties,
+			ObjectProvider<WebProperties> springWebPropertiesProvider,
+			ObjectProvider<WebMvcProperties> springWebMvcPropertiesProvider,
 			SwaggerIndexTransformer swaggerIndexTransformer, SwaggerResourceResolver swaggerResourceResolver,
 			SwaggerWelcomeCommon swaggerWelcomeCommon) {
+		WebProperties springWebProperties = springWebPropertiesProvider.getIfAvailable(WebProperties::new);
+		WebMvcProperties springWebMvcProperties = springWebMvcPropertiesProvider.getIfAvailable(WebMvcProperties::new);
 		return new SwaggerWebMvcConfigurer(swaggerUiConfigProperties, springWebProperties, springWebMvcProperties, swaggerIndexTransformer, swaggerResourceResolver, swaggerWelcomeCommon);
 	}
 
