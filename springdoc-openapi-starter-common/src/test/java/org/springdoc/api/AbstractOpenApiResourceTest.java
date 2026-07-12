@@ -189,6 +189,39 @@ class AbstractOpenApiResourceTest {
 	}
 
 	@Test
+	void removesNullableFromPathParameterSchema() {
+		resource = new EmptyPathsOpenApiResource(
+				GROUP_NAME,
+				openAPIBuilderObjectFactory,
+				requestBuilder,
+				responseBuilder,
+				operationParser,
+				new SpringDocConfigProperties(),
+				springDocProviders, new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty())
+		);
+
+		final String pathParamName = "clinicId";
+		final Parameter nullablePathParameter = new Parameter()
+				.name(pathParamName)
+				.in(ParameterIn.PATH.toString())
+				.schema(new StringSchema().nullable(true));
+
+		final Operation operation = new Operation();
+		operation.setParameters(singletonList(nullablePathParameter));
+
+		final RouterOperation routerOperation = new RouterOperation();
+		routerOperation.setMethods(new RequestMethod[] { GET });
+		routerOperation.setOperationModel(operation);
+		routerOperation.setPath(PATH + "/{" + pathParamName + "}");
+
+		resource.calculatePath(routerOperation, Locale.getDefault(), this.openAPI);
+
+		final Parameter pathParameter = resource.getOpenApi(null, Locale.getDefault())
+				.getPaths().get(PATH + "/{" + pathParamName + "}").getGet().getParameters().get(0);
+		assertThat(pathParameter.getSchema().getNullable(), nullValue());
+	}
+
+	@Test
 	void preLoadingModeShouldNotOverwriteServers() throws InterruptedException {
 		doCallRealMethod().when(openAPIService).updateServers(any(), any());
 		when(openAPIService.getCachedOpenAPI(any())).thenCallRealMethod();

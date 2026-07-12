@@ -40,6 +40,7 @@ import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -215,6 +216,30 @@ public class SpringDocUtils {
 		if (schema.getProperties() != null) {
 			schema.getProperties().values().forEach(prop -> fixNullOnlyAdditionalProperties((Schema<?>) prop));
 		}
+	}
+
+	/**
+	 * Removes nullability from a path parameter's schema. A path parameter is always
+	 * required and can never be {@code null}, so a nullable schema (e.g. propagated from a
+	 * JSpecify {@code @Nullable} annotation on a backing {@code @ParameterObject} field that
+	 * is reused as both a path and an optional query parameter) is invalid here.
+	 *
+	 * @param parameter the path parameter
+	 */
+	public static void fixNullablePathParameter(Parameter parameter) {
+		Schema<?> schema = parameter.getSchema();
+		if (schema == null)
+			return;
+		Set<String> types = schema.getTypes();
+		if (types != null) {
+			types.remove("null");
+			if (types.isEmpty())
+				schema.setTypes(null);
+		}
+		if ("null".equals(schema.getType()))
+			schema.setType(null);
+		if (Boolean.TRUE.equals(schema.getNullable()))
+			schema.setNullable(null);
 	}
 
 	/**
