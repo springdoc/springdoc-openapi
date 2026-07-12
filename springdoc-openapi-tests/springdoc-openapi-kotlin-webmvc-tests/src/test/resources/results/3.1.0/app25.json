@@ -1,0 +1,61 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost",
+            "description": "Generated server url"
+        }
+    ],
+    "paths": {
+        "/null-key": {
+            "get": {
+                "tags": [
+                    "null-key-controller"
+                ],
+                "operationId": "getNullKey",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OuterResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "OuterResponse": {
+                "type": "object",
+                "properties": {
+                    "contractAddress": {
+                        "type": "string"
+                    },
+                    "chainType": {
+                        "type": "string",
+                        "enum": [
+                            "ETH"
+                        ]
+                    },
+                    "success": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "chainType",
+                    "contractAddress",
+                    "success"
+                ]
+            }
+        }
+    }
+}

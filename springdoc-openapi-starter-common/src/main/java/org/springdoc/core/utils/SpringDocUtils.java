@@ -218,6 +218,24 @@ public class SpringDocUtils {
 	}
 
 	/**
+	 * Removes {@code null}-keyed entries from a schema's properties map (and its nested
+	 * schemas). When swagger-core resolves a {@code @JsonUnwrapped} member (for example
+	 * Spring HATEOAS {@code EntityModel.getContent()} with HAL disabled), the unwrapped
+	 * property schemas may have a {@code null} name and get inserted into the properties map
+	 * under a {@code null} key. Such a key cannot be serialized by Jackson, which fails the
+	 * whole OpenAPI document with {@code "Null key for a Map not allowed in JSON"}.
+	 *
+	 * @param schema the schema to fix
+	 */
+	public static void removeNullKeyProperties(Schema<?> schema) {
+		if (schema == null || schema.getProperties() == null) {
+			return;
+		}
+		schema.getProperties().keySet().removeIf(key -> key == null);
+		schema.getProperties().values().forEach(SpringDocUtils::removeNullKeyProperties);
+	}
+
+	/**
 	 * Handle schema types.
 	 *
 	 * @param content the content
