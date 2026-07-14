@@ -56,6 +56,7 @@ import org.springdoc.core.converters.ModelConverterRegistrar;
 import org.springdoc.core.converters.OAS31ModelConverter;
 import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
+import org.springdoc.core.converters.PropertyNamingStrategyConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.converters.WebFluxSupportConverter;
@@ -292,6 +293,19 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	PolymorphicModelConverter polymorphicModelConverter(ObjectMapperProvider objectMapperProvider) {
 		return new PolymorphicModelConverter(objectMapperProvider);
+	}
+
+	/**
+	 * Property naming strategy converter property naming strategy converter.
+	 *
+	 * @param objectMapperProvider the object mapper provider
+	 * @return the property naming strategy converter
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	PropertyNamingStrategyConverter propertyNamingStrategyConverter(ObjectMapperProvider objectMapperProvider) {
+		return new PropertyNamingStrategyConverter(objectMapperProvider);
 	}
 
 	/**

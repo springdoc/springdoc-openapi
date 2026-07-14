@@ -1,0 +1,59 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/test": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PidLookupResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PidLookupResponse": {
+        "type": "object",
+        "properties": {
+          "family_name": {
+            "type": "string"
+          },
+          "expiry_date": {
+            "type": "string"
+          },
+          "issuance_date": {
+            "type": "string"
+          },
+          "issuing_country": {
+            "type": "string"
+          },
+          "issuing_authority": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
