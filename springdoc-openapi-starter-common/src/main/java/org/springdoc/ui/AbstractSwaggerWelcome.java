@@ -90,11 +90,38 @@ public abstract class AbstractSwaggerWelcome {
 	 */
 	protected String buildUrl(String contextPath, String docsUrl) {
 		if (contextPath.endsWith(DEFAULT_PATH_SEPARATOR)) {
-			return contextPath.substring(0, contextPath.length() - 1) + docsUrl;
+			contextPath = contextPath.substring(0, contextPath.length() - 1);
 		}
 		if (!docsUrl.startsWith(DEFAULT_PATH_SEPARATOR))
 			docsUrl = DEFAULT_PATH_SEPARATOR + docsUrl;
-		return contextPath + docsUrl;
+		// Avoid duplicating the servlet path prefix when the configured path already
+		// contains it (for example a servlet mapped at /api together with
+		// springdoc.api-docs.path=/api/v3/api-docs). See issue #3294.
+		String overlap = pathOverlap(contextPath, docsUrl);
+		return contextPath.substring(0, contextPath.length() - overlap.length()) + docsUrl;
+	}
+
+	/**
+	 * Returns the longest suffix of {@code contextPath} that also is a leading path
+	 * segment of {@code docsUrl} (matched on segment boundaries, so {@code /api} does not
+	 * overlap with {@code /api-docs}). This lets {@link #buildUrl(String, String)} collapse
+	 * a duplicated prefix such as the servlet path that is present both in the resolved
+	 * context path and in the configured docs path.
+	 *
+	 * @param contextPath the context path
+	 * @param docsUrl     the docs url
+	 * @return the overlapping suffix of the context path, or an empty string if none
+	 */
+	private String pathOverlap(String contextPath, String docsUrl) {
+		int index = contextPath.indexOf(DEFAULT_PATH_SEPARATOR);
+		while (index >= 0) {
+			String suffix = contextPath.substring(index);
+			if (docsUrl.equals(suffix) || docsUrl.startsWith(suffix + DEFAULT_PATH_SEPARATOR)) {
+				return suffix;
+			}
+			index = contextPath.indexOf(DEFAULT_PATH_SEPARATOR, index + 1);
+		}
+		return StringUtils.EMPTY;
 	}
 
 	/**
