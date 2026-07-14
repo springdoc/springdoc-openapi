@@ -71,6 +71,7 @@
             "format": "int32"
           },
           "nullableNested": {
+            "description": "The nested object",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/NestedObject"

@@ -47,7 +47,8 @@
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "description": "The nested object"
       },
       "NullableFieldsResponse": {
         "required": [

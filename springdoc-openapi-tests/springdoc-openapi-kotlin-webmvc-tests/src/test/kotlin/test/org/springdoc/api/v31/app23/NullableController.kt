@@ -1,5 +1,6 @@
 package test.org.springdoc.api.v31.app23
 
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -7,6 +8,7 @@ data class NullableFieldsResponse(
 	val requiredField: String,
 	val nullableString: String? = null,
 	val nullableInt: Int? = null,
+	@field:Schema(description = "The nested object")
 	val nullableNested: NestedObject? = null,
 )
 

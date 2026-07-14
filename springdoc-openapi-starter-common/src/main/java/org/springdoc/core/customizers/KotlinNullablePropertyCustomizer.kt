@@ -91,7 +91,7 @@ class KotlinNullablePropertyCustomizer(
 			val property = targetSchema.properties[fieldName] ?: continue
 
 			if (property.`$ref` != null) {
-				replacements[fieldName] = wrapRefNullable(property.`$ref`, specVersion)
+				replacements[fieldName] = wrapRefNullable(property, specVersion)
 			} else {
 				markNullable(property, specVersion)
 			}
@@ -121,21 +121,38 @@ class KotlinNullablePropertyCustomizer(
 	}
 
 	/**
-	 * Wraps a $ref in a nullable composite schema.
+	 * Wraps a $ref property in a nullable composite schema. A fresh wrapper schema is returned
+	 * (the original property object is left untouched) with any sibling attributes such as
+	 * `description`, `title`, `example` copied over, so they are not lost when the bare `$ref`
+	 * is moved into the composite.
 	 * - OAS 3.0: `{ nullable: true, allOf: [{ $ref: "..." }] }`
 	 * - OAS 3.1: `{ oneOf: [{ $ref: "..." }, { type: "null" }] }`
 	 */
-	private fun wrapRefNullable(ref: String, specVersion: SpecVersion): Schema<*> {
-		val refSchema = Schema<Any>().apply { `$ref` = ref }
-		return if (specVersion == SpecVersion.V31) {
-			Schema<Any>().apply {
-				oneOf = listOf(refSchema, Schema<Any>().apply { addType("null") })
-			}
+	private fun wrapRefNullable(property: Schema<*>, specVersion: SpecVersion): Schema<*> {
+		val refSchema = Schema<Any>().apply { `$ref` = property.`$ref` }
+		val wrapper = Schema<Any>()
+		copySiblingMetadata(property, wrapper)
+		if (specVersion == SpecVersion.V31) {
+			wrapper.oneOf = listOf(refSchema, Schema<Any>().apply { addType("null") })
 		} else {
-			Schema<Any>().apply {
-				nullable = true
-				allOf = listOf(refSchema)
-			}
+			wrapper.nullable = true
+			wrapper.allOf = listOf(refSchema)
 		}
+		return wrapper
+	}
+
+	/**
+	 * Copies the attributes swagger-core may set as siblings of a `$ref` property onto the
+	 * nullable wrapper, so annotations like `@Schema(description = ...)` survive.
+	 */
+	private fun copySiblingMetadata(source: Schema<*>, target: Schema<*>) {
+		source.description?.let { target.description = it }
+		source.title?.let { target.title = it }
+		source.deprecated?.let { target.deprecated = it }
+		if (source.exampleSetFlag) target.example = source.example
+		source.externalDocs?.let { target.externalDocs = it }
+		source.readOnly?.let { target.readOnly = it }
+		source.writeOnly?.let { target.writeOnly = it }
+		source.extensions?.let { target.extensions = it }
 	}
 }
