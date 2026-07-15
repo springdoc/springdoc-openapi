@@ -36,8 +36,6 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
@@ -64,11 +62,6 @@ public class AdditionalModelsConverter implements ModelConverter {
 	 * The constant paramObjectReplacementMap.
 	 */
 	private static final Map<Class, Class> paramObjectReplacementMap = new HashMap<>();
-
-	/**
-	 * The constant LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdditionalModelsConverter.class);
 
 	/**
 	 * The Spring doc object mapper.

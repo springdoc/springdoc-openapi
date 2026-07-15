@@ -205,9 +205,13 @@ public class PolymorphicModelConverter implements ModelConverter {
 	private Schema composePolymorphicSchema(AnnotatedType type, Schema schema, Collection<Schema> schemas) {
 		String ref = schema.get$ref();
 		List<Schema> composedSchemas = findComposedSchemas(ref, schemas);
-		if (composedSchemas.isEmpty()) return schema;
+		if (composedSchemas.isEmpty()) {
+			return schema;
+		}
 		ComposedSchema result = new ComposedSchema();
-		if (isConcreteClass(type)) result.addOneOfItem(schema);
+		if (isConcreteClass(type)) {
+			result.addOneOfItem(schema);
+		}
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		Class<?> clazz = javaType.getRawClass();
 		if (!TYPES_TO_SKIP.contains(clazz.getSimpleName()))

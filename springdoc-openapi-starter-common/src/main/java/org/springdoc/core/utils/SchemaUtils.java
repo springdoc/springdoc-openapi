@@ -501,7 +501,7 @@ public class SchemaUtils {
 					}
 				}
 			}
-		} catch (Throwable ignored) {
+		} catch (Exception ignored) {
 			// best-effort only
 		}
 		return false;
@@ -534,7 +534,7 @@ public class SchemaUtils {
 		try {
 			JsonProperty jp = p.getAnnotation(JsonProperty.class);
 			return jp != null && expected.equals(jp.value());
-		} catch (Throwable ignored) {
+		} catch (Exception ignored) {
 			return false;
 		}
 	}
@@ -554,7 +554,9 @@ public class SchemaUtils {
 		for (String m : names) {
 			try {
 				return f.getDeclaringClass().getMethod(m);
-			} catch (NoSuchMethodException ignored) {}
+			} catch (NoSuchMethodException ignored) {
+				// best-effort only
+			}
 		}
 		return null;
 	}

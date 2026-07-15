@@ -73,7 +73,9 @@ public class SpringDocKotlinUtils {
 					return p.getReturnType().isMarkedNullable();
 				}
 			}
-		} catch (Throwable ignored) {}
+		} catch (Exception ignored) {
+			// best-effort only
+		}
 		return null;
 	}
 
@@ -94,7 +96,9 @@ public class SpringDocKotlinUtils {
 					}
 				}
 			}
-		} catch (Throwable ignored) {}
+		} catch (Exception ignored) {
+			// best-effort only
+		}
 		return null;
 	}
 

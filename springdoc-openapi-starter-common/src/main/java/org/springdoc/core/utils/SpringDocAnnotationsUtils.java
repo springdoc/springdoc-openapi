@@ -553,9 +553,10 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * @param javadocProvider the javadoc provider
 	 */
 	public static void clearCache(JavadocProvider javadocProvider) {
-		if (javadocProvider != null)
+		if (javadocProvider != null) {
 			javadocProvider.clearCache();
-		MODEL_CONVERTER_CONTEXT_MAP.remove();;
+		}
+		MODEL_CONVERTER_CONTEXT_MAP.remove();
 	}
 
 	/**

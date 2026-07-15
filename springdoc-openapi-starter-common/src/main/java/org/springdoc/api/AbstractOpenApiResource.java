@@ -84,6 +84,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.RouterOperations;
@@ -573,8 +574,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
                 .filter(clazz -> isPackageToScan(clazz.getPackage()))
                 .toArray(Class<?>[]::new);
         Webhooks[] webhooksAttr = openAPIService.getWebhooks(refinedClasses);
-        if (ArrayUtils.isEmpty(webhooksAttr))
+        if (ArrayUtils.isEmpty(webhooksAttr)) {
 			return;
+		}
 		var webhooks = Arrays.stream(webhooksAttr).map(Webhooks::value).flatMap(Arrays::stream).toArray(Webhook[]::new);
 		Arrays.stream(webhooks).forEach(webhook -> {
 			io.swagger.v3.oas.annotations.Operation apiOperation = webhook.operation();
@@ -709,7 +711,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// allow for customisation
 			operation = customizeOperation(operation, components, handlerMethod);
 
-			if (StringUtils.contains(operationPath, "*")) {
+			if (Strings.CS.contains(operationPath, "*")) {
 				Matcher matcher = PATH_PATTERN.matcher(operationPath);
 				while (matcher.find()) {
 					String pathParam = matcher.group(1);
@@ -1408,7 +1410,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				if (ParameterIn.PATH.toString().equals(parameter.getIn())) {
 					// check it's present in the path
 					String name = parameter.getName();
-					if (!StringUtils.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
+					if (!Strings.CS.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
 						paramIt.remove();
 				}
 			}

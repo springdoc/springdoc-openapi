@@ -503,8 +503,7 @@ public class MethodAttributes {
 				}
 				else {
 					String[] keyValueHeader = header.split("!=");
-					if (!this.headers.containsKey(keyValueHeader[0]))
-						this.headers.put(keyValueHeader[0], StringUtils.EMPTY);
+					this.headers.putIfAbsent(keyValueHeader[0], StringUtils.EMPTY);
 				}
 			}
 

@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -231,7 +232,7 @@ public class SpringDocUtils {
 		if (schema == null || schema.getProperties() == null) {
 			return;
 		}
-		schema.getProperties().keySet().removeIf(key -> key == null);
+		schema.getProperties().keySet().removeIf(Objects::isNull);
 		schema.getProperties().values().forEach(SpringDocUtils::removeNullKeyProperties);
 	}
 

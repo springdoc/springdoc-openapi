@@ -255,7 +255,7 @@ public class RequestBodyService {
 	 */
 	public void calculateRequestBodyInfo(Components components, MethodAttributes methodAttributes,
 			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
-		RequestBody requestBody = requestBodyInfo.getRequestBody();
+		RequestBody requestBody;
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 
 		RequestPart requestPart = methodParameter.getParameterAnnotation(RequestPart.class);
