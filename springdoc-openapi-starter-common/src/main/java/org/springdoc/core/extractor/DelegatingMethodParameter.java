@@ -196,11 +196,13 @@ public class DelegatingMethodParameter extends MethodParameter {
 	}
 
 	@Override
+	@Nullable
 	public Method getMethod() {
 		return delegate.getMethod();
 	}
 
 	@Override
+	@Nullable
 	public Constructor<?> getConstructor() {
 		return delegate.getConstructor();
 	}

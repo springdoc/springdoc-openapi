@@ -145,8 +145,8 @@ public class SwaggerWebMvcConfigurer extends AbstractSwaggerConfigurer implement
 	 * @param handlerConfig the swagger handler config.
 	 */
 	protected void addSwaggerResourceHandler(ResourceHandlerRegistry registry, SwaggerResourceHandlerConfig handlerConfig) {
-		ResourceHandlerRegistration handlerRegistration = registry.addResourceHandler(handlerConfig.patterns());
-		handlerRegistration.addResourceLocations(handlerConfig.locations());
+		ResourceHandlerRegistration handlerRegistration = registry.addResourceHandler(handlerConfig.patternsArray());
+		handlerRegistration.addResourceLocations(handlerConfig.locationsArray());
 
 		ResourceChainRegistration chainRegistration;
 		if (handlerConfig.cacheResources()) {

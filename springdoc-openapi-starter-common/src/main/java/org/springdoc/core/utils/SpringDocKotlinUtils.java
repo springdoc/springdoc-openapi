@@ -27,6 +27,7 @@
 package org.springdoc.core.utils;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 import kotlin.jvm.JvmClassMappingKt;
 import kotlin.reflect.KClass;
@@ -46,6 +47,9 @@ import org.springframework.core.KotlinDetector;
  */
 public class SpringDocKotlinUtils {
 
+	public SpringDocKotlinUtils() {
+	}
+
 	/**
 	 * Is kotlin declaring class boolean.
 	 *
@@ -64,19 +68,18 @@ public class SpringDocKotlinUtils {
 	 * @param f the f
 	 * @return the boolean
 	 */
-	private static Boolean kotlinMarkedNullableFallback(Field f) {
+	private static Optional<Boolean> kotlinMarkedNullableFallback(Field f) {
 		try {
 			KClass<?> kClass = JvmClassMappingKt.getKotlinClass(f.getDeclaringClass());
-			for (Object pObj : KClasses.getMemberProperties((KClass<Object>) kClass)) {
-				KProperty1<?, ?> p = (KProperty1<?, ?>) pObj;
-				if (p.getName().equals(f.getName())) {
-					return p.getReturnType().isMarkedNullable();
+			for (KProperty1<?, ?> pObj : KClasses.getMemberProperties(kClass)) {
+				if (pObj.getName().equals(f.getName())) {
+					return Optional.of(pObj.getReturnType().isMarkedNullable());
 				}
 			}
 		} catch (Exception ignored) {
 			// best-effort only
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	/**
@@ -85,21 +88,21 @@ public class SpringDocKotlinUtils {
 	 * @param f the f
 	 * @return the boolean
 	 */
-	static Boolean kotlinConstructorParamIsOptional(Field f) {
+	static Optional<Boolean> kotlinConstructorParamIsOptional(Field f) {
 		try {
 			KClass<?> kClass = JvmClassMappingKt.getKotlinClass(f.getDeclaringClass());
 			KFunction<?> primary = KClasses.getPrimaryConstructor(kClass);
 			if (primary != null) {
 				for (KParameter p : primary.getParameters()) {
 					if (f.getName().equals(p.getName())) {
-						return p.isOptional();
+						return Optional.of(p.isOptional());
 					}
 				}
 			}
 		} catch (Exception ignored) {
 			// best-effort only
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	/**
@@ -108,12 +111,12 @@ public class SpringDocKotlinUtils {
 	 * @param field the field
 	 * @return the boolean
 	 */
-	static Boolean kotlinNullability(Field field) {
-		if (!isKotlinDeclaringClass(field)) return null;
+	static Optional<Boolean> kotlinNullability(Field field) {
+		if (!isKotlinDeclaringClass(field)) return Optional.empty();
 
 		KProperty<?> prop = ReflectJvmMapping.getKotlinProperty(field);
 		if (prop != null) {
-			return prop.getReturnType().isMarkedNullable();
+			return Optional.of(prop.getReturnType().isMarkedNullable());
 		}
 
 		return kotlinMarkedNullableFallback(field);

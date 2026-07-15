@@ -33,6 +33,9 @@ package org.springdoc.scalar;
  */
 public class ScalarConstants {
 
+	private ScalarConstants() {
+	}
+
 	/**
 	 * The constant SCALAR_DEFAULT_PATH.
 	 */

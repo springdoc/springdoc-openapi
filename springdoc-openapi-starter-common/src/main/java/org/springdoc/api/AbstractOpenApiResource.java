@@ -82,6 +82,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.RouterOperations;
@@ -684,7 +685,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// allow for customisation
 			operation = customizeOperation(operation, components, handlerMethod);
 
-			if (StringUtils.contains(operationPath, "*")) {
+			if (Strings.CS.contains(operationPath, "*")) {
 				Matcher matcher = pathPattern.matcher(operationPath);
 				while (matcher.find()) {
 					String pathParam = matcher.group(1);
@@ -1298,7 +1299,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				if (ParameterIn.PATH.toString().equals(parameter.getIn())) {
 					// check it's present in the path
 					String name = parameter.getName();
-					if (!StringUtils.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
+					if (!Strings.CS.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
 						paramIt.remove();
 				}
 			}

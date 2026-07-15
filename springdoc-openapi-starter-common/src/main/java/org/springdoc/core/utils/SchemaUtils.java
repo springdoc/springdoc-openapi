@@ -163,13 +163,17 @@ public class SchemaUtils {
 		}
 
 		// @Nullable/@NotNull
-		Boolean ann = nullableFromAnnotations(field);
-		if (ann != null) return ann;
+		Optional<Boolean> ann = nullableFromAnnotations(field);
+		if (ann.isPresent()) {
+			return ann.get();
+		}
 
 		// Kotlin nullability
 		if (kotlinUtilsOptional.isPresent() && isKotlinDeclaringClass(field)) {
-			Boolean kotlin = kotlinNullability(field);
-			if (kotlin != null) return kotlin;
+			Optional<Boolean> kotlin = kotlinNullability(field);
+			if (kotlin.isPresent()) {
+				return kotlin.get();
+			}
 		}
 
 		return JAVA_FIELD_NULLABLE_DEFAULT;
@@ -204,17 +208,15 @@ public class SchemaUtils {
 		// Kotlin logic
 		if (kotlinUtilsOptional.isPresent()  && isKotlinDeclaringClass(field)) {
 			if (fieldNullable(field)) return false;
-			Boolean hasDefault = kotlinConstructorParamIsOptional(field);
-			if (Boolean.TRUE.equals(hasDefault)) return false;
-			return true;
-		}
+            return kotlinConstructorParamIsOptional(field)
+					.map(isOptional -> !isOptional)
+					.orElse(true);
+        }
 
 		// Jackson @JsonProperty(required = true)
 		JsonProperty jp = getJsonProperty(field);
-		if (jp != null && jp.required()) return true;
-
-		return false;
-	}
+        return jp != null && jp.required();
+    }
 
 	/**
 	 * Apply validations to schema. the annotation order effects the result of the
@@ -376,15 +378,15 @@ public class SchemaUtils {
 	 * @param field the field
 	 * @return the boolean
 	 */
-	private static Boolean nullableFromAnnotations(Field field) {
-		if (hasNullableAnnotation(field)) return true;
-		if (hasNotNullAnnotation(field)) return false;
+	private static Optional<Boolean> nullableFromAnnotations(Field field) {
+		if (hasNullableAnnotation(field)) return Optional.of(true);
+		if (hasNotNullAnnotation(field)) return Optional.of(false);
 		Method getter = findGetter(field);
 		if (getter != null) {
-			if (hasNullableAnnotation(getter)) return true;
-			if (hasNotNullAnnotation(getter)) return false;
+			if (hasNullableAnnotation(getter)) return Optional.of(true);
+			if (hasNotNullAnnotation(getter)) return Optional.of(false);
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	/**
@@ -579,15 +581,13 @@ public class SchemaUtils {
 			return;
 		}
 		if (schema.getSpecVersion().equals(SpecVersion.V31)) {
-			if (schema.getExclusiveMaximumValue() != null && schema.getMaximum() != null) {
-				if (schema.getMaximum().compareTo(schema.getExclusiveMaximumValue()) == 0) {
-					schema.setMaximum(null);
-				}
+			if (schema.getExclusiveMaximumValue() != null && schema.getMaximum() != null
+				&& schema.getMaximum().compareTo(schema.getExclusiveMaximumValue()) == 0) {
+				schema.setMaximum(null);
 			}
-			if (schema.getExclusiveMinimumValue() != null && schema.getMinimum() != null) {
-				if (schema.getMinimum().compareTo(schema.getExclusiveMinimumValue()) == 0) {
-					schema.setMinimum(null);
-				}
+			if (schema.getExclusiveMinimumValue() != null && schema.getMinimum() != null &&
+				schema.getMinimum().compareTo(schema.getExclusiveMinimumValue()) == 0) {
+				schema.setMinimum(null);
 			}
 		}
 	}
