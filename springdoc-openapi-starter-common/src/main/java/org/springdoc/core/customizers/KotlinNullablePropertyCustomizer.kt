@@ -74,11 +74,7 @@ class KotlinNullablePropertyCustomizer(
 			return resolvedSchema
 		}
 
-		val targetSchema = if (resolvedSchema != null && resolvedSchema.`$ref` != null) {
-			context.getDefinedModels()[resolvedSchema.`$ref`.substring(Components.COMPONENTS_SCHEMAS_REF.length)]
-		} else {
-			resolvedSchema
-		}
+		val targetSchema = resolveTargetSchema(resolvedSchema, javaType, context)
 
 		if (targetSchema?.properties == null) return resolvedSchema
 
@@ -102,6 +98,30 @@ class KotlinNullablePropertyCustomizer(
 		}
 
 		return resolvedSchema
+	}
+
+	/**
+	 * Resolves the schema that actually carries the model's properties.
+	 *
+	 * When a property is a `$ref`, the target lives in the defined models. When the
+	 * resolved schema is a composed/polymorphic wrapper (for example an abstract Kotlin
+	 * class or interface rendered with a discriminator), it has no direct `properties`, so
+	 * the named model is looked up in the defined models by its resolved schema name. See
+	 * https://github.com/springdoc/springdoc-openapi/issues/3304
+	 */
+	private fun resolveTargetSchema(
+		resolvedSchema: Schema<*>?,
+		javaType: JavaType,
+		context: ModelConverterContext
+	): Schema<*>? {
+		if (resolvedSchema?.`$ref` != null) {
+			return context.definedModels[resolvedSchema.`$ref`.substring(Components.COMPONENTS_SCHEMAS_REF.length)]
+		}
+		if (resolvedSchema?.properties != null) {
+			return resolvedSchema
+		}
+		val definedModels = context.definedModels
+		return definedModels[javaType.rawClass.name] ?: definedModels[javaType.rawClass.simpleName]
 	}
 
 	/**
