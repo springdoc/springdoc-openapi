@@ -1,5 +1,6 @@
 package org.springdoc.core.configuration;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
@@ -48,9 +49,9 @@ public class SpringDocWebServerConfiguration {
 
             private final String contextPath;
 
-            private volatile Supplier<Integer> applicationPortSupplier;
-            private volatile Supplier<Integer> actuatorPortSupplier;
-            private volatile Supplier<ApplicationContext> managementContextSupplier;
+            private final AtomicReference<Supplier<Integer>> applicationPortSupplier = new AtomicReference<>();
+            private final AtomicReference<Supplier<Integer>> actuatorPortSupplier = new AtomicReference<>();
+            private final AtomicReference<Supplier<ApplicationContext>> managementContextSupplier = new AtomicReference<>();
 
             public SpringDocWebServerPortListener(ObjectProvider<ServerProperties> serverPropertiesProvider) {
                 ServerProperties serverProperties = serverPropertiesProvider.getIfAvailable();
@@ -63,27 +64,27 @@ public class SpringDocWebServerConfiguration {
             public void onApplicationEvent(WebServerInitializedEvent event) {
                 final WebServer webServer = event.getWebServer();
                 if (WebServerApplicationContext.hasServerNamespace(event.getApplicationContext(), "management")) {
-                    this.actuatorPortSupplier = webServer::getPort;
-                    this.managementContextSupplier = event::getApplicationContext;
+                    this.actuatorPortSupplier.set(webServer::getPort);
+                    this.managementContextSupplier.set(event::getApplicationContext);
                 }
                 else {
-                    this.applicationPortSupplier = webServer::getPort;
+                    this.applicationPortSupplier.set(webServer::getPort);
                 }
             }
 
             @Override
             public Supplier<Integer> getApplicationPort() {
-                return applicationPortSupplier;
+                return applicationPortSupplier.get();
             }
 
             @Override
             public Supplier<Integer> getActuatorPort() {
-                return actuatorPortSupplier;
+                return actuatorPortSupplier.get();
             }
 
             @Override
             public Supplier<ApplicationContext> getManagementApplicationContext() {
-                return this.managementContextSupplier;
+                return this.managementContextSupplier.get();
             }
 
             @Override

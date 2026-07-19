@@ -111,6 +111,7 @@ public class McpCommunityToolAuditAspect {
 					return (name != null && !name.isBlank()) ? name : sig.getMethod().getName();
 				}
 				catch (Exception ignored) {
+					// Fall back to the method name if the annotation's name() cannot be read
 				}
 			}
 		}

@@ -210,11 +210,8 @@ public class McpSyncServerDashboardToolSource implements McpDashboardToolSource 
 				}
 			}
 		}
-		catch (ClassNotFoundException ex) {
-			// @McpTool annotation not on classpath — no return types available
-		}
 		catch (Exception ex) {
-			// Scanning failed — ignore
+			// @McpTool annotation not on classpath, or scanning failed — no return types available
 		}
 		return returnTypes;
 	}

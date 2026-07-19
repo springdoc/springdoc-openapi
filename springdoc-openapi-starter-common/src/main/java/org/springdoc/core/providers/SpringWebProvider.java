@@ -25,7 +25,7 @@
  */
 package org.springdoc.core.providers;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,7 +66,7 @@ public abstract class SpringWebProvider implements ApplicationContextAware {
 	/**
 	 * The Spring doc version strategy map.
 	 */
-	protected final Map<SpringDocApiVersionType, SpringDocVersionStrategy> springDocVersionStrategyMap = new HashMap<>();
+	protected final Map<SpringDocApiVersionType, SpringDocVersionStrategy> springDocVersionStrategyMap = new EnumMap<>(SpringDocApiVersionType.class);
 
 	/**
 	 * Gets handler methods.

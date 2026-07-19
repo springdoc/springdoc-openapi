@@ -295,11 +295,10 @@ public class DataRestResponseService {
 	private Type getTypeForWildcardType(RequestMethod requestMethod, DataRestRepository dataRestRepository, Class returnedEntityType, ParameterizedType parameterizedType) {
 		WildcardType wildcardType = (WildcardType) parameterizedType.getActualTypeArguments()[0];
 		Class<?> type = findType(requestMethod, dataRestRepository);
-		if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType wildcardTypeUpperBound) {
-			if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
-				if (MapModel.class.equals(type))
-					return ResolvableType.forClassWithGenerics(ResponseEntity.class, type).getType();
-			}
+		if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType wildcardTypeUpperBound
+				&& RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())
+				&& MapModel.class.equals(type)) {
+			return ResolvableType.forClassWithGenerics(ResponseEntity.class, type).getType();
 		}
 		return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
 	}

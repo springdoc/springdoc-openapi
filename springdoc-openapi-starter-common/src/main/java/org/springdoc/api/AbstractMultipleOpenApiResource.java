@@ -28,7 +28,6 @@ package org.springdoc.api;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springdoc.core.customizers.SpringDocCustomizers;

@@ -52,6 +52,25 @@ import org.springframework.web.util.pattern.PathPattern;
  */
 public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor implements RouterFunctions.Visitor, RequestPredicates.Visitor {
 
+	/**
+	 * The package-private {@code PathResourceLookupFunction} type, resolved reflectively
+	 * since it is not accessible for a direct {@code instanceof} check.
+	 */
+	private static final Class<?> PATH_RESOURCE_LOOKUP_FUNCTION = resolvePathResourceLookupFunction();
+
+	/**
+	 * Resolves the package-private {@code PathResourceLookupFunction} class.
+	 * @return the class, or {@code null} if it cannot be found
+	 */
+	private static Class<?> resolvePathResourceLookupFunction() {
+		try {
+			return Class.forName("org.springframework.web.reactive.function.server.PathResourceLookupFunction");
+		}
+		catch (ClassNotFoundException ex) {
+			return null;
+		}
+	}
+
 	@Override
 	public void route(RequestPredicate predicate, HandlerFunction<?> handlerFunction) {
 		this.currentRouterFunctionDatas = new ArrayList<>();
@@ -72,7 +91,7 @@ public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor impleme
 
 	@Override
 	public void resources(Function<ServerRequest, Mono<Resource>> lookupFunction) {
-		if ("PathResourceLookupFunction".equals(lookupFunction.getClass().getSimpleName())) {
+		if (PATH_RESOURCE_LOOKUP_FUNCTION != null && PATH_RESOURCE_LOOKUP_FUNCTION.isInstance(lookupFunction)) {
 			Field patternField = ReflectionUtils.findField(lookupFunction.getClass(), "pattern");
 			if (patternField != null) {
 				ReflectionUtils.makeAccessible(patternField);

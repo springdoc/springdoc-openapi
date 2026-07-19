@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
@@ -95,7 +96,7 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 	/**
 	 * Cached tool callbacks, built lazily from the OpenAPI specification.
 	 */
-	private volatile ToolCallback[] cachedToolCallbacks;
+	private final AtomicReference<ToolCallback[]> cachedToolCallbacks = new AtomicReference<>();
 
 	/**
 	 * Constructs a new OpenApiMcpToolCallbackProvider.
@@ -117,14 +118,14 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 
 	@Override
 	public ToolCallback[] getToolCallbacks() {
-		ToolCallback[] cached = this.cachedToolCallbacks;
+		ToolCallback[] cached = this.cachedToolCallbacks.get();
 		if (cached != null) {
 			return cached;
 		}
 		OpenAPI openAPI = openAPIService.getCachedOpenAPI(Locale.getDefault());
 		if (openAPI != null) {
 			cached = buildToolCallbacks(openAPI);
-			this.cachedToolCallbacks = cached;
+			this.cachedToolCallbacks.set(cached);
 			return cached;
 		}
 		return new ToolCallback[0];
@@ -184,7 +185,7 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 	 * {@link #getToolCallbacks()} rebuilds them.
 	 */
 	void resetCache() {
-		this.cachedToolCallbacks = null;
+		this.cachedToolCallbacks.set(null);
 	}
 
 	/**
