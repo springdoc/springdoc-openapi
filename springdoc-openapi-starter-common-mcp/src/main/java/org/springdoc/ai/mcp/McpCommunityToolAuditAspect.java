@@ -35,15 +35,15 @@ import org.aspectj.lang.reflect.MethodSignature;
 
 /**
  * AOP aspect that writes a structured JSON audit event (via {@link McpAuditLogger}) each
- * time an {@code @McpTool}-annotated method from the Spring AI Community library
- * ({@code org.springaicommunity.mcp.annotation.McpTool}) is invoked.
+ * time an {@code @McpTool}-annotated method from Spring AI
+ * ({@code org.springframework.ai.mcp.annotation.McpTool}) is invoked.
  *
  * <p>
- * This aspect is only registered when {@code org.springaicommunity.mcp.annotation.McpTool}
+ * This aspect is only registered when {@code org.springframework.ai.mcp.annotation.McpTool}
  * is on the classpath (see
  * {@link org.springdoc.ai.configuration.SpringDocAiAutoConfiguration}). The annotation
  * class is referenced by fully-qualified name in the pointcut expression to avoid a
- * compile-time dependency on the springaicommunity library.
+ * compile-time dependency on the Spring AI MCP annotations library.
  *
  * @author bnasslahsen
  */
@@ -51,10 +51,9 @@ import org.aspectj.lang.reflect.MethodSignature;
 public class McpCommunityToolAuditAspect {
 
 	/**
-	 * Fully-qualified name of the {@code @McpTool} annotation from the Spring AI
-	 * Community library.
+	 * Fully-qualified name of the {@code @McpTool} annotation from Spring AI.
 	 */
-	private static final String MCP_TOOL_ANNOTATION = "org.springaicommunity.mcp.annotation.McpTool";
+	private static final String MCP_TOOL_ANNOTATION = "org.springframework.ai.mcp.annotation.McpTool";
 
 	/**
 	 * Intercepts any bean method annotated with {@code @McpTool} and emits a JSON audit
@@ -63,7 +62,7 @@ public class McpCommunityToolAuditAspect {
 	 * @return the method's return value
 	 * @throws Throwable if the intercepted method throws
 	 */
-	@Around("@annotation(org.springaicommunity.mcp.annotation.McpTool)")
+	@Around("@annotation(org.springframework.ai.mcp.annotation.McpTool)")
 	public Object audit(ProceedingJoinPoint pjp) throws Throwable {
 		String toolName = extractToolName(pjp);
 		long startNanos = System.nanoTime();

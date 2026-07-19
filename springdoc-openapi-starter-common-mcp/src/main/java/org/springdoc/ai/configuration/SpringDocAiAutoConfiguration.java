@@ -79,14 +79,14 @@ public class SpringDocAiAutoConfiguration {
 	}
 
 	/**
-	 * Registers the audit aspect for Spring AI Community {@code @McpTool}-annotated
-	 * methods. Only active when the {@code org.springaicommunity.mcp.annotation.McpTool}
-	 * class is on the classpath.
+	 * Registers the audit aspect for Spring AI {@code @McpTool}-annotated methods. Only
+	 * active when the {@code org.springframework.ai.mcp.annotation.McpTool} class is on the
+	 * classpath.
 	 * @return the audit aspect
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnClass(name = "org.springaicommunity.mcp.annotation.McpTool")
+	@ConditionalOnClass(name = "org.springframework.ai.mcp.annotation.McpTool")
 	McpCommunityToolAuditAspect mcpCommunityToolAuditAspect() {
 		return new McpCommunityToolAuditAspect();
 	}

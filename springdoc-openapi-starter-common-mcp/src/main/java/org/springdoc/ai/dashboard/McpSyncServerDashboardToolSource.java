@@ -120,13 +120,7 @@ public class McpSyncServerDashboardToolSource implements McpDashboardToolSource 
 		long start = System.currentTimeMillis();
 		try {
 			Map<String, Object> argsMap = parseArguments(arguments);
-			CallToolResult result;
-			if (spec.callHandler() != null) {
-				result = spec.callHandler().apply(null, new CallToolRequest(toolName, argsMap));
-			}
-			else {
-				result = spec.call().apply(null, argsMap);
-			}
+			CallToolResult result = spec.callHandler().apply(null, new CallToolRequest(toolName, argsMap));
 			long duration = System.currentTimeMillis() - start;
 			String resultText = extractResultText(result);
 			boolean isError = Boolean.TRUE.equals(result.isError());
@@ -139,27 +133,16 @@ public class McpSyncServerDashboardToolSource implements McpDashboardToolSource 
 	}
 
 	/**
-	 * Converts McpSchema.JsonSchema to a JSON string.
+	 * Converts the tool input schema map to a JSON string.
 	 * @param inputSchema the input schema
 	 * @return JSON string representation
 	 */
-	private String convertInputSchema(McpSchema.JsonSchema inputSchema) {
-		if (inputSchema == null) {
+	private String convertInputSchema(Map<String, Object> inputSchema) {
+		if (inputSchema == null || inputSchema.isEmpty()) {
 			return "{}";
 		}
 		try {
-			Map<String, Object> schemaMap = new HashMap<>();
-			schemaMap.put("type", inputSchema.type());
-			if (inputSchema.properties() != null) {
-				schemaMap.put("properties", inputSchema.properties());
-			}
-			if (inputSchema.required() != null) {
-				schemaMap.put("required", inputSchema.required());
-			}
-			if (inputSchema.additionalProperties() != null) {
-				schemaMap.put("additionalProperties", inputSchema.additionalProperties());
-			}
-			return OBJECT_MAPPER.writeValueAsString(schemaMap);
+			return OBJECT_MAPPER.writeValueAsString(inputSchema);
 		}
 		catch (JsonProcessingException ex) {
 			return "{}";
@@ -207,7 +190,7 @@ public class McpSyncServerDashboardToolSource implements McpDashboardToolSource 
 		Map<String, Type> returnTypes = new HashMap<>();
 		try {
 			Class<? extends Annotation> mcpToolAnnotation = (Class<? extends Annotation>) Class
-				.forName("org.springaicommunity.mcp.annotation.McpTool");
+				.forName("org.springframework.ai.mcp.annotation.McpTool");
 			Method nameMethod = mcpToolAnnotation.getMethod("name");
 			for (String beanName : applicationContext.getBeanDefinitionNames()) {
 				try {
