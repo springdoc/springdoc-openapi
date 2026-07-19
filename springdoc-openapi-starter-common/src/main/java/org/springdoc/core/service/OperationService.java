@@ -248,7 +248,9 @@ public class OperationService {
 			case TRACE_METHOD -> pathItemObject.trace(operation);
 			case HEAD_METHOD -> pathItemObject.head(operation);
 			case OPTIONS_METHOD -> pathItemObject.options(operation);
-			default -> { }
+			default -> {
+				// best effort with regard to supported operations
+			}
 		}
 	}
 

@@ -201,10 +201,9 @@ public class SpringDocUtils {
 		if (additionalProperties instanceof Schema<?> addPropSchema) {
 			boolean isNullOnlyType = false;
 			Set<String> types = addPropSchema.getTypes();
-			if (types != null && types.size() == 1 && types.contains("null")) {
-				isNullOnlyType = true;
-			}
-			else if (types == null && "null".equals(addPropSchema.getType())) {
+			boolean onlyNullTypeOAS31 = types != null && types.size() == 1 && types.contains("null");
+			boolean onlyNullTypeOAS30 = types == null && "null".equals(addPropSchema.getType());
+			if (onlyNullTypeOAS31 || onlyNullTypeOAS30) {
 				isNullOnlyType = true;
 			}
 			if (isNullOnlyType && addPropSchema.get$ref() == null
@@ -214,7 +213,7 @@ public class SpringDocUtils {
 			}
 		}
 		if (schema.getProperties() != null) {
-			schema.getProperties().values().forEach(prop -> fixNullOnlyAdditionalProperties((Schema<?>) prop));
+			schema.getProperties().values().forEach(SpringDocUtils::fixNullOnlyAdditionalProperties);
 		}
 	}
 

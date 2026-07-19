@@ -6,7 +6,9 @@ import org.springframework.web.util.pattern.PathPattern;
 import org.springframework.web.util.pattern.PathPatternParser;
 import org.springframework.web.util.pattern.PatternParseException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 import static org.springdoc.core.utils.Constants.INDEX_PAGE_PATTERN;
@@ -157,10 +159,10 @@ public abstract class AbstractSwaggerConfigurer {
 	 * @param patterns       the patterns to match.
 	 * @param locations      the locations to use.
 	 */
-	protected record SwaggerResourceHandlerConfig(boolean cacheResources, String[] patterns, String[] locations) {
+	protected record SwaggerResourceHandlerConfig(boolean cacheResources, List<String> patterns, List<String> locations) {
 
 		private SwaggerResourceHandlerConfig(boolean cacheResources) {
-			this(cacheResources, new String[]{}, new String[]{});
+			this(cacheResources, new ArrayList<>(), new ArrayList<>());
 		}
 
 		/**
@@ -171,7 +173,15 @@ public abstract class AbstractSwaggerConfigurer {
 		 * @return the updated config.
 		 */
 		public SwaggerResourceHandlerConfig setPatterns(String... patterns) {
-			return new SwaggerResourceHandlerConfig(cacheResources, patterns, locations);
+			return new SwaggerResourceHandlerConfig(cacheResources, Arrays.asList(patterns), locations);
+		}
+
+		/**
+		 *
+		 * @return String array of patterns
+		 */
+		public String[] patternsArray() {
+			return patterns.toArray(new String[0]);
 		}
 
 		/**
@@ -182,7 +192,15 @@ public abstract class AbstractSwaggerConfigurer {
 		 * @return the updated config.
 		 */
 		public SwaggerResourceHandlerConfig setLocations(String... locations) {
-			return new SwaggerResourceHandlerConfig(cacheResources, patterns, locations);
+			return new SwaggerResourceHandlerConfig(cacheResources, patterns, Arrays.asList(locations));
+		}
+
+		/**
+		 *
+		 * @return String array of locations
+		 */
+		public String[] locationsArray() {
+			return locations.toArray(new String[0]);
 		}
 
 		/**
