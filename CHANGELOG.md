@@ -1,9 +1,38 @@
-# Changelog
+/Users/bnasslahsen/Documents/workspace/4.x/springdoc-openapi/CHANGELOG.md# Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2.9.0] - 2026-07-31
+
+### Added
+
+- Allow request-specific Swagger UI index transformation
+- Add a mechanism to disable `nullable` for Kotlin properties
+
+### Changed
+
+- Upgrade Spring Boot to version **3.5.16**
+- Upgrade swagger-core to version **2.2.52**
+- Upgrade swagger-ui to version **5.32.11**
+- Upgrade commons-lang to version **3.20.0**
+- Act upon SonarQube warnings (#3306, #3307)
+
+### Fixed
+
+- #3304 – Kotlin parent class's field is not properly marked as nullable
+- #3298 – Update Spring Boot to 3.5.16
+- #3294 – Duplicated path getting `swagger-config`
+- #3293 – Inconsistent OpenAPI schema naming with `SNAKE_CASE`: some Java record fields remain camelCase
+- #3291 – Fix vulnerabilities: upgrade Spring Boot to 3.5.14 and swagger-ui to 5.32.5
+- #3288 – Make `WebProperties` and `WebMvcProperties` optional in `SwaggerConfig`
+- #3281 – Stabilize Spring Data `Page` schema property order
+- #3274 – Description disappears from the generated JSON after upgrade to 3.0.3
+- #3270 – Validation annotation of `ParameterObject` property applied to `PathVariable` with the same name, even in unrelated endpoints
+- #3263 – Null key for a `Map` not allowed in JSON
+- #3262 – Fix version mismatch in `springdoc-openapi-tests` modules
 
 ## [2.8.17] - 2026-04-12
 
