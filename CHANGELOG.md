@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.4] - 2026-07-31
+
+### Added
+
+- #3269 – Add mechanism to disable `nullable` for Kotlin properties
+- Allow request-specific Swagger UI index transformation
+
+### Changed
+
+- Upgrade Spring Boot to version **4.1.0**
+- Upgrade Spring AI to version **2.0.0**
+- Upgrade swagger-core to version **2.2.52**
+- Upgrade swagger-ui to version **5.32.11**
+- #3307 – Act upon SonarQube warnings
+- #3306 – Act upon SonarQube warnings
+
+### Fixed
+
+- #3304 – Kotlin parent class's field is not properly marked as nullable
+- #3294 – Duplicated path getting `swagger-config`
+- #3293 – Inconsistent OpenAPI schema naming with `SNAKE_CASE`: some Java record fields remain camelCase
+- #3292 – Make `WebProperties` and `WebMvcProperties` optional in `SwaggerConfig`
+- #3284 – Upgrade swagger-core from version 2.2.48 to 2.2.49
+- #3282 – Preserve version from `nest()` predicate across all routes in `nest`
+- #3281 – Stabilize Spring Data `Page` schema property order
+- #3274 – Description disappears from the generated json after upgrade to 3.0.3
+- #3270 – Validation annotation of `ParameterObject` property applied to `PathVariable` with the same name, even in unrelated endpoints
+- #3266 – Upgrade swagger-core from version 2.2.47 to 2.2.48
+- #3263 – Null key for a `Map` not allowed in JSON
+
 ## [3.0.3] - 2026-04-12
 
 ### Added
