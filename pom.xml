@@ -46,12 +46,14 @@
 		<module>springdoc-openapi-starter-webflux-ui</module>
 		<module>springdoc-openapi-starter-webmvc-scalar</module>
 		<module>springdoc-openapi-starter-webflux-scalar</module>
+		<module>springdoc-openapi-bom</module>
+		<module>springdoc-openapi-tests</module>
 	</modules>
 
 	<properties>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-		<central-publishing-maven-plugin.version>0.7.0
+		<central-publishing-maven-plugin.version>0.11.0
 		</central-publishing-maven-plugin.version>
 		<flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
 		<swagger-api.version>2.2.52</swagger-api.version>
@@ -169,17 +171,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<modules>
-				<module>springdoc-openapi-starter-common</module>
-				<module>springdoc-openapi-starter-webmvc-api</module>
-				<module>springdoc-openapi-starter-webflux-api</module>
-				<module>springdoc-openapi-starter-webmvc-ui</module>
-				<module>springdoc-openapi-starter-webflux-ui</module>
-				<module>springdoc-openapi-starter-webmvc-scalar</module>
-				<module>springdoc-openapi-starter-webflux-scalar</module>
-				<module>springdoc-openapi-bom</module>
-				<module>springdoc-openapi-tests</module>
-			</modules>
 		</profile>
 		<profile>
 			<id>gpg</id>
