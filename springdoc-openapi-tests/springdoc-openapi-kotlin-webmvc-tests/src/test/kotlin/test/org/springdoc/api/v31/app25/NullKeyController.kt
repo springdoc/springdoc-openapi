@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController
  * Reproduces the swagger-core `@JsonUnwrapped` null-property-key issue: when the unwrapped
  * member resolves to a `$ref` (a named component model), swagger-core adds a `null`-keyed
  * entry to the enclosing schema properties, which breaks JSON serialization of the document.
+ *
+ * Fixed upstream by <a href="https://github.com/swagger-api/swagger-core/pull/5193">PR 5193</a>
  */
 @RestController
 class NullKeyController {
