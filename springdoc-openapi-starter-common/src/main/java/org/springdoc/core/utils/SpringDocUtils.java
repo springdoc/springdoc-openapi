@@ -31,7 +31,6 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Predicate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -181,58 +180,7 @@ public class SpringDocUtils {
 			if (schema.getProperties() != null) {
 				schema.getProperties().forEach((key, value) -> handleSchemaTypes(value));
 			}
-			fixNullOnlyAdditionalProperties(schema);
 		}
-	}
-
-	/**
-	 * Fix additionalProperties incorrectly set to {"type": "null"} when @Nullable
-	 * propagates from a Map field to its Object value type (resolved as "any type" = {}).
-	 * <p>
-	 * Tracked under <a href="https://github.com/swagger-api/swagger-core/issues/5115">swagger-core#5115</a>.
-	 *
-	 * @param schema the schema to fix
-	 */
-	public static void fixNullOnlyAdditionalProperties(Schema<?> schema) {
-		if (schema == null) {
-			return;
-		}
-		Object additionalProperties = schema.getAdditionalProperties();
-		if (additionalProperties instanceof Schema<?> addPropSchema) {
-			boolean isNullOnlyType = false;
-			Set<String> types = addPropSchema.getTypes();
-			boolean onlyNullTypeOAS31 = types != null && types.size() == 1 && types.contains("null");
-			boolean onlyNullTypeOAS30 = types == null && "null".equals(addPropSchema.getType());
-			if (onlyNullTypeOAS31 || onlyNullTypeOAS30) {
-				isNullOnlyType = true;
-			}
-			if (isNullOnlyType && addPropSchema.get$ref() == null
-					&& addPropSchema.getProperties() == null && addPropSchema.getFormat() == null) {
-				addPropSchema.setTypes(null);
-				addPropSchema.setType(null);
-			}
-		}
-		if (schema.getProperties() != null) {
-			schema.getProperties().values().forEach(SpringDocUtils::fixNullOnlyAdditionalProperties);
-		}
-	}
-
-	/**
-	 * Removes {@code null}-keyed entries from a schema's properties map (and its nested
-	 * schemas). When swagger-core resolves a {@code @JsonUnwrapped} member (for example
-	 * Spring HATEOAS {@code EntityModel.getContent()} with HAL disabled), the unwrapped
-	 * property schemas may have a {@code null} name and get inserted into the properties map
-	 * under a {@code null} key. Such a key cannot be serialized by Jackson, which fails the
-	 * whole OpenAPI document with {@code "Null key for a Map not allowed in JSON"}.
-	 *
-	 * @param schema the schema to fix
-	 */
-	public static void removeNullKeyProperties(Schema<?> schema) {
-		if (schema == null || schema.getProperties() == null) {
-			return;
-		}
-		schema.getProperties().keySet().removeIf(Objects::isNull);
-		schema.getProperties().values().forEach(SpringDocUtils::removeNullKeyProperties);
 	}
 
 	/**
