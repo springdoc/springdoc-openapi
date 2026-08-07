@@ -33,6 +33,7 @@ import org.springdoc.core.providers.ObjectMapperProvider
 import org.springdoc.core.utils.Constants
 import org.springdoc.core.utils.SpringDocKotlinUtils
 import org.springdoc.core.utils.SpringDocUtils
+import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
@@ -50,6 +51,7 @@ import kotlin.coroutines.Continuation
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(SpringDocConfiguration::class)
 @ConditionalOnProperty(name = [Constants.SPRINGDOC_ENABLED], matchIfMissing = true)
 @ConditionalOnExpression("\${springdoc.api-docs.enabled:true} and \${springdoc.enable-kotlin:true}")
 @ConditionalOnClass(Continuation::class)

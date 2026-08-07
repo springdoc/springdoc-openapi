@@ -37,6 +37,7 @@ import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.utils.Constants;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -58,6 +59,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(SpringDocConfiguration.class)
 @ConfigurationProperties(prefix = SPRINGDOC_SWAGGER_PREFIX)
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)

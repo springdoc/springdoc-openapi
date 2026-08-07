@@ -32,6 +32,7 @@ import org.springdoc.core.converters.JavaTypeToIgnoreConverter;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.SpringDocUtils;
 
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -47,6 +48,7 @@ import org.springframework.context.annotation.Lazy;
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(SpringDocConfiguration.class)
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-groovy:true}")
 @ConditionalOnClass(MetaClass.class)
 @ConditionalOnWebApplication
