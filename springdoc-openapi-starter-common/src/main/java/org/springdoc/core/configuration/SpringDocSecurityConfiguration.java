@@ -46,6 +46,7 @@ import org.springdoc.core.configuration.hints.SpringDocSecurityHints;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -81,6 +82,7 @@ import static org.springdoc.core.utils.SpringSecurityUtils.getPath;
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(SpringDocConfiguration.class)
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-spring-security:true}")
 @ConditionalOnClass(SecurityFilterChain.class)
 @ConditionalOnWebApplication
