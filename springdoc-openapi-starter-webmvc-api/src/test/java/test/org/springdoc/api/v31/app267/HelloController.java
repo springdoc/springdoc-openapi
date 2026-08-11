@@ -16,16 +16,26 @@
 
 package test.org.springdoc.api.v31.app267;
 
+import jakarta.validation.constraints.Pattern;
 import org.springdoc.core.annotations.ParameterObject;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class HelloController {
 
-	@GetMapping("/items")
-	public String list(@ParameterObject PersonQueryFilter criteria) {
-		return "ok";
-	}
+    @GetMapping("/items")
+    public String list(@ParameterObject PersonQueryFilter criteria) {
+        return "ok";
+    }
+
+    @GetMapping("/persons")
+    public String persons(
+            List<@Pattern(regexp = "^[a-zA-Z]$") String> middleNames,
+            List<@Pattern(regexp = "^\\d+$") String> phoneNumbers) {
+        return "ok";
+    }
 }
