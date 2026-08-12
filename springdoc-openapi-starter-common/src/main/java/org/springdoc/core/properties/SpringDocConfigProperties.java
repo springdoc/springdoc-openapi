@@ -167,6 +167,11 @@ public class SpringDocConfigProperties {
 	private boolean showLoginEndpoint;
 
 	/**
+	 * The login endpoint configuration.
+	 */
+	private LoginEndpoint loginEndpoint = new LoginEndpoint();
+
+	/**
 	 * Allow for pre-loading OpenAPI
 	 */
 	private boolean preLoadingEnabled;
@@ -745,6 +750,24 @@ public class SpringDocConfigProperties {
 	 */
 	public void setShowLoginEndpoint(boolean showLoginEndpoint) {
 		this.showLoginEndpoint = showLoginEndpoint;
+	}
+
+	/**
+	 * Gets login endpoint.
+	 *
+	 * @return the login endpoint
+	 */
+	public LoginEndpoint getLoginEndpoint() {
+		return loginEndpoint;
+	}
+
+	/**
+	 * Sets login endpoint.
+	 *
+	 * @param loginEndpoint the login endpoint
+	 */
+	public void setLoginEndpoint(LoginEndpoint loginEndpoint) {
+		this.loginEndpoint = loginEndpoint;
 	}
 
 	/**
@@ -1894,6 +1917,63 @@ public class SpringDocConfigProperties {
 		@Override
 		public int hashCode() {
 			return Objects.hash(group);
+		}
+	}
+
+	/**
+	 * The type Login endpoint.
+	 * <p>
+	 * These settings only take effect when the login endpoint is exposed, i.e. when
+	 * {@code springdoc.show-login-endpoint=true}. Otherwise, they are ignored.
+	 */
+	public static class LoginEndpoint {
+
+		/**
+		 * The example value for the username field of the login request body.
+		 * Only applied when {@code springdoc.show-login-endpoint=true}.
+		 */
+		private String usernameExample;
+
+		/**
+		 * The example value for the password field of the login request body.
+		 * Only applied when {@code springdoc.show-login-endpoint=true}.
+		 */
+		private String passwordExample;
+
+		/**
+		 * Gets username example.
+		 *
+		 * @return the username example
+		 */
+		public String getUsernameExample() {
+			return usernameExample;
+		}
+
+		/**
+		 * Sets username example.
+		 *
+		 * @param usernameExample the username example
+		 */
+		public void setUsernameExample(String usernameExample) {
+			this.usernameExample = usernameExample;
+		}
+
+		/**
+		 * Gets password example.
+		 *
+		 * @return the password example
+		 */
+		public String getPasswordExample() {
+			return passwordExample;
+		}
+
+		/**
+		 * Sets password example.
+		 *
+		 * @param passwordExample the password example
+		 */
+		public void setPasswordExample(String passwordExample) {
+			this.passwordExample = passwordExample;
 		}
 	}
 }

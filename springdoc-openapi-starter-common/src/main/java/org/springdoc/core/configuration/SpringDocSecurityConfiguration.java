@@ -45,6 +45,8 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.configuration.hints.SpringDocSecurityHints;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springdoc.core.properties.SpringDocConfigProperties;
+import org.springdoc.core.properties.SpringDocConfigProperties.LoginEndpoint;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -110,14 +112,18 @@ public class SpringDocSecurityConfiguration {
 		/**
 		 * Spring security login endpoint customiser open api customiser.
 		 *
-		 * @param applicationContext the application context
+		 * @param applicationContext        the application context
+		 * @param springDocConfigProperties the springdoc configuration properties
 		 * @return the open api customiser
 		 */
 		@Bean
 		@ConditionalOnProperty(SPRINGDOC_SHOW_LOGIN_ENDPOINT)
 		@Lazy(false)
-		OpenApiCustomizer springSecurityLoginEndpointCustomizer(ApplicationContext applicationContext) {
+		OpenApiCustomizer springSecurityLoginEndpointCustomizer(ApplicationContext applicationContext, SpringDocConfigProperties springDocConfigProperties) {
 			FilterChainProxy filterChainProxy = applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, FilterChainProxy.class);
+			LoginEndpoint loginEndpoint = springDocConfigProperties.getLoginEndpoint();
+			String usernameExample = loginEndpoint.getUsernameExample();
+			String passwordExample = loginEndpoint.getPasswordExample();
 			return openAPI -> {
 				for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {
 					Optional<UsernamePasswordAuthenticationFilter> optionalFilter =
@@ -133,7 +139,7 @@ public class SpringDocSecurityConfiguration {
 					if (optionalFilter.isPresent()) {
 						UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter = optionalFilter.get();
 						String mediaType = resolveMediaType(optionalDefaultLoginPageGeneratingFilter);
-						Operation operation = buildOperation(usernamePasswordAuthenticationFilter, mediaType);
+						Operation operation = buildOperation(usernamePasswordAuthenticationFilter, mediaType, usernameExample, passwordExample);
 						PathItem pathItem = new PathItem().post(operation);
 						try {
 							RequestMatcher requestMatcher = (RequestMatcher) FieldUtils.readField(
@@ -183,12 +189,14 @@ public class SpringDocSecurityConfiguration {
 		 *
 		 * @param usernamePasswordAuthenticationFilter the username password authentication filter
 		 * @param mediaType                            the request body media type
+		 * @param usernameExample                      the username example value
+		 * @param passwordExample                      the password example value
 		 * @return the operation
 		 */
 		private Operation buildOperation(UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter,
-				String mediaType) {
+				String mediaType, String usernameExample, String passwordExample) {
 			Operation operation = new Operation();
-			operation.requestBody(buildRequestBody(usernamePasswordAuthenticationFilter, mediaType));
+			operation.requestBody(buildRequestBody(usernamePasswordAuthenticationFilter, mediaType, usernameExample, passwordExample));
 			operation.responses(buildApiResponses());
 			operation.addTagsItem("login-endpoint");
 			return operation;
@@ -199,13 +207,21 @@ public class SpringDocSecurityConfiguration {
 		 *
 		 * @param usernamePasswordAuthenticationFilter the username password authentication filter
 		 * @param mediaType                            the request body media type
+		 * @param usernameExample                      the username example value
+		 * @param passwordExample                      the password example value
 		 * @return the request body
 		 */
 		private RequestBody buildRequestBody(UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter,
-											 String mediaType) {
+											 String mediaType, String usernameExample, String passwordExample) {
+			StringSchema usernameSchema = new StringSchema();
+			if (usernameExample != null)
+				usernameSchema.example(usernameExample);
+			StringSchema passwordSchema = new StringSchema();
+			if (passwordExample != null)
+				passwordSchema.example(passwordExample);
 			Schema<?> schema = new ObjectSchema()
-					.addProperty(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
-					.addProperty(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
+					.addProperty(usernamePasswordAuthenticationFilter.getUsernameParameter(), usernameSchema)
+					.addProperty(usernamePasswordAuthenticationFilter.getPasswordParameter(), passwordSchema);
 			return new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
 		}
 
