@@ -132,29 +132,8 @@ public class SpringDocSecurityConfiguration {
 									.findAny();
 					if (optionalFilter.isPresent()) {
 						UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter = optionalFilter.get();
-						Operation operation = new Operation();
-						Schema<?> schema = new ObjectSchema()
-								.addProperty(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
-								.addProperty(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
-						String mediaType = org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-						if (optionalDefaultLoginPageGeneratingFilter.isPresent()) {
-							DefaultLoginPageGeneratingFilter defaultLoginPageGeneratingFilter = optionalDefaultLoginPageGeneratingFilter.get();
-							try {
-								boolean formLoginEnabled = (boolean) FieldUtils.readDeclaredField(defaultLoginPageGeneratingFilter, "formLoginEnabled", true);
-								if (formLoginEnabled)
-									mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
-							}
-							catch (IllegalAccessException e) {
-								LOGGER.warn(e.getMessage());
-							}
-						}
-						RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
-						operation.requestBody(requestBody);
-						ApiResponses apiResponses = new ApiResponses();
-						apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
-						apiResponses.addApiResponse(String.valueOf(HttpStatus.UNAUTHORIZED.value()), new ApiResponse().description(HttpStatus.UNAUTHORIZED.getReasonPhrase()));
-						operation.responses(apiResponses);
-						operation.addTagsItem("login-endpoint");
+						String mediaType = resolveMediaType(optionalDefaultLoginPageGeneratingFilter);
+						Operation operation = buildOperation(usernamePasswordAuthenticationFilter, mediaType);
 						PathItem pathItem = new PathItem().post(operation);
 						try {
 							RequestMatcher requestMatcher = (RequestMatcher) FieldUtils.readField(
@@ -175,6 +154,71 @@ public class SpringDocSecurityConfiguration {
 					}
 				}
 			};
+		}
+
+		/**
+		 * Resolves the request body media type based on the presence of a form login configuration.
+		 *
+		 * @param optionalDefaultLoginPageGeneratingFilter the optional default login page generating filter
+		 * @return the resolved media type
+		 */
+		private String resolveMediaType(Optional<DefaultLoginPageGeneratingFilter> optionalDefaultLoginPageGeneratingFilter) {
+			String mediaType = org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+			if (optionalDefaultLoginPageGeneratingFilter.isPresent()) {
+				DefaultLoginPageGeneratingFilter defaultLoginPageGeneratingFilter = optionalDefaultLoginPageGeneratingFilter.get();
+				try {
+					boolean formLoginEnabled = (boolean) FieldUtils.readDeclaredField(defaultLoginPageGeneratingFilter, "formLoginEnabled", true);
+					if (formLoginEnabled)
+						mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+				}
+				catch (IllegalAccessException e) {
+					LOGGER.warn(e.getMessage());
+				}
+			}
+			return mediaType;
+		}
+
+		/**
+		 * Builds the login endpoint operation.
+		 *
+		 * @param usernamePasswordAuthenticationFilter the username password authentication filter
+		 * @param mediaType                            the request body media type
+		 * @return the operation
+		 */
+		private Operation buildOperation(UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter,
+				String mediaType) {
+			Operation operation = new Operation();
+			operation.requestBody(buildRequestBody(usernamePasswordAuthenticationFilter, mediaType));
+			operation.responses(buildApiResponses());
+			operation.addTagsItem("login-endpoint");
+			return operation;
+		}
+
+		/**
+		 * Builds the request body for the login endpoint operation.
+		 *
+		 * @param usernamePasswordAuthenticationFilter the username password authentication filter
+		 * @param mediaType                            the request body media type
+		 * @return the request body
+		 */
+		private RequestBody buildRequestBody(UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter,
+											 String mediaType) {
+			Schema<?> schema = new ObjectSchema()
+					.addProperty(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
+					.addProperty(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
+			return new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
+		}
+
+		/**
+		 * Builds the API responses for the login endpoint operation.
+		 *
+		 * @return the api responses
+		 */
+		private ApiResponses buildApiResponses() {
+			ApiResponses apiResponses = new ApiResponses();
+			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
+			apiResponses.addApiResponse(String.valueOf(HttpStatus.UNAUTHORIZED.value()), new ApiResponse().description(HttpStatus.UNAUTHORIZED.getReasonPhrase()));
+			return apiResponses;
 		}
 	}
 
