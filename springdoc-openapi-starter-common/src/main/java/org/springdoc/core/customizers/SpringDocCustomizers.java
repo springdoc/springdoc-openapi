@@ -295,15 +295,6 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	}
 
 	/**
-	 * Gets ordered global open api method filter stream.
-	 *
-	 * @return the ordered global open api method filter stream
-	 */
-	public Stream<GlobalOpenApiMethodFilter> getGlobalOpenApiMethodFiltersStream() {
-		return orderedStream(globalOpenApiMethodFilters);
-	}
-
-	/**
 	 * Gets optional delegating method parameter customizers.
 	 *
 	 * @return the optional delegating method parameter customizers
