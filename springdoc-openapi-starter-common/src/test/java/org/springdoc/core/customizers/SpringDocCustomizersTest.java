@@ -56,6 +56,29 @@ class SpringDocCustomizersTest {
 		assertThat(springDocCustomizers.getOpenApiCustomizersStream().toList()).containsExactly(firstCustomizer, lastCustomizer);
 	}
 
+	@Test
+	void globalOpenApiCustomizersStreamHonorsOrderAnnotation() {
+		GlobalOpenApiCustomizer lastCustomizer = new LastGlobalOpenApiCustomizer();
+		GlobalOpenApiCustomizer firstCustomizer = new FirstGlobalOpenApiCustomizer();
+		Set<GlobalOpenApiCustomizer> unorderedCustomizers = new LinkedHashSet<>();
+		unorderedCustomizers.add(lastCustomizer);
+		unorderedCustomizers.add(firstCustomizer);
+
+		SpringDocCustomizers springDocCustomizers = new SpringDocCustomizers(
+				Optional.empty(),
+				Optional.empty(),
+				Optional.empty(),
+				Optional.empty(),
+				Optional.empty(),
+				Optional.of(unorderedCustomizers),
+				Optional.empty(),
+				Optional.empty(),
+				Optional.empty(),
+				Optional.empty());
+
+		assertThat(springDocCustomizers.getGlobalOpenApiCustomizersStream().toList()).containsExactly(firstCustomizer, lastCustomizer);
+	}
+
 	@Order(1)
 	private static class FirstOpenApiCustomizer implements OpenApiCustomizer {
 
@@ -66,6 +89,22 @@ class SpringDocCustomizersTest {
 
 	@Order(2)
 	private static class LastOpenApiCustomizer implements OpenApiCustomizer {
+
+		@Override
+		public void customise(OpenAPI openApi) {
+		}
+	}
+
+	@Order(1)
+	private static class FirstGlobalOpenApiCustomizer implements GlobalOpenApiCustomizer {
+
+		@Override
+		public void customise(OpenAPI openApi) {
+		}
+	}
+
+	@Order(2)
+	private static class LastGlobalOpenApiCustomizer implements GlobalOpenApiCustomizer {
 
 		@Override
 		public void customise(OpenAPI openApi) {
