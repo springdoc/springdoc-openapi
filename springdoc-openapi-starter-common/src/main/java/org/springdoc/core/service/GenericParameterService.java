@@ -431,7 +431,7 @@ public class GenericParameterService {
 	 */
 	private TypeAndTypeAnnotations resolveTypeAndTypeAnnotationsForParameter(MethodParameter methodParameter) {
 		if (methodParameter instanceof DelegatingMethodParameter delegatingMethodParameter
-				&& delegatingMethodParameter.getField() != null) {
+			&& delegatingMethodParameter.getField() != null) {
 			AnnotatedType annotated = delegatingMethodParameter.getField().getAnnotatedType();
 			Type type = GenericTypeResolver.resolveType(annotated.getType(), methodParameter.getContainingClass());
 			return new TypeAndTypeAnnotations(type, Arrays.asList(annotationsFromAnnotatedTypeArguments(annotated)));
@@ -448,7 +448,30 @@ public class GenericParameterService {
 					: new TypeAndTypeAnnotations(type, new ArrayList<>());
 		}
 
-		return new TypeAndTypeAnnotations(type, Arrays.asList(methodParameter.getParameterType().getAnnotations()));
+		List<Annotation> typeAnnotations = new ArrayList<>(Arrays.asList(methodParameter.getParameterType().getAnnotations()));
+		if (Optional.class.isAssignableFrom(methodParameter.getParameterType())) {
+			typeAnnotations.addAll(Arrays.asList(annotationsFromAnnotatedTypeArguments(getParameterAnnotatedType(methodParameter))));
+		}
+		return new TypeAndTypeAnnotations(type, typeAnnotations);
+	}
+
+	/**
+	 * Resolves the {@link AnnotatedType} of a method parameter so that annotations declared on its
+	 * generic type arguments (for example inside an {@link Optional}) can be inspected.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the annotated type, or {@code null} if it cannot be resolved
+	 */
+	private static AnnotatedType getParameterAnnotatedType(MethodParameter methodParameter) {
+		int index = methodParameter.getParameterIndex();
+		if (index < 0) {
+			return null;
+		}
+		java.lang.reflect.Parameter[] parameters = methodParameter.getExecutable().getParameters();
+		if (index >= parameters.length) {
+			return null;
+		}
+		return parameters[index].getAnnotatedType();
 	}
 
 	/**
