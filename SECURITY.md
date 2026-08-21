@@ -2,9 +2,15 @@
 
 ## Supported Versions
 
-| Version       | Supported          |
-|---------------|--------------------|
-| latest-stable | :white_check_mark: |
+Security fixes are backported to the **latest minor release of the current major
+version** and the **latest minor release of the immediately preceding major version**.
+Older major/minor streams do not receive security patches.
+
+| Version stream                     | Supported          |
+|-------------------------------------|--------------------|
+| Latest minor of the current major  | :white_check_mark: |
+| Latest minor of the previous major | :white_check_mark: |
+| Anything older                     | :x:                |
 
 ## Reporting a Vulnerability
 
