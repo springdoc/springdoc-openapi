@@ -36,6 +36,7 @@ This project is sponsored by
 
 - [Full documentation](#full-documentation)
 - [Security contact information](#security-contact-information)
+- [Versioning](#versioning)
 - [**Introduction**](#introduction)
 - [**Getting Started**](#getting-started)
     - [Library for springdoc-openapi integration with spring-boot and swagger-ui](#library-for-springdoc-openapi-integration-with-spring-boot-and-swagger-ui)
@@ -63,6 +64,15 @@ To report a security vulnerability, please use the
 [Tidelift security contact](https://tidelift.com/security).
 Tidelift will coordinate the fix and disclosure.
 
+## Versioning
+
+springdoc-openapi follows [Semantic Versioning](https://semver.org/).
+MAJOR version increments are released in lockstep with Spring Boot MAJOR
+releases and may include incompatible/breaking changes. MINOR and PATCH
+releases follow standard SemVer conventions for backwards-compatible
+features and fixes, respectively. See [CHANGELOG.md](CHANGELOG.md) for the
+full release history.
+
 # **Introduction**
 
 The springdoc-openapi Java library helps automating the generation of API documentation
@@ -87,7 +97,7 @@ The following video introduces the Library:
 * [https://youtu.be/utRxyPfFlDw](https://youtu.be/utRxyPfFlDw)
 
 For *Spring-boot v4* support, make sure you
-use [springdoc-openapi v2](https://springdoc.org/)
+use [springdoc-openapi v3](https://springdoc.org/)
 
 This is a community-based project, not maintained by the Spring Framework Contributors (
 Pivotal)
