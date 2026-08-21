@@ -43,6 +43,7 @@ This project is sponsored by
 # Table of Contents
 
 - [Full documentation](#full-documentation)
+- [Security contact information](#security-contact-information)
 - [**Introduction**](#introduction)
 - [**Getting Started**](#getting-started)
     - [Library for springdoc-openapi integration with spring-boot and swagger-ui](#library-for-springdoc-openapi-integration-with-spring-boot-and-swagger-ui)
@@ -63,6 +64,12 @@ This project is sponsored by
     - [Additional Support](#additional-support)
 
 # [Full documentation](https://springdoc.org/)
+
+## Security contact information
+
+To report a security vulnerability, please use the
+[Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.
 
 # **Introduction**
 
