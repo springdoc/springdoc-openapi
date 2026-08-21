@@ -45,9 +45,12 @@ If you are reporting a bug, please help to speed up problem diagnosis by providi
 
 == Reporting Security Vulnerabilities
 
-If you think you have found a security vulnerability in Spring Boot please *DO NOT*
+If you think you have found a security vulnerability in springdoc-openapi please *DO NOT*
 disclose it publicly until we've had a chance to fix it.
 Please don't report security vulnerabilities using GitHub issues, instead head over to support@springdoc.org and learn how to disclose them responsibly.
+
+To report a security vulnerability, you can also use the https://tidelift.com/security[Tidelift security contact].
+Tidelift will coordinate the fix and disclosure.
 
 == Code Conventions and Housekeeping
 
