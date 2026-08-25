@@ -16,37 +16,32 @@
  *
  */
 
-package test.org.springdoc.api.v31.issue3136;
+package test.org.springdoc.api.v31.app40;
 
-import java.io.Serializable;
-
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 /**
- * Composite identifier for the join entity used by the issue reproducer.
+ * Entity referenced by the composite-key join entity.
  *
  * @author hej090224
  */
-@Embeddable
-public class GoalInitiativeImpactId implements Serializable {
+@Entity
+public class Initiative {
 
-	private Long goalId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-	private Long initiativeId;
+	private String name;
 
-	public Long getGoalId() {
-		return goalId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setGoalId(Long goalId) {
-		this.goalId = goalId;
-	}
-
-	public Long getInitiativeId() {
-		return initiativeId;
-	}
-
-	public void setInitiativeId(Long initiativeId) {
-		this.initiativeId = initiativeId;
+	public String getName() {
+		return name;
 	}
 }

@@ -16,20 +16,25 @@
  *
  */
 
-package test.org.springdoc.api.v31.issue3136;
+package test.org.springdoc.api.v31.app40;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 /**
- * Entity referenced by the composite-key join entity.
+ * Aggregate root with a collection of composite-key join entities.
  *
  * @author hej090224
  */
 @Entity
-public class Initiative {
+public class Goal {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,11 +42,18 @@ public class Initiative {
 
 	private String name;
 
+	@OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)
+	private Set<InitiativeImpactOnGoal> impactsByInitiatives = new HashSet<>();
+
 	public Long getId() {
 		return id;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public Set<InitiativeImpactOnGoal> getImpactsByInitiatives() {
+		return impactsByInitiatives;
 	}
 }

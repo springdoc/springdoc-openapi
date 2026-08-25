@@ -16,16 +16,16 @@
  *
  */
 
-package test.org.springdoc.api.v31.issue3136;
+package test.org.springdoc.api.v31.app40;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * Spring Data REST repository for initiatives.
+ * Spring Data REST repository for the issue reproducer aggregate.
  *
  * @author hej090224
  */
 @RepositoryRestResource
-public interface InitiativeRepository extends CrudRepository<Initiative, Long> {
+public interface GoalRepository extends CrudRepository<Goal, Long> {
 }
