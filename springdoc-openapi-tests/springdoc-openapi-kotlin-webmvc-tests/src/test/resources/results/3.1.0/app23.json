@@ -70,6 +70,7 @@
             ],
             "format": "int32"
           },
+          "nullableAny": { },
           "nullableNested": {
             "description": "The nested object",
             "oneOf": [

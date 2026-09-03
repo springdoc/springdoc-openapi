@@ -7,6 +7,7 @@ data class NullableFieldsResponse(
     val requiredField: String,
     val nullableString: String? = null,
     val nullableInt: Int? = null,
+    val nullableAny: Any? = null,
     val nullableNested: NestedObject? = null,
 )
 

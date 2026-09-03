@@ -8,6 +8,7 @@ data class NullableFieldsResponse(
 	val requiredField: String,
 	val nullableString: String? = null,
 	val nullableInt: Int? = null,
+	val nullableAny: Any? = null,
 	@field:Schema(description = "The nested object")
 	val nullableNested: NestedObject? = null,
 )
