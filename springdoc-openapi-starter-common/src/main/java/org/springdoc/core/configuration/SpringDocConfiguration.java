@@ -58,6 +58,7 @@ import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.PropertyNamingStrategyConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
+import org.springdoc.core.converters.JsonNullableSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.converters.WebFluxSupportConverter;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
@@ -266,6 +267,18 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	ResponseSupportConverter responseSupportConverter(ObjectMapperProvider objectMapperProvider) {
 		return new ResponseSupportConverter(objectMapperProvider);
+	}
+
+	/**
+	 * @param objectMapperProvider the OpenAPI object mapper provider
+	 * @return the JsonNullable support converter
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnClass(name = "org.openapitools.jackson.nullable.JsonNullable")
+	@Lazy(false)
+	JsonNullableSupportConverter jsonNullableSupportConverter(ObjectMapperProvider objectMapperProvider) {
+		return new JsonNullableSupportConverter(objectMapperProvider);
 	}
 
 	/**
