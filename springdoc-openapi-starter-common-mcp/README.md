@@ -97,6 +97,14 @@ Individual endpoints can override this classification by calling `context.setSaf
 
 ### Human-in-the-Loop (HITL)
 
+> **HITL is a confirmation step, not an authorization control.** It gives a human operator the
+> chance to review a mutating tool call before it runs. It does not authenticate or authorize the
+> caller, and it is not designed to withstand a caller that deliberately confirms its own call:
+> whoever can reach the MCP endpoint can also complete the confirmation — by repeating the call
+> through `/mcp`, or by sending `approved: true` to `/api/mcp-admin/tools/execute`. Do not use it
+> as an access-control boundary; secure `/mcp` and `/api/mcp-admin/**` in your application
+> instead, as noted under Quick Start.
+
 When `require-approval-for-mutating-tools` is `true` (the default), calling a mutating tool through the MCP protocol does **not** execute the underlying HTTP request. Instead, the agent receives a structured JSON response:
 
 ```json

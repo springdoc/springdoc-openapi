@@ -47,6 +47,14 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * REST controller for the MCP Developer Dashboard.
  *
+ * <p><strong>This controller provides no authentication or authorization of its own.</strong>
+ * Like {@code /swagger-ui}, {@code /api/mcp-admin/**} is an integration surface: it must be
+ * secured by the integrating application, for example with Spring Security. In particular the
+ * {@code approved} flag of {@link McpToolExecutionRequest} is the human operator's confirmation
+ * relayed by the dashboard UI - it is a human-in-the-loop signal, not an access-control claim,
+ * and it is trusted as sent. The whole MCP surface is opt-in
+ * ({@code springdoc.ai.mcp.enabled=true}, {@code springdoc.ai.mcp.dashboard-enabled=true}).
+ *
  * @author bnasslahsen
  */
 @RestController
@@ -93,6 +101,10 @@ public class McpDashboardController {
 	/**
 	 * Executes an MCP tool by name, forwarding any authentication headers (Authorization,
 	 * API key, etc.) to the underlying API call.
+	 * <p>
+	 * {@code request.isApproved()} carries the human operator's confirmation from the
+	 * dashboard UI and bypasses the HITL guardrail. It is a confirmation signal, not a
+	 * permission: securing this endpoint is the integrating application's responsibility.
 	 * @param request the execution request
 	 * @param allHeaders all request headers
 	 * @return the execution response

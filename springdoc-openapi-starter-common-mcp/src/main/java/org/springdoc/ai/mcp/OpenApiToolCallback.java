@@ -319,6 +319,17 @@ public class OpenApiToolCallback implements ToolCallback {
 		return !safe && aiProperties.getGuardrails().isRequireApprovalForMutatingTools();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * When the tool is mutating and the HITL guardrail is on, the first call returns a
+	 * "requires approval" payload and records the call as pending; the next identical call
+	 * executes it. This is a <strong>confirmation step for the human operator</strong>, not an
+	 * access-control check: the caller is the party that confirms, so anything able to reach
+	 * the MCP endpoint can also complete the confirmation. Authenticating and authorizing
+	 * {@code /mcp} and {@code /api/mcp-admin/**} is the integrating application's
+	 * responsibility - see {@link org.springdoc.ai.properties.SpringDocAiProperties.Guardrails}.
+	 */
 	@Override
 	public String call(String toolInput) {
 		if (!safe && aiProperties.getGuardrails().isRequireApprovalForMutatingTools()) {
@@ -405,6 +416,9 @@ public class OpenApiToolCallback implements ToolCallback {
 	/**
 	 * Executes the tool with explicit human approval, bypassing the HITL guardrail.
 	 * Used by the dashboard when a human operator clicks "Approve &amp; Execute".
+	 * <p>
+	 * This method performs no authorization check of its own; callers - the MCP admin
+	 * endpoints - must be secured by the integrating application.
 	 * @param toolInput the tool input JSON string
 	 * @param extraHeaders additional headers to include (e.g. Authorization)
 	 * @return the HTTP response with body and status code

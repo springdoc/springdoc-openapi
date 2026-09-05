@@ -287,13 +287,24 @@ public class SpringDocAiProperties {
 	 * Guardrails configuration class for MCP tool safety classification and
 	 * human-in-the-loop (HITL) support.
 	 *
+	 * <p><strong>The HITL guardrail is a confirmation step, not an access-control
+	 * boundary.</strong> It exists so that a human operator gets a chance to review a mutating
+	 * tool call before it is executed - it does not authenticate or authorize the caller, and
+	 * it is not designed to withstand a caller that deliberately confirms its own call. Like
+	 * {@code /swagger-ui}, the {@code /mcp}, {@code /mcp-ui} and {@code /api/mcp-admin/**}
+	 * endpoints are integration surfaces: the integrating application must secure them, for
+	 * example with Spring Security. Since 3.1.1 the whole MCP surface is opt-in
+	 * ({@code springdoc.ai.mcp.enabled=true}) so it is never exposed by accident.
+	 *
 	 * @author bnasslahsen
 	 */
 	public static class Guardrails {
 
 		/**
 		 * When true, mutating tools (non-safe HTTP methods) return a "requires approval"
-		 * response instead of executing the HTTP call.
+		 * response instead of executing the HTTP call. This is a human confirmation step,
+		 * not an authorization control: do not rely on it to keep an untrusted caller from
+		 * invoking a mutating tool, secure the MCP endpoints instead.
 		 */
 		private boolean requireApprovalForMutatingTools = true;
 

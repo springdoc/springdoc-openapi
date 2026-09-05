@@ -58,6 +58,13 @@ only to the Spring Boot 4 line, where the MCP starters exist.
   request-specific and are now applied to a per-request copy, so concurrent requests can no longer
   render each other's urls or observe a transient `url = null`. Applies to both the Spring Boot 3
   and Spring Boot 4 lines
+- Scrutineer #20 and #21 (MCP approval flow) are **not** treated as authorization bypasses. The MCP
+  approval mechanism is by design a human-in-the-loop confirmation step, not an authentication or
+  authorization control, and `/mcp`, `/mcp-ui` and `/api/mcp-admin/**` are integration surfaces that
+  the integrating application must secure — exactly like `/swagger-ui`. That distinction is now
+  stated explicitly in the MCP README and in the Javadoc of
+  `SpringDocAiProperties.Guardrails`, `OpenApiToolCallback` and `McpDashboardController`. The
+  opt-in change above (#26) further reduces the exposure of this surface
 
 ## [3.1.0] - 2026-07-31
 
