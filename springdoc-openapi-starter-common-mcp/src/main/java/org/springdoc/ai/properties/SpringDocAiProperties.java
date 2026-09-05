@@ -210,6 +210,27 @@ public class SpringDocAiProperties {
 	}
 
 	/**
+	 * Audit configuration for MCP tool executions.
+	 */
+	private Audit audit = new Audit();
+
+	/**
+	 * Gets audit.
+	 * @return the audit
+	 */
+	public Audit getAudit() {
+		return audit;
+	}
+
+	/**
+	 * Sets audit.
+	 * @param audit the audit
+	 */
+	public void setAudit(Audit audit) {
+		this.audit = audit;
+	}
+
+	/**
 	 * Guardrails configuration for MCP tool safety.
 	 */
 	private Guardrails guardrails = new Guardrails();
@@ -228,6 +249,38 @@ public class SpringDocAiProperties {
 	 */
 	public void setGuardrails(Guardrails guardrails) {
 		this.guardrails = guardrails;
+	}
+
+	/**
+	 * Audit configuration class for MCP tool execution audit events.
+	 *
+	 * @author bnasslahsen
+	 */
+	public static class Audit {
+
+		/**
+		 * When true, values carried by secret-shaped keys (authorization, password, token,
+		 * api-key, cookie, …) are masked in the audit event before it is logged or stored
+		 * for the dashboard.
+		 */
+		private boolean redact = true;
+
+		/**
+		 * Gets redact.
+		 * @return the redact
+		 */
+		public boolean isRedact() {
+			return redact;
+		}
+
+		/**
+		 * Sets redact.
+		 * @param redact the redact
+		 */
+		public void setRedact(boolean redact) {
+			this.redact = redact;
+		}
+
 	}
 
 	/**

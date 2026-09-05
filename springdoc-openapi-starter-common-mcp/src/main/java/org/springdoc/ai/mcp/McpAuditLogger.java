@@ -26,14 +26,19 @@
 
 package org.springdoc.ai.mcp;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -48,6 +53,13 @@ import org.slf4j.MDC;
  * Each tool call produces a single JSON audit event logged at {@code INFO} level to the
  * dedicated logger {@code org.springdoc.ai.mcp.audit}. Configure a separate appender in
  * your logging framework (Logback, Log4j2, …) to route this logger to an audit sink.
+ *
+ * <p>
+ * Audit events carry the tool arguments, the resolved request URL and the request and
+ * response bodies, any of which may hold a credential. Values whose key looks like a secret
+ * (authorization, password, token, api-key, cookie, …) are therefore masked before the event
+ * is logged or handed to the dashboard sink. Set {@code springdoc.ai.mcp.audit.redact=false}
+ * to record them verbatim.
  *
  * <p>
  * Identity information is read from the Spring Security context when present (optional
@@ -106,7 +118,34 @@ public class McpAuditLogger {
 	 */
 	private static final AtomicReference<Consumer<String>> EVENT_SINK = new AtomicReference<>();
 
+	/**
+	 * Mask substituted for the value of a secret-shaped key.
+	 */
+	private static final String REDACTED = "***";
+
+	/**
+	 * Markers looked for in a normalized (lower-cased, {@code -}/{@code _}-stripped) key
+	 * name to decide whether its value carries a credential.
+	 */
+	private static final String[] SECRET_KEY_MARKERS = { "authorization", "apikey", "password", "passwd", "secret",
+			"token", "cookie", "credential" };
+
+	/**
+	 * Whether secret-shaped values are masked before the audit event is emitted. Enabled by
+	 * default and controlled by {@code springdoc.ai.mcp.audit.redact}.
+	 */
+	private static final AtomicBoolean REDACTION_ENABLED = new AtomicBoolean(true);
+
 	private McpAuditLogger() {
+	}
+
+	/**
+	 * Enables or disables redaction of secret-shaped values in audit events. Bound from
+	 * {@code springdoc.ai.mcp.audit.redact}, which defaults to {@code true}.
+	 * @param enabled whether redaction is enabled
+	 */
+	public static void setRedactionEnabled(boolean enabled) {
+		REDACTION_ENABLED.set(enabled);
 	}
 
 	/**
@@ -195,25 +234,25 @@ public class McpAuditLogger {
 				}
 				if (record.mcpArguments != null) {
 					try {
-						translation.set("mcp_arguments", MAPPER.readTree(record.mcpArguments));
+						translation.set("mcp_arguments", redact(MAPPER.readTree(record.mcpArguments)));
 					}
 					catch (Exception ignored) {
 						translation.put("mcp_arguments", record.mcpArguments);
 					}
 				}
 				if (record.requestUrl != null) {
-					translation.put("request_url", record.requestUrl);
+					translation.put("request_url", redactUrl(record.requestUrl));
 				}
 				if (record.requestBody != null) {
 					try {
-						translation.set("request_body", MAPPER.readTree(record.requestBody));
+						translation.set("request_body", redact(MAPPER.readTree(record.requestBody)));
 					}
 					catch (Exception ignored) {
 						translation.put("request_body", record.requestBody);
 					}
 				}
 				if (record.responseBody != null) {
-					translation.put("response_body", record.responseBody);
+					translation.put("response_body", redactBodyString(record.responseBody));
 				}
 			}
 
@@ -227,6 +266,102 @@ public class McpAuditLogger {
 		catch (Exception ex) {
 			AUDIT_LOGGER.warn("Failed to serialize MCP audit log entry", ex);
 		}
+	}
+
+	/**
+	 * Masks, in place, the value of every secret-shaped key in the given JSON tree,
+	 * recursing through nested objects and arrays.
+	 * @param node the parsed JSON node
+	 * @return the same node, with secret values replaced by {@value #REDACTED}
+	 */
+	private static JsonNode redact(JsonNode node) {
+		if (!REDACTION_ENABLED.get()) {
+			return node;
+		}
+		if (node instanceof ObjectNode objectNode) {
+			List<String> fieldNames = new ArrayList<>();
+			objectNode.fieldNames().forEachRemaining(fieldNames::add);
+			for (String fieldName : fieldNames) {
+				if (isSecretKey(fieldName)) {
+					objectNode.put(fieldName, REDACTED);
+				}
+				else {
+					redact(objectNode.get(fieldName));
+				}
+			}
+		}
+		else if (node instanceof ArrayNode arrayNode) {
+			arrayNode.forEach(McpAuditLogger::redact);
+		}
+		return node;
+	}
+
+	/**
+	 * Masks the value of every secret-shaped query parameter of the given URL. The path and
+	 * the parameter names are preserved so the event stays useful for troubleshooting.
+	 * @param url the resolved request URL
+	 * @return the URL with secret query-parameter values replaced by {@value #REDACTED}
+	 */
+	private static String redactUrl(String url) {
+		int queryStart = url.indexOf('?');
+		if (!REDACTION_ENABLED.get() || queryStart < 0) {
+			return url;
+		}
+		StringBuilder sb = new StringBuilder(url.substring(0, queryStart + 1));
+		String[] pairs = url.substring(queryStart + 1).split("&", -1);
+		for (int i = 0; i < pairs.length; i++) {
+			if (i > 0) {
+				sb.append('&');
+			}
+			String pair = pairs[i];
+			int eq = pair.indexOf('=');
+			if (eq >= 0 && isSecretKey(URLDecoder.decode(pair.substring(0, eq), StandardCharsets.UTF_8))) {
+				sb.append(pair, 0, eq + 1).append(REDACTED);
+			}
+			else {
+				sb.append(pair);
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Masks secret-shaped values inside a body captured as a plain string. JSON bodies are
+	 * parsed, redacted and re-serialized so the event keeps its original string shape;
+	 * anything that does not parse as JSON is returned unchanged.
+	 * @param body the captured body
+	 * @return the redacted body
+	 */
+	private static String redactBodyString(String body) {
+		if (!REDACTION_ENABLED.get()) {
+			return body;
+		}
+		try {
+			return MAPPER.writeValueAsString(redact(MAPPER.readTree(body)));
+		}
+		catch (Exception ignored) {
+			return body;
+		}
+	}
+
+	/**
+	 * Returns whether the given key name looks like it carries a credential. The comparison
+	 * ignores case and {@code -}/{@code _} separators, so {@code X-API-Key},
+	 * {@code api_key} and {@code apiKey} are all recognised.
+	 * @param key the field or parameter name
+	 * @return true if the value of this key must be masked
+	 */
+	private static boolean isSecretKey(String key) {
+		if (key == null) {
+			return false;
+		}
+		String normalized = key.toLowerCase(Locale.ROOT).replace("-", "").replace("_", "");
+		for (String marker : SECRET_KEY_MARKERS) {
+			if (normalized.contains(marker)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

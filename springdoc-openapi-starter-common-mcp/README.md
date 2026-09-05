@@ -74,6 +74,7 @@ All properties are under the `springdoc.ai.mcp` prefix:
 | `springdoc.ai.mcp.dashboard-path` | `/mcp-ui` | The dashboard UI mount path. |
 | `springdoc.ai.mcp.guardrails.require-approval-for-mutating-tools` | `true` | When `true`, calling a mutating tool (POST/PUT/DELETE/PATCH) via MCP returns an approval-required response instead of executing the HTTP call. |
 | `springdoc.ai.mcp.guardrails.safe-methods` | `GET,HEAD,OPTIONS` | Comma-separated list of HTTP methods considered safe (read-only). All other methods are treated as mutating. |
+| `springdoc.ai.mcp.audit.redact` | `true` | Mask values carried by secret-shaped keys (authorization, password, token, api-key, cookie, …) in audit events. Set to `false` to record raw payloads. |
 
 > **Note**: When MCP is enabled, `springdoc.pre-loading-enabled` is automatically forced to `true` by an environment post-processor, ensuring the OpenAPI specification is available at startup for tool registration.
 
@@ -318,6 +319,8 @@ The dashboard REST API is served at `/api/mcp-admin`:
 ### Audit Logging
 
 Every MCP tool execution produces a structured JSON audit event logged at `INFO` level to the `org.springdoc.ai.mcp.audit` logger. When the dashboard is active, events are also stored in-memory for the audit tab.
+
+Audit events carry the tool arguments, the resolved request URL and the request and response bodies. Values whose key looks like a secret — `authorization`, `password`, `passwd`, `secret`, `token`, `api-key`/`x-api-key`/`apiKey`, `cookie`, `credential`, in any case and with any `-`/`_` separator — are masked as `***` before the event is logged or handed to the dashboard. Redaction is applied centrally, so both sinks receive the same masked event. Set `springdoc.ai.mcp.audit.redact=false` to record the raw payloads.
 
 Each audit event contains:
 

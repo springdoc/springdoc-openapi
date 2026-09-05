@@ -22,6 +22,11 @@ only to the Spring Boot 4 line, where the MCP starters exist.
   `OpenApiToolCallback` to 500 entries with LRU eviction, and key it by a SHA-256 digest instead of
   the raw tool arguments, so repeated unapproved mutating calls can no longer grow the heap without
   limit
+- Scrutineer #23 (Medium, CWE-532) – MCP: mask secret-shaped values (authorization, password,
+  token, api-key, cookie, …) in audit events before they are logged or exposed through
+  `GET /api/mcp-admin/audit`. Redaction is centralized in `McpAuditLogger` and covers the tool
+  arguments, the request URL query string and the request and response bodies. Controlled by the
+  new `springdoc.ai.mcp.audit.redact` property (default `true`)
 - Scrutineer #26 (Medium, CWE-1188) – **MCP functionality is now opt-in.** Every MCP
   auto-configuration gate (`SpringDocAiAutoConfiguration`, `SpringDocAiProperties`,
   `McpDashboardAutoConfiguration`, `McpWebMvcAiAutoConfiguration`, `McpWebFluxAiAutoConfiguration`)

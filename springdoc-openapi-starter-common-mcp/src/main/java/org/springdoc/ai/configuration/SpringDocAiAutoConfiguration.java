@@ -33,6 +33,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.ai.customizers.McpToolCustomizer;
+import org.springdoc.ai.mcp.McpAuditLogger;
 import org.springdoc.ai.mcp.McpCommunityToolAuditAspect;
 import org.springdoc.ai.mcp.McpNativeToolAuditAspect;
 import org.springdoc.ai.mcp.OpenApiMcpToolCallbackProvider;
@@ -42,6 +43,7 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.service.OpenAPIService;
 
 import org.springframework.ai.tool.ToolCallback;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -95,6 +97,17 @@ public class SpringDocAiAutoConfiguration {
 	@ConditionalOnClass(name = "org.springframework.ai.mcp.annotation.McpTool")
 	McpCommunityToolAuditAspect mcpCommunityToolAuditAspect() {
 		return new McpCommunityToolAuditAspect();
+	}
+
+	/**
+	 * Applies the audit redaction setting to the static {@link McpAuditLogger}, so that both
+	 * the audit logger and the dashboard event store receive already-masked events.
+	 * @param aiProperties the AI properties
+	 * @return an initializing bean that configures the audit logger
+	 */
+	@Bean
+	InitializingBean springDocMcpAuditConfigurer(SpringDocAiProperties aiProperties) {
+		return () -> McpAuditLogger.setRedactionEnabled(aiProperties.getAudit().isRedact());
 	}
 
 	/**
