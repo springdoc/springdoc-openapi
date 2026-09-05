@@ -62,7 +62,7 @@ import static org.springdoc.ai.properties.SpringDocAiProperties.SPRINGDOC_MCP_UI
  */
 @Lazy(false)
 @AutoConfiguration(after = SpringDocAiAutoConfiguration.class)
-@ConditionalOnProperty(name = "springdoc.ai.mcp.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "springdoc.ai.mcp.enabled", matchIfMissing = false)
 @ConditionalOnWebApplication(type = Type.REACTIVE)
 public class McpWebFluxAiAutoConfiguration {
 
@@ -100,7 +100,7 @@ public class McpWebFluxAiAutoConfiguration {
 	 * @return the WebFlux configurer
 	 */
 	@Bean
-	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = false)
 	McpDashboardWebFluxConfigurer mcpDashboardWebFluxConfigurer(SpringDocAiProperties aiProperties) {
 		return new McpDashboardWebFluxConfigurer(aiProperties);
 	}
@@ -112,7 +112,7 @@ public class McpWebFluxAiAutoConfiguration {
 	 * @return the router function
 	 */
 	@Bean
-	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = false)
 	RouterFunction<ServerResponse> mcpDashboardRedirectRouter(SpringDocAiProperties aiProperties) {
 		String dashboardPath = aiProperties.getDashboardPath();
 		return RouterFunctions.route()
@@ -137,7 +137,7 @@ public class McpWebFluxAiAutoConfiguration {
 	 */
 	@Bean
 	@Lazy(false)
-	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = false)
 	SmartInitializingSingleton mcpDashboardApiVersionCustomizer(Optional<ApiVersionStrategy> apiVersionStrategyOptional,
 			SpringDocAiProperties aiProperties, List<RequestMappingHandlerMapping> handlerMappings) {
 		return () -> apiVersionStrategyOptional.ifPresent(strategy -> {
@@ -158,7 +158,7 @@ public class McpWebFluxAiAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(name = "springDocMcpDashboardInitializer")
-	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = false)
 	@Lazy(false)
 	SpringDocAppInitializer springDocMcpDashboardInitializer(SpringDocAiProperties aiProperties) {
 		return new SpringDocAppInitializer(aiProperties.getDashboardPath(), SPRINGDOC_MCP_UI_ENABLED,

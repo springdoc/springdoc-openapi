@@ -38,7 +38,6 @@ import org.springdoc.ai.mcp.McpNativeToolAuditAspect;
 import org.springdoc.ai.mcp.OpenApiMcpToolCallbackProvider;
 import org.springdoc.ai.properties.SpringDocAiProperties;
 import org.springdoc.core.configuration.SpringDocConfiguration;
-import org.springdoc.core.events.SpringDocAppInitializer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.service.OpenAPIService;
 
@@ -49,22 +48,29 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
 import static org.springdoc.ai.properties.SpringDocAiProperties.SPRINGDOC_MCP_ENABLED;
 
 /**
  * Auto-configuration for springdoc OpenAPI AI (MCP) integration.
+ * <p>
+ * The MCP surface is <strong>opt-in</strong>: nothing is registered unless
+ * {@code springdoc.ai.mcp.enabled=true} is set explicitly. Adding an MCP starter to the
+ * classpath alone never exposes {@code /mcp} or the MCP dashboard.
  *
  * @author bnasslahsen
  */
 @Lazy(false)
 @AutoConfiguration(after = SpringDocConfiguration.class)
-@ConditionalOnProperty(name = "springdoc.ai.mcp.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "springdoc.ai.mcp.enabled", matchIfMissing = false)
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocAiAutoConfiguration {
 
@@ -110,16 +116,58 @@ public class SpringDocAiAutoConfiguration {
 	}
 
 	/**
-	 * Creates the SpringDocAppInitializer for the MCP AI integration.
+	 * Creates the startup notice for the MCP AI integration. Since the integration is
+	 * opt-in, reaching this point means the integrator asked for it explicitly; the notice
+	 * therefore recalls that the exposed endpoints carry no authentication of their own.
 	 * @param aiProperties the AI properties
-	 * @return the spring doc app initializer
+	 * @return the MCP startup notice
 	 */
 	@Bean
 	@ConditionalOnMissingBean(name = "springDocMcpInitializer")
 	@Lazy(false)
-	SpringDocAppInitializer springDocMcpInitializer(SpringDocAiProperties aiProperties) {
-		return new SpringDocAppInitializer(aiProperties.getMcpEndpoint(), SPRINGDOC_MCP_ENABLED,
-				aiProperties.isEnabled());
+	McpStartupNotice springDocMcpInitializer(SpringDocAiProperties aiProperties) {
+		return new McpStartupNotice(aiProperties);
+	}
+
+	/**
+	 * Logs, once the application is ready, that the MCP surface is active and must be
+	 * secured by the host application.
+	 *
+	 * @author bnasslahsen
+	 */
+	static class McpStartupNotice {
+
+		/**
+		 * The logger.
+		 */
+		private static final Logger LOGGER = LoggerFactory.getLogger(McpStartupNotice.class);
+
+		/**
+		 * The AI properties.
+		 */
+		private final SpringDocAiProperties aiProperties;
+
+		/**
+		 * Instantiates a new MCP startup notice.
+		 * @param aiProperties the AI properties
+		 */
+		McpStartupNotice(SpringDocAiProperties aiProperties) {
+			this.aiProperties = aiProperties;
+		}
+
+		/**
+		 * Emits the notice.
+		 */
+		@EventListener(ApplicationReadyEvent.class)
+		@Order(0)
+		public void init() {
+			LOGGER.warn(
+					"SpringDoc MCP is enabled ({}=true) and exposes {}{}. These endpoints provide no "
+							+ "authentication or authorization of their own and must be secured by the application.",
+					SPRINGDOC_MCP_ENABLED, aiProperties.getMcpEndpoint(),
+					aiProperties.isDashboardEnabled() ? " and /api/mcp-admin/**" : "");
+		}
+
 	}
 
 	/**

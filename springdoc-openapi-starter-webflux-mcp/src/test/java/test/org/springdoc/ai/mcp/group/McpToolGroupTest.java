@@ -51,8 +51,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@TestPropertySource(properties = { "springdoc.ai.mcp.enabled=true", "springdoc.ai.mcp.init-timeout-seconds=30",
-		"springdoc.pre-loading-enabled=true", "spring.main.lazy-initialization=false" })
+@TestPropertySource(properties = { "springdoc.ai.mcp.enabled=true", "springdoc.ai.mcp.dashboard-enabled=true",
+		"springdoc.ai.mcp.init-timeout-seconds=30", "springdoc.pre-loading-enabled=true",
+		"spring.main.lazy-initialization=false" })
 class McpToolGroupTest {
 
 	/**

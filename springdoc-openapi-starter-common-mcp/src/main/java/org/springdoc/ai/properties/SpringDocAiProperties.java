@@ -38,13 +38,16 @@ import org.springframework.context.annotation.Lazy;
 
 /**
  * The type Spring doc ai properties.
+ * <p>
+ * Bound only when {@code springdoc.ai.mcp.enabled=true} is set explicitly, so the declared
+ * field defaults match the auto-configuration gates.
  *
  * @author bnasslahsen
  */
 @Lazy(false)
 @AutoConfiguration(after = SpringDocConfiguration.class)
 @ConfigurationProperties(prefix = "springdoc.ai.mcp")
-@ConditionalOnProperty(name = "springdoc.ai.mcp.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "springdoc.ai.mcp.enabled", matchIfMissing = false)
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocAiProperties {
 
@@ -54,7 +57,8 @@ public class SpringDocAiProperties {
 	public static final String SPRINGDOC_MCP_ENABLED = "springdoc.ai.mcp.enabled";
 
 	/**
-	 * Enable the MCP Tool Server.
+	 * Enable the MCP Tool Server. Opt-in: the whole MCP surface stays unregistered unless
+	 * this is explicitly set to {@code true}.
 	 */
 	private boolean enabled;
 

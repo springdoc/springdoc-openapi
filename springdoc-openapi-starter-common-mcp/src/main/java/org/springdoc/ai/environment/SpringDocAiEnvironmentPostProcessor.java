@@ -33,11 +33,17 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 
+import static org.springdoc.ai.properties.SpringDocAiProperties.SPRINGDOC_MCP_ENABLED;
+
 /**
  * An {@link EnvironmentPostProcessor} that forces
- * {@code springdoc.pre-loading-enabled=true} when the AI MCP integration is enabled. This
- * ensures the OpenAPI specification is generated at startup, making it available for MCP
- * tool registration.
+ * {@code springdoc.pre-loading-enabled=true} when the AI MCP integration is explicitly
+ * enabled. This ensures the OpenAPI specification is generated at startup, making it
+ * available for MCP tool registration.
+ * <p>
+ * The MCP integration is opt-in, so pre-loading is only forced when
+ * {@code springdoc.ai.mcp.enabled} is explicitly set to a truthy value. Merely having an
+ * MCP starter on the classpath must not change the host application's behaviour.
  *
  * @author bnasslahsen
  */
@@ -45,7 +51,7 @@ public class SpringDocAiEnvironmentPostProcessor implements EnvironmentPostProce
 
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-		if (!"false".equals(environment.getProperty("springdoc.ai.mcp.enabled"))) {
+		if (Boolean.parseBoolean(environment.getProperty(SPRINGDOC_MCP_ENABLED))) {
 			environment.getPropertySources()
 				.addLast(new MapPropertySource("springdoc-ai-defaults",
 						Map.of("springdoc.pre-loading-enabled", "true")));

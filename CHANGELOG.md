@@ -23,6 +23,19 @@ only to the Spring Boot 4 line, where the MCP starters exist.
   the raw tool arguments, so repeated unapproved mutating calls can no longer grow the heap without
   limit
 
+## [Unreleased]
+
+### Security
+
+- **MCP functionality is now opt-in.** Every MCP auto-configuration gate
+  (`SpringDocAiAutoConfiguration`, `SpringDocAiProperties`, `McpDashboardAutoConfiguration`,
+  `McpWebMvcAiAutoConfiguration`, `McpWebFluxAiAutoConfiguration`) moved from
+  `matchIfMissing = true` to `matchIfMissing = false`, so `/mcp`, `/mcp-ui` and
+  `/api/mcp-admin/**` are no longer exposed merely by adding an MCP starter to the classpath.
+  Set `springdoc.ai.mcp.enabled=true` (and `springdoc.ai.mcp.dashboard-enabled=true` for the
+  dashboard) to enable them. `SpringDocAiEnvironmentPostProcessor` likewise only forces
+  `springdoc.pre-loading-enabled` when MCP is explicitly enabled.
+
 ## [3.1.0] - 2026-07-31
 
 ### Added

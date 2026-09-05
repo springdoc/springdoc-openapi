@@ -46,7 +46,8 @@ Add the dependency matching your web stack:
 </dependency>
 ```
 
-Enable the integration in your `application.properties`:
+Enable the integration in your `application.properties`. The MCP surface is **opt-in** — adding
+the starter to the classpath alone registers nothing:
 
 ```properties
 springdoc.ai.mcp.enabled=true
@@ -54,13 +55,17 @@ springdoc.ai.mcp.enabled=true
 
 That's it. Your `@RestController` endpoints are now available as MCP tools. AI agents connecting to your MCP server will automatically discover them.
 
+> **Security**: `/mcp` and `/api/mcp-admin/**` carry no authentication or authorization of their
+> own — exactly like `/swagger-ui`. Once enabled, secure them in your application (for example
+> with a `SecurityFilterChain`) before exposing them outside a trusted network.
+
 ## Configuration
 
 All properties are under the `springdoc.ai.mcp` prefix:
 
 | Property | Default | Description |
 |----------|---------|-------------|
-| `springdoc.ai.mcp.enabled` | `true` | Enable the MCP tool integration. |
+| `springdoc.ai.mcp.enabled` | `false` | Enable the MCP tool integration. Opt-in: nothing is registered unless this is explicitly set to `true`. |
 | `springdoc.ai.mcp.base-url` | `http://localhost:8080` | Base URL for tool execution HTTP calls. |
 | `springdoc.ai.mcp.init-timeout-seconds` | `30` | Timeout in seconds waiting for the OpenAPI spec at startup. |
 | `springdoc.ai.mcp.paths-to-exclude` | none | List of ant patterns for paths to exclude from MCP tool generation. |

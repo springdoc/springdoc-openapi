@@ -49,7 +49,7 @@ import static org.springdoc.ai.properties.SpringDocAiProperties.SPRINGDOC_MCP_UI
  */
 @Lazy(false)
 @AutoConfiguration(after = SpringDocAiAutoConfiguration.class)
-@ConditionalOnProperty(name = "springdoc.ai.mcp.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "springdoc.ai.mcp.enabled", matchIfMissing = false)
 public class McpDashboardAutoConfiguration {
 
 	/**
@@ -58,7 +58,7 @@ public class McpDashboardAutoConfiguration {
 	 * @return the audit event store
 	 */
 	@Bean
-	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = false)
 	McpAuditEventStore mcpAuditEventStore() {
 		return new McpAuditEventStore();
 	}
@@ -70,7 +70,7 @@ public class McpDashboardAutoConfiguration {
 	 */
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = false)
 	ToolCallbackDashboardToolSource toolCallbackDashboardToolSource(
 			List<org.springframework.ai.tool.ToolCallbackProvider> toolCallbackProviders) {
 		return new ToolCallbackDashboardToolSource(toolCallbackProviders);
@@ -83,7 +83,7 @@ public class McpDashboardAutoConfiguration {
 	 * @return the dashboard controller
 	 */
 	@Bean
-	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = false)
 	McpDashboardController mcpDashboardController(List<McpDashboardToolSource> toolSources,
 			McpAuditEventStore auditEventStore) {
 		return new McpDashboardController(toolSources, auditEventStore);
@@ -98,7 +98,7 @@ public class McpDashboardAutoConfiguration {
 	 */
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass(name = "io.modelcontextprotocol.server.McpServerFeatures")
-	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_MCP_UI_ENABLED, matchIfMissing = false)
 	static class McpServerToolDiscoveryConfiguration {
 
 		/**
