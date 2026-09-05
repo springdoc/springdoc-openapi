@@ -5,66 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.1.1] - 2026-09-05
 
 ### Security
 
-Remediation of the findings reported by the [scrutineer](https://github.com/alpha-omega-security/scrutineer)
-review of 2026-08-28, handled under the project [security policy](SECURITY.md) and the
-[Tidelift coordinated disclosure process](https://support.tidelift.com/hc/en-us/articles/4406287910036-Security-process).
-Findings are referenced by their report identifier. Unless stated otherwise, MCP findings apply
-only to the Spring Boot 4 line, where the MCP starters exist.
+- [GHSA-6f5m-mhjg-qwxq](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-6f5m-mhjg-qwxq) – MCP tool callbacks do not encode path parameters, allowing request retargeting
+- [GHSA-4v2q-56v7-2cpw](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-4v2q-56v7-2cpw) – MCP transport, admin and dashboard endpoints are exposed by default
+- [GHSA-m4cg-mhpg-rh2r](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-m4cg-mhpg-rh2r) – MCP audit events record credentials and request/response bodies without redaction
+- [GHSA-5f9r-4mc4-qh3c](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-5f9r-4mc4-qh3c) – Unbounded MCP pending-confirmation store allows memory exhaustion
+- [GHSA-jcgg-59c8-w4wh](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-jcgg-59c8-w4wh) – MCP request context in a `ThreadLocal` can leak headers between concurrent WebFlux requests
+- [GHSA-rhhx-6j8h-8cvw](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-rhhx-6j8h-8cvw) – Unbounded per-locale OpenAPI cache allows memory exhaustion via `Accept-Language`
+- [GHSA-c925-vm88-mpp9](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-c925-vm88-mpp9) – Scalar starters trust client-supplied forwarded headers and render from a shared mutable bean
 
-- Scrutineer #19 (High, CWE-918) – MCP: percent-encode path-parameter values before substituting
-  them into the outbound URL template in `OpenApiToolCallback`, so a tool argument containing
-  `/`, `?`, `#` or `..` can no longer retarget the request to another endpoint
-- Scrutineer #22 (Medium, CWE-770) – MCP: bound the pending human-approval store in
-  `OpenApiToolCallback` to 500 entries with LRU eviction, and key it by a SHA-256 digest instead of
-  the raw tool arguments, so repeated unapproved mutating calls can no longer grow the heap without
-  limit
-- Scrutineer #23 (Medium, CWE-532) – MCP: mask secret-shaped values (authorization, password,
-  token, api-key, cookie, …) in audit events before they are logged or exposed through
-  `GET /api/mcp-admin/audit`. Redaction is centralized in `McpAuditLogger` and covers the tool
-  arguments, the request URL query string and the request and response bodies. Controlled by the
-  new `springdoc.ai.mcp.audit.redact` property (default `true`)
-- Scrutineer #24 (Medium, CWE-488) – MCP on WebFlux: propagate the captured MCP request context
-  (forwardable headers, client IP, session ID) through the Reactor context instead of writing a
-  thread local on the shared event-loop thread. Concurrent MCP requests could otherwise observe
-  each other's headers — including `Authorization` — when forwarding them to the downstream API.
-  The servlet path is unchanged
-- Scrutineer #26 (Medium, CWE-1188) – **MCP functionality is now opt-in.** Every MCP
-  auto-configuration gate (`SpringDocAiAutoConfiguration`, `SpringDocAiProperties`,
-  `McpDashboardAutoConfiguration`, `McpWebMvcAiAutoConfiguration`, `McpWebFluxAiAutoConfiguration`)
-  moved from `matchIfMissing = true` to `matchIfMissing = false`, so `/mcp`, `/mcp-ui` and
-  `/api/mcp-admin/**` are no longer exposed merely by adding an MCP starter to the classpath.
-  Set `springdoc.ai.mcp.enabled=true` (and `springdoc.ai.mcp.dashboard-enabled=true` for the
-  dashboard) to enable them. `SpringDocAiEnvironmentPostProcessor` likewise only forces
-  `springdoc.pre-loading-enabled` when MCP is explicitly enabled.
-- Scrutineer #25 (Medium, CWE-770) – bound the per-locale OpenAPI cache in `OpenAPIService`: it is
-  now an access-ordered LRU capped by the new `springdoc.cache.max-entries` property (default
-  `100`), so a caller varying the `Accept-Language` header can no longer add cache entries without
-  limit. `GenericResponseService` also replaces, instead of appending, the `@ControllerAdvice`
-  entries it records, so its lists no longer grow on every build. Applies to both the Spring Boot 3
-  and Spring Boot 4 lines
-- Scrutineer #30 (Medium, CWE-1188) – the Scalar starters no longer register a
-  `ForwardedHeaderTransformer` (WebFlux) or a `ForwardedHeaderFilter` (WebMVC). Adding a Scalar
-  starter silently made the **whole application** trust the `Forwarded` and `X-Forwarded-*` headers
-  of every caller, overriding Spring Boot's `server.forward-headers-strategy=none` default and
-  allowing a client to influence the URLs, links and redirects the application produces. Set
-  `server.forward-headers-strategy=framework` (or `native`) when running behind a trusted reverse
-  proxy. Applies to both the Spring Boot 3 and Spring Boot 4 lines
-- Scrutineer #31 (Low, CWE-362) – `AbstractScalarController` no longer mutates the singleton
-  `ScalarProperties` bean while serving a request. The api-docs url and the group sources are
-  request-specific and are now applied to a per-request copy, so concurrent requests can no longer
-  render each other's urls or observe a transient `url = null`. Applies to both the Spring Boot 3
-  and Spring Boot 4 lines
-- Scrutineer #20 and #21 (MCP approval flow) are **not** treated as authorization bypasses. The MCP
-  approval mechanism is by design a human-in-the-loop confirmation step, not an authentication or
-  authorization control, and `/mcp`, `/mcp-ui` and `/api/mcp-admin/**` are integration surfaces that
-  the integrating application must secure — exactly like `/swagger-ui`. That distinction is now
-  stated explicitly in the MCP README and in the Javadoc of
-  `SpringDocAiProperties.Guardrails`, `OpenApiToolCallback` and `McpDashboardController`. The
-  opt-in change above (#26) further reduces the exposure of this surface
+### Changed
+
+- **MCP is now opt-in.** Set `springdoc.ai.mcp.enabled=true`, and `springdoc.ai.mcp.dashboard-enabled=true` for the dashboard
+- **The Scalar starters no longer register forwarded-header handling.** Set `server.forward-headers-strategy=framework` (or `native`) behind a trusted proxy
+- Add `springdoc.cache.max-entries` (default `100`) to bound the per-locale OpenAPI cache
+- Add `springdoc.ai.mcp.audit.redact` (default `true`) to mask secrets in MCP audit events
+- Document that the MCP approval flow is a confirmation step, not an authorization control
+- Document the security policy and the release versioning scheme
 
 ## [3.1.0] - 2026-07-31
 
