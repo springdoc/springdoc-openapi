@@ -26,6 +26,7 @@
 
 package test.org.springdoc.webflux.scalar.forwarded;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,24 @@ class ScalarForwardedHeaderTest {
 	@Test
 	void testNoForwardedHeaderTransformerIsRegistered() {
 		assertThat(applicationContext.getBeanNamesForType(ForwardedHeaderTransformer.class)).isEmpty();
+	}
+
+	/**
+	 * Once the application does opt in, Spring Boot still registers the transformer, so the
+	 * documented way of running Scalar behind a trusted proxy keeps working.
+	 */
+	@Nested
+	@SpringBootTest(properties = "server.forward-headers-strategy=framework")
+	class WhenTheApplicationOptsIn {
+
+		@Autowired
+		private ApplicationContext nestedApplicationContext;
+
+		@Test
+		void testForwardedHeaderTransformerIsRegistered() {
+			assertThat(nestedApplicationContext.getBeanNamesForType(ForwardedHeaderTransformer.class)).isNotEmpty();
+		}
+
 	}
 
 	@SpringBootApplication

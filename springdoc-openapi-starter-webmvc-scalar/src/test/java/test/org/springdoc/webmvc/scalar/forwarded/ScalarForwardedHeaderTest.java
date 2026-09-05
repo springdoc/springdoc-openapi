@@ -26,6 +26,7 @@
 
 package test.org.springdoc.webmvc.scalar.forwarded;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.ResolvableType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
@@ -49,6 +51,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class ScalarForwardedHeaderTest {
 
+	/**
+	 * The type Spring Boot registers when {@code server.forward-headers-strategy=framework}.
+	 */
+	private static final ResolvableType FILTER_REGISTRATION = ResolvableType
+			.forClassWithGenerics(FilterRegistrationBean.class, ForwardedHeaderFilter.class);
+
 	@Autowired
 	private ApplicationContext applicationContext;
 
@@ -58,6 +66,24 @@ class ScalarForwardedHeaderTest {
 		assertThat(applicationContext.getBeanNamesForType(ForwardedHeaderFilter.class)).isEmpty();
 		assertThat(applicationContext.getBeansOfType(FilterRegistrationBean.class).values())
 				.noneMatch(registration -> registration.getFilter() instanceof ForwardedHeaderFilter);
+	}
+
+	/**
+	 * Once the application does opt in, Spring Boot still registers the filter, so the
+	 * documented way of running Scalar behind a trusted proxy keeps working.
+	 */
+	@Nested
+	@SpringBootTest(properties = "server.forward-headers-strategy=framework")
+	class WhenTheApplicationOptsIn {
+
+		@Autowired
+		private ApplicationContext nestedApplicationContext;
+
+		@Test
+		void testForwardedHeaderFilterIsRegistered() {
+			assertThat(nestedApplicationContext.getBeanNamesForType(FILTER_REGISTRATION)).isNotEmpty();
+		}
+
 	}
 
 	@SpringBootApplication
