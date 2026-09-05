@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   deployment decision and unsafe when the application is not fronted by a proxy that strips them. Forwarded-header
   handling now follows `server.forward-headers-strategy` like any other Spring Boot application. **Behaviour change**:
   if you serve Scalar behind a reverse proxy, set `server.forward-headers-strategy=framework` (or `native`).
+- Render the Scalar page from request-local state. `AbstractScalarController` wrote the request-derived URL, and the
+  group sources built from it, back into the `ScalarProperties` instance shared by every request. Concurrent requests
+  overwrote each other's URL, and one landing between the two writes made when groups are configured rendered a page
+  whose `url` was `null`.
 
 ## [2.9.0] - 2026-07-31
 

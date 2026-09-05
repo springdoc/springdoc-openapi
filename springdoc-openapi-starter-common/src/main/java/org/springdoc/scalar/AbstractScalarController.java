@@ -36,6 +36,7 @@ import com.scalar.maven.core.config.ScalarSource;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -109,17 +110,7 @@ public abstract class AbstractScalarController {
 	 * @throws IOException the io exception
 	 */
 	protected ResponseEntity<String> getDocs(String requestUrl, String apiDocsPath, String scalarPath) throws IOException {
-		ScalarProperties configuredProperties = configureProperties(scalarProperties, requestUrl, apiDocsPath);
-		String url = configuredProperties.getUrl();
-		List<ScalarSource> scalarSources = springDocConfigProperties.getGroupConfigs().stream()
-				.map(groupConfig -> new ScalarSource(url + DEFAULT_PATH_SEPARATOR + groupConfig.getGroup(), groupConfig.getDisplayName(), null, false)).toList();
-		
-		if(!CollectionUtils.isEmpty(scalarSources))  {
-			scalarProperties.setSources(scalarSources);
-			scalarProperties.setUrl(null);
-		}
-		
-		String html = ScalarHtmlRenderer.render(configuredProperties);
+		String html = ScalarHtmlRenderer.render(configureProperties(requestUrl, apiDocsPath));
 		String bundleUrl = buildJsBundleUrl(requestUrl, scalarPath);
 		html = SCRIPT_SRC_PATTERN.matcher(html).replaceAll("$1" + bundleUrl + "$3");
 		return ResponseEntity.ok()
@@ -128,16 +119,34 @@ public abstract class AbstractScalarController {
 	}
 
 	/**
-	 * Configure properties scalar properties.
+	 * Builds the properties used to render the page for one request.
+	 * <p>
+	 * The URL of the OpenAPI description is derived from the current request, so it is
+	 * request state and must not be written back to the {@link ScalarProperties} singleton:
+	 * concurrent requests would overwrite each other's URL, and one landing between the two
+	 * writes made when groups are configured would render a page whose {@code url} is
+	 * {@code null}. The configured properties are therefore copied, and only the copy is
+	 * adjusted. {@code BeanUtils} does the copying rather than an explicit list of setters,
+	 * so that options added by future scalar versions are carried over automatically.
 	 *
-	 * @param properties the properties     
-	 * @param requestUrl the request url   
-	 * @param apiDocsPath the api docs path   
-	 * @return  the scalar properties
+	 * @param requestUrl the request url
+	 * @param apiDocsPath the api docs path
+	 * @return  the scalar properties for this request
 	 */
-	private ScalarProperties configureProperties(ScalarProperties properties, String requestUrl, String apiDocsPath) {
+	private ScalarProperties configureProperties(String requestUrl, String apiDocsPath) {
+		ScalarProperties properties = new ScalarProperties();
+		BeanUtils.copyProperties(scalarProperties, properties);
 		String url = buildApiDocsUrl(requestUrl, apiDocsPath);
-		properties.setUrl(url);
+		List<ScalarSource> scalarSources = springDocConfigProperties.getGroupConfigs().stream()
+				.map(groupConfig -> new ScalarSource(url + DEFAULT_PATH_SEPARATOR + groupConfig.getGroup(), groupConfig.getDisplayName(), null, false)).toList();
+
+		if (!CollectionUtils.isEmpty(scalarSources)) {
+			properties.setSources(scalarSources);
+			properties.setUrl(null);
+		}
+		else {
+			properties.setUrl(url);
+		}
 		return properties;
 	}
 
