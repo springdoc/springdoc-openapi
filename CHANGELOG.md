@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   now capped by the new `springdoc.cache.max-size` property (default `100`), and the per-locale controller-advice lists in
   `GenericResponseService` are keyed by advice bean instead of appended to on every build — which also stops a later
   request from picking up another locale's translated descriptions.
+- The Scalar starters no longer register a `ForwardedHeaderFilter` (WebMVC) or `ForwardedHeaderTransformer` (WebFlux).
+  Adding the starter silently made the *whole* application trust `Forwarded` / `X-Forwarded-*` headers, which is a
+  deployment decision and unsafe when the application is not fronted by a proxy that strips them. Forwarded-header
+  handling now follows `server.forward-headers-strategy` like any other Spring Boot application. **Behaviour change**:
+  if you serve Scalar behind a reverse proxy, set `server.forward-headers-strategy=framework` (or `native`).
 
 ## [2.9.0] - 2026-07-31
 

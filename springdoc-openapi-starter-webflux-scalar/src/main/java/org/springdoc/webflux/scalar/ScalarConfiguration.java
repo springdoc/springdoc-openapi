@@ -45,7 +45,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
 import static org.springdoc.core.utils.Constants.SCALAR_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -53,6 +52,12 @@ import static org.springdoc.scalar.ScalarConstants.DEFAULT_SCALAR_ACTUATOR_PATH;
 
 /**
  * The type Scalar configuration.
+ * <p>
+ * Adding this starter does not change how {@code Forwarded} and {@code X-Forwarded-*}
+ * headers are handled: that stays a deployment decision, made once for the whole
+ * application through {@code server.forward-headers-strategy}. Behind a reverse proxy,
+ * set it to {@code framework} (or {@code native}) so that the Scalar page resolves the
+ * externally visible URL of the OpenAPI description.
  *
  * @author  bnasslahsen
  */
@@ -77,18 +82,6 @@ public class ScalarConfiguration {
 	@Lazy(false)
 	ScalarWebFluxController scalarWebMvcController(SpringBootScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
 		return new ScalarWebFluxController(scalarProperties, springDocConfigProperties);
-	}
-
-	/**
-	 * Forwarded header transformer forwarded header transformer.
-	 *
-	 * @return  the forwarded header transformer
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	ForwardedHeaderTransformer forwardedHeaderTransformer() {
-		return new ForwardedHeaderTransformer();
 	}
 
 	/**
