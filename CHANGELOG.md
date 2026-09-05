@@ -18,6 +18,10 @@ only to the Spring Boot 4 line, where the MCP starters exist.
 - Scrutineer #19 (High, CWE-918) – MCP: percent-encode path-parameter values before substituting
   them into the outbound URL template in `OpenApiToolCallback`, so a tool argument containing
   `/`, `?`, `#` or `..` can no longer retarget the request to another endpoint
+- Scrutineer #22 (Medium, CWE-770) – MCP: bound the pending human-approval store in
+  `OpenApiToolCallback` to 500 entries with LRU eviction, and key it by a SHA-256 digest instead of
+  the raw tool arguments, so repeated unapproved mutating calls can no longer grow the heap without
+  limit
 
 ## [3.1.0] - 2026-07-31
 

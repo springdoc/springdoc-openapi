@@ -27,6 +27,7 @@
 package org.springdoc.ai.mcp;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -135,6 +136,49 @@ class OpenApiToolCallbackTest {
 	@Test
 	void testMissingPathVariableResolvesToEmpty() throws Exception {
 		assertThat(resolvePath(undeclaredPathParamCallback(), "{}")).isEqualTo("/users/");
+	}
+
+	/**
+	 * A flood of distinct unapproved mutating calls must not grow the pending-approval
+	 * store without bound.
+	 */
+	@Test
+	void testPendingApprovalsAreBounded() {
+		Operation operation = new Operation();
+		operation.setOperationId("createUser");
+		OpenApiToolCallback callback = new OpenApiToolCallback("/users", HttpMethod.POST, operation, null,
+				"http://localhost:8080");
+		assertThat(callback.isRequiresApproval()).isTrue();
+
+		Map<?, ?> pendingApprovals = (Map<?, ?>) ReflectionTestUtils.getField(OpenApiToolCallback.class,
+				"PENDING_APPROVALS");
+		int max = (int) ReflectionTestUtils.getField(OpenApiToolCallback.class, "MAX_PENDING_APPROVALS");
+		pendingApprovals.clear();
+
+		for (int i = 0; i < max * 3; i++) {
+			assertThat(callback.call("{\"name\":\"user-" + i + "\"}")).contains("requires_human_approval");
+		}
+		assertThat(pendingApprovals).hasSizeLessThanOrEqualTo(max);
+	}
+
+	/**
+	 * The pending-approval key must be a fixed-size digest, so a large argument payload
+	 * does not translate into a large retained entry.
+	 */
+	@Test
+	void testPendingApprovalKeyIsAFixedSizeDigest() {
+		Operation operation = new Operation();
+		operation.setOperationId("createUser");
+		OpenApiToolCallback callback = new OpenApiToolCallback("/users", HttpMethod.POST, operation, null,
+				"http://localhost:8080");
+
+		Map<?, ?> pendingApprovals = (Map<?, ?>) ReflectionTestUtils.getField(OpenApiToolCallback.class,
+				"PENDING_APPROVALS");
+		pendingApprovals.clear();
+		callback.call("{\"name\":\"" + "x".repeat(100_000) + "\"}");
+
+		assertThat(pendingApprovals).hasSize(1);
+		assertThat((String) pendingApprovals.keySet().iterator().next()).hasSize(64);
 	}
 
 }

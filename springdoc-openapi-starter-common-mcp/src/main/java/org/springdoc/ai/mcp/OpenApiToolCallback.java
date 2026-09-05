@@ -33,13 +33,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.HexFormat;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,9 +80,24 @@ public class OpenApiToolCallback implements ToolCallback {
 		.build();
 
 	/**
-	 * Pending approvals store: keys are "toolName:toolInput" awaiting human approval.
+	 * Maximum number of pending approvals retained in memory. Mirrors
+	 * {@code McpAuditEventStore.MAX_EVENTS}.
 	 */
-	private static final Set<String> PENDING_APPROVALS = ConcurrentHashMap.newKeySet();
+	private static final int MAX_PENDING_APPROVALS = 500;
+
+	/**
+	 * Pending approvals store: keys are fixed-size digests of "toolName:toolInput" awaiting
+	 * human approval. Bounded to {@value #MAX_PENDING_APPROVALS} entries with
+	 * least-recently-used eviction, so an unapproved call flood cannot grow the JVM heap
+	 * without limit.
+	 */
+	private static final Map<String, Boolean> PENDING_APPROVALS = Collections
+		.synchronizedMap(new LinkedHashMap<>(16, 0.75f, true) {
+			@Override
+			protected boolean removeEldestEntry(Map.Entry<String, Boolean> eldest) {
+				return size() > MAX_PENDING_APPROVALS;
+			}
+		});
 
 	/**
 	 * The path template (e.g. /users/{id}).
@@ -304,11 +322,11 @@ public class OpenApiToolCallback implements ToolCallback {
 	@Override
 	public String call(String toolInput) {
 		if (!safe && aiProperties.getGuardrails().isRequireApprovalForMutatingTools()) {
-			String approvalKey = getToolDefinition().name() + ":" + (toolInput != null ? toolInput : "{}");
-			if (PENDING_APPROVALS.remove(approvalKey)) {
+			String approvalKey = approvalKey(getToolDefinition().name(), toolInput);
+			if (PENDING_APPROVALS.remove(approvalKey) != null) {
 				return executeHttp(toolInput, null, "APPROVED").body();
 			}
-			PENDING_APPROVALS.add(approvalKey);
+			PENDING_APPROVALS.put(approvalKey, Boolean.TRUE);
 			McpAuditLogger.log(McpAuditLogger.AuditRecord.builder()
 				.toolName(getToolDefinition().name())
 				.httpMethod(method.name())
@@ -319,6 +337,25 @@ public class OpenApiToolCallback implements ToolCallback {
 			return buildApprovalRequiredJson(toolInput);
 		}
 		return executeHttp(toolInput, null, !safe ? "BYPASSED" : null).body();
+	}
+
+	/**
+	 * Builds the pending-approval key for a tool call. The raw {@code toolName:toolInput}
+	 * pair is hashed so that a single entry has a fixed size regardless of the argument
+	 * payload size.
+	 * @param toolName the tool name
+	 * @param toolInput the tool input JSON string (may be {@code null})
+	 * @return the hexadecimal SHA-256 digest of the tool call
+	 */
+	private static String approvalKey(String toolName, String toolInput) {
+		String raw = toolName + ":" + (toolInput != null ? toolInput : "{}");
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			return HexFormat.of().formatHex(digest.digest(raw.getBytes(StandardCharsets.UTF_8)));
+		}
+		catch (NoSuchAlgorithmException ex) {
+			throw new IllegalStateException("SHA-256 digest is not available", ex);
+		}
 	}
 
 	/**
