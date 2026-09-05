@@ -31,9 +31,9 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.MDC;
 import org.springdoc.ai.mcp.McpRequestContextHolder;
 import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -42,28 +42,32 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
 /**
- * Reactive WebFilter that populates SLF4J MDC with the caller's IP address and MCP session
- * ID, and stores forwardable headers in {@link McpRequestContextHolder} for propagation
- * to downstream REST API calls.
+ * Reactive WebFilter that captures the caller's IP address, the MCP session ID and the
+ * forwardable request headers, so that {@link org.springdoc.ai.mcp.McpAuditLogger} can log
+ * them and {@code OpenApiToolCallback} can propagate them to downstream REST API calls.
  *
- * <p>This is the WebFlux equivalent of
- * {@code org.springdoc.webmvc.ai.McpAuditMdcFilter}.
+ * <p>Unlike its servlet counterpart ({@code org.springdoc.webmvc.ai.McpAuditMdcFilter}) this
+ * filter must not write thread locals directly: a WebFlux event-loop thread is shared by many
+ * concurrent exchanges, so a value written here would be visible to - or cleared by - an
+ * unrelated request. The values are therefore written into the Reactor context and mirrored
+ * into MDC and {@link McpRequestContextHolder} per subscription by the accessors registered
+ * in {@link McpWebFluxAiAutoConfiguration}.
  *
  * @author bnasslahsen
  */
 public class McpAuditMdcWebFilter implements WebFilter {
 
 	/**
-	 * MDC key used by {@link org.springdoc.ai.mcp.McpAuditLogger} to read the client IP
-	 * address.
+	 * Context and MDC key used by {@link org.springdoc.ai.mcp.McpAuditLogger} to read the
+	 * client IP address.
 	 */
-	private static final String MDC_CLIENT_IP = "clientIp";
+	static final String MDC_CLIENT_IP = "clientIp";
 
 	/**
-	 * MDC key used by {@link org.springdoc.ai.mcp.McpAuditLogger} to read the MCP
-	 * session ID.
+	 * Context and MDC key used by {@link org.springdoc.ai.mcp.McpAuditLogger} to read the
+	 * MCP session ID.
 	 */
-	private static final String MDC_SESSION_ID = "sessionId";
+	static final String MDC_SESSION_ID = "sessionId";
 
 	/**
 	 * HTTP header set by reverse proxies carrying the originating client IP.
@@ -95,18 +99,14 @@ public class McpAuditMdcWebFilter implements WebFilter {
 			return chain.filter(exchange);
 		}
 		ServerHttpRequest request = exchange.getRequest();
-		MDC.put(MDC_CLIENT_IP, resolveClientIp(request));
+		Map<String, Object> contextValues = new HashMap<>();
+		contextValues.put(McpRequestContextHolder.CONTEXT_KEY, extractForwardableHeaders(request.getHeaders()));
+		contextValues.put(MDC_CLIENT_IP, resolveClientIp(request));
 		String sessionId = request.getHeaders().getFirst(HEADER_MCP_SESSION_ID);
 		if (sessionId != null && !sessionId.isBlank()) {
-			MDC.put(MDC_SESSION_ID, sessionId);
+			contextValues.put(MDC_SESSION_ID, sessionId);
 		}
-		McpRequestContextHolder.setHeaders(extractForwardableHeaders(request.getHeaders()));
-		return chain.filter(exchange)
-				.doFinally(signal -> {
-					MDC.remove(MDC_CLIENT_IP);
-					MDC.remove(MDC_SESSION_ID);
-					McpRequestContextHolder.clear();
-				});
+		return chain.filter(exchange).contextWrite(context -> context.putAll(Context.of(contextValues).readOnly()));
 	}
 
 	/**

@@ -30,11 +30,15 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import io.micrometer.context.ContextRegistry;
+import org.slf4j.MDC;
 import org.springdoc.ai.configuration.SpringDocAiAutoConfiguration;
 import org.springdoc.ai.customizers.McpToolDescriptionCustomizer;
 import org.springdoc.ai.properties.SpringDocAiProperties;
 import org.springdoc.core.events.SpringDocAppInitializer;
+import reactor.core.publisher.Hooks;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -67,8 +71,7 @@ import static org.springdoc.ai.properties.SpringDocAiProperties.SPRINGDOC_MCP_UI
 public class McpWebFluxAiAutoConfiguration {
 
 	/**
-	 * Creates the {@link McpAuditMdcWebFilter} that populates MDC and
-	 * {@link org.springdoc.ai.mcp.McpRequestContextHolder} for MCP requests.
+	 * Creates the {@link McpAuditMdcWebFilter} that captures the MCP request context.
 	 * @param aiProperties the AI properties (used to scope the filter to the MCP path)
 	 * @return the WebFilter bean
 	 */
@@ -76,6 +79,38 @@ public class McpWebFluxAiAutoConfiguration {
 	@ConditionalOnMissingBean(McpAuditMdcWebFilter.class)
 	McpAuditMdcWebFilter mcpAuditMdcWebFilter(SpringDocAiProperties aiProperties) {
 		return new McpAuditMdcWebFilter(aiProperties.getMcpEndpoint());
+	}
+
+	/**
+	 * Wires the request context captured by {@link McpAuditMdcWebFilter} into the thread
+	 * locals read by the synchronous audit logger and tool callback.
+	 * <p>
+	 * The filter writes the values into the Reactor context, which is per-subscription and
+	 * therefore per-request. Registering the accessors below and enabling Reactor's
+	 * automatic context propagation makes them visible as thread locals for the duration of
+	 * each operator only, so the headers of one MCP request can no longer be observed while
+	 * serving another on the same event-loop thread.
+	 * @return an initializing bean that registers the accessors
+	 */
+	@Bean
+	InitializingBean springDocMcpReactiveContextPropagation() {
+		return () -> {
+			ContextRegistry registry = ContextRegistry.getInstance();
+			registry.registerThreadLocalAccessor(new McpRequestContextAccessor());
+			registerMdcAccessor(registry, McpAuditMdcWebFilter.MDC_CLIENT_IP);
+			registerMdcAccessor(registry, McpAuditMdcWebFilter.MDC_SESSION_ID);
+			Hooks.enableAutomaticContextPropagation();
+		};
+	}
+
+	/**
+	 * Registers a thread-local accessor mirroring a single Reactor context entry into MDC.
+	 * @param registry the Micrometer context registry
+	 * @param key the shared context and MDC key
+	 */
+	private static void registerMdcAccessor(ContextRegistry registry, String key) {
+		registry.registerThreadLocalAccessor(key, () -> MDC.get(key), value -> MDC.put(key, value),
+				() -> MDC.remove(key));
 	}
 
 	/**

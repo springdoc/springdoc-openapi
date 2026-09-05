@@ -27,6 +27,11 @@ only to the Spring Boot 4 line, where the MCP starters exist.
   `GET /api/mcp-admin/audit`. Redaction is centralized in `McpAuditLogger` and covers the tool
   arguments, the request URL query string and the request and response bodies. Controlled by the
   new `springdoc.ai.mcp.audit.redact` property (default `true`)
+- Scrutineer #24 (Medium, CWE-488) – MCP on WebFlux: propagate the captured MCP request context
+  (forwardable headers, client IP, session ID) through the Reactor context instead of writing a
+  thread local on the shared event-loop thread. Concurrent MCP requests could otherwise observe
+  each other's headers — including `Authorization` — when forwarding them to the downstream API.
+  The servlet path is unchanged
 - Scrutineer #26 (Medium, CWE-1188) – **MCP functionality is now opt-in.** Every MCP
   auto-configuration gate (`SpringDocAiAutoConfiguration`, `SpringDocAiProperties`,
   `McpDashboardAutoConfiguration`, `McpWebMvcAiAutoConfiguration`, `McpWebFluxAiAutoConfiguration`)

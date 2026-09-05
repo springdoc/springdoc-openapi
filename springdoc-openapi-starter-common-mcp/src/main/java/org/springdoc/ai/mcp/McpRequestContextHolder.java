@@ -38,6 +38,13 @@ import java.util.Set;
  * <p>Uses a plain {@link ThreadLocal} (not {@link InheritableThreadLocal}) to avoid
  * leaking credentials to child threads.
  *
+ * <p>A {@link ThreadLocal} is only correct when a request owns its thread for the whole
+ * exchange, which holds for the servlet filter but not for the reactive one: a WebFlux
+ * event-loop thread serves many concurrent exchanges. The WebFlux filter therefore stores
+ * the headers in the Reactor context under {@link #CONTEXT_KEY} and lets automatic context
+ * propagation restore them into this holder around each synchronous consumer, so a value
+ * set for one request can never be observed by another.
+ *
  * @author bnasslahsen
  */
 public final class McpRequestContextHolder {
@@ -50,6 +57,12 @@ public final class McpRequestContextHolder {
 			"accept", "accept-encoding", "accept-language", "user-agent", "origin", "referer", "cookie",
 			"sec-fetch-dest", "sec-fetch-mode", "sec-fetch-site", "sec-ch-ua", "sec-ch-ua-mobile",
 			"sec-ch-ua-platform");
+
+	/**
+	 * Reactor context key under which the reactive filter stores the forwardable headers.
+	 * Also the key of the {@code ThreadLocalAccessor} that mirrors them into this holder.
+	 */
+	public static final String CONTEXT_KEY = "org.springdoc.ai.mcp.requestHeaders";
 
 	private static final ThreadLocal<Map<String, String>> HEADERS = new ThreadLocal<>();
 
