@@ -5,24 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.9.1] - 2026-09-05
 
 ### Security
 
-- Bound the per-locale OpenAPI cache. The cache key is derived from the client-supplied `Accept-Language` header, so an
-  unbounded map allowed any caller to grow the heap by one full OpenAPI document per distinct language tag. The cache is
-  now capped by the new `springdoc.cache.max-entries` property (default `100`), and the per-locale controller-advice lists in
-  `GenericResponseService` are keyed by advice bean instead of appended to on every build — which also stops a later
-  request from picking up another locale's translated descriptions.
-- The Scalar starters no longer register a `ForwardedHeaderFilter` (WebMVC) or `ForwardedHeaderTransformer` (WebFlux).
-  Adding the starter silently made the *whole* application trust `Forwarded` / `X-Forwarded-*` headers, which is a
-  deployment decision and unsafe when the application is not fronted by a proxy that strips them. Forwarded-header
-  handling now follows `server.forward-headers-strategy` like any other Spring Boot application. **Behaviour change**:
-  if you serve Scalar behind a reverse proxy, set `server.forward-headers-strategy=framework` (or `native`).
-- Render the Scalar page from request-local state. `AbstractScalarController` wrote the request-derived URL, and the
-  group sources built from it, back into the `ScalarProperties` instance shared by every request. Concurrent requests
-  overwrote each other's URL, and one landing between the two writes made when groups are configured rendered a page
-  whose `url` was `null`.
+- [GHSA-rhhx-6j8h-8cvw](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-rhhx-6j8h-8cvw) – Unbounded per-locale OpenAPI cache allows memory exhaustion via `Accept-Language`
+- [GHSA-c925-vm88-mpp9](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-c925-vm88-mpp9) – Scalar starters trust client-supplied forwarded headers and render from a shared mutable bean
+
+### Changed
+
+- **The Scalar starters no longer register forwarded-header handling.** Set `server.forward-headers-strategy=framework` (or `native`) behind a trusted proxy
+- Add `springdoc.cache.max-entries` (default `100`) to bound the per-locale OpenAPI cache
+- Document the security policy and the release versioning scheme
 
 ## [2.9.0] - 2026-07-31
 
