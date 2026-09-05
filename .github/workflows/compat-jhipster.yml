@@ -1,0 +1,57 @@
+# Downstream compatibility check: builds jhipster/jhipster-bom against a given
+# springdoc-openapi version. It lives here rather than in jhipster-bom because
+# we cannot add workflows to a repository we do not own.
+name: JHipster compatibility
+
+on:
+  workflow_dispatch:
+    inputs:
+      springdocVersion:
+        description: 'springdoc-openapi version to test against, e.g. 3.1.1'
+        required: true
+      jhipsterRef:
+        description: 'jhipster-bom branch or tag'
+        default: main
+
+jobs:
+  compat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: jhipster/jhipster-bom
+          ref: ${{ inputs.jhipsterRef }}
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+
+      # A SNAPSHOT under test will not be on Central release; allow the
+      # snapshot repository so unreleased versions can be checked too.
+      - name: Allow Central snapshots
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml <<'XML'
+          <settings>
+            <profiles>
+              <profile>
+                <id>central-snapshots</id>
+                <repositories>
+                  <repository>
+                    <id>central-snapshots</id>
+                    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+                    <snapshots><enabled>true</enabled></snapshots>
+                    <releases><enabled>false</enabled></releases>
+                  </repository>
+                </repositories>
+              </profile>
+            </profiles>
+            <activeProfiles><activeProfile>central-snapshots</activeProfile></activeProfiles>
+          </settings>
+          XML
+
+      - name: Build jhipster-bom
+        run: mvn -B --no-transfer-progress install -Dspringdocs.version='${{ inputs.springdocVersion }}'

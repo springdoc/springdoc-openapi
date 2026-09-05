@@ -55,7 +55,7 @@
 
 	<properties>
 		<maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
-		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+		<maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 		<central-publishing-maven-plugin.version>0.11.0
 		</central-publishing-maven-plugin.version>
 		<flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
@@ -277,7 +277,10 @@
 							<tagNameFormat>v@{project.version}</tagNameFormat>
 							<autoVersionSubmodules>true</autoVersionSubmodules>
 							<useReleaseProfile>false</useReleaseProfile>
-							<releaseProfiles>gpg</releaseProfiles>
+							<!-- ci as well as gpg: release:perform activates these with -P,
+							     which would otherwise deactivate the activeByDefault ci
+							     profile and silently skip the npm frontend build. -->
+							<releaseProfiles>ci,gpg</releaseProfiles>
 							<goals>deploy</goals>
 						</configuration>
 					</plugin>

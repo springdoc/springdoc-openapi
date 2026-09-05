@@ -1,0 +1,90 @@
+# Cuts a release: tags it, publishes to Maven Central, bumps to the next SNAPSHOT.
+# Run it from the branch you want to release (main or spring-boot-3).
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: 'Version to release, e.g. 3.1.1'
+        required: true
+      developmentVersion:
+        description: 'Next development version, e.g. 3.1.2-SNAPSHOT'
+        required: true
+      dryRun:
+        description: 'Rehearse only: no tag, no push, no publish'
+        type: boolean
+        default: false
+
+# release:prepare pushes the version-bump commits and the tag.
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  MAVEN_ARGS: -B --no-transfer-progress -Dmaven.artifact.threads=16
+  MAVEN_OPTS: -Xmx3g
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # release:prepare inspects history and tags.
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: central
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('**/src/main/frontend/package-lock.json') }}
+          restore-keys: npm-
+
+      - name: Configure git
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          # <scm> uses an SSH URL, and release:perform clones it fresh into
+          # target/checkout. The runner has no SSH key, so route it over HTTPS.
+          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf 'git@github.com:'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Tests run once, here. The release build itself uses -DskipTests so the
+      # suite is not executed a third time (release:prepare verifies, then
+      # release:perform builds again from the tag).
+      - name: Test
+        run: mvn $MAVEN_ARGS -Pci -T1C test
+
+      - name: Release
+        run: |
+          mvn $MAVEN_ARGS release:prepare release:perform \
+            -DreleaseVersion='${{ inputs.releaseVersion }}' \
+            -DdevelopmentVersion='${{ inputs.developmentVersion }}' \
+            -DdryRun=${{ inputs.dryRun }} \
+            -Darguments="-DskipTests"
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up a dry run
+        if: ${{ inputs.dryRun }}
+        run: mvn $MAVEN_ARGS release:clean
