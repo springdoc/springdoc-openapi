@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Security
+
+- Bound the per-locale OpenAPI cache. The cache key is derived from the client-supplied `Accept-Language` header, so an
+  unbounded map allowed any caller to grow the heap by one full OpenAPI document per distinct language tag. The cache is
+  now capped by the new `springdoc.cache.max-size` property (default `100`), and the per-locale controller-advice lists in
+  `GenericResponseService` are keyed by advice bean instead of appended to on every build — which also stops a later
+  request from picking up another locale's translated descriptions.
+
 ## [2.9.0] - 2026-07-31
 
 ### Added

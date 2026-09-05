@@ -156,9 +156,12 @@ public class OpenAPIService implements ApplicationContextAware {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Cached open api map.
+	 * The Cached open api map. Bounded by {@code springdoc.cache.max-size}: the key is the
+	 * language tag of the requested locale, which is client-controlled through the
+	 * {@code Accept-Language} header, so an unbounded map would let any caller grow the
+	 * heap by one full OpenAPI document per distinct tag.
 	 */
-	private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
+	private final Map<String, OpenAPI> cachedOpenAPI;
 
 	/**
 	 * The Property resolver utils.
@@ -216,6 +219,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		this.openApiBuilderCustomisers = openApiBuilderCustomizers;
 		this.serverBaseUrlCustomizers = serverBaseUrlCustomizers;
 		this.javadocProvider = javadocProvider;
+		this.cachedOpenAPI = new BoundedOpenAPICache(springDocConfigProperties.getCache().getMaxSize());
 		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
 	}
@@ -940,5 +944,37 @@ public class OpenAPIService implements ApplicationContextAware {
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.context = applicationContext;
+	}
+
+	/**
+	 * A size-bounded cache of generated OpenAPI documents, keyed by locale language tag.
+	 * <p>
+	 * Insertion-ordered on purpose: eviction then only ever happens on {@code put}, which
+	 * {@code AbstractOpenApiResource#getOpenApi} performs while holding its lock. An
+	 * access-ordered map would restructure itself on {@code get} as well, turning the
+	 * lock-free read path into a concurrent modification.
+	 *
+	 * @author bnasslahsen
+	 */
+	private static class BoundedOpenAPICache extends LinkedHashMap<String, OpenAPI> {
+
+		/**
+		 * The maximum number of entries retained.
+		 */
+		private final int maxSize;
+
+		/**
+		 * Instantiates a new bounded open api cache.
+		 *
+		 * @param maxSize the maximum number of entries retained
+		 */
+		BoundedOpenAPICache(int maxSize) {
+			this.maxSize = maxSize;
+		}
+
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<String, OpenAPI> eldest) {
+			return size() > maxSize;
+		}
 	}
 }

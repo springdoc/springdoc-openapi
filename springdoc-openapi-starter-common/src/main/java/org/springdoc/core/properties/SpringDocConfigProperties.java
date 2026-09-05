@@ -1640,10 +1640,25 @@ public class SpringDocConfigProperties {
 	 * @author bnasslahsen
 	 */
 	public static class Cache {
+
+		/**
+		 * The default maximum number of cached OpenAPI documents.
+		 */
+		private static final int DEFAULT_MAX_SIZE = 100;
+
 		/**
 		 * The Disabled.
 		 */
 		private boolean disabled;
+
+		/**
+		 * The maximum number of generated OpenAPI documents kept in memory, one per
+		 * requested locale. The locale comes from the client {@code Accept-Language}
+		 * header, so the cache is always bounded: a non-positive value falls back to the
+		 * default of {@value #DEFAULT_MAX_SIZE} rather than meaning "unlimited". Narrow it
+		 * further with {@code springdoc.allowed-locales}.
+		 */
+		private int maxSize = DEFAULT_MAX_SIZE;
 
 		/**
 		 * Is disabled boolean.
@@ -1661,6 +1676,24 @@ public class SpringDocConfigProperties {
 		 */
 		public void setDisabled(boolean disabled) {
 			this.disabled = disabled;
+		}
+
+		/**
+		 * Gets max size.
+		 *
+		 * @return the max size
+		 */
+		public int getMaxSize() {
+			return maxSize;
+		}
+
+		/**
+		 * Sets max size.
+		 *
+		 * @param maxSize the max size
+		 */
+		public void setMaxSize(int maxSize) {
+			this.maxSize = maxSize > 0 ? maxSize : DEFAULT_MAX_SIZE;
 		}
 	}
 

@@ -344,11 +344,36 @@ public class GenericResponseService implements ApplicationContextAware {
 				}
 			}
 			if (AnnotatedElementUtils.hasAnnotation(objClz, ControllerAdvice.class)) {
-				controllerAdviceInfos.add(controllerAdviceInfo);
+				replaceControllerAdviceInfo(controllerAdviceInfos, controllerAdviceInfo);
 			}
 			else {
-				localExceptionHandlers.add(controllerAdviceInfo);
+				replaceControllerAdviceInfo(localExceptionHandlers, controllerAdviceInfo);
 			}
+		}
+	}
+
+	/**
+	 * Stores the advice info for a controller advice bean, replacing any entry previously
+	 * recorded for that same bean.
+	 * <p>
+	 * {@code buildGenericResponse} runs once per requested locale, and the locale comes
+	 * from the client {@code Accept-Language} header. Appending unconditionally therefore
+	 * grew these lists without bound - and, because the reader keeps the first match, left
+	 * later requests reading another locale's translated descriptions. Keying on the
+	 * advice bean caps the lists at the number of advice beans and keeps the newest build
+	 * authoritative.
+	 *
+	 * @param adviceInfos          the list to update
+	 * @param controllerAdviceInfo the advice info to store
+	 */
+	private void replaceControllerAdviceInfo(List<ControllerAdviceInfo> adviceInfos, ControllerAdviceInfo controllerAdviceInfo) {
+		reentrantLock.lock();
+		try {
+			adviceInfos.removeIf(existing -> existing.getControllerAdvice() == controllerAdviceInfo.getControllerAdvice());
+			adviceInfos.add(controllerAdviceInfo);
+		}
+		finally {
+			reentrantLock.unlock();
 		}
 	}
 
