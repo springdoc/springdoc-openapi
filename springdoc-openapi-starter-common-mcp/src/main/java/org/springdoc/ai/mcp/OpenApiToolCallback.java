@@ -506,7 +506,9 @@ public class OpenApiToolCallback implements ToolCallback {
 
 	/**
 	 * Resolves path parameters in the URL template. Handles both declared parameters and
-	 * undeclared path template variables from the input.
+	 * undeclared path template variables from the input. Every substituted value is
+	 * percent-encoded as a single path segment, so a value containing {@code /}, {@code ?},
+	 * {@code #} or {@code ..} cannot reshape the outbound URL.
 	 * @param input the tool input
 	 * @return the resolved path
 	 */
@@ -515,7 +517,8 @@ public class OpenApiToolCallback implements ToolCallback {
 		if (operation.getParameters() != null) {
 			for (io.swagger.v3.oas.models.parameters.Parameter param : operation.getParameters()) {
 				if ("path".equals(param.getIn()) && input.has(param.getName())) {
-					resolved = resolved.replace("{" + param.getName() + "}", input.get(param.getName()).asText());
+					resolved = resolved.replace("{" + param.getName() + "}",
+							encodePathSegment(input.get(param.getName()).asText()));
 				}
 			}
 		}
@@ -523,11 +526,25 @@ public class OpenApiToolCallback implements ToolCallback {
 		StringBuilder sb = new StringBuilder();
 		while (matcher.find()) {
 			String varName = matcher.group(1);
-			String replacement = input.has(varName) ? input.get(varName).asText() : "";
+			String replacement = input.has(varName) ? encodePathSegment(input.get(varName).asText()) : "";
 			matcher.appendReplacement(sb, Matcher.quoteReplacement(replacement));
 		}
 		matcher.appendTail(sb);
 		return sb.toString();
+	}
+
+	/**
+	 * Percent-encodes a value so that it is safe to substitute into a single URL path
+	 * segment. Reserved and structural characters ({@code / ? # &} and {@code .} sequences)
+	 * are escaped, and spaces are encoded as {@code %20} rather than {@code +}.
+	 * @param value the raw value
+	 * @return the encoded path segment
+	 */
+	private static String encodePathSegment(String value) {
+		if (value == null || value.isEmpty()) {
+			return "";
+		}
+		return URLEncoder.encode(value, StandardCharsets.UTF_8).replace("+", "%20").replace(".", "%2E");
 	}
 
 	/**

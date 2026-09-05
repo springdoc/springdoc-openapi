@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Security
+
+Remediation of the findings reported by the [scrutineer](https://github.com/alpha-omega-security/scrutineer)
+review of 2026-08-28, handled under the project [security policy](SECURITY.md) and the
+[Tidelift coordinated disclosure process](https://support.tidelift.com/hc/en-us/articles/4406287910036-Security-process).
+Findings are referenced by their report identifier. Unless stated otherwise, MCP findings apply
+only to the Spring Boot 4 line, where the MCP starters exist.
+
+- Scrutineer #19 (High, CWE-918) – MCP: percent-encode path-parameter values before substituting
+  them into the outbound URL template in `OpenApiToolCallback`, so a tool argument containing
+  `/`, `?`, `#` or `..` can no longer retarget the request to another endpoint
+
 ## [3.1.0] - 2026-07-31
 
 ### Added
