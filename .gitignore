@@ -147,3 +147,6 @@ Desktop.ini
 /CLAUDE.md
 /.claude/
 /default.profraw
+
+# TypeScript incremental build cache
+*.tsbuildinfo

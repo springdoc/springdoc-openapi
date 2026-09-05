@@ -72,9 +72,14 @@ jobs:
       - name: Test
         run: mvn $MAVEN_ARGS -Pci -T1C test
 
+      # -Pgpg is required, not optional: maven-release-plugin is declared inside
+      # the gpg profile, so without it the plugin falls back to the parent's
+      # pluginManagement version and none of its configuration applies —
+      # wrong tag name, no autoVersionSubmodules, and release:perform would
+      # deploy unsigned artifacts that Central rejects.
       - name: Release
         run: |
-          mvn $MAVEN_ARGS release:prepare release:perform \
+          mvn $MAVEN_ARGS -Pci,gpg release:prepare release:perform \
             -DreleaseVersion='${{ inputs.releaseVersion }}' \
             -DdevelopmentVersion='${{ inputs.developmentVersion }}' \
             -DdryRun=${{ inputs.dryRun }} \
@@ -87,4 +92,4 @@ jobs:
 
       - name: Clean up a dry run
         if: ${{ inputs.dryRun }}
-        run: mvn $MAVEN_ARGS release:clean
+        run: mvn $MAVEN_ARGS -Pci,gpg release:clean
