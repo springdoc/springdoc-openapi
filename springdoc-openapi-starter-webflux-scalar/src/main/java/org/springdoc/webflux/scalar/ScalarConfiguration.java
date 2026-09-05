@@ -45,7 +45,6 @@ import org.springframework.boot.webflux.actuate.endpoint.web.WebFluxEndpointHand
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
 import static org.springdoc.core.utils.Constants.SCALAR_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -53,6 +52,13 @@ import static org.springdoc.scalar.ScalarConstants.DEFAULT_SCALAR_ACTUATOR_PATH;
 
 /**
  * The type Scalar configuration.
+ *
+ * <p>This configuration deliberately does not register a
+ * {@link org.springframework.web.server.adapter.ForwardedHeaderTransformer}: doing so would make
+ * the whole application trust the {@code Forwarded} and {@code X-Forwarded-*} headers of every
+ * caller, overriding Spring Boot's {@code server.forward-headers-strategy=none} default. Set
+ * {@code server.forward-headers-strategy=framework} (or {@code native}) when the application
+ * really runs behind a trusted reverse proxy.
  *
  * @author  bnasslahsen
  */
@@ -77,18 +83,6 @@ public class ScalarConfiguration {
 	@Lazy(false)
 	ScalarWebFluxController scalarWebMvcController(SpringBootScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
 		return new ScalarWebFluxController(scalarProperties, springDocConfigProperties);
-	}
-
-	/**
-	 * Forwarded header transformer forwarded header transformer.
-	 *
-	 * @return  the forwarded header transformer
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	ForwardedHeaderTransformer forwardedHeaderTransformer() {
-		return new ForwardedHeaderTransformer();
 	}
 
 	/**

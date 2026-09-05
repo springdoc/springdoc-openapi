@@ -41,12 +41,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.webmvc.actuate.endpoint.web.WebMvcEndpointHandlerMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.web.filter.ForwardedHeaderFilter;
 
 import static org.springdoc.core.utils.Constants.SCALAR_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -54,6 +52,13 @@ import static org.springdoc.scalar.ScalarConstants.DEFAULT_SCALAR_ACTUATOR_PATH;
 
 /**
  * The type Scalar configuration.
+ *
+ * <p>This configuration deliberately does not register a
+ * {@link org.springframework.web.filter.ForwardedHeaderFilter}: doing so would make the whole
+ * application trust the {@code Forwarded} and {@code X-Forwarded-*} headers of every caller,
+ * overriding Spring Boot's {@code server.forward-headers-strategy=none} default. Set
+ * {@code server.forward-headers-strategy=framework} (or {@code native}) when the application
+ * really runs behind a trusted reverse proxy.
  *
  * @author  bnasslahsen
  */
@@ -78,18 +83,6 @@ public class ScalarConfiguration {
 	@Lazy(false)
 	ScalarWebMvcController scalarWebMvcController(SpringBootScalarProperties scalarProperties, SpringDocConfigProperties springDocConfigProperties) {
 		return new ScalarWebMvcController(scalarProperties, springDocConfigProperties);
-	}
-
-	/**
-	 * Forwarded header filter filter registration bean.
-	 *
-	 * @return  the filter registration bean
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	public FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
-		return new FilterRegistrationBean<>(new ForwardedHeaderFilter());
 	}
 
 	/**

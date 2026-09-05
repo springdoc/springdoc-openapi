@@ -46,6 +46,13 @@ only to the Spring Boot 4 line, where the MCP starters exist.
   limit. `GenericResponseService` also replaces, instead of appending, the `@ControllerAdvice`
   entries it records, so its lists no longer grow on every build. Applies to both the Spring Boot 3
   and Spring Boot 4 lines
+- Scrutineer #30 (Medium, CWE-1188) – the Scalar starters no longer register a
+  `ForwardedHeaderTransformer` (WebFlux) or a `ForwardedHeaderFilter` (WebMVC). Adding a Scalar
+  starter silently made the **whole application** trust the `Forwarded` and `X-Forwarded-*` headers
+  of every caller, overriding Spring Boot's `server.forward-headers-strategy=none` default and
+  allowing a client to influence the URLs, links and redirects the application produces. Set
+  `server.forward-headers-strategy=framework` (or `native`) when running behind a trusted reverse
+  proxy. Applies to both the Spring Boot 3 and Spring Boot 4 lines
 
 ## [3.1.0] - 2026-07-31
 
