@@ -226,15 +226,16 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * Creates the bounded, access-ordered cache holding one OpenAPI description per locale.
 	 *
-	 * @param maxEntries the maximum number of entries to retain, at least one
+	 * @param maxEntries the maximum number of entries to retain, always positive because
+	 * {@link SpringDocConfigProperties.Cache#setMaxEntries(int)} falls back to the default
+	 * for a non-positive value
 	 * @return the cache map, evicting the least recently used entry once full
 	 */
 	private static Map<String, OpenAPI> createCachedOpenAPI(int maxEntries) {
-		int maxSize = Math.max(1, maxEntries);
 		return Collections.synchronizedMap(new LinkedHashMap<>(16, 0.75f, true) {
 			@Override
 			protected boolean removeEldestEntry(Entry<String, OpenAPI> eldest) {
-				return size() > maxSize;
+				return size() > maxEntries;
 			}
 		});
 	}

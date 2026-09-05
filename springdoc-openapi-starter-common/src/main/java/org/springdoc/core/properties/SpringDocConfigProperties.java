@@ -1587,6 +1587,12 @@ public class SpringDocConfigProperties {
 	 * @author bnasslahsen
 	 */
 	public static class Cache {
+
+		/**
+		 * The default maximum number of cached OpenAPI documents.
+		 */
+		private static final int DEFAULT_MAX_ENTRIES = 100;
+
 		/**
 		 * The Disabled.
 		 */
@@ -1596,9 +1602,11 @@ public class SpringDocConfigProperties {
 		 * The maximum number of OpenAPI descriptions to keep in the cache. One entry is
 		 * cached per requested locale, so this bounds the memory an untrusted caller can
 		 * make the cache consume by varying the {@code Accept-Language} header. The least
-		 * recently used entry is evicted once the limit is reached.
+		 * recently used entry is evicted once the limit is reached. A non-positive value
+		 * falls back to the default of {@value #DEFAULT_MAX_ENTRIES} rather than meaning
+		 * "unlimited". Narrow it further with {@code springdoc.allowed-locales}.
 		 */
-		private int maxEntries = 100;
+		private int maxEntries = DEFAULT_MAX_ENTRIES;
 
 		/**
 		 * Is disabled boolean.
@@ -1633,7 +1641,7 @@ public class SpringDocConfigProperties {
 		 * @param maxEntries the max entries
 		 */
 		public void setMaxEntries(int maxEntries) {
-			this.maxEntries = maxEntries;
+			this.maxEntries = maxEntries > 0 ? maxEntries : DEFAULT_MAX_ENTRIES;
 		}
 	}
 

@@ -46,6 +46,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OpenAPIServiceCacheTest {
 
 	/**
+	 * The default bound applied when the configured one is not usable.
+	 */
+	private static final int DEFAULT_MAX_ENTRIES = 100;
+
+	/**
 	 * Builds a service whose cache holds at most the given number of locales.
 	 *
 	 * @param maxEntries the configured cache bound
@@ -103,17 +108,25 @@ class OpenAPIServiceCacheTest {
 	}
 
 	/**
-	 * A non-positive configured bound must not disable the cache or throw.
+	 * A non-positive configured bound must fall back to the default, rather than meaning
+	 * "unlimited" or collapsing the cache to a single entry.
 	 */
 	@Test
-	void testNonPositiveMaximumKeepsAtLeastOneEntry() {
+	void testNonPositiveMaximumFallsBackToTheDefault() {
+		SpringDocConfigProperties properties = new SpringDocConfigProperties();
+
+		properties.getCache().setMaxEntries(0);
+		assertThat(properties.getCache().getMaxEntries()).isEqualTo(DEFAULT_MAX_ENTRIES);
+
+		properties.getCache().setMaxEntries(-1);
+		assertThat(properties.getCache().getMaxEntries()).isEqualTo(DEFAULT_MAX_ENTRIES);
+
 		OpenAPIService openAPIService = openApiService(0);
-		Locale locale = Locale.forLanguageTag("fr");
+		for (int i = 0; i < DEFAULT_MAX_ENTRIES * 2; i++) {
+			openAPIService.setCachedOpenAPI(new OpenAPI(), Locale.forLanguageTag("en-x-v" + i));
+		}
 
-		openAPIService.setCachedOpenAPI(new OpenAPI(), locale);
-
-		assertThat(openAPIService.getCachedOpenAPI(locale)).isNotNull();
-		assertThat(cacheOf(openAPIService)).hasSize(1);
+		assertThat(cacheOf(openAPIService)).hasSize(DEFAULT_MAX_ENTRIES);
 	}
 
 }
