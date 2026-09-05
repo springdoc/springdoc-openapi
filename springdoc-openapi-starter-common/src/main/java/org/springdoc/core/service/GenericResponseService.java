@@ -344,12 +344,31 @@ public class GenericResponseService implements ApplicationContextAware {
 				}
 			}
 			if (AnnotatedElementUtils.hasAnnotation(objClz, ControllerAdvice.class)) {
-				controllerAdviceInfos.add(controllerAdviceInfo);
+				addOrReplace(controllerAdviceInfos, controllerAdviceInfo);
 			}
 			else {
-				localExceptionHandlers.add(controllerAdviceInfo);
+				addOrReplace(localExceptionHandlers, controllerAdviceInfo);
 			}
 		}
+	}
+
+	/**
+	 * Records a controller advice info, replacing the entry previously recorded for the same
+	 * controller advice bean, if any. This service is a singleton and the responses are
+	 * rebuilt on every OpenAPI build - once per locale and per group - so appending
+	 * unconditionally would grow these lists without limit.
+	 *
+	 * @param adviceInfos          the list to update
+	 * @param controllerAdviceInfo the controller advice info to record
+	 */
+	private void addOrReplace(List<ControllerAdviceInfo> adviceInfos, ControllerAdviceInfo controllerAdviceInfo) {
+		for (int i = 0; i < adviceInfos.size(); i++) {
+			if (adviceInfos.get(i).getControllerAdvice() == controllerAdviceInfo.getControllerAdvice()) {
+				adviceInfos.set(i, controllerAdviceInfo);
+				return;
+			}
+		}
+		adviceInfos.add(controllerAdviceInfo);
 	}
 
 	/**

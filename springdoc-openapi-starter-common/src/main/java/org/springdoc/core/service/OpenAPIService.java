@@ -156,9 +156,11 @@ public class OpenAPIService implements ApplicationContextAware {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Cached open api map.
+	 * The Cached open api map. Keyed by locale language tag and bounded to
+	 * {@code springdoc.cache.max-entries} entries, so that arbitrary {@code Accept-Language}
+	 * values sent by callers cannot grow it without limit.
 	 */
-	private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
+	private final Map<String, OpenAPI> cachedOpenAPI;
 
 	/**
 	 * The Property resolver utils.
@@ -216,8 +218,25 @@ public class OpenAPIService implements ApplicationContextAware {
 		this.openApiBuilderCustomisers = openApiBuilderCustomizers;
 		this.serverBaseUrlCustomizers = serverBaseUrlCustomizers;
 		this.javadocProvider = javadocProvider;
+		this.cachedOpenAPI = createCachedOpenAPI(springDocConfigProperties.getCache().getMaxEntries());
 		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
+	}
+
+	/**
+	 * Creates the bounded, access-ordered cache holding one OpenAPI description per locale.
+	 *
+	 * @param maxEntries the maximum number of entries to retain, at least one
+	 * @return the cache map, evicting the least recently used entry once full
+	 */
+	private static Map<String, OpenAPI> createCachedOpenAPI(int maxEntries) {
+		int maxSize = Math.max(1, maxEntries);
+		return Collections.synchronizedMap(new LinkedHashMap<>(16, 0.75f, true) {
+			@Override
+			protected boolean removeEldestEntry(Entry<String, OpenAPI> eldest) {
+				return size() > maxSize;
+			}
+		});
 	}
 
 	/**

@@ -40,6 +40,12 @@ only to the Spring Boot 4 line, where the MCP starters exist.
   Set `springdoc.ai.mcp.enabled=true` (and `springdoc.ai.mcp.dashboard-enabled=true` for the
   dashboard) to enable them. `SpringDocAiEnvironmentPostProcessor` likewise only forces
   `springdoc.pre-loading-enabled` when MCP is explicitly enabled.
+- Scrutineer #25 (Medium, CWE-770) – bound the per-locale OpenAPI cache in `OpenAPIService`: it is
+  now an access-ordered LRU capped by the new `springdoc.cache.max-entries` property (default
+  `100`), so a caller varying the `Accept-Language` header can no longer add cache entries without
+  limit. `GenericResponseService` also replaces, instead of appending, the `@ControllerAdvice`
+  entries it records, so its lists no longer grow on every build. Applies to both the Spring Boot 3
+  and Spring Boot 4 lines
 
 ## [3.1.0] - 2026-07-31
 

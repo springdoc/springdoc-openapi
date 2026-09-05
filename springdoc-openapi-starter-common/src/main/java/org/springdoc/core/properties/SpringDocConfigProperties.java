@@ -1593,6 +1593,14 @@ public class SpringDocConfigProperties {
 		private boolean disabled;
 
 		/**
+		 * The maximum number of OpenAPI descriptions to keep in the cache. One entry is
+		 * cached per requested locale, so this bounds the memory an untrusted caller can
+		 * make the cache consume by varying the {@code Accept-Language} header. The least
+		 * recently used entry is evicted once the limit is reached.
+		 */
+		private int maxEntries = 100;
+
+		/**
 		 * Is disabled boolean.
 		 *
 		 * @return the boolean
@@ -1608,6 +1616,24 @@ public class SpringDocConfigProperties {
 		 */
 		public void setDisabled(boolean disabled) {
 			this.disabled = disabled;
+		}
+
+		/**
+		 * Gets max entries.
+		 *
+		 * @return the max entries
+		 */
+		public int getMaxEntries() {
+			return maxEntries;
+		}
+
+		/**
+		 * Sets max entries.
+		 *
+		 * @param maxEntries the max entries
+		 */
+		public void setMaxEntries(int maxEntries) {
+			this.maxEntries = maxEntries;
 		}
 	}
 
