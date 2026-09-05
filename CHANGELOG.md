@@ -53,6 +53,11 @@ only to the Spring Boot 4 line, where the MCP starters exist.
   allowing a client to influence the URLs, links and redirects the application produces. Set
   `server.forward-headers-strategy=framework` (or `native`) when running behind a trusted reverse
   proxy. Applies to both the Spring Boot 3 and Spring Boot 4 lines
+- Scrutineer #31 (Low, CWE-362) – `AbstractScalarController` no longer mutates the singleton
+  `ScalarProperties` bean while serving a request. The api-docs url and the group sources are
+  request-specific and are now applied to a per-request copy, so concurrent requests can no longer
+  render each other's urls or observe a transient `url = null`. Applies to both the Spring Boot 3
+  and Spring Boot 4 lines
 
 ## [3.1.0] - 2026-07-31
 

@@ -36,6 +36,7 @@ import com.scalar.maven.core.config.ScalarSource;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -115,8 +116,8 @@ public abstract class AbstractScalarController {
 				.map(groupConfig -> new ScalarSource(url + DEFAULT_PATH_SEPARATOR + groupConfig.getGroup(), groupConfig.getDisplayName(), null, false)).toList();
 		
 		if(!CollectionUtils.isEmpty(scalarSources))  {
-			scalarProperties.setSources(scalarSources);
-			scalarProperties.setUrl(null);
+			configuredProperties.setSources(scalarSources);
+			configuredProperties.setUrl(null);
 		}
 		
 		String html = ScalarHtmlRenderer.render(configuredProperties);
@@ -128,17 +129,21 @@ public abstract class AbstractScalarController {
 	}
 
 	/**
-	 * Configure properties scalar properties.
+	 * Configure properties scalar properties. The injected {@code properties} bean is a
+	 * singleton shared by every request, so the request-specific url and sources are applied
+	 * to a copy of it rather than to the bean itself. Mutating the bean would let concurrent
+	 * requests observe - and render - each other's urls.
 	 *
-	 * @param properties the properties     
-	 * @param requestUrl the request url   
-	 * @param apiDocsPath the api docs path   
+	 * @param properties the properties
+	 * @param requestUrl the request url
+	 * @param apiDocsPath the api docs path
 	 * @return  the scalar properties
 	 */
 	private ScalarProperties configureProperties(ScalarProperties properties, String requestUrl, String apiDocsPath ) {
-		String url = buildApiDocsUrl(requestUrl, apiDocsPath);
-		properties.setUrl(url);
-		return properties;
+		ScalarProperties requestProperties = new ScalarProperties();
+		BeanUtils.copyProperties(properties, requestProperties);
+		requestProperties.setUrl(buildApiDocsUrl(requestUrl, apiDocsPath));
+		return requestProperties;
 	}
 
 	/**
