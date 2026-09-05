@@ -156,7 +156,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Cached open api map. Bounded by {@code springdoc.cache.max-size}: the key is the
+	 * The Cached open api map. Bounded by {@code springdoc.cache.max-entries}: the key is the
 	 * language tag of the requested locale, which is client-controlled through the
 	 * {@code Accept-Language} header, so an unbounded map would let any caller grow the
 	 * heap by one full OpenAPI document per distinct tag.
@@ -219,7 +219,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		this.openApiBuilderCustomisers = openApiBuilderCustomizers;
 		this.serverBaseUrlCustomizers = serverBaseUrlCustomizers;
 		this.javadocProvider = javadocProvider;
-		this.cachedOpenAPI = new BoundedOpenAPICache(springDocConfigProperties.getCache().getMaxSize());
+		this.cachedOpenAPI = new BoundedOpenAPICache(springDocConfigProperties.getCache().getMaxEntries());
 		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
 	}
@@ -961,20 +961,20 @@ public class OpenAPIService implements ApplicationContextAware {
 		/**
 		 * The maximum number of entries retained.
 		 */
-		private final int maxSize;
+		private final int maxEntries;
 
 		/**
 		 * Instantiates a new bounded open api cache.
 		 *
-		 * @param maxSize the maximum number of entries retained
+		 * @param maxEntries the maximum number of entries retained
 		 */
-		BoundedOpenAPICache(int maxSize) {
-			this.maxSize = maxSize;
+		BoundedOpenAPICache(int maxEntries) {
+			this.maxEntries = maxEntries;
 		}
 
 		@Override
 		protected boolean removeEldestEntry(Map.Entry<String, OpenAPI> eldest) {
-			return size() > maxSize;
+			return size() > maxEntries;
 		}
 	}
 }

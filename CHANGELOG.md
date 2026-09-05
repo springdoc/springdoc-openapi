@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bound the per-locale OpenAPI cache. The cache key is derived from the client-supplied `Accept-Language` header, so an
   unbounded map allowed any caller to grow the heap by one full OpenAPI document per distinct language tag. The cache is
-  now capped by the new `springdoc.cache.max-size` property (default `100`), and the per-locale controller-advice lists in
+  now capped by the new `springdoc.cache.max-entries` property (default `100`), and the per-locale controller-advice lists in
   `GenericResponseService` are keyed by advice bean instead of appended to on every build — which also stops a later
   request from picking up another locale's translated descriptions.
 - The Scalar starters no longer register a `ForwardedHeaderFilter` (WebMVC) or `ForwardedHeaderTransformer` (WebFlux).

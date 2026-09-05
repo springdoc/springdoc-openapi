@@ -56,9 +56,9 @@ class OpenAPIServiceCacheTest {
 	}
 
 	@Test
-	void evictsBeyondTheConfiguredMaxSize() {
+	void evictsBeyondTheConfiguredMaxEntries() {
 		SpringDocConfigProperties properties = new SpringDocConfigProperties();
-		properties.getCache().setMaxSize(3);
+		properties.getCache().setMaxEntries(3);
 		OpenAPIService service = openAPIService(properties);
 
 		for (int i = 0; i < 50; i++) {
@@ -76,7 +76,7 @@ class OpenAPIServiceCacheTest {
 	@Test
 	void appliesADefaultBoundWhenUnconfigured() {
 		SpringDocConfigProperties properties = new SpringDocConfigProperties();
-		assertEquals(100, properties.getCache().getMaxSize());
+		assertEquals(100, properties.getCache().getMaxEntries());
 		OpenAPIService service = openAPIService(properties);
 
 		for (int i = 0; i < 500; i++) {
@@ -88,19 +88,19 @@ class OpenAPIServiceCacheTest {
 	}
 
 	@Test
-	void aNonPositiveMaxSizeFallsBackToTheDefaultRatherThanMeaningUnlimited() {
+	void aNonPositiveMaxEntriesFallsBackToTheDefaultRatherThanMeaningUnlimited() {
 		SpringDocConfigProperties properties = new SpringDocConfigProperties();
-		properties.getCache().setMaxSize(0);
-		assertEquals(100, properties.getCache().getMaxSize());
+		properties.getCache().setMaxEntries(0);
+		assertEquals(100, properties.getCache().getMaxEntries());
 
-		properties.getCache().setMaxSize(-1);
-		assertEquals(100, properties.getCache().getMaxSize());
+		properties.getCache().setMaxEntries(-1);
+		assertEquals(100, properties.getCache().getMaxEntries());
 	}
 
 	@Test
 	void rewritingTheSameLocaleDoesNotConsumeCapacity() {
 		SpringDocConfigProperties properties = new SpringDocConfigProperties();
-		properties.getCache().setMaxSize(2);
+		properties.getCache().setMaxEntries(2);
 		OpenAPIService service = openAPIService(properties);
 
 		for (int i = 0; i < 10; i++) {
