@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - #3340 – Describe `JsonNullable` values without their Java wrapper
+- #3325 – Manage the swagger artifacts in `springdoc-openapi-bom`, so that modules holding only the annotations stay in lockstep
 
 ### Changed
 
