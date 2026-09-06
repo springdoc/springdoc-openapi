@@ -676,17 +676,16 @@ public abstract class AbstractRequestService {
 				parameter.setSchema(schema);
 			}
 			SchemaUtils.applyValidationsToSchema(schema, annotations, openapiVersion);
-			if (schema instanceof ArraySchema && methodParameter instanceof DelegatingMethodParameter mp) {
+			if (schema instanceof ArraySchema && methodParameter instanceof DelegatingMethodParameter delegatingMethodParameter) {
 				java.lang.reflect.AnnotatedType annotatedType = null;
 				if (isParameterObject) {
-					Field field = mp.getField();
+					Field field = delegatingMethodParameter.getField();
 					if (field != null) {
 						annotatedType = field.getAnnotatedType();
 					}
 				}
 				else {
-					java.lang.reflect.Parameter param = mp.getParameter();
-					annotatedType = param.getAnnotatedType();
+					annotatedType = delegatingMethodParameter.getParameter().getAnnotatedType();
 				}
 				if (annotatedType instanceof AnnotatedParameterizedType paramType) {
 					java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();

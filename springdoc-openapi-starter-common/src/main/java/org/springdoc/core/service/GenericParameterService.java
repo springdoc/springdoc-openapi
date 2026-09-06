@@ -453,7 +453,11 @@ public class GenericParameterService {
 					: new TypeAndTypeAnnotations(type, new ArrayList<>());
 		}
 
-		return new TypeAndTypeAnnotations(type, Arrays.asList(methodParameter.getParameterType().getAnnotations()));
+		AnnotatedType annotated = methodParameter.getParameter().getAnnotatedType();
+		List<Annotation> parameterAnnotations = Stream.concat(
+				Arrays.stream(annotationsFromAnnotatedTypeArguments(annotated)),
+				Arrays.stream(methodParameter.getParameterType().getAnnotations())).toList();
+		return new TypeAndTypeAnnotations(type, parameterAnnotations);
 	}
 
 	/**
