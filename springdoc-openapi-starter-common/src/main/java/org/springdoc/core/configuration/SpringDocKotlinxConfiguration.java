@@ -28,6 +28,7 @@ package org.springdoc.core.configuration;
 
 import kotlinx.coroutines.flow.Flow;
 
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -44,6 +45,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(SpringDocConfiguration.class)
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-kotlin:true}")
 @ConditionalOnClass(Flow.class)
 @ConditionalOnWebApplication
