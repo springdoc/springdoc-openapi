@@ -32,6 +32,7 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.SpringCloudFunctionProvider;
 
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -50,6 +51,7 @@ import org.springframework.context.annotation.Lazy;
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(SpringDocConfiguration.class)
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.show-spring-cloud-functions:true}")
 @ConditionalOnClass(FunctionEndpointInitializer.class)
 @ConditionalOnWebApplication

@@ -38,6 +38,7 @@ import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVe
 import org.springdoc.core.utils.Constants;
 
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -55,6 +56,7 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(SpringDocConfiguration.class)
 @ConfigurationProperties(prefix = Constants.SPRINGDOC_PREFIX)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
