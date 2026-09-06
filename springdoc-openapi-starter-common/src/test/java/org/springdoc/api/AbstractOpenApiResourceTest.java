@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -48,6 +49,7 @@ import org.mockito.Mock;
 import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.fn.RouterOperation;
@@ -59,6 +61,7 @@ import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mock.http.client.MockClientHttpRequest;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -112,6 +115,9 @@ class AbstractOpenApiResourceTest {
 	@Mock
 	private ApplicationContext context;
 
+	@Mock
+	private ObjectProvider<OpenApiLocaleCustomizer> localeCustomizersProvider;
+
 	private OpenAPI openAPI;
 
 	private AbstractOpenApiResource resource;
@@ -125,6 +131,8 @@ class AbstractOpenApiResourceTest {
 
 		when(openAPIService.build(any())).thenReturn(openAPI);
 		when(openAPIService.getContext()).thenReturn(context);
+		when(context.getBeanProvider(OpenApiLocaleCustomizer.class)).thenReturn(localeCustomizersProvider);
+		when(localeCustomizersProvider.orderedStream()).thenAnswer(invocation -> Stream.empty());
         when(openAPIService.getWebhooksClasses()).thenReturn(new Class<?>[0]);
         doAnswer(new CallsRealMethods()).when(openAPIService).setServersPresent(false);
 

@@ -25,11 +25,13 @@
  */
 package org.springdoc.core.customizers;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
@@ -38,6 +40,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.CollectionUtils;
 
 import static org.springdoc.core.utils.Constants.LINKS_SCHEMA_CUSTOMIZER;
@@ -167,12 +170,30 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	}
 
 	/**
+	 * Gets ordered open api customizer stream.
+	 *
+	 * @return the ordered open api customizer stream
+	 */
+	public Stream<OpenApiCustomizer> getOpenApiCustomizersStream() {
+		return orderedStream(openApiCustomizers);
+	}
+
+	/**
 	 * Gets operation customizers.
 	 *
 	 * @return the operation customizers
 	 */
 	public Optional<Set<OperationCustomizer>> getOperationCustomizers() {
 		return operationCustomizers;
+	}
+
+	/**
+	 * Gets ordered operation customizer stream.
+	 *
+	 * @return the ordered operation customizer stream
+	 */
+	public Stream<OperationCustomizer> getOperationCustomizersStream() {
+		return orderedStream(operationCustomizers);
 	}
 
 	/**
@@ -185,12 +206,30 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	}
 
 	/**
+	 * Gets ordered router operation customizer stream.
+	 *
+	 * @return the ordered router operation customizer stream
+	 */
+	public Stream<RouterOperationCustomizer> getRouterOperationCustomizersStream() {
+		return orderedStream(routerOperationCustomizers);
+	}
+
+	/**
 	 * Gets data rest router operation customizers.
 	 *
 	 * @return the data rest router operation customizers
 	 */
 	public Optional<Set<DataRestRouterOperationCustomizer>> getDataRestRouterOperationCustomizers() {
 		return dataRestRouterOperationCustomizers;
+	}
+
+	/**
+	 * Gets ordered data rest router operation customizer stream.
+	 *
+	 * @return the ordered data rest router operation customizer stream
+	 */
+	public Stream<DataRestRouterOperationCustomizer> getDataRestRouterOperationCustomizersStream() {
+		return orderedStream(dataRestRouterOperationCustomizers);
 	}
 
 	/**
@@ -217,12 +256,30 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	}
 
 	/**
+	 * Gets ordered global open api customizer stream.
+	 *
+	 * @return the ordered global open api customizer stream
+	 */
+	public Stream<GlobalOpenApiCustomizer> getGlobalOpenApiCustomizersStream() {
+		return orderedStream(globalOpenApiCustomizers);
+	}
+
+	/**
 	 * Gets global operation customizers.
 	 *
 	 * @return the global operation customizers
 	 */
 	public Optional<Set<GlobalOperationCustomizer>> getGlobalOperationCustomizers() {
 		return globalOperationCustomizers;
+	}
+
+	/**
+	 * Gets ordered global operation customizer stream.
+	 *
+	 * @return the ordered global operation customizer stream
+	 */
+	public Stream<GlobalOperationCustomizer> getGlobalOperationCustomizersStream() {
+		return orderedStream(globalOperationCustomizers);
 	}
 
 	/**
@@ -250,6 +307,13 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	 */
 	public Optional<List<ParameterCustomizer>> getParameterCustomizers() {
 		return parameterCustomizers;
+	}
+
+	private static <T> Stream<T> orderedStream(Optional<? extends Collection<T>> customizers) {
+		return customizers.stream()
+				.flatMap(Collection::stream)
+				.filter(Objects::nonNull)
+				.sorted(AnnotationAwareOrderComparator.INSTANCE);
 	}
 
 	@Override
