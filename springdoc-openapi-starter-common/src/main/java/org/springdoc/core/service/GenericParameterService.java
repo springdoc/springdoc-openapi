@@ -431,7 +431,7 @@ public class GenericParameterService {
 	 */
 	private TypeAndTypeAnnotations resolveTypeAndTypeAnnotationsForParameter(MethodParameter methodParameter) {
 		if (methodParameter instanceof DelegatingMethodParameter delegatingMethodParameter
-            && delegatingMethodParameter.getField() != null) {
+				&& delegatingMethodParameter.getField() != null) {
 			AnnotatedType annotated = delegatingMethodParameter.getField().getAnnotatedType();
 			Type type = GenericTypeResolver.resolveType(annotated.getType(), methodParameter.getContainingClass());
 			return new TypeAndTypeAnnotations(type, Arrays.asList(annotationsFromAnnotatedTypeArguments(annotated)));
