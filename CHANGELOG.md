@@ -32,7 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Document that the MCP approval flow is a confirmation step, not an authorization control
 - Document the security policy and the release versioning scheme
 - #3351 – `java.time.Duration`, `LocalTime` and `OffsetTime` are now resolved by swagger-core instead of being forced to a bare `string`, so they carry a `format` (`duration` and `partial-time` respectively for the first two)
-- Upgrade swagger-core to version **2.2.54**
+- A property whose type only implements `Set` indirectly (`LinkedHashSet`, `TreeSet`, …) is now described with `uniqueItems: true`, following [swagger-api/swagger-core#5265](https://github.com/swagger-api/swagger-core/pull/5265)
+- Upgrade swagger-core to version **2.2.55**
 - Upgrade swagger-ui to version **5.32.14**
 
 ### Fixed
