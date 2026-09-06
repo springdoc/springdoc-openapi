@@ -1,0 +1,203 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/example": {
+      "patch": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Patch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Patch"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bean": {
+      "patch": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "patchBean",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bean"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bean"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Child": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "Patch": {
+        "type": "object",
+        "properties": {
+          "nullable": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nonNull": {
+            "type": "string"
+          },
+          "innerNonNull": {
+            "type": "string"
+          },
+          "innerNonBlank": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 0
+          },
+          "outerNullable": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "innerNullable": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nonNullAlias": {
+            "type": "string"
+          },
+          "nonBlank": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 0
+          },
+          "nonEmpty": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "list": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "map": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "child": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Child"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nonNullChild": {
+            "$ref": "#/components/schemas/Child"
+          },
+          "renamed": {
+            "type": "string"
+          },
+          "required": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ordinary": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ordinary",
+          "required"
+        ]
+      },
+      "Bean": {
+        "type": "object",
+        "properties": {
+          "field_value": {
+            "type": "string"
+          },
+          "setter_value": {
+            "type": "string"
+          },
+          "getter_value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "setter_value"
+        ]
+      }
+    }
+  }
+}

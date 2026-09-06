@@ -30,6 +30,11 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>javax.money</groupId>
 			<artifactId>money-api</artifactId>
 			<scope>test</scope>
