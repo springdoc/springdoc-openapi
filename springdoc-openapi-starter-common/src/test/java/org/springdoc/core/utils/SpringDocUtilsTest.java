@@ -26,7 +26,9 @@ package org.springdoc.core.utils;
 
 import java.util.Set;
 
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.JsonSchema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
@@ -90,10 +92,61 @@ class SpringDocUtilsTest {
 		assertEquals(Set.of("integer", "null"), cloned.getTypes());
 	}
 
+	@Test
+	void singleTypeForSchemaSubclassJsonCloning() {
+		ObjectMapperProvider provider = openapi31Provider();
+
+		ArraySchema arraySchema = new ArraySchema();
+		arraySchema.setTypes(Set.of("array"));
+		arraySchema.setItems(new StringSchema());
+
+		ArraySchema cloned = SpringDocUtils.cloneViaJson(arraySchema, ArraySchema.class, provider.jsonMapper());
+
+		// The object is cloned properly, we do not get the type cast fallback
+		assertNotSame(arraySchema, cloned);
+		assertNotNull(cloned);
+		assertEquals(Set.of("array"), cloned.getTypes());
+	}
+
+	@Test
+	void singleTypeForSchemaSubclassJsonCloningWithAStandaloneMapper() {
+		ArraySchema arraySchema = new ArraySchema();
+		arraySchema.setTypes(Set.of("array"));
+		arraySchema.setItems(new StringSchema());
+
+		ArraySchema cloned = SpringDocUtils.cloneViaJson(arraySchema, ArraySchema.class, ObjectMapperProvider.createJson(openapi31Properties()));
+
+		// The object is cloned properly, we do not get the type cast fallback
+		assertNotSame(arraySchema, cloned);
+		assertNotNull(cloned);
+		assertEquals(Set.of("array"), cloned.getTypes());
+	}
+
+	@Test
+	void singleTypeForSchemaSubclassJsonCloningWithASortingMapper() {
+		SpringDocConfigProperties properties = openapi31Properties();
+		properties.setWriterWithOrderByKeys(true);
+
+		ArraySchema arraySchema = new ArraySchema();
+		arraySchema.setTypes(Set.of("array"));
+		arraySchema.setItems(new StringSchema());
+
+		ArraySchema cloned = SpringDocUtils.cloneViaJson(arraySchema, ArraySchema.class, ObjectMapperProvider.createJson(properties));
+
+		// The object is cloned properly, we do not get the type cast fallback
+		assertNotSame(arraySchema, cloned);
+		assertNotNull(cloned);
+		assertEquals(Set.of("array"), cloned.getTypes());
+	}
+
 	private ObjectMapperProvider openapi31Provider() {
+		return new ObjectMapperProvider(openapi31Properties());
+	}
+
+	private SpringDocConfigProperties openapi31Properties() {
 		SpringDocConfigProperties properties = new SpringDocConfigProperties();
 		properties.getApiDocs().setVersion(OpenApiVersion.OPENAPI_3_1);
-		return new ObjectMapperProvider(properties);
+		return properties;
 	}
 
 }
