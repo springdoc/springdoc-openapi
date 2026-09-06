@@ -40,6 +40,12 @@ export default function SecuritySettings({
     }
   }
 
+  // Loopback is exempt: an authorization server on the developer's own machine is the
+  // normal way to try the dashboard out, and nothing leaves the host.
+  const isPlaintextEndpoint =
+    /^http:\/\//i.test(config.tokenEndpoint) &&
+    !/^http:\/\/(localhost|127\.0\.0\.1|\[::1\])([:/]|$)/i.test(config.tokenEndpoint)
+
   const truncatedToken = accessToken
     ? accessToken.length > 40
       ? accessToken.substring(0, 20) + '...' + accessToken.substring(accessToken.length - 20)
@@ -104,8 +110,13 @@ export default function SecuritySettings({
                     value={config.tokenEndpoint}
                     onChange={(e) => onConfigChange({ ...config, tokenEndpoint: e.target.value })}
                     className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="http://localhost:9000/oauth2/token"
+                    placeholder="https://your-authorization-server/oauth2/token"
                   />
+                  {isPlaintextEndpoint && (
+                    <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
+                      This endpoint is not HTTPS: the client secret would be sent in the clear.
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
@@ -129,7 +140,7 @@ export default function SecuritySettings({
                     value={config.clientId}
                     onChange={(e) => onConfigChange({ ...config, clientId: e.target.value })}
                     className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="default-client"
+                    placeholder="your-client-id"
                   />
                 </div>
                 <div>
@@ -141,7 +152,7 @@ export default function SecuritySettings({
                     value={config.clientSecret}
                     onChange={(e) => onConfigChange({ ...config, clientSecret: e.target.value })}
                     className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="default-secret"
+                    placeholder="your-client-secret"
                   />
                 </div>
               </div>

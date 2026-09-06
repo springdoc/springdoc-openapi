@@ -14,11 +14,15 @@ export interface SecurityConfig {
   apiKeyValue: string
 }
 
+// No credential is pre-filled. A populated client id and secret look like a working
+// configuration, so the dashboard would happily post `default-client:default-secret`
+// to whatever endpoint the operator typed in, and a plaintext default endpoint would
+// send it in the clear. The operator supplies all three; the form shows hints instead.
 const DEFAULT_CONFIG: SecurityConfig = {
   authMode: 'none',
-  tokenEndpoint: 'http://localhost:9000/oauth2/token',
-  clientId: 'default-client',
-  clientSecret: 'default-secret',
+  tokenEndpoint: '',
+  clientId: '',
+  clientSecret: '',
   grantType: 'client_credentials',
   apiKeyHeaderName: 'X-API-Key',
   apiKeyValue: '',
@@ -31,6 +35,10 @@ export function useSecuritySettings() {
   const [isRequesting, setIsRequesting] = useState(false)
 
   const fetchToken = useCallback(async () => {
+    if (!config.tokenEndpoint || !config.clientId) {
+      setTokenError('Enter a token endpoint and a client id first.')
+      return
+    }
     setIsRequesting(true)
     setTokenError(null)
     try {
