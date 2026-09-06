@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.media.Schema;
 import jakarta.validation.OverridesAttribute;
 import jakarta.validation.constraints.DecimalMax;
@@ -300,7 +299,6 @@ public class SchemaUtils {
 				schema.setMaximum(BigDecimal.valueOf(((Range) anno).max()));
 			}
 		});
-		fixOAS31ExclusiveConstraints(schema);
 		if (schema!=null && annotatedNotNull(annotations)) {
 			String specVersion = schema.getSpecVersion().name();
 			if (!"V30".equals(specVersion)) {
@@ -568,29 +566,5 @@ public class SchemaUtils {
 		Method g = findGetter(f);
 		if (g != null) return g.getAnnotation(JsonProperty.class);
 		return null;
-	}
-
-	/**
-	 * Swagger-core 2.2.49 introduced so that {@link Positive} and {@link Negative} are introspected.
-	 * It does not correctly use the fact that exclusiveMinimum/exclusiveMaximum are values in OAS31.
-	 * <p>
-	 * Tracked under <a href="https://github.com/swagger-api/swagger-core/issues/5170">swagger-core#5170</a>.
-	 *
-	 * @param schema the schema to fix
-	 */
-	public static void fixOAS31ExclusiveConstraints(Schema<?> schema) {
-		if (schema == null) {
-			return;
-		}
-		if (schema.getSpecVersion().equals(SpecVersion.V31)) {
-			if (schema.getExclusiveMaximumValue() != null && schema.getMaximum() != null
-				&& schema.getMaximum().compareTo(schema.getExclusiveMaximumValue()) == 0) {
-				schema.setMaximum(null);
-			}
-			if (schema.getExclusiveMinimumValue() != null && schema.getMinimum() != null &&
-				schema.getMinimum().compareTo(schema.getExclusiveMinimumValue()) == 0) {
-				schema.setMinimum(null);
-			}
-		}
 	}
 }
