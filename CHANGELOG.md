@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - #3328, #3337 – `/v3/api-docs` fails with a `NullPointerException` when spring-hateoas is on the classpath without `HateoasProperties`
 - #3314 – `Json Processing Exception occurred` is logged for every constrained parameter whose schema is not a `JsonSchema`
+- #3317 – An injected `HttpHeaders` parameter is described as a schema
 - #3320 – `@Order` and `Ordered` ignored when applying customizers
 - #3319 – A `Page` nested in another schema is not replaced by `PagedModel`
 - #3313 – Springdoc auto-configurations rely on unspecified auto-configuration ordering
