@@ -214,7 +214,7 @@ public class SpringDocSecurityConfiguration {
 		 * @return the request body
 		 */
 		private RequestBody buildRequestBody(UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter,
-											 String mediaType, String usernameExample, String passwordExample) {
+				String mediaType, String usernameExample, String passwordExample) {
 			StringSchema usernameSchema = new StringSchema();
 			if (usernameExample != null)
 				usernameSchema.example(usernameExample);

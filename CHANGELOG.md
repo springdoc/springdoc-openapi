@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - #3340 – Describe `JsonNullable` values without their Java wrapper
 - #3325 – Manage the swagger artifacts in `springdoc-openapi-bom`, so that modules holding only the annotations stay in lockstep
+- #3321 – Add `springdoc.login-endpoint.username-example` and `springdoc.login-endpoint.password-example` to document the Spring Security login endpoint
 
 ### Changed
 
