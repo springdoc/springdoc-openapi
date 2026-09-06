@@ -39,6 +39,7 @@ import java.util.Set;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
@@ -288,7 +289,11 @@ public class SpringDocDataRestUtils {
 					updateResponseSchemaEmbedded(components, entityInfo, entry, openapi31);
 				}
 				else if (allAssociationsFieldsMap.getOrDefault(className, Collections.emptySet()).contains(propId)) {
-					updateResponseSchemaProperty(entry.getValue(), components, openapi31);
+					// the property schema may be shared with the request body representation,
+					// so rewrite a copy of it instead of the resolved instance
+					Schema propertyCopy = AnnotationsUtils.clone(entry.getValue(), openapi31);
+					updateResponseSchemaProperty(propertyCopy, components, openapi31);
+					entry.setValue(propertyCopy);
 				}
 			}
 		}
@@ -334,15 +339,16 @@ public class SpringDocDataRestUtils {
 	 */
 	private void updateResponseSchemaEmbedded(Components components, EntityInfo entityInfo, Entry<String, Schema> entry, boolean openapi31) {
 		String entityClassName = linkRelationProvider.getCollectionResourceRelFor(entityInfo.getDomainType()).value();
+		Map<String, Schema> embeddedProperties = entry.getValue().getProperties();
+		if (CollectionUtils.isEmpty(embeddedProperties))
+			return;
 		Schema itemsSchema = null;
 		if (openapi31) {
-			JsonSchema jsonSchema = (JsonSchema) entry.getValue().getProperties().get(entityClassName);
-			if (jsonSchema != null)
+			if (embeddedProperties.get(entityClassName) instanceof JsonSchema jsonSchema)
 				itemsSchema = jsonSchema.getItems();
 		}
 		else {
-			ArraySchema arraySchema = (ArraySchema) entry.getValue().getProperties().get(entityClassName);
-			if (arraySchema != null)
+			if (embeddedProperties.get(entityClassName) instanceof ArraySchema arraySchema)
 				itemsSchema = arraySchema.getItems();
 		}
 		if (itemsSchema != null) {
