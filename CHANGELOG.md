@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [GHSA-rhhx-6j8h-8cvw](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-rhhx-6j8h-8cvw) – Unbounded per-locale OpenAPI cache allows memory exhaustion via `Accept-Language`
 - [GHSA-c925-vm88-mpp9](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-c925-vm88-mpp9) – Scalar starters trust client-supplied forwarded headers and render from a shared mutable bean
 
+### Added
+
+- #3340 – Describe `JsonNullable` values without their Java wrapper
+
 ### Changed
 
 - **The Scalar starters no longer register forwarded-header handling.** Set `server.forward-headers-strategy=framework` (or `native`) behind a trusted proxy
@@ -19,6 +23,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Document the security policy and the release versioning scheme
 - Upgrade swagger-core to version **2.2.53**
 - Upgrade swagger-ui to version **5.32.14**
+
+### Fixed
+
+- #3320 – `@Order` and `Ordered` ignored when applying customizers
+- #3319 – A `Page` nested in another schema is not replaced by `PagedModel`
+- #3313 – Springdoc auto-configurations rely on unspecified auto-configuration ordering
+- #3331 – Validation annotations declared inside `Optional` parameters are dropped
+- #3322 – Validation annotations on a container's type argument leak between parameters
+- #3315 – An OAS 3.1 `JsonSchema` cannot be cloned through JSON
+- #3300 – TYPE_USE annotations on `@ParameterObject` fields are not passed along
+- #3341 – Stabilize Spring Data `Sort` and `Pageable` schema property order
+- #3338 – Kotlin nullability interpretation of the `Any?` type
 
 ## [2.9.0] - 2026-07-31
 
