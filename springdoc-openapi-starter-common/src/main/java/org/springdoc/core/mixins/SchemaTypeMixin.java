@@ -30,15 +30,20 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.core.jackson.mixin.Schema31Mixin;
 import org.springdoc.core.deserializers.TypeSetDeserializer;
 
 /**
  * The type Schema type mixin. Makes the OpenAPI 3.1 {@code type} readable back into the
  * {@code types} set, whichever of the two serialized forms it takes.
+ * <p>
+ * It extends the swagger-core mixin so that it can be registered on {@code Schema} itself
+ * without losing the serialization it declares, which is what makes the deserializer apply
+ * to every schema subclass rather than to {@code JsonSchema} alone.
  *
  * @author Mattias-Sehlstedt
  */
-public interface SchemaTypeMixin {
+public abstract class SchemaTypeMixin extends Schema31Mixin {
 
 	/**
 	 * Sets types.
@@ -47,6 +52,6 @@ public interface SchemaTypeMixin {
 	 */
 	@JsonProperty("type")
 	@JsonDeserialize(using = TypeSetDeserializer.class)
-	void setTypes(Set<String> types);
+	public abstract void setTypes(Set<String> types);
 
 }
