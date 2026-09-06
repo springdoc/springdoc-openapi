@@ -88,6 +88,7 @@ import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -143,6 +144,7 @@ public abstract class AbstractRequestService {
 		PARAM_TYPES_TO_IGNORE.add(NativeWebRequest.class);
 		PARAM_TYPES_TO_IGNORE.add(Principal.class);
 		PARAM_TYPES_TO_IGNORE.add(HttpMethod.class);
+		PARAM_TYPES_TO_IGNORE.add(HttpHeaders.class);
 		PARAM_TYPES_TO_IGNORE.add(Locale.class);
 		PARAM_TYPES_TO_IGNORE.add(TimeZone.class);
 		PARAM_TYPES_TO_IGNORE.add(InputStream.class);
