@@ -265,6 +265,8 @@ public class SpringDocDataRestUtils {
 	 * @return the schema
 	 */
 	private Schema updateResponseSchema(String className, Schema existingSchema, Components components, boolean openapi31) {
+		if (existingSchema == null)
+			return null;
 		Map<String, Schema> properties = existingSchema.getProperties();
 		EntityInfo entityInfo = entityInoMap.get(className);
 		if (!CollectionUtils.isEmpty(properties)) {
@@ -292,15 +294,16 @@ public class SpringDocDataRestUtils {
 	 */
 	private void updateResponseSchemaEmbedded(Components components, EntityInfo entityInfo, Entry<String, Schema> entry, boolean openapi31) {
 		String entityClassName = linkRelationProvider.getCollectionResourceRelFor(entityInfo.getDomainType()).value();
+		Map<String, Schema> embeddedProperties = entry.getValue().getProperties();
+		if (CollectionUtils.isEmpty(embeddedProperties))
+			return;
 		Schema itemsSchema = null;
 		if (openapi31) {
-			JsonSchema jsonSchema = (JsonSchema) entry.getValue().getProperties().get(entityClassName);
-			if (jsonSchema != null)
+			if (embeddedProperties.get(entityClassName) instanceof JsonSchema jsonSchema)
 				itemsSchema = jsonSchema.getItems();
 		}
 		else {
-			ArraySchema arraySchema = (ArraySchema) entry.getValue().getProperties().get(entityClassName);
-			if (arraySchema != null)
+			if (embeddedProperties.get(entityClassName) instanceof ArraySchema arraySchema)
 				itemsSchema = arraySchema.getItems();
 		}
 		if (itemsSchema != null) {

@@ -42,6 +42,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.hateoas.autoconfigure.HateoasProperties;
 import org.springframework.context.annotation.Bean;
@@ -58,23 +59,62 @@ import org.springframework.hateoas.server.LinkRelationProvider;
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(SpringDocConfiguration.class)
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-hateoas:true}")
-@ConditionalOnClass({LinkRelationProvider.class, HateoasProperties.class})
+@ConditionalOnClass(LinkRelationProvider.class)
 @ConditionalOnWebApplication
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocHateoasConfiguration {
 
 	/**
-	 * Hateoas hal provider hateoas hal provider.
+	 * Configuration for HateoasHalProvider when HateoasProperties is on the classpath.
 	 *
-	 * @param hateoasPropertiesOptional the hateoas properties optional
-	 * @param objectMapperProvider      the object mapper provider
-	 * @return the hateoas hal provider
+	 * @author bnasslahsen
 	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	HateoasHalProvider hateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
-		return new HateoasHalProvider(hateoasPropertiesOptional, objectMapperProvider);
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass(name = {
+			"org.springframework.hateoas.server.LinkRelationProvider",
+			"org.springframework.boot.hateoas.autoconfigure.HateoasProperties"
+	})
+	static class HateoasPropertiesConfiguration {
+
+		/**
+		 * Hateoas hal provider hateoas hal provider.
+		 *
+		 * @param hateoasPropertiesOptional the hateoas properties optional
+		 * @param objectMapperProvider      the object mapper provider
+		 * @return the hateoas hal provider
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		HateoasHalProvider hateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
+			return new HateoasHalProvider(hateoasPropertiesOptional, objectMapperProvider);
+		}
+
+	}
+
+	/**
+	 * Fallback configuration for HateoasHalProvider when HateoasProperties is absent.
+	 *
+	 * @author bnasslahsen
+	 */
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass(name = "org.springframework.hateoas.server.LinkRelationProvider")
+	@ConditionalOnMissingClass("org.springframework.boot.hateoas.autoconfigure.HateoasProperties")
+	static class NoHateoasPropertiesConfiguration {
+
+		/**
+		 * Hateoas hal provider hateoas hal provider.
+		 *
+		 * @param objectMapperProvider the object mapper provider
+		 * @return the hateoas hal provider
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		HateoasHalProvider hateoasHalProvider(ObjectMapperProvider objectMapperProvider) {
+			return new HateoasHalProvider(Optional.empty(), objectMapperProvider);
+		}
+
 	}
 
 	/**
