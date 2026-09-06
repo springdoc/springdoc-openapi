@@ -39,6 +39,7 @@ import java.util.Set;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
@@ -287,7 +288,11 @@ public class SpringDocDataRestUtils {
 					updateResponseSchemaEmbedded(components, entityInfo, entry, openapi31);
 				}
 				else if (allAssociationsFieldsMap.getOrDefault(className, Collections.emptyList()).contains(propId)) {
-					updateResponseSchemaProperty(entry.getValue(), components, openapi31);
+					// the property schema may be shared with the request body representation,
+					// so rewrite a copy of it instead of the resolved instance
+					Schema propertyCopy = AnnotationsUtils.clone(entry.getValue(), openapi31);
+					updateResponseSchemaProperty(propertyCopy, components, openapi31);
+					entry.setValue(propertyCopy);
 				}
 			}
 		}

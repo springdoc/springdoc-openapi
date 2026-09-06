@@ -645,7 +645,7 @@
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/InitiativeImpactOnGoalResponse"
+              "$ref": "#/components/schemas/InitiativeImpactOnGoal"
             }
           }
         }

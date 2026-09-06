@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3341 – Stabilize Spring Data `Sort` and `Pageable` schema property order
 - #3338 – Kotlin nullability interpretation of the `Any?` type
 - #3136 – A Spring Data REST association to a non-exported entity expands its `@EmbeddedId` and `@MapsId` fields recursively in the response schemas
+- The Spring Data REST response post-processing rewrote an association property in place, so the `…Response` refs could leak into the schema shared with the request body representation
 
 ## [3.1.0] - 2026-07-31
 
