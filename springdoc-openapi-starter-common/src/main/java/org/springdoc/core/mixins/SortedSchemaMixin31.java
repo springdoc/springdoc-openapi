@@ -36,8 +36,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.core.jackson.mixin.Schema31Mixin;
+import org.springdoc.core.deserializers.TypeSetDeserializer;
 
 /**
  * The interface Sorted schema mixin 31.
@@ -120,6 +122,15 @@ public interface SortedSchemaMixin31 {
 	@JsonProperty("type")
 	@JsonSerialize(using = Schema31Mixin.TypeSerializer.class)
 	Set<String> getTypes();
+
+	/**
+	 * Sets types.
+	 *
+	 * @param types the types
+	 */
+	@JsonProperty("type")
+	@JsonDeserialize(using = TypeSetDeserializer.class)
+	void setTypes(Set<String> types);
 
 	/**
 	 * Add extension.

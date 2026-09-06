@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3331 – Validation annotations declared inside `Optional` parameters are dropped
 - #3322 – Validation annotations on a container's type argument leak between parameters
 - #3315 – An OAS 3.1 `JsonSchema` cannot be cloned through JSON
+- #3314 – `Json Processing Exception occurred` is logged for every constrained parameter whose schema is not a `JsonSchema`
 - #3300 – TYPE_USE annotations on `@ParameterObject` fields are not passed along
 - #3341 – Stabilize Spring Data `Sort` and `Pageable` schema property order
 - #3338 – Kotlin nullability interpretation of the `Any?` type
