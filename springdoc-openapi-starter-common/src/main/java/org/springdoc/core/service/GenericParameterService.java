@@ -453,11 +453,27 @@ public class GenericParameterService {
 					: new TypeAndTypeAnnotations(type, new ArrayList<>());
 		}
 
-		AnnotatedType annotated = methodParameter.getParameter().getAnnotatedType();
-		List<Annotation> parameterAnnotations = Stream.concat(
-				Arrays.stream(annotationsFromAnnotatedTypeArguments(annotated)),
+		List<Annotation> typeAnnotations = Stream.concat(
+				Arrays.stream(annotationsFromAnnotatedTypeArguments(getParameterAnnotatedType(methodParameter))),
 				Arrays.stream(methodParameter.getParameterType().getAnnotations())).toList();
-		return new TypeAndTypeAnnotations(type, parameterAnnotations);
+		return new TypeAndTypeAnnotations(type, typeAnnotations);
+	}
+
+	/**
+	 * Resolves the {@link AnnotatedType} of a method parameter so that annotations declared on its
+	 * generic type arguments (for example inside a {@link List} or an {@link Optional}) can be inspected.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the annotated type, or {@code null} if it cannot be resolved
+	 */
+	private static AnnotatedType getParameterAnnotatedType(MethodParameter methodParameter) {
+		int index = methodParameter.getParameterIndex();
+		if (index < 0)
+			return null;
+		java.lang.reflect.Parameter[] parameters = methodParameter.getExecutable().getParameters();
+		if (index >= parameters.length)
+			return null;
+		return parameters[index].getAnnotatedType();
 	}
 
 	/**
