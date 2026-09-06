@@ -27,6 +27,7 @@
 package org.springdoc.core.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -285,7 +286,7 @@ public class SpringDocDataRestUtils {
 				else if (EMBEDDED.equals(propId)) {
 					updateResponseSchemaEmbedded(components, entityInfo, entry, openapi31);
 				}
-				else if (allAssociationsFieldsMap.get(className).contains(propId)) {
+				else if (allAssociationsFieldsMap.getOrDefault(className, Collections.emptyList()).contains(propId)) {
 					updateResponseSchemaProperty(entry.getValue(), components, openapi31);
 				}
 			}
