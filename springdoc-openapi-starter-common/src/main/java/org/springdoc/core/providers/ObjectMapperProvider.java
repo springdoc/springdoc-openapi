@@ -35,7 +35,6 @@ import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.core.util.Yaml31;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.media.JsonSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.mixins.SchemaTypeMixin;
 import org.springdoc.core.mixins.SortedOpenAPIMixin;
@@ -76,7 +75,7 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 		if (openApiVersion == OpenApiVersion.OPENAPI_3_1) {
 			jsonMapper = Json31.mapper();
 			yamlMapper = Yaml31.mapper();
-			jsonMapper.addMixIn(JsonSchema.class, SchemaTypeMixin.class);
+			jsonMapper.addMixIn(Schema.class, SchemaTypeMixin.class);
 			if (springDocConfigProperties.isUseArbitrarySchemas()) {
 				System.setProperty(Schema.USE_ARBITRARY_SCHEMA_PROPERTY, "true");
 			}
@@ -99,8 +98,10 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 	public static ObjectMapper createJson(SpringDocConfigProperties springDocConfigProperties) {
 		OpenApiVersion openApiVersion = springDocConfigProperties.getApiDocs().getVersion();
 		ObjectMapper objectMapper;
-		if (openApiVersion == OpenApiVersion.OPENAPI_3_1)
+		if (openApiVersion == OpenApiVersion.OPENAPI_3_1) {
 			objectMapper = ObjectMapperFactory.createJson31();
+			objectMapper.addMixIn(Schema.class, SchemaTypeMixin.class);
+		}
 		else
 			objectMapper = ObjectMapperFactory.createJson();
 
