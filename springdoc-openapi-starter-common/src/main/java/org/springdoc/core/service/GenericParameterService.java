@@ -431,7 +431,7 @@ public class GenericParameterService {
 	 */
 	private TypeAndTypeAnnotations resolveTypeAndTypeAnnotationsForParameter(MethodParameter methodParameter) {
 		if (methodParameter instanceof DelegatingMethodParameter delegatingMethodParameter
-				&& delegatingMethodParameter.getField() != null) {
+            && delegatingMethodParameter.getField() != null) {
 			AnnotatedType annotated = delegatingMethodParameter.getField().getAnnotatedType();
 			Type type = GenericTypeResolver.resolveType(annotated.getType(), methodParameter.getContainingClass());
 			return new TypeAndTypeAnnotations(type, Arrays.asList(annotationsFromAnnotatedTypeArguments(annotated)));
@@ -448,7 +448,11 @@ public class GenericParameterService {
 					: new TypeAndTypeAnnotations(type, new ArrayList<>());
 		}
 
-		return new TypeAndTypeAnnotations(type, Arrays.asList(methodParameter.getParameterType().getAnnotations()));
+		AnnotatedType annotated = methodParameter.getParameter().getAnnotatedType();
+		List<Annotation> parameterAnnotations = Stream.concat(
+				Arrays.stream(annotationsFromAnnotatedTypeArguments(annotated)),
+				Arrays.stream(methodParameter.getParameterType().getAnnotations())).toList();
+		return new TypeAndTypeAnnotations(type, parameterAnnotations);
 	}
 
 	/**

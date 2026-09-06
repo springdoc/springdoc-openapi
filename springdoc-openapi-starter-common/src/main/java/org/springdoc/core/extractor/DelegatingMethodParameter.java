@@ -309,10 +309,10 @@ public class DelegatingMethodParameter extends MethodParameter {
 	}
 
 	/**
-	 * Gets field. If Is parameter object. then The Field should be not null
+	 * Gets field. If it is a parameter object, then The {@code Field} should be not null.
+	 * see {@link DelegatingMethodParameter#isParameterObject()}
 	 *
 	 * @return the field
-	 * @see #isParameterObject #isParameterObject#isParameterObject
 	 */
 	@Nullable
 	public Field getField() {

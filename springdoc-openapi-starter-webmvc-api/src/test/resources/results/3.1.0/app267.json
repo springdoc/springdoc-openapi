@@ -9,6 +9,47 @@
     "description" : "Generated server url"
   } ],
   "paths" : {
+    "/persons" : {
+      "get" : {
+        "tags" : [ "hello-controller" ],
+        "operationId" : "persons",
+        "parameters" : [ {
+          "name" : "middleNames",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "pattern" : "^[a-zA-Z]$"
+            }
+          }
+        }, {
+          "name" : "phoneNumbers",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "pattern" : "^\\d+$"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/items" : {
       "get" : {
         "tags" : [ "hello-controller" ],
