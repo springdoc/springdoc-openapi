@@ -434,7 +434,7 @@ public class GenericParameterService {
 				&& delegatingMethodParameter.getField() != null) {
 			AnnotatedType annotated = delegatingMethodParameter.getField().getAnnotatedType();
 			Type type = GenericTypeResolver.resolveType(annotated.getType(), methodParameter.getContainingClass());
-			return new TypeAndTypeAnnotations(type, Arrays.asList(annotationsFromAnnotatedTypeArguments(annotated)));
+			return new TypeAndTypeAnnotations(type, Arrays.asList(annotationsFromAnnotatedType(annotated)));
 		}
 
 		Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
@@ -475,6 +475,19 @@ public class GenericParameterService {
 	 * Pair of resolved Java type and type annotations merged with parameter annotations for {@code extractSchema}.
 	 */
 	private record TypeAndTypeAnnotations(Type type, List<Annotation> typeAnnotations) {
+	}
+
+	/**
+	 * Collects annotations declared on the type itself and on each type argument of an
+	 * {@link AnnotatedParameterizedType}.
+	 *
+	 * @param annotatedType the annotated type
+	 * @return a new array, possibly empty
+	 */
+	private static Annotation[] annotationsFromAnnotatedType(AnnotatedType annotatedType) {
+		return Stream.concat(
+				Arrays.stream(annotatedType.getAnnotations()),
+				Arrays.stream(annotationsFromAnnotatedTypeArguments(annotatedType))).toArray(Annotation[]::new);
 	}
 
 	/**

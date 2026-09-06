@@ -1,0 +1,56 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost",
+            "description": "Generated server url"
+        }
+    ],
+    "tags": [
+        {
+            "name": "hello-controller",
+            "description": "Controller exposing a parameter object with a TYPE_USE annotated array field."
+        }
+    ],
+    "paths": {
+        "/vets": {
+            "get": {
+                "tags": [
+                    "hello-controller"
+                ],
+                "operationId": "find",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Statuses to filter by.",
+                        "required": false,
+                        "schema": {
+                            "type": [
+                                "array",
+                                "null"
+                            ],
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "ACTIVE",
+                                    "INACTIVE"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "components": {}
+}

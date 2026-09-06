@@ -1379,6 +1379,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					String name = parameter.getName();
 					if (!Strings.CS.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
 						paramIt.remove();
+					else
+						SpringDocUtils.fixNullablePathParameter(parameter);
 				}
 			}
 		}
