@@ -63,6 +63,7 @@
 		<swagger-ui.version>5.32.14</swagger-ui.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jjwt.version>0.9.1</jjwt.version>
+		<jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
 		<spring-cloud-function.version>5.0.0-M1</spring-cloud-function.version>
 		<spring-security-oauth2-authorization-server.version>2.0.0-M2
@@ -94,6 +95,11 @@
 				<groupId>io.jsonwebtoken</groupId>
 				<artifactId>jjwt</artifactId>
 				<version>${jjwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openapitools</groupId>
+				<artifactId>jackson-databind-nullable</artifactId>
+				<version>${jackson-databind-nullable.version}</version>
 			</dependency>
 			<!-- spring Cloud Function-->
 			<dependency>
