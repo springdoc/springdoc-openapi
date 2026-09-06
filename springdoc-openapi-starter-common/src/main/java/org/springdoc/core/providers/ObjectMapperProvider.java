@@ -37,11 +37,11 @@ import io.swagger.v3.core.util.Yaml31;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.JsonSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.springdoc.core.mixins.SchemaTypeMixin;
 import org.springdoc.core.mixins.SortedOpenAPIMixin;
 import org.springdoc.core.mixins.SortedOpenAPIMixin31;
 import org.springdoc.core.mixins.SortedSchemaMixin;
 import org.springdoc.core.mixins.SortedSchemaMixin31;
-import org.springdoc.core.mixins.SchemaTypeMixin;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 
