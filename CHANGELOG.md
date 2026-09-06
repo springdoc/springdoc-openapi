@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `springdoc.ai.mcp.audit.redact` (default `true`) to mask secrets in MCP audit events
 - Document that the MCP approval flow is a confirmation step, not an authorization control
 - Document the security policy and the release versioning scheme
+- Upgrade swagger-core to version **2.2.53**
 - Upgrade swagger-ui to version **5.32.14**
 
 ## [3.1.0] - 2026-07-31
