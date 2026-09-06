@@ -403,8 +403,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				}
 				getPaths(mappingsMap, finalLocale, openAPI);
 
-				removeNullKeyComponentProperties(openAPI);
-
 				if (springDocConfigProperties.isTrimKotlinIndent())
 					this.trimIndent(openAPI);
 
@@ -463,23 +461,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 
 		return inputLocale == null ? Locale.getDefault() : inputLocale;
-	}
-
-	/**
-	 * Removes {@code null}-keyed entries from the component schema properties. Swagger-core
-	 * inserts a {@code null} property key when resolving a {@code @JsonUnwrapped} member whose
-	 * content is a {@code $ref} (for example Spring HATEOAS {@code EntityModel.getContent()}
-	 * with HAL disabled), which otherwise breaks JSON serialization of the document.
-	 *
-	 * @param openAPI the open api
-	 */
-	private static void removeNullKeyComponentProperties(OpenAPI openAPI) {
-		if (openAPI.getComponents() == null || openAPI.getComponents().getSchemas() == null) {
-			return;
-		}
-		for (Schema<?> schema : openAPI.getComponents().getSchemas().values()) {
-			SpringDocUtils.removeNullKeyProperties(schema);
-		}
 	}
 
 	/**

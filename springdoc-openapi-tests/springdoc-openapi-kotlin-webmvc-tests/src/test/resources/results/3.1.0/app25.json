@@ -34,27 +34,41 @@
     },
     "components": {
         "schemas": {
-            "OuterResponse": {
-                "type": "object",
-                "properties": {
-                    "contractAddress": {
-                        "type": "string"
+            "NestedObject" : {
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
                     },
-                    "chainType": {
-                        "type": "string",
-                        "enum": [
-                            "ETH"
-                        ]
-                    },
-                    "success": {
-                        "type": "boolean"
+                    "description" : {
+                        "type" : [ "string", "null" ]
                     }
                 },
-                "required": [
-                    "chainType",
-                    "contractAddress",
-                    "success"
-                ]
+                "required" : [ "name" ]
+            },
+            "OuterResponse" : {
+                "type" : "object",
+                "properties" : {
+                    "contractAddress" : {
+                        "type" : "string"
+                    },
+                    "chainType" : {
+                        "type" : "string",
+                        "enum" : [ "ETH" ]
+                    },
+                    "nested" : {
+                        "type" : "null",
+                        "oneOf" : [ {
+                            "$ref" : "#/components/schemas/NestedObject"
+                        }, {
+                            "type" : "null"
+                        } ]
+                    },
+                    "success" : {
+                        "type" : "boolean"
+                    }
+                },
+                "required" : [ "chainType", "contractAddress", "success" ]
             }
         }
     }
