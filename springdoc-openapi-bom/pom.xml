@@ -60,6 +60,22 @@
 				<artifactId>springdoc-openapi-starter-webflux-mcp</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<!-- swagger dependencies, so that modules holding only the annotations stay in lockstep -->
+			<dependency>
+				<groupId>io.swagger.core.v3</groupId>
+				<artifactId>swagger-annotations-jakarta</artifactId>
+				<version>${swagger-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.swagger.core.v3</groupId>
+				<artifactId>swagger-models-jakarta</artifactId>
+				<version>${swagger-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.swagger.core.v3</groupId>
+				<artifactId>swagger-core-jakarta</artifactId>
+				<version>${swagger-api.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -82,7 +98,7 @@
 							<updatePomFile>true</updatePomFile>
 							<flattenMode>bom</flattenMode>
 							<pomElements>
-								<properties>remove</properties>
+								<properties>expand</properties>
 								<distributionManagement>remove</distributionManagement>
 								<dependencyManagement>keep</dependencyManagement>
 								<repositories>remove</repositories>
