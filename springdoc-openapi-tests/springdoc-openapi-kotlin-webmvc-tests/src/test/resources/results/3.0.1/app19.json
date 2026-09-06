@@ -64,6 +64,9 @@
             "type": "integer",
             "format": "int32"
           },
+          "nullableAny" : {
+            "type" : "object"
+          },
           "nullableNested": {
             "$ref": "#/components/schemas/NestedObject"
           }
