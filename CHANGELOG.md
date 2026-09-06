@@ -5,12 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.9.1] - 2026-09-05
+## [2.9.1] - 2026-09-06
 
 ### Security
 
 - [GHSA-rhhx-6j8h-8cvw](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-rhhx-6j8h-8cvw) – Unbounded per-locale OpenAPI cache allows memory exhaustion via `Accept-Language`
 - [GHSA-c925-vm88-mpp9](https://github.com/springdoc/springdoc-openapi/security/advisories/GHSA-c925-vm88-mpp9) – Scalar starters trust client-supplied forwarded headers and render from a shared mutable bean
+- [CVE-2026-75838](https://github.com/advisories/GHSA-748c-f84h-hp2v) – Cross-site scripting in the DOMPurify bundled with swagger-ui, addressed by upgrading swagger-ui to **5.32.14**
 
 ### Added
 
