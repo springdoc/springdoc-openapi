@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **The Scalar starters no longer register forwarded-header handling.** Set `server.forward-headers-strategy=framework` (or `native`) behind a trusted proxy
 - Add `springdoc.cache.max-entries` (default `100`) to bound the per-locale OpenAPI cache
 - Document the security policy and the release versioning scheme
+- Upgrade swagger-ui to version **5.32.14**
 
 ## [2.9.0] - 2026-07-31
 
