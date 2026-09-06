@@ -126,8 +126,8 @@ public abstract class AbstractMultipleOpenApiResource<R extends AbstractOpenApiR
 	@Override
 	public void afterPropertiesSet() {
 		this.groupedOpenApis.forEach(groupedOpenApi -> {
-					springDocCustomizers.getGlobalOpenApiCustomizers().ifPresent(groupedOpenApi::addAllOpenApiCustomizer);
-					springDocCustomizers.getGlobalOperationCustomizers().ifPresent(groupedOpenApi::addAllOperationCustomizer);
+					groupedOpenApi.addAllOpenApiCustomizer(springDocCustomizers.getGlobalOpenApiCustomizersStream().toList());
+					groupedOpenApi.addAllOperationCustomizer(springDocCustomizers.getGlobalOperationCustomizersStream().toList());
 					springDocCustomizers.getGlobalOpenApiMethodFilters().ifPresent(groupedOpenApi::addAllOpenApiMethodFilter);
 				}
 		);
