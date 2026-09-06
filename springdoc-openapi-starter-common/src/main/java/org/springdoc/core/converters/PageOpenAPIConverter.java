@@ -43,8 +43,6 @@ import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.web.PagedModel;
 
-import static org.springdoc.core.utils.SpringDocUtils.getParentTypeName;
-
 /**
  * The Spring Data Page type model converter.
  *
@@ -119,7 +117,7 @@ public class PageOpenAPIConverter implements ModelConverter {
 				if (!type.isSchemaProperty())
 					type = resolvePagedModelType(javaType, type);
 				else
-					type.name(getParentTypeName(type, cls));
+					type.type(pagedModelType(javaType)).resolveAsRef(true);
 			}
 		}
 		Schema schema = (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
@@ -137,17 +135,29 @@ public class PageOpenAPIConverter implements ModelConverter {
 	 */
 	private AnnotatedType resolvePagedModelType(JavaType type, AnnotatedType originalType) {
 		if (type.hasGenericTypes()) {
-			JavaType innerType = type.containedType(0);
-			Type pagedModelType = ResolvableType
-					.forClassWithGenerics(PagedModel.class, ResolvableType.forType(innerType))
-					.getType();
-			return new AnnotatedType(pagedModelType)
+			return new AnnotatedType(pagedModelType(type))
 					.resolveAsRef(true)
 					.ctxAnnotations(originalType.getCtxAnnotations());
 		}
 		else {
 			return PAGED_MODEL;
 		}
+	}
+
+	/**
+	 * The PagedModel type matching the given Page type.
+	 *
+	 * @param type the page type
+	 * @return the paged model type
+	 */
+	private Type pagedModelType(JavaType type) {
+		if (type.hasGenericTypes()) {
+			JavaType innerType = type.containedType(0);
+			return ResolvableType
+					.forClassWithGenerics(PagedModel.class, ResolvableType.forType(innerType))
+					.getType();
+		}
+		return PagedModel.class;
 	}
 
 	/**

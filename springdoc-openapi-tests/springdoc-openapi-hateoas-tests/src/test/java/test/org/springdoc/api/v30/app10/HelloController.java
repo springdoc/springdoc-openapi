@@ -74,6 +74,16 @@ public class HelloController {
 		return pagedModelSimple();
 	}
 
+	@GetMapping("/dummy-page-simple")
+	public Dummy<Page<String>> dummyPageSimple() {
+		return new Dummy<>(pageSimple());
+	}
+
+	@GetMapping("/dummy-page-complex")
+	public Dummy<Page<Dummy<List<String>>>> dummyPageComplex() {
+		return new Dummy<>(pageComplex());
+	}
+
 	private <T> PagedModel<T> pagedModel(T value) {
 		return new PagedModel<>(pageImpl(value));
 	}
