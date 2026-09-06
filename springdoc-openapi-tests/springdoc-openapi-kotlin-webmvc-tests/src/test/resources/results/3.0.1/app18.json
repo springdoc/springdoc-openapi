@@ -68,6 +68,10 @@
             "format": "int32",
             "nullable": true
           },
+          "nullableAny" : {
+            "type" : "object",
+            "nullable" : true
+          },
           "nullableNested": {
             "nullable": true,
             "allOf": [
