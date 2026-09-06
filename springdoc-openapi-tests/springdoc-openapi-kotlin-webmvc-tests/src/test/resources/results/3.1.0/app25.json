@@ -57,7 +57,6 @@
                         "enum" : [ "ETH" ]
                     },
                     "nested" : {
-                        "type" : "null",
                         "oneOf" : [ {
                             "$ref" : "#/components/schemas/NestedObject"
                         }, {
