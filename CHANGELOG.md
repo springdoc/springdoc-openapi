@@ -1,4 +1,4 @@
-/Users/bnasslahsen/Documents/workspace/4.x/springdoc-openapi/CHANGELOG.md# Changelog
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
