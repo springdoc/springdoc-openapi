@@ -100,6 +100,11 @@ public class SpringDocDataRestUtils {
 	private final HashMap<String, EntityInfo> entityInoMap = new HashMap();
 
 	/**
+	 * The associations fields by entity.
+	 */
+	private final HashMap<String, List<String>> allAssociationsFieldsMap = new HashMap<>();
+
+	/**
 	 * The Repository rest configuration.
 	 */
 	private final RepositoryRestConfiguration repositoryRestConfiguration;
@@ -136,6 +141,7 @@ public class SpringDocDataRestUtils {
 				entityInfo.setIgnoredFields(ignoredFields);
 			List<String> associationsFields = getAssociationsFields(resourceMetadata, entity);
 			entityInfo.setAssociationsFields(associationsFields);
+			allAssociationsFieldsMap.put(domainType.getSimpleName(), getAllAssociationsFields(resourceMetadata, entity));
 			entityInoMap.put(domainType.getSimpleName(), entityInfo);
 		}
 
@@ -279,9 +285,41 @@ public class SpringDocDataRestUtils {
 				else if (EMBEDDED.equals(propId)) {
 					updateResponseSchemaEmbedded(components, entityInfo, entry, openapi31);
 				}
+				else if (allAssociationsFieldsMap.get(className).contains(propId)) {
+					updateResponseSchemaProperty(entry.getValue(), components, openapi31);
+				}
 			}
 		}
 		return existingSchema;
+	}
+
+	/**
+	 * Update a response schema property that points to an entity which is not an
+	 * exported repository. Spring Data REST serializes these associations in
+	 * the containing representation, so they need the same association filtering
+	 * as an exported entity response.
+	 *
+	 * @param property   the property
+	 * @param components the components
+	 * @param openapi31  the openapi 31
+	 */
+	private void updateResponseSchemaProperty(Schema property, Components components, boolean openapi31) {
+		if (property == null)
+			return;
+		if (property.get$ref() != null && !property.get$ref().endsWith(RESPONSE)) {
+			String key = property.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
+			if (entityInoMap.containsKey(key)) {
+				String newKey = property.get$ref() + RESPONSE;
+				if (!components.getSchemas().containsKey(key + RESPONSE)) {
+					createNewResponseSchema(key, components, openapi31);
+					updateResponseSchema(key, components.getSchemas().get(key + RESPONSE), components, openapi31);
+				}
+				property.set$ref(newKey);
+			}
+		}
+		else if (property.getItems() != null) {
+			updateResponseSchemaProperty(property.getItems(), components, openapi31);
+		}
 	}
 
 	/**
@@ -446,6 +484,25 @@ public class SpringDocDataRestUtils {
 				String filedName = mapping.getRel().value();
 				associationsFields.add(filedName);
 			}
+		});
+		return associationsFields;
+	}
+
+	/**
+	 * Gets all associations fields.
+	 *
+	 * @param resourceMetadata the resource metadata
+	 * @param entity           the entity
+	 * @return all associations fields
+	 */
+	private List<String> getAllAssociationsFields(ResourceMetadata
+			resourceMetadata, PersistentEntity<?, ?> entity) {
+		List<String> associationsFields = new ArrayList<>();
+		entity.doWithAssociations((SimpleAssociationHandler) association -> {
+			PersistentProperty<?> property = association.getInverse();
+			ResourceMapping mapping = resourceMetadata.getMappingFor(property);
+			String fieldName = mapping.getRel().value();
+			associationsFields.add(fieldName);
 		});
 		return associationsFields;
 	}
