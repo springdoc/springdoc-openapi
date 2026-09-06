@@ -150,6 +150,46 @@
           }
         }
       }
+    },
+    "/dummy-page-simple": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "dummyPageSimple",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyPageString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dummy-page-complex": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "dummyPageComplex",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DummyPageDummyListString"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -460,6 +500,22 @@
           },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "DummyPageString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/PageString"
+          }
+        }
+      },
+      "DummyPageDummyListString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/PageDummyListString"
           }
         }
       }
