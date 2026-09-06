@@ -60,7 +60,6 @@ class JavaTimeOperationCustomizer implements OperationCustomizer {
 				if (content.containsKey(MediaType.APPLICATION_JSON_VALUE)) {
 					Schema schema = content.get(MediaType.APPLICATION_JSON_VALUE).getSchema();
 					schema.types(Set.of("string"));
-					schema.getProperties().clear();
 				}
 			}
 		}
