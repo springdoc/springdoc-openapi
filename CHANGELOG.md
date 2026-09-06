@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - #3340 – Describe `JsonNullable` values without their Java wrapper
 - #3325 – Manage the swagger artifacts in `springdoc-openapi-bom`, so that modules holding only the annotations stay in lockstep
+- #3321 – Add `springdoc.login-endpoint.username-example` and `springdoc.login-endpoint.password-example` to document the Spring Security login endpoint
 
 ### Changed
 
@@ -39,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3338 – Kotlin nullability interpretation of the `Any?` type
 - #3332 – The properties a Kotlin entity inherits from an `@Embeddable` are missing from the Spring Data REST schemas
 - #3136 – A Spring Data REST association to a non-exported entity expands its `@EmbeddedId` and `@MapsId` fields recursively in the response schemas
+- The Spring Data REST response post-processing rewrote an association property in place, so the `…Response` refs could leak into the schema shared with the request body representation
+- #3317 – Ignore an injected `HttpHeaders` parameter explicitly. The reported failure needs Spring Framework 7, where `HttpHeaders` stopped implementing `MultiValueMap`; on this line it is still covered by the `Map` entry of the ignore list, so this is regression cover rather than a behaviour change
+- Harden the Spring Data REST response post-processing against an `_embedded` schema that carries no properties
 
 ## [2.9.0] - 2026-07-31
 
