@@ -30,6 +30,11 @@ import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * TYPE_USE annotations on @ParameterObject fields regression fixture.
+ *
+ * @author tthornton3-chwy
+ */
 class SpringDocApp175Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication

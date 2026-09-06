@@ -31,6 +31,11 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller exposing a parameter object with a TYPE_USE annotated array field.
+ *
+ * @author tthornton3-chwy
+ */
 @RestController
 class HelloController {
 

@@ -32,6 +32,11 @@ import io.swagger.v3.oas.annotations.Parameter;
  * A parameter object whose {@code clinicId} field is reused as both an optional, nullable
  * query parameter and a (required, non-null) path parameter, depending on the controller.
  */
+/**
+ * Search criteria reused as both a path and a query parameter.
+ *
+ * @author tthornton3-chwy
+ */
 class SearchCriteria {
 
 	@Parameter(description = "Find vets affiliated with this clinic id.")

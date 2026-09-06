@@ -31,6 +31,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * TYPE_USE nullability marker used by the regression fixture.
+ *
+ * @author tthornton3-chwy
+ */
 @Target(ElementType.TYPE_USE)
 @Retention(RetentionPolicy.RUNTIME)
 @interface Nullable {

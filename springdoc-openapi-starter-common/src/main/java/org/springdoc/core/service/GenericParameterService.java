@@ -491,9 +491,8 @@ public class GenericParameterService {
 	 */
 	private static Annotation[] annotationsFromAnnotatedType(AnnotatedType annotatedType) {
 		return Stream.concat(
-						Arrays.stream(annotatedType.getAnnotations()),
-						Arrays.stream(annotationsFromAnnotatedTypeArguments(annotatedType)))
-				.toArray(Annotation[]::new);
+				Arrays.stream(annotatedType.getAnnotations()),
+				Arrays.stream(annotationsFromAnnotatedTypeArguments(annotatedType))).toArray(Annotation[]::new);
 	}
 
 	/**

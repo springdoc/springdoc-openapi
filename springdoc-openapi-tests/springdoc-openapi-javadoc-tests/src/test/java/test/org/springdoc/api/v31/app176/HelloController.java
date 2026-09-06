@@ -33,6 +33,11 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller reusing a parameter object field as both path and query parameter.
+ *
+ * @author tthornton3-chwy
+ */
 @RestController
 class HelloController {
 

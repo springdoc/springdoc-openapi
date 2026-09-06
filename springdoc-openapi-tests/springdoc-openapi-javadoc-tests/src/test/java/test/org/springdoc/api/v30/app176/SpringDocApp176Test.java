@@ -48,6 +48,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Verifies that {@code nullable: true} (propagated from a TYPE_USE {@code @Nullable}
  * annotation on a {@code @ParameterObject} field under OpenAPI 3.0) is cleared when that
  * field is reused as a path parameter, while it is preserved for query parameters.
+ *
+ * @author tthornton3-chwy
  */
 @ActiveProfiles("test")
 @SpringBootTest

@@ -28,6 +28,11 @@ package test.org.springdoc.api.v31.app175;
 
 import io.swagger.v3.oas.annotations.Parameter;
 
+/**
+ * Search criteria whose array field carries a TYPE_USE annotation.
+ *
+ * @author tthornton3-chwy
+ */
 class SearchCriteria {
 
 	@Parameter(description = "Statuses to filter by.")

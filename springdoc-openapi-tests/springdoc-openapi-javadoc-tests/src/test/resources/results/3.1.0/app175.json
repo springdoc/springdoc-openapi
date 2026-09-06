@@ -10,6 +10,12 @@
             "description": "Generated server url"
         }
     ],
+    "tags": [
+        {
+            "name": "hello-controller",
+            "description": "Controller exposing a parameter object with a TYPE_USE annotated array field."
+        }
+    ],
     "paths": {
         "/vets": {
             "get": {
