@@ -32,7 +32,7 @@
               "application/json": {
                 "schema": {
                   "type": "string",
-                  "properties": {}
+                  "format": "duration"
                 }
               }
             }

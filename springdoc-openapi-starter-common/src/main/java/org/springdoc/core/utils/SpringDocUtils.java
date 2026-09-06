@@ -565,13 +565,10 @@ public class SpringDocUtils {
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils initExtraSchemas() {
-		customClasses().put("java.time.Duration", PrimitiveType.STRING);
-		customClasses().put("java.time.LocalTime", PrimitiveType.STRING);
 		customClasses().put("java.time.YearMonth", PrimitiveType.STRING);
 		customClasses().put("java.time.MonthDay", PrimitiveType.STRING);
 		customClasses().put("java.time.Year", PrimitiveType.STRING);
 		customClasses().put("java.time.Period", PrimitiveType.STRING);
-		customClasses().put("java.time.OffsetTime", PrimitiveType.STRING);
 		customClasses().put("java.time.ZoneId", PrimitiveType.STRING);
 		customClasses().put("java.time.ZoneOffset", PrimitiveType.STRING);
 		customClasses().put("java.util.TimeZone", PrimitiveType.STRING);
@@ -586,13 +583,10 @@ public class SpringDocUtils {
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils resetExtraSchemas() {
-		customClasses().remove("java.time.Duration");
-		customClasses().remove("java.time.LocalTime");
 		customClasses().remove("java.time.YearMonth");
 		customClasses().remove("java.time.MonthDay");
 		customClasses().remove("java.time.Year");
 		customClasses().remove("java.time.Period");
-		customClasses().remove("java.time.OffsetTime");
 		customClasses().remove("java.time.ZoneId");
 		customClasses().remove("java.time.ZoneOffset");
 		customClasses().remove("java.util.TimeZone");
