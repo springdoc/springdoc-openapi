@@ -1,4 +1,32 @@
+/*
+ *
+ *  *
+ *  *  *
+ *  *  *  *
+ *  *  *  *  * Copyright 2019-2026 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
+ *  *  *  *
+ *  *  *
+ *  *
+ *
+ */
+
 package org.springdoc.core.configuration;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -7,16 +35,13 @@ import org.springdoc.core.configuration.SpringDocDataRestConfiguration.DataRestN
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.DataRestHalProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.hateoas.autoconfigure.HateoasProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,79 +65,84 @@ import static org.assertj.core.api.Assertions.assertThat;
  * {@code springdoc.enable-hateoas=false} cannot be used for this, because it only
  * toggles behavior at runtime and never removes the class from the classpath, so the
  * {@code @ConditionalOnMissingClass} fallback would never be selected.
+ *
+ * @author Mattias-Sehlstedt
  */
 class SpringDocDataRestConfigurationTest {
-    /**
-     * Structural guarantees that keep {@code HateoasProperties} references out of any
-     * class Spring might load when the type is absent.
-     */
-    @Nested
-    class Structure {
-        @Test
-        void outerConfigClassHasNoBeanMethodReferencingHateoasProperties() {
-            for (Method method : SpringDocDataRestConfiguration.class.getDeclaredMethods()) {
-                if (method.isAnnotationPresent(Bean.class)) {
-                    for (Type type : method.getGenericParameterTypes()) {
-                        assertThat(type.getTypeName())
-                                .as("@Bean method %s() should not reference HateoasProperties directly", method.getName())
-                                .doesNotContain(HateoasProperties.class.getSimpleName());
-                    }
-                }
-            }
-        }
 
-        @Test
-        void hateoasPropertiesConfigIsGuardedByConditionalOnClass() {
-            ConditionalOnClass onClass = DataRestHateoasPropertiesConfiguration.class.getAnnotation(ConditionalOnClass.class);
-            assertThat(onClass)
-                    .as("%s should be guarded by @ConditionalOnClass", DataRestHateoasPropertiesConfiguration.class.getSimpleName())
-                    .isNotNull();
-            assertThat(Arrays.asList(onClass.name())).contains(HateoasProperties.class.getName());
-        }
+	/**
+	 * Structural guarantees that keep {@code HateoasProperties} references out of any
+	 * class Spring might load when the type is absent.
+	 */
+	@Nested
+	class Structure {
 
-        @Test
-        void noHateoasPropertiesConfigIsGuardedByConditionalOnMissingClass() {
-            ConditionalOnMissingClass onMissingClass = DataRestNoHateoasPropertiesConfiguration.class.getAnnotation(ConditionalOnMissingClass.class);
-            assertThat(onMissingClass)
-                    .as("%s should be guarded by @ConditionalOnMissingClass", DataRestNoHateoasPropertiesConfiguration.class.getSimpleName())
-                    .isNotNull();
-            assertThat(Arrays.asList(onMissingClass.value())).contains(HateoasProperties.class.getName());
-        }
-    }
+		@Test
+		void outerConfigClassHasNoBeanMethodReferencingHateoasProperties() {
+			for (Method method : SpringDocDataRestConfiguration.class.getDeclaredMethods()) {
+				if (method.isAnnotationPresent(Bean.class)) {
+					for (Type type : method.getGenericParameterTypes()) {
+						assertThat(type.getTypeName())
+								.as("@Bean method %s() should not reference HateoasProperties directly", method.getName())
+								.doesNotContain(HateoasProperties.class.getSimpleName());
+					}
+				}
+			}
+		}
 
-    /**
-     * Behavioral verification that the correct nested configuration is selected and a
-     * {@link DataRestHalProvider} is created in both scenarios.
-     */
-    @Nested
-    class Wiring {
-        private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-                .withBean(ObjectMapperProvider.class, () -> new ObjectMapperProvider(new SpringDocConfigProperties()))
-                .withUserConfiguration(
-                        DataRestHateoasPropertiesConfiguration.class,
-                        DataRestNoHateoasPropertiesConfiguration.class);
+		@Test
+		void hateoasPropertiesConfigIsGuardedByConditionalOnClass() {
+			ConditionalOnClass onClass = DataRestHateoasPropertiesConfiguration.class.getAnnotation(ConditionalOnClass.class);
+			assertThat(onClass)
+					.as("%s should be guarded by @ConditionalOnClass", DataRestHateoasPropertiesConfiguration.class.getSimpleName())
+					.isNotNull();
+			assertThat(Arrays.asList(onClass.name())).contains(HateoasProperties.class.getName());
+		}
 
-        @Test
-        void halProviderIsCreatedFromHateoasPropertiesConfigWhenHateoasPropertiesIsPresent() {
-            contextRunner
-                    .run(context -> {
-                        assertThat(context).hasNotFailed();
-                        assertThat(context).hasSingleBean(DataRestHalProvider.class);
-                        assertThat(context).hasSingleBean(DataRestHateoasPropertiesConfiguration.class);
-                        assertThat(context).doesNotHaveBean(DataRestNoHateoasPropertiesConfiguration.class);
-                    });
-        }
+		@Test
+		void noHateoasPropertiesConfigIsGuardedByConditionalOnMissingClass() {
+			ConditionalOnMissingClass onMissingClass = DataRestNoHateoasPropertiesConfiguration.class.getAnnotation(ConditionalOnMissingClass.class);
+			assertThat(onMissingClass)
+					.as("%s should be guarded by @ConditionalOnMissingClass", DataRestNoHateoasPropertiesConfiguration.class.getSimpleName())
+					.isNotNull();
+			assertThat(Arrays.asList(onMissingClass.value())).contains(HateoasProperties.class.getName());
+		}
+	}
 
-        @Test
-        void halProviderIsCreatedFromFallbackConfigWhenHateoasPropertiesIsAbsent() {
-            contextRunner
-                    .withClassLoader(new FilteredClassLoader(HateoasProperties.class))
-                    .run(context -> {
-                        assertThat(context).hasNotFailed();
-                        assertThat(context).hasSingleBean(DataRestHalProvider.class);
-                        assertThat(context).hasSingleBean(DataRestNoHateoasPropertiesConfiguration.class);
-                        assertThat(context).doesNotHaveBean(DataRestHateoasPropertiesConfiguration.class);
-                    });
-        }
-    }
+	/**
+	 * Behavioral verification that the correct nested configuration is selected and a
+	 * {@link DataRestHalProvider} is created in both scenarios.
+	 */
+	@Nested
+	class Wiring {
+
+		private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+				.withBean(ObjectMapperProvider.class, () -> new ObjectMapperProvider(new SpringDocConfigProperties()))
+				.withUserConfiguration(
+						DataRestHateoasPropertiesConfiguration.class,
+						DataRestNoHateoasPropertiesConfiguration.class);
+
+		@Test
+		void halProviderIsCreatedFromHateoasPropertiesConfigWhenHateoasPropertiesIsPresent() {
+			contextRunner
+					.run(context -> {
+						assertThat(context).hasNotFailed();
+						assertThat(context).hasSingleBean(DataRestHalProvider.class);
+						assertThat(context).hasSingleBean(DataRestHateoasPropertiesConfiguration.class);
+						assertThat(context).doesNotHaveBean(DataRestNoHateoasPropertiesConfiguration.class);
+					});
+		}
+
+		@Test
+		void halProviderIsCreatedFromFallbackConfigWhenHateoasPropertiesIsAbsent() {
+			contextRunner
+					.withClassLoader(new FilteredClassLoader(HateoasProperties.class))
+					.run(context -> {
+						assertThat(context).hasNotFailed();
+						assertThat(context).hasSingleBean(DataRestHalProvider.class);
+						assertThat(context).hasSingleBean(DataRestNoHateoasPropertiesConfiguration.class);
+						assertThat(context).doesNotHaveBean(DataRestHateoasPropertiesConfiguration.class);
+					});
+		}
+	}
 }
