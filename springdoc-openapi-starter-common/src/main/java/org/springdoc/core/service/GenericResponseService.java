@@ -101,7 +101,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 /**
  * The type Generic response builder.
  *
- * @author bnasslahsen
+ * @author bnasslahsen, Max Freedom Pollard
  */
 public class GenericResponseService implements ApplicationContextAware {
 
@@ -450,7 +450,7 @@ public class GenericResponseService implements ApplicationContextAware {
 		else {
 			// Use response parameters with no description filled - No documentation
 			// available
-			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), true);
+			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getContainingClass(), true);
 			if (Objects.nonNull(httpCode)) {
 				apiResponse = methodAttributes.getGenericMapResponse().containsKey(httpCode) ? methodAttributes.getGenericMapResponse().get(httpCode)
 						: new ApiResponse();
@@ -491,16 +491,17 @@ public class GenericResponseService implements ApplicationContextAware {
 					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, false);
 				}
 			}
-			if (AnnotatedElementUtils.hasAnnotation(methodParameter.getMethod(), ResponseStatus.class)) {
+			if (AnnotatedElementUtils.hasAnnotation(methodParameter.getMethod(), ResponseStatus.class)
+					|| AnnotatedElementUtils.hasAnnotation(methodParameter.getContainingClass(), ResponseStatus.class)) {
 				// Handles the case with @ResponseStatus, if the specified response is not already handled explicitly
-				String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), false);
+				String httpCode = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getContainingClass(), false);
 				if (Objects.nonNull(httpCode) && !apiResponsesOp.containsKey(httpCode) && !apiResponsesOp.containsKey(ApiResponses.DEFAULT)) {
 					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, new ApiResponse(), false);
 				}
 			}
 		}
 		else {
-			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), false);
+			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getContainingClass(), false);
 			if (Objects.nonNull(httpCode))
 				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, new ApiResponse(), false);
 		}
@@ -812,7 +813,7 @@ public class GenericResponseService implements ApplicationContextAware {
 					if (isHttpCodePresent(httpCode, responseSet))
 						result = true;
 				}
-				if (httpCode.equals(evaluateResponseStatus(method, method.getClass(), false)))
+				if (httpCode.equals(evaluateResponseStatus(method, methodParameter.getContainingClass(), false)))
 					result = true;
 			}
 		}

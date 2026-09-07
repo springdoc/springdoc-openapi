@@ -1,0 +1,50 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/hello" : {
+      "post" : {
+        "tags" : [ "hello-controller" ],
+        "operationId" : "hello",
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bye" : {
+      "get" : {
+        "tags" : [ "hello-controller" ],
+        "operationId" : "bye",
+        "responses" : {
+          "202" : {
+            "description" : "Accepted",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : { }
+}

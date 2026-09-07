@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The MCP dashboard no longer pre-fills the OAuth2 token endpoint, client id and client secret. The form shows hints instead, and warns when the token endpoint is not HTTPS
 
+### Fixed
+
+- #3352 – A `@ResponseStatus` on a controller class is now applied to the responses of its operations
+
 ## [3.1.1] - 2026-09-06
 
 ### Security
