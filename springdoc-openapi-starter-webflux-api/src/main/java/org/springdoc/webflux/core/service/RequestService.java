@@ -38,6 +38,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebSession;
 
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
@@ -52,6 +53,7 @@ public class RequestService extends AbstractRequestService {
 		getConfig().addRequestWrapperToIgnore(ServerWebExchange.class, ServerHttpRequest.class)
 				.addRequestWrapperToIgnore(ServerHttpResponse.class)
 				.addRequestWrapperToIgnore(ServerRequest.class)
+				.addRequestWrapperToIgnore(WebSession.class)
 				.addFileType(FilePart.class);
 	}
 
