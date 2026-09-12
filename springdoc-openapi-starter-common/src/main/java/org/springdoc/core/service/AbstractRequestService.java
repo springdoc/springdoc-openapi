@@ -286,14 +286,19 @@ public abstract class AbstractRequestService {
 			ParameterId parameterId = new ParameterId(parameter);
 			if (map.containsKey(parameterId)) {
 				parameter = map.get(parameterId);
+				Schema existingSchema = parameter.getSchema();
 				List existingEnum = null;
-				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
-					existingEnum = parameter.getSchema().getEnum();
-				if (StringUtils.isNotEmpty(headerValue) && (existingEnum == null || !existingEnum.contains(headerValue)))
-					parameter.getSchema().addEnumItemObject(headerValue);
-				if (defaultValue != null && (existingEnum == null || !existingEnum.contains(defaultValue)))
-					parameter.getSchema().addEnumItemObject(defaultValue);
-				parameter.setSchema(parameter.getSchema());
+				if (existingSchema != null && !CollectionUtils.isEmpty(existingSchema.getEnum()))
+					existingEnum = existingSchema.getEnum();
+				boolean addHeaderValue = StringUtils.isNotEmpty(headerValue) && (existingEnum == null || !existingEnum.contains(headerValue));
+				boolean addDefaultValue = defaultValue != null && (existingEnum == null || !existingEnum.contains(defaultValue));
+				if (existingEnum != null && (addHeaderValue || addDefaultValue))
+					existingSchema.setEnum(new ArrayList<>(existingEnum));
+				if (addHeaderValue)
+					existingSchema.addEnumItemObject(headerValue);
+				if (addDefaultValue)
+					existingSchema.addEnumItemObject(defaultValue);
+				parameter.setSchema(existingSchema);
 			}
 			map.put(parameterId, parameter);
 		}
