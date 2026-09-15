@@ -63,7 +63,11 @@
             "type": "string",
             "example": "USD"
           }
-        }
+        },
+        "required": [
+          "amount",
+          "currency"
+        ]
       }
     }
   }

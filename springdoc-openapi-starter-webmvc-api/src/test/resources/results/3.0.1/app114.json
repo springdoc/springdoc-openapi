@@ -53,6 +53,10 @@
         }
       },
       "MonetaryAmount": {
+        "required": [
+          "amount",
+          "currency"
+        ],
         "type": "object",
         "properties": {
           "amount": {
