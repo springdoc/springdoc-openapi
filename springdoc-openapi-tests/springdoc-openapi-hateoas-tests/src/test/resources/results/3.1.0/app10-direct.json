@@ -193,7 +193,13 @@
             "type": "integer",
             "format": "int64"
           }
-        }
+        },
+        "required": [
+          "number",
+          "size",
+          "totalElements",
+          "totalPages"
+        ]
       },
       "PagedModelString": {
         "type": "object",
@@ -207,7 +213,11 @@
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
           }
-        }
+        },
+        "required": [
+          "content",
+          "page"
+        ]
       },
       "PagedModel": {
         "type": "object",
@@ -219,7 +229,11 @@
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
           }
-        }
+        },
+        "required": [
+          "content",
+          "page"
+        ]
       },
       "DummyListString": {
         "type": "object",
@@ -244,7 +258,11 @@
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
           }
-        }
+        },
+        "required": [
+          "content",
+          "page"
+        ]
       },
       "PageString": {
         "type": "object",
