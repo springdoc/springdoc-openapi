@@ -126,6 +126,7 @@ public class SpringDocHateoasConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnBean(LinkRelationProvider.class)
 	@Lazy(false)
 	CollectionModelContentConverter collectionModelContentConverter(HateoasHalProvider halProvider, LinkRelationProvider linkRelationProvider) {
 		return halProvider.isHalEnabled() ? new CollectionModelContentConverter(linkRelationProvider) : null;
