@@ -118,18 +118,27 @@ public class SpringDocHateoasConfiguration {
 	}
 
 	/**
-	 * Collection model content converter collection model content converter.
-	 *
-	 * @param halProvider          the hal provider
-	 * @param linkRelationProvider the link relation provider
-	 * @return the collection model content converter
+	 * Creates CollectionModelContentConverter only when a LinkRelationProvider bean exists.
 	 */
-	@Bean
-	@ConditionalOnMissingBean
+	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnBean(LinkRelationProvider.class)
-	@Lazy(false)
-	CollectionModelContentConverter collectionModelContentConverter(HateoasHalProvider halProvider, LinkRelationProvider linkRelationProvider) {
-		return halProvider.isHalEnabled() ? new CollectionModelContentConverter(linkRelationProvider) : null;
+	static class CollectionModelContentConverterConfiguration {
+
+		/**
+		 * Collection model content converter collection model content converter.
+		 *
+		 * @param halProvider          the hal provider
+		 * @param linkRelationProvider the link relation provider
+		 * @return the collection model content converter
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		CollectionModelContentConverter collectionModelContentConverter(
+				HateoasHalProvider halProvider,
+				LinkRelationProvider linkRelationProvider) {
+			return halProvider.isHalEnabled() ? new CollectionModelContentConverter(linkRelationProvider) : null;
+		}
 	}
 
 	/**
