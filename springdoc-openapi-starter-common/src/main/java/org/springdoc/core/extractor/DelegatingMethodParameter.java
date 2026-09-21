@@ -27,11 +27,14 @@ package org.springdoc.core.extractor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,7 +118,13 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @param field                          the field
 	 * @param isNotRequired                  the is required
 	 */
-	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, Annotation[] methodAnnotations, boolean isParameterObject, Field field, boolean isNotRequired) {
+	DelegatingMethodParameter(MethodParameter delegate,
+							  String parameterName,
+							  Annotation[] additionalParameterAnnotations,
+							  Annotation[] methodAnnotations,
+							  boolean isParameterObject,
+							  Field field,
+							  boolean isNotRequired) {
 		super(delegate);
 		this.delegate = delegate;
 		this.field = field;
@@ -137,7 +146,9 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @return the method parameter [ ]
 	 */
 	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters,
-			Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers, MethodParameterPojoExtractor methodParameterPojoExtractor, boolean defaultFlatParamObject) {
+											  Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
+											  MethodParameterPojoExtractor methodParameterPojoExtractor,
+											  boolean defaultFlatParamObject) {
 		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
@@ -155,7 +166,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null, null, false, null, false));
+				explodedParameters.add(new DelegatingMethodParameter(p, name, getTypeUseAnnotations(p), null, false, null, false));
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);
@@ -166,7 +177,8 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * given containing class.
 	 *
 	 * @param methodParameter the method parameter
-	 * @param containingClass a specific containing class (potentially a subclass of the declaring class, e.g. substituting a type variable) A copy of spring withContainingClass, to keep compatibility with older spring versions
+	 * @param containingClass a specific containing class (potentially a subclass of the declaring class, e.g. substituting a type variable).
+	 *                        A copy of spring withContainingClass, to keep compatibility with older spring versions
 	 * @return the method parameter
 	 * @see #getParameterType() #getParameterType()#getParameterType()#getParameterType()#getParameterType()
 	 */
@@ -317,5 +329,35 @@ public class DelegatingMethodParameter extends MethodParameter {
 	@Nullable
 	public Field getField() {
 		return field;
+	}
+
+	/**
+	 * Collects the type-use annotations declared on a parameter's type so that customizers can natively
+	 * read annotation data placed on the type. Annotations declared directly on the parameter type
+	 * (for example {@code @MyAnnotation Foo}) are always collected. Annotations declared on the wrapped
+	 * type of an {@link Optional} (for example {@code Optional<@MyAnnotation Foo>}) are also collected,
+	 * since an {@code Optional} is unwrapped to its element type. Annotations on the element type of other
+	 * container types (such as {@link java.util.List}) are intentionally not collected, as they apply to
+	 * the items' schema rather than to the parameter itself.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the type-use annotations, or {@code null} if none were found
+	 */
+	@Nullable
+	private static Annotation[] getTypeUseAnnotations(MethodParameter methodParameter) {
+		int index = methodParameter.getParameterIndex();
+		if (index < 0)
+			return null;
+		Parameter[] parameters = methodParameter.getExecutable().getParameters();
+		if (index >= parameters.length)
+			return null;
+		AnnotatedType annotatedType = parameters[index].getAnnotatedType();
+		List<Annotation> annotations = new ArrayList<>(Arrays.asList(annotatedType.getAnnotations()));
+		if (Optional.class.isAssignableFrom(methodParameter.getParameterType())
+		    && annotatedType instanceof AnnotatedParameterizedType annotatedParameterizedType) {
+			for (AnnotatedType typeArgument : annotatedParameterizedType.getAnnotatedActualTypeArguments())
+				annotations.addAll(Arrays.asList(typeArgument.getAnnotations()));
+		}
+		return annotations.isEmpty() ? null : annotations.toArray(new Annotation[0]);
 	}
 }

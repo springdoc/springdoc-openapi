@@ -27,6 +27,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "optionalTest",
+            "in": "query",
+            "description": "Parameter description, customized parameter!",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
