@@ -103,6 +103,7 @@
             ]
           },
           "nullableComposed": {
+            "nullable": true,
             "oneOf": [
               {
                 "$ref": "#/components/schemas/First"

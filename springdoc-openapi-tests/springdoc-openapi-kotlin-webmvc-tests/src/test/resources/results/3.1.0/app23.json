@@ -108,6 +108,9 @@
               },
               {
                 "$ref": "#/components/schemas/Second"
+              },
+              {
+                "type": "null"
               }
             ]
           }
