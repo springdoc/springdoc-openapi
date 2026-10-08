@@ -107,6 +107,11 @@ public final class Constants {
 	public static final String SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED = "springdoc.model-converters.polymorphic-converter.enabled";
 
 	/**
+	 * The constant SPRINGDOC_JAVA_NULLABLE_PROPERTY_CUSTOMIZER_ENABLED.
+	 */
+	public static final String SPRINGDOC_JAVA_NULLABLE_PROPERTY_CUSTOMIZER_ENABLED = "springdoc.model-converters.java-nullable-property-customizer.enabled";
+
+	/**
 	 * The constant SPRINGDOC_KOTLIN_NULLABLE_PROPERTY_CUSTOMIZER_ENABLED.
 	 */
 	public static final String SPRINGDOC_KOTLIN_NULLABLE_PROPERTY_CUSTOMIZER_ENABLED = "springdoc.model-converters.kotlin-nullable-property-customizer.enabled";
@@ -441,6 +446,11 @@ public final class Constants {
 	 * The constant GLOBAL_OPEN_API_CUSTOMIZER.
 	 */
 	public static final String GLOBAL_OPEN_API_CUSTOMIZER = "globalOpenApiCustomizer";
+
+	/**
+	 * The constant JAVA_NULLABLE_PROPERTY_CUSTOMIZER.
+	 */
+	public static final String JAVA_NULLABLE_PROPERTY_CUSTOMIZER = "javaNullablePropertyCustomizer";
 
 	/**
 	 * The constant SPRINGDOC_SORT_CONVERTER_ENABLED.
