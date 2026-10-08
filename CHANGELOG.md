@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3354 – The default API version is only listed in the header or query parameter of the operations that serve it: a handler method mapped to it, or one without a version
 - #3360 – The properties of Spring Data `PagedModel` and its `PageMetadata` are now marked as required, as they are always serialized
 - #3361 – The `amount` and `currency` properties of `MonetaryAmount` are now marked as required
+- #3390 – Add `springdoc.model-converters.polymorphic-converter.one-of-as-ref` property to emit discovered polymorphic `oneOf` unions as reusable component schemas referenced via `$ref`
+- #3390 – Add `springdoc.model-converters.polymorphic-converter.one-of-ref-suffix` property to customize the suffix of the generated `oneOf` component schema names (defaults to `Variant`, e.g. `PetVariant`)
 
 ### Fixed
 

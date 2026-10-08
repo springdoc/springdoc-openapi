@@ -303,8 +303,9 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED, matchIfMissing = true)
 	@Lazy(false)
-	PolymorphicModelConverter polymorphicModelConverter(ObjectMapperProvider objectMapperProvider) {
-		return new PolymorphicModelConverter(objectMapperProvider);
+	PolymorphicModelConverter polymorphicModelConverter(ObjectMapperProvider objectMapperProvider, SpringDocConfigProperties springDocConfigProperties) {
+		SpringDocConfigProperties.ModelConverters.PolymorphicConverter polymorphicConverter = springDocConfigProperties.getModelConverters().getPolymorphicConverter();
+		return new PolymorphicModelConverter(objectMapperProvider, polymorphicConverter.isOneOfAsRef(), polymorphicConverter.getOneOfRefSuffix());
 	}
 
 	/**
@@ -738,8 +739,8 @@ public class SpringDocConfiguration {
 	MethodParameterPojoExtractor methodParameterPojoExtractor(SchemaUtils schemaUtils){
 		return new MethodParameterPojoExtractor(schemaUtils);
 	}
-	
-		/**
+
+	/**
 	 * Spring doc app initializer spring doc app initializer.
 	 *
 	 * @param springDocConfigProperties the spring doc config properties
