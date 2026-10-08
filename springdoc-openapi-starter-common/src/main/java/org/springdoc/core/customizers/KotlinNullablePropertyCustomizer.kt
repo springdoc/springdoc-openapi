@@ -127,7 +127,7 @@ class KotlinNullablePropertyCustomizer(
 	/**
 	 * Marks a non-$ref property as nullable.
 	 * - OAS 3.0: `nullable: true`
-	 * - OAS 3.1: adds `"null"` to the `types` set
+	 * - OAS 3.1: adds `"null"` to the `types` set, or to `oneOf` for a composed schema
 	 *
 	 * A schema representing `Any?` carries no `type`/`types` constraint, i.e. it is an
 	 * "any" schema which already permits any value including `null`. Such a schema is left
@@ -138,9 +138,15 @@ class KotlinNullablePropertyCustomizer(
 		if (isAnySchema(property)) return
 
 		if (specVersion == SpecVersion.V31) {
-			val currentTypes = property.types ?: property.type?.let { setOf(it) } ?: emptySet()
-			if ("null" !in currentTypes) {
-				property.types = currentTypes + "null"
+			if (!property.oneOf.isNullOrEmpty()) {
+				if (property.oneOf.none { it.type == "null" || "null" in (it.types ?: emptySet()) }) {
+					property.oneOf = property.oneOf + Schema<Any>().apply { addType("null") }
+				}
+			} else {
+				val currentTypes = property.types ?: property.type?.let { setOf(it) } ?: emptySet()
+				if ("null" !in currentTypes) {
+					property.types = currentTypes + "null"
+				}
 			}
 		} else {
 			property.nullable = true
@@ -155,7 +161,8 @@ class KotlinNullablePropertyCustomizer(
 	private fun isAnySchema(property: Schema<*>): Boolean =
 		property.`$ref` == null &&
 			property.type == null &&
-			property.types.isNullOrEmpty()
+			property.types.isNullOrEmpty() &&
+			property.oneOf.isNullOrEmpty()
 
 	/**
 	 * Wraps a $ref property in a nullable composite schema. A fresh wrapper schema is returned
