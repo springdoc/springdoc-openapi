@@ -34,6 +34,25 @@
   },
   "components": {
     "schemas": {
+      "ComposedObject": { },
+      "First": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ComposedObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "first": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "required": [
+          "first"
+        ]
+      },
       "NestedObject": {
         "type": "object",
         "properties": {
@@ -81,10 +100,38 @@
                 "type": "null"
               }
             ]
+          },
+          "nullableComposed": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/First"
+              },
+              {
+                "$ref": "#/components/schemas/Second"
+              }
+            ]
           }
         },
         "required": [
           "requiredField"
+        ]
+      },
+      "Second": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ComposedObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "second": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "required": [
+          "second"
         ]
       }
     }
