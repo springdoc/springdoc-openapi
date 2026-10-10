@@ -153,6 +153,11 @@ The release and snapshot builds always build the frontend (`-Pci`, and `-Dskip.n
 the release workflow), so published artifacts always carry a dashboard built from the sources they
 were tagged from.
 
+== Releasing
+
+Cutting a release, rehearsing one, and recovering a failed one is documented in
+link:.github/workflows/RELEASING.md[`.github/workflows/RELEASING.md`].
+
 == Cloning the git repository on Windows
 
 Some files in the git repository may exceed the Windows maximum file path (260 characters), depending on where you clone the repository.
