@@ -131,6 +131,11 @@ The project can be built from the root directory with:
 
 On Windows, use `mvnw.cmd install`.
 
+== Releasing
+
+Cutting a release, rehearsing one, and recovering a failed one is documented in
+link:.github/workflows/RELEASING.md[`.github/workflows/RELEASING.md`].
+
 == Cloning the git repository on Windows
 
 Some files in the git repository may exceed the Windows maximum file path (260 characters), depending on where you clone the repository.

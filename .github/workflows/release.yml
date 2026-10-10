@@ -1,18 +1,21 @@
 # Cuts a release: tags it, publishes to Maven Central, bumps to the next SNAPSHOT.
 # Run it from the branch you want to release (main or spring-boot-3).
+#
+# The full procedure, including how to recover a failed release, is documented in
+# .github/workflows/RELEASING.md.
 name: Release
 
 on:
   workflow_dispatch:
     inputs:
       releaseVersion:
-        description: 'Version to release, e.g. 2.9.1'
+        description: 'Version to release, e.g. 3.1.1'
         required: true
       developmentVersion:
-        description: 'Next development version, e.g. 2.9.2-SNAPSHOT'
+        description: 'Next development version, e.g. 3.1.2-SNAPSHOT'
         required: true
       dryRun:
-        description: 'Rehearse only: no tag, no push, no publish'
+        description: 'Rehearse only: run release:prepare without committing, tagging or pushing'
         type: boolean
         default: false
 
@@ -31,9 +34,51 @@ env:
   MAVEN_OPTS: -Xmx3g
 
 jobs:
-  release:
+  # Releases on red code are the expensive mistake: release:prepare starts by
+  # bumping the POMs and only then verifies them. This job gates the release job.
+  test:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
+    # This job only reads the checkout; keep the release job's write scope out of it.
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+
+      # frontend-maven-plugin runs npm install for springdoc-openapi-starter-common-mcp.
+      - name: Cache npm
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('**/src/main/frontend/package-lock.json') }}
+          restore-keys: npm-
+
+      # -Pci keeps skip.npm=false; -T1C matches the runner's core count.
+      - name: Test
+        run: ./mvnw $MAVEN_ARGS -Pci -T1C test
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    # Every Maven and git command below runs with these set. The release plugin
+    # forks a second Maven process, and setup-java writes the Central credentials
+    # into settings.xml as ${env.MAVEN_USERNAME}/${env.MAVEN_PASSWORD}, so both the
+    # outer and the forked build need them in the environment. Keeping them at job
+    # level means no step can lose them by accident.
+    env:
+      MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -51,6 +96,13 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase-env-var: MAVEN_GPG_PASSPHRASE
 
+      - name: Cache npm
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('**/src/main/frontend/package-lock.json') }}
+          restore-keys: npm-
+
       - name: Configure git
         run: |
           git config user.name  'github-actions[bot]'
@@ -58,33 +110,177 @@ jobs:
           # <scm> uses an SSH URL, and release:perform clones it fresh into
           # target/checkout. The runner has no SSH key, so route it over HTTPS.
           git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf 'git@github.com:'
+
+      # release:prepare, not release:perform, is the step that puts something
+      # irreversible on the remote: it tags the release commit and pushes the tag
+      # and both version-bump commits, and only then can release:perform fail.
+      # Check the two cheap preconditions first so that a version which already
+      # exists is rejected before the release build even starts.
+      - name: Preflight
+        # The inputs reach the shell as environment variables, never interpolated
+        # into the script text, so a version string cannot inject shell syntax.
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Tests run once, here. The release build itself uses -DskipTests so the
-      # suite is not executed a third time (release:prepare verifies, then
-      # release:perform builds again from the tag).
-      - name: Test
-        run: ./mvnw $MAVEN_ARGS -Pci -T1C test
-
-      # -Pgpg is required, not optional: maven-release-plugin is declared inside
-      # the gpg profile, so without it the plugin falls back to the parent's
-      # pluginManagement version and none of its configuration applies —
-      # wrong tag name, no autoVersionSubmodules, and release:perform would
-      # deploy unsigned artifacts that Central rejects.
-      - name: Release
+          VERSION: ${{ inputs.releaseVersion }}
         run: |
-          ./mvnw $MAVEN_ARGS -Pci,gpg release:prepare release:perform \
-            -DreleaseVersion='${{ inputs.releaseVersion }}' \
-            -DdevelopmentVersion='${{ inputs.developmentVersion }}' \
-            -DdryRun=${{ inputs.dryRun }} \
-            -Darguments="-DskipTests"
-        env:
-          MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          set -euo pipefail
 
-      - name: Clean up a dry run
+          if [ -n "$(git ls-remote --tags origin "refs/tags/v${VERSION}")" ]; then
+            echo "::error::Tag v${VERSION} already exists on origin. release:prepare would fail while tagging, leaving the repo half-versioned. Pick a new releaseVersion."
+            exit 1
+          fi
+
+          if git rev-parse -q --verify "refs/tags/v${VERSION}" >/dev/null; then
+            echo "::error::Tag v${VERSION} already exists in this checkout."
+            exit 1
+          fi
+
+          # A version that is already on Central is refused here, so a rehearsal
+          # cannot reuse a published version either: pick a version nobody has
+          # published, such as the next patch, to try the release out.
+          #
+          # This check fails closed. "Central is unreachable" must not be reported
+          # as "the version is free": the request is cheap, and the expensive
+          # mistake is the release that gets refused after prepare has already
+          # pushed the tag. The curl exit status and the HTTP status are both
+          # checked explicitly, so neither a DNS/TLS failure (curl's own exit
+          # status) nor an HTTP error such as a 404 can empty the version check.
+          METADATA="${RUNNER_TEMP}/springdoc-versions.xml"
+          METADATA_URL=https://repo1.maven.org/maven2/org/springdoc/springdoc-openapi-starter-common/maven-metadata.xml
+
+          # `if` keeps `set -e` from aborting on a failed curl, so the diagnostic
+          # below is what the log shows instead of a bare curl error.
+          if HTTP_CODE=$(curl -sSL -o "${METADATA}" -w '%{http_code}' "${METADATA_URL}"); then
+            curl_status=0
+          else
+            curl_status=$?
+          fi
+
+          if [ "${curl_status}" -ne 0 ] || [ "${HTTP_CODE}" != "200" ]; then
+            echo "::error::Could not read the published versions of springdoc-openapi-starter-common from Maven Central (curl exit ${curl_status}, HTTP ${HTTP_CODE}). Re-run once the repository is reachable; the preflight cannot confirm that ${VERSION} is unused."
+            exit 1
+          fi
+
+          if grep -qF "<version>${VERSION}</version>" "${METADATA}"; then
+            echo "::error::springdoc-openapi ${VERSION} is already published to Maven Central and cannot be republished. Pick a new releaseVersion."
+            exit 1
+          fi
+
+      # The rehearsal and its cleanup share one step on purpose: release:prepare
+      # rewrites the POMs in place, so the cleanup has to run even when the
+      # rehearsal fails, and a later step cannot read an earlier step's status.
+      # Keeping both commands here also means no message can report a failed
+      # rehearsal as OK - the case the separate cleanup step got wrong.
+      - name: Rehearse release preparation
         if: ${{ inputs.dryRun }}
-        run: ./mvnw $MAVEN_ARGS -Pci,gpg release:clean
+        env:
+          RELEASE_VERSION: ${{ inputs.releaseVersion }}
+          DEVELOPMENT_VERSION: ${{ inputs.developmentVersion }}
+        run: |
+          # The status of the rehearsal is captured rather than propagated, so the
+          # cleanup below always runs and the failure is reported at the end.
+          set +e
+
+          # -DpushChanges=false keeps the rehearsal local even if the dry-run flag
+          # ever stops suppressing commits; release:prepare then leaves the bumped
+          # POMs and release.properties behind for the cleanup below.
+          ./mvnw $MAVEN_ARGS -Pci,gpg release:prepare \
+            -DreleaseVersion="${RELEASE_VERSION}" \
+            -DdevelopmentVersion="${DEVELOPMENT_VERSION}" \
+            -DdryRun=true \
+            -DpushChanges=false
+          rehearsal_status=$?
+
+          # release:clean restores the POMs from the .releaseBackup files and drops
+          # release.properties. It must not be given -DdryRun: the mojo has no such
+          # parameter, so the flag would be ignored while making the cleanup look
+          # like a dry run when it actually restores the tree for real.
+          # The git restore and the find below are the belt-and-braces equivalents,
+          # and they are what actually guarantees a clean tree: a failed
+          # release:clean must not stop them.
+          ./mvnw $MAVEN_ARGS -Pci,gpg release:clean
+          git checkout -- .
+          find . \( -name '*.releaseBackup' -o -name 'release.properties' \) -delete
+
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::The rehearsal left changes in the working tree:"
+            git status --short
+            if [ "${rehearsal_status}" -ne 0 ]; then
+              echo "::error::release:prepare had already failed with exit code ${rehearsal_status}; the leftover files are secondary to that failure."
+            fi
+            exit 1
+          fi
+
+          if [ "${rehearsal_status}" -ne 0 ]; then
+            echo "::error::release:prepare failed with exit code ${rehearsal_status}. The working tree was restored; re-run with the same versions once the cause is fixed (release:prepare resumes by default)."
+            exit 1
+          fi
+
+          echo "Rehearsal OK: release:prepare completed and the working tree is clean again."
+
+      # The tagged build is what gets published, so it is the build that has to
+      # pass. release:prepare runs its preparationGoals ("clean verify", the plugin
+      # default) on the transformed POM, which is why the suite runs a second time
+      # in this workflow: that forked verify is what turns red code into a stopped
+      # release rather than a pushed tag. The separate Test job exists to fail even
+      # earlier, before the version transformation starts.
+      #
+      # -Darguments is the release plugin's `arguments` parameter, and the shared
+      # phase that consumes it (AbstractRunGoalsPhase) feeds both the prepare-time
+      # verify and the perform-time deploy. While prepare and perform were a single
+      # command that parameter therefore skipped tests in both; now that perform is
+      # its own invocation, -Darguments applies only to the invocation that carries
+      # it, so the prepare-time verify runs the suite and only the deploy skips it.
+      #
+      # -Dskip.npm=false is forced for the same reason the profiles are explicit. The MCP
+      # dashboard assets are build output and are no longer tracked in git, so a release
+      # that skipped the frontend would publish a jar without the dashboard. release:perform
+      # builds in its own target/checkout, where a workflow-level path check cannot gate the
+      # deploy, so pin the property here and let the enforcer rule in
+      # springdoc-openapi-starter-common-mcp fail the build if the assets are still missing.
+      - name: Prepare and publish
+        if: ${{ !inputs.dryRun }}
+        env:
+          RELEASE_VERSION: ${{ inputs.releaseVersion }}
+          DEVELOPMENT_VERSION: ${{ inputs.developmentVersion }}
+        run: |
+          ./mvnw $MAVEN_ARGS -Pci,gpg release:prepare \
+            -DreleaseVersion="${RELEASE_VERSION}" \
+            -DdevelopmentVersion="${DEVELOPMENT_VERSION}"
+
+          # release:perform deploys the tag that the step above pushed. It resolves
+          # its parameters from release.properties, so it takes no versions here -
+          # but it does need -Darguments, because the perform mojo overwrites the
+          # stored exec.additionalArguments with its own value: omitting it here
+          # would run the whole suite again inside the deploy.
+          ./mvnw $MAVEN_ARGS -Pci,gpg release:perform -Darguments="-DskipTests -Dskip.npm=false"
+
+      # Publish, tag and version bump are three separate steps on the remote and
+      # Maven Release Plugin has no transaction across them, so the only thing
+      # this step can do is state exactly how far the run got.
+      - name: Say how to recover
+        if: ${{ failure() && !inputs.dryRun }}
+        env:
+          VERSION: ${{ inputs.releaseVersion }}
+        run: |
+          set -uo pipefail
+          TAG="v${VERSION}"
+
+          if [ -n "$(git ls-remote --tags origin "refs/tags/${TAG}")" ]; then
+            {
+              echo "## Release ${VERSION} failed after the tag was pushed"
+              echo
+              echo "The tag \`${TAG}\` and both version-bump commits are on origin, but Central may"
+              echo "have received nothing or only part of the release. Nothing is rolled back"
+              echo "automatically and re-running this workflow will refuse to reuse the version."
+              echo
+              echo "Recovery steps: [.github/workflows/RELEASING.md](../blob/${GITHUB_REF_NAME}/.github/workflows/RELEASING.md)"
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            {
+              echo "## Release ${VERSION} failed before the tag was pushed"
+              echo
+              echo "Nothing reached origin. release.properties may be in the working tree of this"
+              echo "runner only, and release:prepare resumes from it by default, so it is usually"
+              echo "enough to fix the cause and re-run this workflow with the same versions."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
