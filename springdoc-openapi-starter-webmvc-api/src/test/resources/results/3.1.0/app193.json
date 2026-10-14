@@ -25,11 +25,12 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Books"
+                  "type": "object",
+                  "properties": {
+                    "test.org.springdoc.api.v31.app193.Knowledge": {
+                      "$ref": "#/components/schemas/Knowledge"
                     }
-                  ]
+                  }
                 }
               }
             }
@@ -51,14 +52,12 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Cat"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Dog"
+                  "type": "object",
+                  "properties": {
+                    "Animal": {
+                      "$ref": "#/components/schemas/Animal"
                     }
-                  ]
+                  }
                 }
               }
             }
@@ -69,6 +68,15 @@
   },
   "components": {
     "schemas": {
+      "Book": {
+        "type": "object",
+        "description": "Represents a Book.",
+        "properties": {
+          "title": {
+            "type": "string"
+          }
+        }
+      },
       "Books": {
         "allOf": [
           {
@@ -86,11 +94,9 @@
         "description": "Represents a list of Books."
       },
       "Knowledge": {
-        "type": "object",
         "description": "Represents the knowledge."
       },
       "Animal": {
-        "type": "object",
         "description": "Represents an Animal class."
       },
       "Cat": {
