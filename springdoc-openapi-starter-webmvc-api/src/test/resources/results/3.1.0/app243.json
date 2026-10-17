@@ -57,7 +57,7 @@
           },
           "localTime": {
             "type": "string",
-            "format": "time-local"
+            "format": "partial-time"
           },
           "yearMonth": {
             "type": "string"
