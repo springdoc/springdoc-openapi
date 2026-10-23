@@ -27,6 +27,7 @@
 package org.springdoc.core.converters;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -207,7 +208,7 @@ public class PageOpenAPIConverter implements ModelConverter {
 				|| !pagedModelSchema.getProperties().keySet().containsAll(PAGED_MODEL_REQUIRED_PROPERTIES))
 			return;
 
-		pagedModelSchema.setRequired(PAGED_MODEL_REQUIRED_PROPERTIES);
+		addRequiredProperties(pagedModelSchema, PAGED_MODEL_REQUIRED_PROPERTIES);
 
 		Schema metadataSchema = resolveReferencedSchema(
 				(Schema) pagedModelSchema.getProperties().get("page"), context);
@@ -215,7 +216,20 @@ public class PageOpenAPIConverter implements ModelConverter {
 				|| !metadataSchema.getProperties().keySet().containsAll(PAGE_METADATA_REQUIRED_PROPERTIES))
 			return;
 
-		metadataSchema.setRequired(PAGE_METADATA_REQUIRED_PROPERTIES);
+		addRequiredProperties(metadataSchema, PAGE_METADATA_REQUIRED_PROPERTIES);
+	}
+
+	/**
+	 * Add required properties, keeping the ones already required.
+	 *
+	 * @param schema     the schema
+	 * @param properties the properties
+	 */
+	private void addRequiredProperties(Schema schema, List<String> properties) {
+		List<String> required = new ArrayList<>(properties);
+		if (schema.getRequired() != null)
+			required.addAll(schema.getRequired());
+		schema.setRequired(required);
 	}
 
 	/**

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- #3360 – The properties of Spring Data `PagedModel` and its `PageMetadata` are now marked as required, as they are always serialized
+
 ### Fixed
 
 - #3352 – A `@ResponseStatus` on a controller class is now applied to the responses of its operations
