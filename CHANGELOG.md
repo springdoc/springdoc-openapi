@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - #3370 – A `ParameterCustomizer` can read the type-use annotations of a parameter, including the ones declared on the value wrapped in an `Optional`, such as `Optional<@MyAnnotation Foo>`
+- #3382 – Mark the Java properties annotated with `@Nullable` (JSpecify, Spring, JSR-305) as nullable in their schema, including `$ref` and `oneOf` properties. Opt-in with `springdoc.model-converters.java-nullable-property-customizer.enabled=true`
 
 ### Changed
 

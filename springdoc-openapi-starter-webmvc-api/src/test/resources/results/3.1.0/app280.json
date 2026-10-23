@@ -1,0 +1,127 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/nullable": {
+      "get": {
+        "tags": [
+          "nullable-controller"
+        ],
+        "operationId": "getNullableFields",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/NullableFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ComposedObject": {},
+      "First": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ComposedObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "first": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "NestedObject": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "NullableFieldsResponse": {
+        "type": "object",
+        "properties": {
+          "requiredField": {
+            "type": "string"
+          },
+          "nullableString": {
+            "type": "string"
+          },
+          "nullableInt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nullableAny": {},
+          "nullableNested": {
+            "$ref": "#/components/schemas/NestedObject",
+            "description": "The nullable nested object"
+          },
+          "nested": {
+            "$ref": "#/components/schemas/NestedObject",
+            "description": "The nested object"
+          },
+          "nullableComposed": {
+            "description": "The nullable composed object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/First"
+              },
+              {
+                "$ref": "#/components/schemas/Second"
+              }
+            ]
+          },
+          "composed": {
+            "description": "The composed object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/First"
+              },
+              {
+                "$ref": "#/components/schemas/Second"
+              }
+            ]
+          }
+        }
+      },
+      "Second": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ComposedObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "second": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
