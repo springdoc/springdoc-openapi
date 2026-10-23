@@ -118,15 +118,17 @@ Projects can be imported without the plugins, your code changes just won't be au
 
 === Building from Source
 
-springdoc-openapi source can be built from the command line using https://maven.apache.org/[Maven].
-Install Maven and use JDK 21 to match the project's CI environment.
+springdoc-openapi source can be built from the command line on JDK 21, the version used by the project's CI.
+The https://maven.apache.org/wrapper/[Maven Wrapper] downloads the Maven version the project uses, so Maven does not need to be installed.
 
-The project can be built from the root directory using the standard maven command:
+The project can be built from the root directory with:
 
 [indent=0]
 ----
-	$ mvn install
+	$ ./mvnw install
 ----
+
+On Windows, use `mvnw.cmd install`.
 
 == Cloning the git repository on Windows
 
