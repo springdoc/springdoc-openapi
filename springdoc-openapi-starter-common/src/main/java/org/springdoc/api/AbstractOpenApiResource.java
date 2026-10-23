@@ -115,7 +115,9 @@ import org.springdoc.core.service.OperationService;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 import org.springdoc.core.utils.SpringDocUtils;
+import org.springdoc.core.versions.HeaderVersionStrategy;
 import org.springdoc.core.versions.MediaTypeVersionStrategy;
+import org.springdoc.core.versions.QueryParamVersionStrategy;
 import org.springdoc.core.versions.SpringDocVersionStrategy;
 
 import org.springframework.aop.support.AopUtils;
@@ -1280,6 +1282,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param addHeadersWhenEmpty   whether to add headers when operation has no parameters
 	 */
 	private void fillParametersList(Operation operation, Map<String, String> queryParams, MethodAttributes methodAttributes, boolean addHeadersWhenEmpty) {
+		calculateDefaultVersionServed(operation, methodAttributes);
 		List<Parameter> parametersList = operation.getParameters();
 		if (parametersList == null)
 			parametersList = new ArrayList<>();
@@ -1294,14 +1297,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 							.filter(p -> parameter.getName().equals(p.getName()))
 							.findFirst()
 							.ifPresent(existingParam -> {
-								if (existingParam.getSchema() != null && parameter.getSchema() != null
-										&& parameter.getSchema().getEnum() != null) {
-									for (Object enumValue : parameter.getSchema().getEnum()) {
-										if (existingParam.getSchema().getEnum() == null
-												|| !existingParam.getSchema().getEnum().contains(enumValue)) {
-											existingParam.getSchema().addEnumItemObject(enumValue);
-										}
-									}
+								if (existingParam.getSchema() != null && parameter.getSchema() != null) {
+									if (parameter.getSchema().getEnum() != null)
+										for (Object enumValue : parameter.getSchema().getEnum())
+											AbstractRequestService.addEnumValue(existingParam.getSchema(), enumValue);
+									if (existingParam.getSchema().getDefault() == null)
+										existingParam.getSchema().setDefault(parameter.getSchema().getDefault());
 								}
 							});
 				}
@@ -1318,18 +1319,25 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				String name = entry.getKey();
 				String value = entry.getValue();
 				String defaultValue = (versionDefaultMap != null) ? versionDefaultMap.get(name) : value;
+				if (versionDefaultMap != null && !AbstractRequestService.isDefaultVersionServed(methodAttributes, value, defaultValue))
+					defaultValue = null;
 				Optional<Parameter> existingParam = parametersList.stream()
 						.filter(p -> name.equals(p.getName()) && ParameterIn.QUERY.toString().equals(p.getIn()))
 						.findAny();
 				if (existingParam.isPresent() && existingParam.get().getSchema() != null
 						&& existingParam.get().getSchema().getEnum() != null
 						&& !existingParam.get().getSchema().getEnum().contains(value)) {
-					existingParam.get().getSchema().getEnum().add(value);
+					AbstractRequestService.addEnumValue(existingParam.get().getSchema(), value);
+					if (versionDefaultMap != null && defaultValue != null)
+						AbstractRequestService.addDefaultVersion(existingParam.get().getSchema(), defaultValue);
 				}
 				else {
 					Parameter parameter = new Parameter();
 					parameter.setName(name);
-					parameter.setSchema(new StringSchema()._default(defaultValue)._enum(new ArrayList<>(Collections.singletonList(value))));
+					StringSchema schema = new StringSchema()._enum(new ArrayList<>(Collections.singletonList(value)));
+					if (defaultValue != null)
+						AbstractRequestService.addDefaultVersion(schema, defaultValue);
+					parameter.setSchema(schema);
 					parameter.setRequired(true);
 					parameter.setIn(ParameterIn.QUERY.toString());
 					GenericParameterService.mergeParameter(parametersList, parameter);
@@ -1337,6 +1345,39 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 			operation.setParameters(parametersList);
 		}
+	}
+
+	/**
+	 * Calculate whether the operation serves the default version, when it is mapped to handler methods with and without a version.
+	 *
+	 * @param operation        the operation
+	 * @param methodAttributes the method attributes
+	 */
+	private void calculateDefaultVersionServed(Operation operation, MethodAttributes methodAttributes) {
+		SpringDocVersionStrategy springDocVersionStrategy = methodAttributes.getSpringDocVersionStrategy();
+		String versionName;
+		String versionIn;
+		if (springDocVersionStrategy instanceof HeaderVersionStrategy headerVersionStrategy) {
+			versionName = headerVersionStrategy.getHeaderName();
+			versionIn = ParameterIn.HEADER.toString();
+		}
+		else if (springDocVersionStrategy instanceof QueryParamVersionStrategy queryParamVersionStrategy) {
+			versionName = queryParamVersionStrategy.getParameterName();
+			versionIn = ParameterIn.QUERY.toString();
+		}
+		else
+			return;
+		String defaultVersion = springDocVersionStrategy.getVersionDefaultMap().get(versionName);
+		if (defaultVersion == null || !methodAttributes.isMethodOverloaded())
+			return;
+		Optional<Parameter> versionParameter = Optional.ofNullable(operation.getParameters()).orElse(Collections.emptyList()).stream()
+				.filter(parameter -> versionName.equals(parameter.getName()) && versionIn.equals(parameter.getIn()))
+				.findFirst();
+		// A handler method without a version serves the default version
+		if (springDocVersionStrategy.getVersion() == null)
+			versionParameter.ifPresent(parameter -> AbstractRequestService.addDefaultVersion(parameter.getSchema(), defaultVersion));
+		else if (versionParameter.isEmpty())
+			methodAttributes.setDefaultVersionServed(true);
 	}
 
 	/**

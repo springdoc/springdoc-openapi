@@ -66,10 +66,10 @@ public final class QueryParamVersionStrategy extends SpringDocVersionStrategy {
 
 	@Override
 	public void updateVersion(String version, String[] params) {
-		if(ArrayUtils.isEmpty(params)) { 
-			setVersion(version);
+		// Reset for each handler method, as this strategy is shared
+		setVersion(version);
+		if(ArrayUtils.isEmpty(params))
 			return;
-		}
 		for (String param : params) {
 			if (param.contains("=")) {
 				String[] paramValues = param.split("=", 2);
