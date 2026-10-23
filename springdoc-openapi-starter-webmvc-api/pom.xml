@@ -39,6 +39,12 @@
 			<artifactId>money-api</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- JSpecify @Nullable, a type-use only annotation -->
+		<dependency>
+			<groupId>org.jspecify</groupId>
+			<artifactId>jspecify</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!-- For Enhanced Pageable Support -->
 		<dependency>
         		<groupId>org.springframework.data</groupId>
