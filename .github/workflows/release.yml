@@ -79,13 +79,20 @@ jobs:
       # pluginManagement version and none of its configuration applies —
       # wrong tag name, no autoVersionSubmodules, and release:perform would
       # deploy unsigned artifacts that Central rejects.
+      #
+      # -Dskip.npm=false is forced for the same reason the profiles are explicit. The MCP
+      # dashboard assets are build output and are no longer tracked in git, so a release
+      # that skipped the frontend would publish a jar without the dashboard. release:perform
+      # builds in its own target/checkout, where a workflow-level path check cannot gate the
+      # deploy, so pin the property here and let the enforcer rule in
+      # springdoc-openapi-starter-common-mcp fail the build if the assets are still missing.
       - name: Release
         run: |
           ./mvnw $MAVEN_ARGS -Pci,gpg release:prepare release:perform \
             -DreleaseVersion='${{ inputs.releaseVersion }}' \
             -DdevelopmentVersion='${{ inputs.developmentVersion }}' \
             -DdryRun=${{ inputs.dryRun }} \
-            -Darguments="-DskipTests"
+            -Darguments="-DskipTests -Dskip.npm=false"
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_TOKEN }}

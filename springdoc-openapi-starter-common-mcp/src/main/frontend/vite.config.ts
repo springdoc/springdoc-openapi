@@ -11,7 +11,11 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../resources/mcp-ui',
+    // The Maven build points this at the module output directory (target/classes/mcp-ui) so
+    // that the generated dashboard lives under target/, where mvn clean removes it. A
+    // standalone build keeps writing next to the sources; those copies are not tracked, and
+    // the module excludes them from the jar, which only ever packages what Maven produced.
+    outDir: process.env.MCP_UI_OUT_DIR ?? '../resources/mcp-ui',
     emptyOutDir: true,
   },
   server: {

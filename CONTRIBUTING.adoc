@@ -130,6 +130,29 @@ The project can be built from the root directory with:
 
 On Windows, use `mvnw.cmd install`.
 
+==== The MCP dashboard frontend
+
+`springdoc-openapi-starter-common-mcp` ships a React dashboard. The build runs `npm install` and
+`vite build` for it through the
+https://github.com/eirslett/frontend-maven-plugin[frontend-maven-plugin], which downloads the Node
+version pinned by the `node.version` property in the root `pom.xml`. No local Node installation is
+required.
+
+The dashboard is build output: it is generated straight into the module's output directory
+(`springdoc-openapi-starter-common-mcp/target/classes/mcp-ui`), it is not tracked by git, and
+`./mvnw clean` removes it. The module excludes `mcp-ui/**` from `src/main/resources`, so a copy left
+there by a standalone `npm run build` is never packaged.
+
+Passing `-Dskip.npm=true` skips the frontend step and leaves the build directory alone. That means
+whatever is already in `target/classes/mcp-ui` — possibly from an earlier build, and possibly older
+than the current frontend sources — is packaged as-is, and a `./mvnw clean` build packages no dashboard
+at all. In the latter case, with `springdoc.ai.mcp.dashboard-enabled=true`, the dashboard path serves
+HTTP 404 for the UI, while `/api/mcp-admin/**` is unaffected.
+
+The release and snapshot builds always build the frontend (`-Pci`, and `-Dskip.npm=false` forced by
+the release workflow), so published artifacts always carry a dashboard built from the sources they
+were tagged from.
+
 == Cloning the git repository on Windows
 
 Some files in the git repository may exceed the Windows maximum file path (260 characters), depending on where you clone the repository.
