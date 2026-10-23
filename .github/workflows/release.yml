@@ -24,8 +24,10 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
+# ./mvnw pins Maven 3.9.x (.mvn/wrapper): Maven 3.10 restricts where server credentials
+# are sent (repositoryOrigins), which made the Central uploads fail with 401.
 env:
-  MAVEN_ARGS: -B --no-transfer-progress -Dmaven.artifact.threads=16
+  MAVEN_ARGS: -B -V --no-transfer-progress -Dmaven.artifact.threads=16
   MAVEN_OPTS: -Xmx3g
 
 jobs:
@@ -70,7 +72,7 @@ jobs:
       # suite is not executed a third time (release:prepare verifies, then
       # release:perform builds again from the tag).
       - name: Test
-        run: mvn $MAVEN_ARGS -Pci -T1C test
+        run: ./mvnw $MAVEN_ARGS -Pci -T1C test
 
       # -Pgpg is required, not optional: maven-release-plugin is declared inside
       # the gpg profile, so without it the plugin falls back to the parent's
@@ -79,7 +81,7 @@ jobs:
       # deploy unsigned artifacts that Central rejects.
       - name: Release
         run: |
-          mvn $MAVEN_ARGS -Pci,gpg release:prepare release:perform \
+          ./mvnw $MAVEN_ARGS -Pci,gpg release:prepare release:perform \
             -DreleaseVersion='${{ inputs.releaseVersion }}' \
             -DdevelopmentVersion='${{ inputs.developmentVersion }}' \
             -DdryRun=${{ inputs.dryRun }} \
@@ -92,4 +94,4 @@ jobs:
 
       - name: Clean up a dry run
         if: ${{ inputs.dryRun }}
-        run: mvn $MAVEN_ARGS -Pci,gpg release:clean
+        run: ./mvnw $MAVEN_ARGS -Pci,gpg release:clean

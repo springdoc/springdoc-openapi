@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  MAVEN_ARGS: -B --no-transfer-progress -Dmaven.artifact.threads=16
+  MAVEN_ARGS: -B -V --no-transfer-progress -Dmaven.artifact.threads=16
   MAVEN_OPTS: -Xmx3g
 
 jobs:
@@ -40,4 +40,4 @@ jobs:
 
       # -Pci keeps skip.npm=false; -T1C matches the runner's core count.
       - name: Test
-        run: mvn $MAVEN_ARGS -Pci -T1C test
+        run: ./mvnw $MAVEN_ARGS -Pci -T1C test
