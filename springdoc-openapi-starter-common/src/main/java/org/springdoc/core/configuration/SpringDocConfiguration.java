@@ -295,15 +295,17 @@ public class SpringDocConfiguration {
 	/**
 	 * Polymorphic model converter polymorphic model converter.
 	 *
-	 * @param objectMapperProvider the object mapper provider
+	 * @param objectMapperProvider      the object mapper provider
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @return the polymorphic model converter
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED, matchIfMissing = true)
 	@Lazy(false)
-	PolymorphicModelConverter polymorphicModelConverter(ObjectMapperProvider objectMapperProvider) {
-		return new PolymorphicModelConverter(objectMapperProvider);
+	PolymorphicModelConverter polymorphicModelConverter(ObjectMapperProvider objectMapperProvider, SpringDocConfigProperties springDocConfigProperties) {
+		SpringDocConfigProperties.ModelConverters.PolymorphicConverter polymorphicConverter = springDocConfigProperties.getModelConverters().getPolymorphicConverter();
+		return new PolymorphicModelConverter(objectMapperProvider, polymorphicConverter.isOneOfAsRef(), polymorphicConverter.getOneOfRefSuffix());
 	}
 
 	/**

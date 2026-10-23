@@ -117,6 +117,16 @@ public final class Constants {
 	public static final String SPRINGDOC_KOTLIN_NULLABLE_PROPERTY_CUSTOMIZER_ENABLED = "springdoc.model-converters.kotlin-nullable-property-customizer.enabled";
 
 	/**
+	 * The constant SPRINGDOC_POLYMORPHIC_CONVERTER_ONE_OF_AS_REF.
+	 */
+	public static final String SPRINGDOC_POLYMORPHIC_CONVERTER_ONE_OF_AS_REF = "springdoc.model-converters.polymorphic-converter.one-of-as-ref";
+
+	/**
+	 * The constant SPRINGDOC_POLYMORPHIC_CONVERTER_ONE_OF_REF_SUFFIX.
+	 */
+	public static final String SPRINGDOC_POLYMORPHIC_CONVERTER_ONE_OF_REF_SUFFIX = "springdoc.model-converters.polymorphic-converter.one-of-ref-suffix";
+
+	/**
 	 * The constant SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES.
 	 */
 	public static final String SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES = "springdoc.api-docs.resolve-schema-properties";
