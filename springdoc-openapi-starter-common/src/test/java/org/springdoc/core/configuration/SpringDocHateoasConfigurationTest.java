@@ -134,4 +134,29 @@ class SpringDocHateoasConfigurationTest {
 						SpringDocHateoasConfiguration.class
 				));
 	}
+
+	/**
+	 * LinkRelationProvider class may be on the classpath while no bean of that type
+	 * is present. The application context must still start, without a
+	 * CollectionModelContentConverter.
+	 */
+	@Test
+	void collectionModelContentConverterShouldNotBeCreatedWhenLinkRelationProviderBeanIsAbsent() {
+		new WebApplicationContextRunner()
+				.withPropertyValues(
+						"springdoc.api-docs.enabled=true",
+						"springdoc.enable-hateoas=true"
+				)
+				.withConfiguration(AutoConfigurations.of(
+						WebMvcAutoConfiguration.class,
+						// deliberately omit HateoasConfiguration → no LinkRelationProvider bean
+						SpringDocConfiguration.class,
+						SpringDocConfigProperties.class,
+						SpringDocHateoasConfiguration.class
+				))
+				.run(context -> {
+					assertThat(context).hasNotFailed();
+					assertThat(context.getBeanProvider(CollectionModelContentConverter.class).getIfAvailable()).isNull();
+				});
+	}
 }
