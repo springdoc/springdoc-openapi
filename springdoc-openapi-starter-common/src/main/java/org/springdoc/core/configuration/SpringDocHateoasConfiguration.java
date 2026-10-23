@@ -37,6 +37,7 @@ import org.springdoc.core.providers.HateoasHalProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.Constants;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -118,27 +119,18 @@ public class SpringDocHateoasConfiguration {
 	}
 
 	/**
-	 * Creates CollectionModelContentConverter only when a LinkRelationProvider bean exists.
+	 * Collection model content converter collection model content converter.
+	 *
+	 * @param halProvider          the hal provider
+	 * @param linkRelationProvider the link relation provider, if one is registered
+	 * @return the collection model content converter
 	 */
-	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnBean(LinkRelationProvider.class)
-	static class CollectionModelContentConverterConfiguration {
-
-		/**
-		 * Collection model content converter collection model content converter.
-		 *
-		 * @param halProvider          the hal provider
-		 * @param linkRelationProvider the link relation provider
-		 * @return the collection model content converter
-		 */
-		@Bean
-		@ConditionalOnMissingBean
-		@Lazy(false)
-		CollectionModelContentConverter collectionModelContentConverter(
-				HateoasHalProvider halProvider,
-				LinkRelationProvider linkRelationProvider) {
-			return halProvider.isHalEnabled() ? new CollectionModelContentConverter(linkRelationProvider) : null;
-		}
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	CollectionModelContentConverter collectionModelContentConverter(HateoasHalProvider halProvider, ObjectProvider<LinkRelationProvider> linkRelationProvider) {
+		LinkRelationProvider provider = linkRelationProvider.getIfAvailable();
+		return (halProvider.isHalEnabled() && provider != null) ? new CollectionModelContentConverter(provider) : null;
 	}
 
 	/**
