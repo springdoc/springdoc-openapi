@@ -16,7 +16,7 @@
 
     <!-- Initialize the Scalar API Reference -->
     <script>
-      Scalar.createApiReference('#app', {"showSidebar":true,"hideModels":false,"hideTestRequestButton":false,"darkMode":false,"hideDarkModeToggle":false,"withDefaultFonts":true,"defaultOpenAllTags":false,"expandAllModelSections":false,"expandAllResponses":false,"hideSearch":false,"theme":"default","layout":"modern","favicon":"favicon.svg","hideClientButton":false,"sources":[{"url":"http://localhost:9493/application/openapi/users","title":"users","default":false}],"persistAuth":false,"telemetry":true,"documentDownloadType":"both","orderRequiredPropertiesFirst":true,"showOperationId":false})
+      Scalar.createApiReference('#app', {"darkMode":false,"defaultOpenAllTags":false,"defaultOpenFirstTag":true,"documentDownloadType":"both","expandAllModelSections":false,"expandAllResponses":false,"expandAllSchemaProperties":false,"favicon":"favicon.svg","hideClientButton":false,"hideDarkModeToggle":false,"hideModels":false,"hideSearch":false,"hideTestRequestButton":false,"layout":"modern","orderRequiredPropertiesFirst":true,"persistAuth":false,"showOperationId":false,"showSidebar":true,"sources":[{"default":false,"title":"users","url":"http://localhost:9493/application/openapi/users"}],"telemetry":true,"theme":"default","withDefaultFonts":true})
     </script>
   </body>
 </html>
