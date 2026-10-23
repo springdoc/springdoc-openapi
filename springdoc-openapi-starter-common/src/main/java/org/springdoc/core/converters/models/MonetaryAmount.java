@@ -43,14 +43,14 @@ public class MonetaryAmount {
 	 * The Amount.
 	 */
 	@JsonProperty("amount")
-	@Schema(example = "99.96")
+	@Schema(example = "99.96", requiredMode = Schema.RequiredMode.REQUIRED)
 	private BigDecimal amount;
 
 	/**
 	 * The Currency.
 	 */
 	@JsonProperty("currency")
-	@Schema(example = "USD")
+	@Schema(example = "USD", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String currency;
 
 }
