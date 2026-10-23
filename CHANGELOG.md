@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- #3370 – A `ParameterCustomizer` can read the type-use annotations of a parameter, including the ones declared on the value wrapped in an `Optional`, such as `Optional<@MyAnnotation Foo>`
+
 ### Changed
 
 - The MCP dashboard no longer pre-fills the OAuth2 token endpoint, client id and client secret. The form shows hints instead, and warns when the token endpoint is not HTTPS

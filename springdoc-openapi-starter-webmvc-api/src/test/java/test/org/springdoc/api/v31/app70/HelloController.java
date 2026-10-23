@@ -32,7 +32,10 @@ import test.org.springdoc.api.v31.app70.model.ApiType;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 public class HelloController {
@@ -40,7 +43,8 @@ public class HelloController {
 	@CustomizedOperation
 	@Operation(description = "Some operation")
 	@GetMapping("/example/{test}")
-	public ApiType test(@PathVariable @CustomizedParameter @Parameter(description = "Parameter description") String test) {
+	public ApiType test(@PathVariable @CustomizedParameter @Parameter(description = "Parameter description") String test,
+	                    @RequestParam @Parameter(description = "Parameter description") Optional<@CustomizedParameter String> optionalTest) {
 		return new ApiType();
 	}
 }

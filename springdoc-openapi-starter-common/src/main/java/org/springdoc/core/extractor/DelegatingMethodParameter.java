@@ -27,11 +27,14 @@ package org.springdoc.core.extractor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +51,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.service.AbstractRequestService;
+import org.springdoc.core.utils.SchemaUtils;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -155,7 +159,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null, null, false, null, false));
+				explodedParameters.add(new DelegatingMethodParameter(p, name, getTypeUseAnnotations(p), null, false, null, false));
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);
@@ -317,5 +321,42 @@ public class DelegatingMethodParameter extends MethodParameter {
 	@Nullable
 	public Field getField() {
 		return field;
+	}
+
+	/**
+	 * Collects the type-use annotations declared on a parameter's type so that customizers can natively
+	 * read annotation data placed on the type. Annotations declared directly on the parameter type
+	 * (for example {@code @MyAnnotation Foo}) are always collected. Annotations declared on the wrapped
+	 * type of an {@link Optional} (for example {@code Optional<@MyAnnotation Foo>}) are also collected,
+	 * since an {@code Optional} is unwrapped to its element type, except the ones marking a value as
+	 * required: they constrain the wrapped value when present, not the parameter. Annotations on the
+	 * element type of other container types (such as {@link java.util.List}) are intentionally not
+	 * collected, as they apply to the items' schema rather than to the parameter itself.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the type-use annotations, or {@code null} if none were found
+	 */
+	@Nullable
+	private static Annotation[] getTypeUseAnnotations(MethodParameter methodParameter) {
+		int index = methodParameter.getParameterIndex();
+		if (index < 0)
+			return null;
+		Parameter[] parameters = methodParameter.getExecutable().getParameters();
+		if (index >= parameters.length)
+			return null;
+		AnnotatedType annotatedType = parameters[index].getAnnotatedType();
+		List<Annotation> declaredAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
+		List<Annotation> annotations = new ArrayList<>();
+		for (Annotation annotation : annotatedType.getAnnotations())
+			if (!declaredAnnotations.contains(annotation))
+				annotations.add(annotation);
+		if (Optional.class.isAssignableFrom(methodParameter.getParameterType())
+				&& annotatedType instanceof AnnotatedParameterizedType annotatedParameterizedType) {
+			for (AnnotatedType typeArgument : annotatedParameterizedType.getAnnotatedActualTypeArguments())
+				for (Annotation annotation : typeArgument.getAnnotations())
+					if (!SchemaUtils.ANNOTATIONS_FOR_REQUIRED.contains(annotation.annotationType().getSimpleName()))
+						annotations.add(annotation);
+		}
+		return annotations.isEmpty() ? null : annotations.toArray(new Annotation[0]);
 	}
 }
