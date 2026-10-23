@@ -1,74 +1,76 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
   },
-  "servers": [
-    {
-      "url": "http://localhost",
-      "description": "Generated server url"
-    }
-  ],
-  "paths": {
-    "/time1": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "postTime1",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TimeDtoNoAnnotations"
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/parent" : {
+      "post" : {
+        "tags" : [ "hello-controller" ],
+        "operationId" : "parentEndpoint",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SuperClass"
               }
             }
           },
-          "required": true
+          "required" : true
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeDtoNoAnnotations"
-                }
-              }
-            }
+        "responses" : {
+          "200" : {
+            "description" : "OK"
           }
         }
       }
     }
   },
-  "components": {
-    "schemas": {
-      "TimeDtoNoAnnotations": {
-        "type": "object",
-        "properties": {
-          "localDateTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "localDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "localTime": {
-            "type": "string",
-            "format": "partial-time"
-          },
-          "yearMonth": {
-            "type": "string"
-          },
-          "monthDay": {
-            "type": "string"
-          },
-          "year": {
-            "type": "string"
+  "components" : {
+    "schemas" : {
+      "Image" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string"
           }
-        }
+        },
+        "required" : [ "type" ]
+      },
+      "Mail" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "type" ]
+      },
+      "SuperClass" : {
+        "type" : "object",
+        "discriminator" : {
+          "propertyName" : "type",
+          "mapping" : {
+            "Image" : "#/components/schemas/Image",
+            "Mail" : "#/components/schemas/Mail"
+          }
+        },
+        "oneOf" : [ {
+          "$ref" : "#/components/schemas/Image"
+        }, {
+          "$ref" : "#/components/schemas/Mail"
+        } ],
+        "properties" : {
+          "type" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "type" ]
       }
     }
   }
