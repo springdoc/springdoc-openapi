@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  MAVEN_ARGS: -B --no-transfer-progress -Dmaven.artifact.threads=16
+  MAVEN_ARGS: -B -V --no-transfer-progress -Dmaven.artifact.threads=16
   MAVEN_OPTS: -Xmx3g
 
 jobs:
@@ -33,4 +33,4 @@ jobs:
       # -Pci is a no-op on this branch (the profile is empty here, there is no
       # frontend module) but is kept so the command matches main.
       - name: Test
-        run: mvn $MAVEN_ARGS -Pci -T1C test
+        run: ./mvnw $MAVEN_ARGS -Pci -T1C test

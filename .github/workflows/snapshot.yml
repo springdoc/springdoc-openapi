@@ -11,8 +11,10 @@ concurrency:
   group: snapshot-${{ github.ref }}
   cancel-in-progress: false
 
+# ./mvnw pins Maven 3.9.x (.mvn/wrapper): Maven 3.10 restricts where server credentials
+# are sent (repositoryOrigins), which made the Central uploads fail with 401.
 env:
-  MAVEN_ARGS: -B --no-transfer-progress -Dmaven.artifact.threads=16
+  MAVEN_ARGS: -B -V --no-transfer-progress -Dmaven.artifact.threads=16
   MAVEN_OPTS: -Xmx3g
 
 jobs:
@@ -38,7 +40,7 @@ jobs:
       # -Pci is a no-op on this branch (the profile is empty here, there is no
       # frontend module) but is kept so the command matches main.
       - name: Test and deploy snapshot
-        run: mvn $MAVEN_ARGS -Pci,gpg -T1C -Dmaven.javadoc.skip=true deploy
+        run: ./mvnw $MAVEN_ARGS -Pci,gpg -T1C -Dmaven.javadoc.skip=true deploy
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
