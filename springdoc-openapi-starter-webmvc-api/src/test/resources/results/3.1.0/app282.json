@@ -1,0 +1,118 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/items" : {
+      "get" : {
+        "tags" : [ "hello-controller" ],
+        "operationId" : "get",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Child" : {
+        "discriminator" : {
+          "propertyName" : "type",
+          "mapping" : {
+            "childA" : "#/components/schemas/ChildA",
+            "childB" : "#/components/schemas/ChildB"
+          }
+        },
+        "properties" : {
+          "type" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "type" ]
+      },
+      "ChildA" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/Child"
+        }, {
+          "type" : "object",
+          "properties" : {
+            "fieldA" : {
+              "type" : "string"
+            }
+          }
+        } ]
+      },
+      "ChildB" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/Child"
+        }, {
+          "type" : "object",
+          "properties" : {
+            "fieldB" : {
+              "type" : "string"
+            },
+            "numberB" : {
+              "type" : "integer",
+              "format" : "int32"
+            }
+          }
+        } ]
+      },
+      "ChildVariant" : {
+        "oneOf" : [ {
+          "$ref" : "#/components/schemas/ChildA"
+        }, {
+          "$ref" : "#/components/schemas/ChildB"
+        } ]
+      },
+      "ChildWrapper1" : {
+        "type" : "object",
+        "properties" : {
+          "wrapper1Field" : {
+            "type" : "string"
+          },
+          "child" : {
+            "$ref" : "#/components/schemas/ChildVariant"
+          }
+        }
+      },
+      "ChildWrapper2" : {
+        "type" : "object",
+        "properties" : {
+          "wrapper2Field" : {
+            "type" : "string"
+          },
+          "child" : {
+            "$ref" : "#/components/schemas/ChildVariant"
+          }
+        }
+      },
+      "Request" : {
+        "type" : "object",
+        "properties" : {
+          "childWrapper1" : {
+            "$ref" : "#/components/schemas/ChildWrapper1"
+          },
+          "childWrapper2" : {
+            "$ref" : "#/components/schemas/ChildWrapper2"
+          }
+        }
+      }
+    }
+  }
+}
