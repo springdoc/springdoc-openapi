@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - #3360 – The properties of Spring Data `PagedModel` and its `PageMetadata` are now marked as required, as they are always serialized
+- #3361 – The `amount` and `currency` properties of `MonetaryAmount` are now marked as required
 
 ### Fixed
 
