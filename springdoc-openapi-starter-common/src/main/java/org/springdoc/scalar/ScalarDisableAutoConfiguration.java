@@ -37,6 +37,10 @@ import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 
 /**
  * Disable Scalar WebJar AutoConfiguration.
+ * <p>
+ * Registered by the Springdoc Scalar starters only, as their controllers replace Scalar's own
+ * ones. Both Scalar auto-configurations are excluded together, since Scalar's WebFlux one has no
+ * web application type condition.
  */
 public class ScalarDisableAutoConfiguration
 		implements AutoConfigurationImportFilter {
