@@ -289,9 +289,12 @@ public abstract class AbstractRequestService {
 				List existingEnum = null;
 				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
 					existingEnum = parameter.getSchema().getEnum();
+				if (parameter.getSchema() != null && existingEnum != null)
+					parameter.getSchema().setEnum(new ArrayList<>(existingEnum));
 				if (StringUtils.isNotEmpty(headerValue) && (existingEnum == null || !existingEnum.contains(headerValue)))
 					parameter.getSchema().addEnumItemObject(headerValue);
-				if (defaultValue != null && (existingEnum == null || !existingEnum.contains(defaultValue)))
+				if (defaultValue != null && CollectionUtils.isEmpty(existingEnum)
+						&& (parameter.getSchema().getEnum() == null || !parameter.getSchema().getEnum().contains(defaultValue)))
 					parameter.getSchema().addEnumItemObject(defaultValue);
 				parameter.setSchema(parameter.getSchema());
 			}
