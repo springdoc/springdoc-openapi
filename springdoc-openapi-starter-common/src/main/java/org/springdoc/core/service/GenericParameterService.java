@@ -449,14 +449,15 @@ public class GenericParameterService {
 		}
 
 		List<Annotation> typeAnnotations = Stream.concat(
-				Arrays.stream(annotationsFromAnnotatedTypeArguments(getParameterAnnotatedType(methodParameter))),
+				Arrays.stream(annotationsFromAnnotatedType(getParameterAnnotatedType(methodParameter))),
 				Arrays.stream(methodParameter.getParameterType().getAnnotations())).toList();
 		return new TypeAndTypeAnnotations(type, typeAnnotations);
 	}
 
 	/**
-	 * Resolves the {@link AnnotatedType} of a method parameter so that annotations declared on its
-	 * generic type arguments (for example inside a {@link List} or an {@link Optional}) can be inspected.
+	 * Resolves the {@link AnnotatedType} of a method parameter so that annotations declared on the
+	 * type itself (for example a JSpecify {@code @Nullable}) or on its generic type arguments (for
+	 * example inside a {@link List} or an {@link Optional}) can be inspected.
 	 *
 	 * @param methodParameter the method parameter
 	 * @return the annotated type, or {@code null} if it cannot be resolved
@@ -481,10 +482,13 @@ public class GenericParameterService {
 	 * Collects annotations declared on the type itself and on each type argument of an
 	 * {@link AnnotatedParameterizedType}.
 	 *
-	 * @param annotatedType the annotated type
+	 * @param annotatedType the annotated type, possibly {@code null}
 	 * @return a new array, possibly empty
 	 */
 	private static Annotation[] annotationsFromAnnotatedType(AnnotatedType annotatedType) {
+		if (annotatedType == null) {
+			return new Annotation[0];
+		}
 		return Stream.concat(
 				Arrays.stream(annotatedType.getAnnotations()),
 				Arrays.stream(annotationsFromAnnotatedTypeArguments(annotatedType))).toArray(Annotation[]::new);
