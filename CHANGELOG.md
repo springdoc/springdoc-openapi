@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - #3352 – A `@ResponseStatus` on a controller class is now applied to the responses of its operations
+- #3355 – An injected `WebSession` parameter is no longer documented as a query parameter in WebFlux applications
 
 ## [3.1.1] - 2026-09-06
 
