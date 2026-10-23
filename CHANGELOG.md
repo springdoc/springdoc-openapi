@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3352 – A `@ResponseStatus` on a controller class is now applied to the responses of its operations
 - #3355 – An injected `WebSession` parameter is no longer documented as a query parameter in WebFlux applications
 - #3364 – The application no longer fails to start when Spring HATEOAS is on the classpath without a `LinkRelationProvider` bean
+- #3368 – A `WebAsyncTask` return type is now unwrapped, so its response is described by its result type
 
 ## [2.9.1] - 2026-09-06
 
