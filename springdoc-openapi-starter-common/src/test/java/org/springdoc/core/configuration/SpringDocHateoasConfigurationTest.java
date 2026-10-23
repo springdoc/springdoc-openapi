@@ -1,6 +1,7 @@
 package org.springdoc.core.configuration;
 
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.converters.CollectionModelContentConverter;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiHateoasLinksCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -80,6 +81,31 @@ class SpringDocHateoasConfigurationTest {
 							.hasSize(2)
 							.contains(LINKS_SCHEMA_CUSTOMIZER);
 					assertThat(context.getBean(LINKS_SCHEMA_CUSTOMIZER)).isNotExactlyInstanceOf(OpenApiHateoasLinksCustomizer.class);
+				});
+	}
+
+	/**
+	 * LinkRelationProvider class may be on the classpath while no bean of that type
+	 * is present. The application context must still start, without a
+	 * CollectionModelContentConverter.
+	 */
+	@Test
+	void collectionModelContentConverterShouldNotBeCreatedWhenLinkRelationProviderBeanIsAbsent() {
+		new WebApplicationContextRunner()
+				.withPropertyValues(
+						"springdoc.api-docs.enabled=true",
+						"springdoc.enable-hateoas=true"
+				)
+				.withConfiguration(AutoConfigurations.of(
+						WebMvcAutoConfiguration.class,
+						// deliberately omit HateoasConfiguration → no LinkRelationProvider bean
+						SpringDocConfiguration.class,
+						SpringDocConfigProperties.class,
+						SpringDocHateoasConfiguration.class
+				))
+				.run(context -> {
+					assertThat(context).hasNotFailed();
+					assertThat(context.getBeanProvider(CollectionModelContentConverter.class).getIfAvailable()).isNull();
 				});
 	}
 }
