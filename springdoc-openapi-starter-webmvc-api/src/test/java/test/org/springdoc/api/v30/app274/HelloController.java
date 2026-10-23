@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-package test.org.springdoc.api.v30.app3354;
+package test.org.springdoc.api.v30.app274;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * A controller with operations mapped to a version other than the default one, and an
+ * operation also mapped to a handler method without a version.
+ *
+ * @author arimu1
+ * @author bnasslahsen
+ */
 @RestController
 public class HelloController {
 
@@ -27,4 +34,20 @@ public class HelloController {
 	public String hello() {
 		return "hello";
 	}
+
+	@GetMapping(value = "/bye", version = "3.0.0")
+	public String bye() {
+		return "bye";
+	}
+
+	@GetMapping("/greeting")
+	public String greeting() {
+		return "greeting";
+	}
+
+	@GetMapping(value = "/greeting", version = "3.0.0")
+	public String greetingV3() {
+		return "greeting v3";
+	}
+
 }

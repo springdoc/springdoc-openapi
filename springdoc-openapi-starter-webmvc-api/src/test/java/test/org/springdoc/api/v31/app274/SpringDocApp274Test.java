@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package test.org.springdoc.api.v31.app3354;
+package test.org.springdoc.api.v31.app274;
 
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
- * GH-3354: OpenAPI generation when MVC default API version is absent from header
- * {@code @Schema(allowableValues)}.
+ * The default API version is not added to the values declared with
+ * {@code @Schema(allowableValues)} on the version header.
+ *
+ * @author arimu1
+ * @see <a href="https://github.com/springdoc/springdoc-openapi/issues/3354">#3354</a>
  */
-public class SpringDocApp3354Test extends AbstractSpringDocTest {
+public class SpringDocApp274Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = "test.org.springdoc.api.v31.app3354")
 	static class SpringDocTestApp {
 
 	}

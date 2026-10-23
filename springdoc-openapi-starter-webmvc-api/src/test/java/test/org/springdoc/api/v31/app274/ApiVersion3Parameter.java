@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package test.org.springdoc.api.v30.app3354;
-
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
+package test.org.springdoc.api.v31.app274;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+/**
+ * Documents the version header of an operation that only supports version 3.0.0.
+ *
+ * @author arimu1
+ */
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Parameter(
-		name = "X-API-Version",
-		in = ParameterIn.HEADER,
-		schema = @Schema(type = "string", allowableValues = { "3.0.0" })
-)
+@Parameter(name = "X-API-Version", in = ParameterIn.HEADER, schema = @Schema(type = "string", allowableValues = { "3.0.0" }))
 public @interface ApiVersion3Parameter {
+
 }

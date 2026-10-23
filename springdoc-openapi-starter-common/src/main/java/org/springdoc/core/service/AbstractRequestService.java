@@ -277,30 +277,69 @@ public abstract class AbstractRequestService {
 			String headerValue = entry.getValue();
 			if (StringUtils.isNotEmpty(headerValue))
 				schema.addEnumItem(headerValue);
-			String defaultValue = null;
-			if(versionDefaultMap != null) {
-				defaultValue = versionDefaultMap.get(headerName);
-				schema._default(defaultValue);
-			}
+			String defaultValue = (versionDefaultMap != null) ? versionDefaultMap.get(headerName) : null;
+			boolean defaultVersionServed = isDefaultVersionServed(methodAttributes, headerValue, defaultValue);
+			if (defaultVersionServed)
+				addDefaultVersion(schema, defaultValue);
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(headerName).schema(schema);
 			ParameterId parameterId = new ParameterId(parameter);
 			if (map.containsKey(parameterId)) {
 				parameter = map.get(parameterId);
-				List existingEnum = null;
-				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
-					existingEnum = parameter.getSchema().getEnum();
-				if (parameter.getSchema() != null && existingEnum != null)
-					parameter.getSchema().setEnum(new ArrayList<>(existingEnum));
-				if (StringUtils.isNotEmpty(headerValue) && (existingEnum == null || !existingEnum.contains(headerValue)))
-					parameter.getSchema().addEnumItemObject(headerValue);
-				if (defaultValue != null && CollectionUtils.isEmpty(existingEnum)
-						&& (parameter.getSchema().getEnum() == null || !parameter.getSchema().getEnum().contains(defaultValue)))
-					parameter.getSchema().addEnumItemObject(defaultValue);
-				parameter.setSchema(parameter.getSchema());
+				if (parameter.getSchema() != null) {
+					if (StringUtils.isNotEmpty(headerValue))
+						addEnumValue(parameter.getSchema(), headerValue);
+					if (defaultVersionServed)
+						addDefaultVersion(parameter.getSchema(), defaultValue);
+				}
 			}
 			map.put(parameterId, parameter);
 		}
 		return map.values();
+	}
+
+	/**
+	 * Is default version served boolean.
+	 *
+	 * @param methodAttributes the method attributes
+	 * @param version          the version of the handler method
+	 * @param defaultVersion   the default version
+	 * @return true if the operation serves the default version
+	 */
+	public static boolean isDefaultVersionServed(MethodAttributes methodAttributes, String version, String defaultVersion) {
+		return defaultVersion != null && (defaultVersion.equals(version) || methodAttributes.isDefaultVersionServed());
+	}
+
+	/**
+	 * Adds the default version to the values and as the default of a version parameter schema.
+	 *
+	 * @param schema         the schema
+	 * @param defaultVersion the default version
+	 */
+	@SuppressWarnings("unchecked")
+	public static void addDefaultVersion(Schema schema, String defaultVersion) {
+		if (schema == null)
+			return;
+		addEnumValue(schema, defaultVersion);
+		if (schema.getDefault() == null)
+			schema.setDefault(defaultVersion);
+	}
+
+	/**
+	 * Adds a value to the enum of a schema, if not already present.
+	 *
+	 * @param schema the schema
+	 * @param value  the value
+	 */
+	@SuppressWarnings("unchecked")
+	public static void addEnumValue(Schema schema, Object value) {
+		// Copied first, as declared values may be a fixed-size list, like @Schema(allowableValues)
+		List<Object> values = new ArrayList<>();
+		if (schema.getEnum() != null)
+			values.addAll(schema.getEnum());
+		if (!values.contains(value)) {
+			values.add(value);
+			schema.setEnum(values);
+		}
 	}
 
 	/**

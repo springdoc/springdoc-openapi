@@ -85,6 +85,11 @@ public class MethodAttributes {
 	private boolean methodOverloaded;
 
 	/**
+	 * Whether the operation is also mapped to a handler method without a version, which serves the default version.
+	 */
+	private boolean defaultVersionServed;
+
+	/**
 	 * The With api response doc.
 	 */
 	private boolean withApiResponseDoc;
@@ -412,6 +417,24 @@ public class MethodAttributes {
 	 */
 	public void setMethodOverloaded(boolean overloaded) {
 		methodOverloaded = overloaded;
+	}
+
+	/**
+	 * Is default version served boolean.
+	 *
+	 * @return true if the operation is also mapped to a handler method without a version
+	 */
+	public boolean isDefaultVersionServed() {
+		return defaultVersionServed;
+	}
+
+	/**
+	 * Sets default version served.
+	 *
+	 * @param defaultVersionServed the default version served
+	 */
+	public void setDefaultVersionServed(boolean defaultVersionServed) {
+		this.defaultVersionServed = defaultVersionServed;
 	}
 
 	/**

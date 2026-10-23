@@ -10,11 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - The MCP dashboard no longer pre-fills the OAuth2 token endpoint, client id and client secret. The form shows hints instead, and warns when the token endpoint is not HTTPS
+- #3354 – The default API version is only listed in the header or query parameter of the operations that serve it: a handler method mapped to it, or one without a version
 
 ### Fixed
 
 - #3352 – A `@ResponseStatus` on a controller class is now applied to the responses of its operations
 - #3355 – An injected `WebSession` parameter is no longer documented as a query parameter in WebFlux applications
+- #3354 – `/v3/api-docs` no longer fails when an API version parameter declares `@Schema(allowableValues)`
 
 ## [3.1.1] - 2026-09-06
 
