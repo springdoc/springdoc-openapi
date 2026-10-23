@@ -11,12 +11,19 @@ data class NullableFieldsResponse(
 	val nullableAny: Any? = null,
 	@field:Schema(description = "The nested object")
 	val nullableNested: NestedObject? = null,
+	val nullableComposed: ComposedObject? = null,
 )
 
 data class NestedObject(
 	val name: String,
 	val description: String? = null,
 )
+
+sealed class ComposedObject {
+	data class First(val first: String) : ComposedObject()
+
+	data class Second(val second: String) : ComposedObject()
+}
 
 @RestController
 class NullableController {
