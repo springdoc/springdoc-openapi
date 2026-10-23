@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3364 – The application no longer fails to start when Spring HATEOAS is on the classpath without a `LinkRelationProvider` bean
 - #3368 – A `WebAsyncTask` return type is now unwrapped, so its response is described by its result type
 
+### Added
+
+- `ParameterCustomizer` now receive the type-use annotation data declared on a value wrapped in an `Optional`, so annotations such as `Optional<@MyAnnotation Foo>` can be read natively by it
+
 ## [3.1.1] - 2026-09-06
 
 ### Security
