@@ -132,6 +132,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.async.DeferredResult;
+import org.springframework.web.context.request.async.WebAsyncTask;
 
 import static org.springdoc.core.utils.Constants.GLOBAL_OPEN_API_CUSTOMIZER;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
@@ -163,7 +164,8 @@ public class SpringDocConfiguration {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema())
 				.replaceWithClass(Charset.class, String.class)
 				.addResponseWrapperToIgnore(DeferredResult.class)
-				.addResponseWrapperToIgnore(Future.class);
+				.addResponseWrapperToIgnore(Future.class)
+				.addResponseWrapperToIgnore(WebAsyncTask.class);
 	}
 
 	/**
