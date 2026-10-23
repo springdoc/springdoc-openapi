@@ -47,6 +47,7 @@ import org.springframework.data.web.PagedModel;
  * The Spring Data Page type model converter.
  *
  * @author Claudio Nave
+ * @author dpkass
  */
 public class PageOpenAPIConverter implements ModelConverter {
 
@@ -75,6 +76,15 @@ public class PageOpenAPIConverter implements ModelConverter {
 			"first",
 			"last",
 			"empty"
+	);
+
+	private static final List<String> PAGED_MODEL_REQUIRED_PROPERTIES = List.of("content", "page");
+
+	private static final List<String> PAGE_METADATA_REQUIRED_PROPERTIES = List.of(
+			"size",
+			"number",
+			"totalElements",
+			"totalPages"
 	);
 
 	/**
@@ -110,9 +120,11 @@ public class PageOpenAPIConverter implements ModelConverter {
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		boolean isPageType = false;
+		boolean isPagedModelType = false;
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
 			isPageType = PAGE_TO_REPLACE.equals(cls.getCanonicalName());
+			isPagedModelType = PagedModel.class.isAssignableFrom(cls);
 			if (replacePageWithPagedModel && isPageType) {
 				if (!type.isSchemaProperty())
 					type = resolvePagedModelType(javaType, type);
@@ -124,6 +136,8 @@ public class PageOpenAPIConverter implements ModelConverter {
 
 		if (isPageType && !replacePageWithPagedModel)
 			sortPageSchemaProperties(schema, context);
+		else if (isPagedModelType || isPageType)
+			requirePagedModelProperties(schema, context);
 		return schema;
 	}
 
@@ -179,6 +193,29 @@ public class PageOpenAPIConverter implements ModelConverter {
 		PAGE_PROPERTY_ORDER.forEach(property -> sortedProperties.put(property, properties.get(property)));
 		properties.forEach(sortedProperties::putIfAbsent);
 		pageSchema.setProperties(sortedProperties);
+	}
+
+	/**
+	 * Require properties emitted by Spring Data's stable page representation.
+	 *
+	 * @param schema  the schema
+	 * @param context the context
+	 */
+	private void requirePagedModelProperties(Schema schema, ModelConverterContext context) {
+		Schema pagedModelSchema = resolveReferencedSchema(schema, context);
+		if (pagedModelSchema == null || pagedModelSchema.getProperties() == null
+				|| !pagedModelSchema.getProperties().keySet().containsAll(PAGED_MODEL_REQUIRED_PROPERTIES))
+			return;
+
+		pagedModelSchema.setRequired(PAGED_MODEL_REQUIRED_PROPERTIES);
+
+		Schema metadataSchema = resolveReferencedSchema(
+				(Schema) pagedModelSchema.getProperties().get("page"), context);
+		if (metadataSchema == null || metadataSchema.getProperties() == null
+				|| !metadataSchema.getProperties().keySet().containsAll(PAGE_METADATA_REQUIRED_PROPERTIES))
+			return;
+
+		metadataSchema.setRequired(PAGE_METADATA_REQUIRED_PROPERTIES);
 	}
 
 	/**
