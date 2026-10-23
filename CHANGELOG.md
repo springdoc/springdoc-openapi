@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The MCP dashboard no longer pre-fills the OAuth2 token endpoint, client id and client secret. The form shows hints instead, and warns when the token endpoint is not HTTPS
 - #3354 – The default API version is only listed in the header or query parameter of the operations that serve it: a handler method mapped to it, or one without a version
 - #3360 – The properties of Spring Data `PagedModel` and its `PageMetadata` are now marked as required, as they are always serialized
+- #3361 – The `amount` and `currency` properties of `MonetaryAmount` are now marked as required
 
 ### Fixed
 
