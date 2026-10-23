@@ -26,6 +26,8 @@ package test.org.springdoc.api.v30.app238;
 
 import java.util.Locale;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import org.springdoc.core.utils.Constants;
@@ -47,6 +49,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = "springdoc.allowed-locales=en-US,fr-CA")
 public class SpringDocApp238Test extends AbstractSpringDocV30Test {
+
+	private static Locale DEFAULT_LOCALE;
+
+	@BeforeAll
+	public static void init() {
+		DEFAULT_LOCALE = Locale.getDefault();
+		Locale.setDefault(Locale.US);
+	}
+
+	@AfterAll
+	public static void clean() {
+		Locale.setDefault(DEFAULT_LOCALE);
+	}
 
 	@Test
 	@Override
