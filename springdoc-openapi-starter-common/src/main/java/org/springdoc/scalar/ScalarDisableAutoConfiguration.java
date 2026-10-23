@@ -37,6 +37,19 @@ import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 
 /**
  * Disable Scalar WebJar AutoConfiguration.
+ *
+ * <p>The class stays in this module, because it is shared by both Springdoc Scalar starters, but it
+ * is no longer registered here. This module is a dependency of every starter, so a registration
+ * here made the filter apply to applications using the Swagger UI or the API-only starter as well,
+ * leaving them with neither Scalar controller (#3387). Each Springdoc Scalar starter now declares
+ * the filter in its own {@code META-INF/spring.factories}, which keeps the duplicate registration
+ * protection of #3084 while letting the standalone Scalar integration work everywhere it is not
+ * replaced.
+ *
+ * <p>Both Scalar auto-configurations are always excluded together, by design: Scalar's own
+ * {@code ScalarWebFluxAutoConfiguration} carries no {@code @ConditionalOnWebApplication}
+ * constraint, so excluding only the matching stack would let a reactive Scalar controller be
+ * registered in a servlet application, and the other way round.
  */
 public class ScalarDisableAutoConfiguration
 		implements AutoConfigurationImportFilter {
