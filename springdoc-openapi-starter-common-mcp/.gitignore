@@ -147,3 +147,4 @@ Desktop.ini
 # MCP Dashboard
 ######################
 src/main/frontend/node_modules/
+src/main/resources/mcp-ui/
