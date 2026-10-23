@@ -34,6 +34,28 @@
   },
   "components": {
     "schemas": {
+      "ComposedObject": {
+        "type": "object"
+      },
+      "First": {
+        "required": [
+          "first"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ComposedObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "first": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
       "NestedObject": {
         "required": [
           "name"
@@ -79,8 +101,38 @@
                 "$ref": "#/components/schemas/NestedObject"
               }
             ]
+          },
+          "nullableComposed": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/First"
+              },
+              {
+                "$ref": "#/components/schemas/Second"
+              }
+            ]
           }
         }
+      },
+      "Second": {
+        "required": [
+          "second"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ComposedObject"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "second": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       }
     }
   }
