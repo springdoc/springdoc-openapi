@@ -51,6 +51,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.service.AbstractRequestService;
+import org.springdoc.core.utils.SchemaUtils;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -118,13 +119,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @param field                          the field
 	 * @param isNotRequired                  the is required
 	 */
-	DelegatingMethodParameter(MethodParameter delegate,
-							  String parameterName,
-							  Annotation[] additionalParameterAnnotations,
-							  Annotation[] methodAnnotations,
-							  boolean isParameterObject,
-							  Field field,
-							  boolean isNotRequired) {
+	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, Annotation[] methodAnnotations, boolean isParameterObject, Field field, boolean isNotRequired) {
 		super(delegate);
 		this.delegate = delegate;
 		this.field = field;
@@ -146,9 +141,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @return the method parameter [ ]
 	 */
 	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters,
-											  Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
-											  MethodParameterPojoExtractor methodParameterPojoExtractor,
-											  boolean defaultFlatParamObject) {
+			Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers, MethodParameterPojoExtractor methodParameterPojoExtractor, boolean defaultFlatParamObject) {
 		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
@@ -177,8 +170,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * given containing class.
 	 *
 	 * @param methodParameter the method parameter
-	 * @param containingClass a specific containing class (potentially a subclass of the declaring class, e.g. substituting a type variable).
-	 *                        A copy of spring withContainingClass, to keep compatibility with older spring versions
+	 * @param containingClass a specific containing class (potentially a subclass of the declaring class, e.g. substituting a type variable) A copy of spring withContainingClass, to keep compatibility with older spring versions
 	 * @return the method parameter
 	 * @see #getParameterType() #getParameterType()#getParameterType()#getParameterType()#getParameterType()
 	 */
@@ -336,9 +328,10 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * read annotation data placed on the type. Annotations declared directly on the parameter type
 	 * (for example {@code @MyAnnotation Foo}) are always collected. Annotations declared on the wrapped
 	 * type of an {@link Optional} (for example {@code Optional<@MyAnnotation Foo>}) are also collected,
-	 * since an {@code Optional} is unwrapped to its element type. Annotations on the element type of other
-	 * container types (such as {@link java.util.List}) are intentionally not collected, as they apply to
-	 * the items' schema rather than to the parameter itself.
+	 * since an {@code Optional} is unwrapped to its element type, except the ones marking a value as
+	 * required: they constrain the wrapped value when present, not the parameter. Annotations on the
+	 * element type of other container types (such as {@link java.util.List}) are intentionally not
+	 * collected, as they apply to the items' schema rather than to the parameter itself.
 	 *
 	 * @param methodParameter the method parameter
 	 * @return the type-use annotations, or {@code null} if none were found
@@ -352,11 +345,17 @@ public class DelegatingMethodParameter extends MethodParameter {
 		if (index >= parameters.length)
 			return null;
 		AnnotatedType annotatedType = parameters[index].getAnnotatedType();
-		List<Annotation> annotations = new ArrayList<>(Arrays.asList(annotatedType.getAnnotations()));
+		List<Annotation> declaredAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
+		List<Annotation> annotations = new ArrayList<>();
+		for (Annotation annotation : annotatedType.getAnnotations())
+			if (!declaredAnnotations.contains(annotation))
+				annotations.add(annotation);
 		if (Optional.class.isAssignableFrom(methodParameter.getParameterType())
-		    && annotatedType instanceof AnnotatedParameterizedType annotatedParameterizedType) {
+				&& annotatedType instanceof AnnotatedParameterizedType annotatedParameterizedType) {
 			for (AnnotatedType typeArgument : annotatedParameterizedType.getAnnotatedActualTypeArguments())
-				annotations.addAll(Arrays.asList(typeArgument.getAnnotations()));
+				for (Annotation annotation : typeArgument.getAnnotations())
+					if (!SchemaUtils.ANNOTATIONS_FOR_REQUIRED.contains(annotation.annotationType().getSimpleName()))
+						annotations.add(annotation);
 		}
 		return annotations.isEmpty() ? null : annotations.toArray(new Annotation[0]);
 	}

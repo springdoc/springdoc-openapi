@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- #3370 – A `ParameterCustomizer` can read the type-use annotations of a parameter, including the ones declared on the value wrapped in an `Optional`, such as `Optional<@MyAnnotation Foo>`
+
 ### Changed
 
 - The MCP dashboard no longer pre-fills the OAuth2 token endpoint, client id and client secret. The form shows hints instead, and warns when the token endpoint is not HTTPS
@@ -21,10 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3354 – `/v3/api-docs` no longer fails when an API version parameter declares `@Schema(allowableValues)`
 - #3364 – The application no longer fails to start when Spring HATEOAS is on the classpath without a `LinkRelationProvider` bean
 - #3368 – A `WebAsyncTask` return type is now unwrapped, so its response is described by its result type
-
-### Added
-
-- `ParameterCustomizer` now receive the type-use annotation data declared on a value wrapped in an `Optional`, so annotations such as `Optional<@MyAnnotation Foo>` can be read natively by it
 
 ## [3.1.1] - 2026-09-06
 
