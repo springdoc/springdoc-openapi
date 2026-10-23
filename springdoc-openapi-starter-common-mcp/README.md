@@ -385,7 +385,7 @@ The WebFlux module provides reactive-specific integration:
 - **`McpReactiveApiVersionStrategy`**: Wraps the existing reactive `ApiVersionStrategy` to gracefully handle MCP paths. Supports both synchronous (`resolveParseAndValidateVersion`) and reactive (`resolveParseAndValidateApiVersion`) resolution.
 - **Dashboard Redirects**: Registered as a `RouterFunction<ServerResponse>` bean that redirects `/mcp-ui` and `/mcp-ui/` to `/mcp-ui/index.html` with HTTP 302.
 
-**Dependencies**: `springdoc-openapi-starter-common-mcp`, `springdoc-openapi-starter-webflux-api`.
+**Dependencies**: `springdoc-openapi-starter-common-mcp`, `springdoc-openapi-starter-webflux-api`, `io.micrometer:context-propagation` (registers the MDC `ThreadLocalAccessor` with the Micrometer `ContextRegistry`).
 
 ### springdoc-openapi-starter-common-mcp
 
@@ -401,4 +401,4 @@ The core module contains all shared logic:
 | `org.springdoc.ai.dashboard` | Dashboard REST controller, tool sources (`ToolCallbackDashboardToolSource`, `McpSyncServerDashboardToolSource`), and DTOs. |
 | `org.springdoc.ai.environment` | `SpringDocAiEnvironmentPostProcessor` — forces `springdoc.pre-loading-enabled=true`. |
 
-**Dependencies**: `springdoc-openapi-starter-common`, `spring-ai-model`, optional `mcp-core`, optional `spring-ai-mcp`.
+**Dependencies**: `springdoc-openapi-starter-common`, `spring-ai-mcp` (compile scope — it transitively provides `spring-ai-model` and the MCP SDK `io.modelcontextprotocol.sdk:mcp`, whose version is dictated by Spring AI), `spring-web`, `aspectjweaver`.
