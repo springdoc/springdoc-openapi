@@ -34,6 +34,7 @@ import java.util.Set;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.SpecVersion;
 import org.springdoc.core.configuration.SpringDocConfiguration;
+import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.utils.Constants;
 
@@ -1312,6 +1313,34 @@ public class SpringDocConfigProperties {
 			private boolean enabled;
 
 			/**
+			 * Emit discovered polymorphic oneOf schemas as reusable component refs.
+			 */
+			private boolean oneOfAsRef;
+
+			/**
+			 * Suffix appended to the base schema name when emitting oneOf unions as component refs.
+			 */
+			private String oneOfRefSuffix = PolymorphicModelConverter.DEFAULT_ONE_OF_REF_SUFFIX;
+
+			/**
+			 * Gets one of ref suffix.
+			 *
+			 * @return the one of ref suffix
+			 */
+			public String getOneOfRefSuffix() {
+				return oneOfRefSuffix;
+			}
+
+			/**
+			 * Sets one of ref suffix.
+			 *
+			 * @param oneOfRefSuffix the one of ref suffix
+			 */
+			public void setOneOfRefSuffix(String oneOfRefSuffix) {
+				this.oneOfRefSuffix = oneOfRefSuffix;
+			}
+
+			/**
 			 * Is enabled boolean.
 			 *
 			 * @return the boolean
@@ -1327,6 +1356,24 @@ public class SpringDocConfigProperties {
 			 */
 			public void setEnabled(boolean enabled) {
 				this.enabled = enabled;
+			}
+
+			/**
+			 * Is one of as ref boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isOneOfAsRef() {
+				return oneOfAsRef;
+			}
+
+			/**
+			 * Sets one of as ref.
+			 *
+			 * @param oneOfAsRef the one of as ref
+			 */
+			public void setOneOfAsRef(boolean oneOfAsRef) {
+				this.oneOfAsRef = oneOfAsRef;
 			}
 		}
 

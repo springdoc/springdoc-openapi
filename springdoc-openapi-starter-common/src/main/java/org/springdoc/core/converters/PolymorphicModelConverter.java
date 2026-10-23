@@ -31,8 +31,10 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -62,6 +64,11 @@ import static java.util.stream.Collectors.toMap;
 public class PolymorphicModelConverter implements ModelConverter {
 
 	/**
+	 * The default suffix used when emitting oneOf unions as component refs.
+	 */
+	public static final String DEFAULT_ONE_OF_REF_SUFFIX = "Variant";
+
+	/**
 	 * The constant PARENT_TYPES_TO_IGNORE.
 	 */
 	private static final Set<String> PARENT_TYPES_TO_IGNORE = new CopyOnWriteArraySet<>();
@@ -83,12 +90,45 @@ public class PolymorphicModelConverter implements ModelConverter {
 	private final ObjectMapperProvider springDocObjectMapper;
 
 	/**
+	 * Whether discovered polymorphic oneOf unions should be materialized as component refs.
+	 */
+	private final boolean oneOfAsRef;
+
+	/**
+	 * The suffix appended to the base schema name for generated oneOf component refs.
+	 */
+	private final String oneOfRefSuffix;
+
+	/**
 	 * Instantiates a new Polymorphic model converter.
 	 *
 	 * @param springDocObjectMapper the spring doc object mapper
 	 */
 	public PolymorphicModelConverter(ObjectMapperProvider springDocObjectMapper) {
+		this(springDocObjectMapper, false);
+	}
+
+	/**
+	 * Instantiates a new Polymorphic model converter.
+	 *
+	 * @param springDocObjectMapper the spring doc object mapper
+	 * @param oneOfAsRef            whether oneOf unions should be emitted as component refs
+	 */
+	public PolymorphicModelConverter(ObjectMapperProvider springDocObjectMapper, boolean oneOfAsRef) {
+		this(springDocObjectMapper, oneOfAsRef, DEFAULT_ONE_OF_REF_SUFFIX);
+	}
+
+	/**
+	 * Instantiates a new Polymorphic model converter.
+	 *
+	 * @param springDocObjectMapper the spring doc object mapper
+	 * @param oneOfAsRef            whether oneOf unions should be emitted as component refs
+	 * @param oneOfRefSuffix        the suffix for generated oneOf component names
+	 */
+	public PolymorphicModelConverter(ObjectMapperProvider springDocObjectMapper, boolean oneOfAsRef, String oneOfRefSuffix) {
 		this.springDocObjectMapper = springDocObjectMapper;
+		this.oneOfAsRef = oneOfAsRef;
+		this.oneOfRefSuffix = (oneOfRefSuffix == null || oneOfRefSuffix.isBlank()) ? DEFAULT_ONE_OF_REF_SUFFIX : oneOfRefSuffix.trim();
 	}
 
 	/**
@@ -188,7 +228,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 						return resolvedSchema;
 					}
 				}
-				return composePolymorphicSchema(type, resolvedSchema, context.getDefinedModels().values());
+				return composePolymorphicSchema(type, resolvedSchema, context);
 			}
 		}
 		return null;
@@ -199,12 +239,13 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 *
 	 * @param type    the type
 	 * @param schema  the schema
-	 * @param schemas the schemas
+	 * @param context the context
 	 * @return the schema
 	 */
-	private Schema composePolymorphicSchema(AnnotatedType type, Schema schema, Collection<Schema> schemas) {
+	private Schema composePolymorphicSchema(AnnotatedType type, Schema schema, ModelConverterContext context) {
+		Map<String, Schema> schemas = context.getDefinedModels();
 		String ref = schema.get$ref();
-		List<Schema> composedSchemas = findComposedSchemas(ref, schemas);
+		List<Schema> composedSchemas = findComposedSchemas(ref, schemas.values());
 		if (composedSchemas.isEmpty()) {
 			return schema;
 		}
@@ -217,6 +258,9 @@ public class PolymorphicModelConverter implements ModelConverter {
 		if (!TYPES_TO_SKIP.contains(clazz.getSimpleName()))
 			composedSchemas.forEach(result::addOneOfItem);
 
+		if (oneOfAsRef && result.getOneOf() != null && !result.getOneOf().isEmpty())
+			return createOneOfComponentRef(schema, result.getOneOf(), schemas, context);
+
 		// Remove _links from result (composed schema) to prevent duplication
 		if (result.getOneOf() != null) {
 			result.getOneOf().stream()
@@ -225,6 +269,118 @@ public class PolymorphicModelConverter implements ModelConverter {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Creates, or reuses, a component schema holding the oneOf union, and returns a ref to it.
+	 *
+	 * @param schema       the schema of the polymorphic parent
+	 * @param oneOfSchemas the oneOf schemas
+	 * @param schemas      the defined schemas
+	 * @param context      the context
+	 * @return the ref to the oneOf component schema
+	 */
+	private Schema createOneOfComponentRef(Schema schema, List<Schema> oneOfSchemas, Map<String, Schema> schemas, ModelConverterContext context) {
+		List<Schema> normalizedOneOf = normalizeOneOfSchemas(oneOfSchemas);
+		if (normalizedOneOf.isEmpty()) {
+			return schema;
+		}
+
+		String signature = buildOneOfSignature(normalizedOneOf);
+		String existingSchemaName = findExistingOneOfSchemaName(signature, schemas);
+		if (existingSchemaName != null) {
+			return new Schema<>().$ref(Components.COMPONENTS_SCHEMAS_REF + existingSchemaName);
+		}
+
+		String baseSchemaName = extractSchemaName(schema.get$ref());
+		String oneOfSchemaName = resolveOneOfSchemaName(baseSchemaName + oneOfRefSuffix, schemas);
+
+		ComposedSchema oneOfComponentSchema = new ComposedSchema();
+		normalizedOneOf.forEach(oneOfComponentSchema::addOneOfItem);
+		oneOfComponentSchema.setName(oneOfSchemaName);
+		context.defineModel(oneOfSchemaName, oneOfComponentSchema);
+
+		return new Schema<>().$ref(Components.COMPONENTS_SCHEMAS_REF + oneOfSchemaName);
+	}
+
+	/**
+	 * Keeps the distinct refs of the oneOf schemas.
+	 *
+	 * @param oneOfSchemas the oneOf schemas
+	 * @return the ref schemas
+	 */
+	private List<Schema> normalizeOneOfSchemas(List<Schema> oneOfSchemas) {
+		LinkedHashSet<String> distinctRefs = oneOfSchemas.stream()
+				.map(Schema::get$ref)
+				.filter(Objects::nonNull)
+				.collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
+
+		return distinctRefs.stream()
+				.map(ref -> new Schema<>().$ref(ref))
+				.toList();
+	}
+
+	/**
+	 * Finds a defined schema holding the same oneOf union.
+	 *
+	 * @param expectedSignature the signature of the oneOf union
+	 * @param schemas           the defined schemas
+	 * @return the name of the schema, or {@code null} if none
+	 */
+	private String findExistingOneOfSchemaName(String expectedSignature, Map<String, Schema> schemas) {
+		for (Map.Entry<String, Schema> entry : schemas.entrySet()) {
+			Schema value = entry.getValue();
+			if (value == null || value.getOneOf() == null || value.getOneOf().isEmpty()) {
+				continue;
+			}
+			if (expectedSignature.equals(buildOneOfSignature(value.getOneOf()))) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Builds a signature of a oneOf union from its refs.
+	 *
+	 * @param oneOfSchemas the oneOf schemas
+	 * @return the signature
+	 */
+	private String buildOneOfSignature(List<Schema> oneOfSchemas) {
+		return oneOfSchemas.stream()
+				.map(Schema::get$ref)
+				.filter(Objects::nonNull)
+				.reduce((left, right) -> left + "|" + right)
+				.orElse("");
+	}
+
+	/**
+	 * Extracts the schema name of a component ref.
+	 *
+	 * @param ref the ref
+	 * @return the schema name
+	 */
+	private String extractSchemaName(String ref) {
+		if (ref != null && ref.startsWith(Components.COMPONENTS_SCHEMAS_REF)) {
+			return ref.substring(Components.COMPONENTS_SCHEMAS_REF.length());
+		}
+		return "Polymorphic";
+	}
+
+	/**
+	 * Resolves a schema name not used by a defined schema, adding a number to the candidate if needed.
+	 *
+	 * @param candidateName the candidate name
+	 * @param schemas       the defined schemas
+	 * @return the schema name
+	 */
+	private String resolveOneOfSchemaName(String candidateName, Map<String, Schema> schemas) {
+		String resolvedName = candidateName;
+		int suffix = 2;
+		while (schemas.containsKey(resolvedName)) {
+			resolvedName = candidateName + suffix++;
+		}
+		return resolvedName;
 	}
 
 	/**
