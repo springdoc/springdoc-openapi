@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
 import org.springframework.hateoas.config.HateoasConfiguration;
+import org.springframework.hateoas.server.LinkRelationProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -92,6 +93,7 @@ class SpringDocHateoasConfigurationTest {
 	@Test
 	void halBeansShouldBeRegisteredWhenHateoasPropertiesIsPresent() {
 		hateoasContextRunner()
+				.withBean(LinkRelationProvider.class, () -> mock(LinkRelationProvider.class))  // ← add this
 				.run(context -> {
 					assertThat(context).hasNotFailed();
 					assertThat(context).hasSingleBean(HateoasHalProvider.class);
@@ -111,6 +113,7 @@ class SpringDocHateoasConfigurationTest {
 	void halBeansShouldBeRegisteredWhenHateoasPropertiesIsAbsent() {
 		hateoasContextRunner()
 				.withClassLoader(new FilteredClassLoader(HateoasProperties.class))
+				.withBean(LinkRelationProvider.class, () -> mock(LinkRelationProvider.class))  // ← add this
 				.run(context -> {
 					assertThat(context).hasNotFailed();
 					assertThat(context).hasSingleBean(HateoasHalProvider.class);
@@ -133,5 +136,30 @@ class SpringDocHateoasConfigurationTest {
 						SpringDocConfigProperties.class,
 						SpringDocHateoasConfiguration.class
 				));
+	}
+
+	/**
+	 * LinkRelationProvider class may be on the classpath while no bean of that type
+	 * is present. The application context must still start and
+	 * CollectionModelContentConverter must not be created.
+	 */
+	@Test
+	void collectionModelContentConverterShouldNotBeCreatedWhenLinkRelationProviderBeanIsAbsent() {
+		new WebApplicationContextRunner()
+				.withPropertyValues(
+						"springdoc.api-docs.enabled=true",
+						"springdoc.enable-hateoas=true"
+				)
+				.withConfiguration(AutoConfigurations.of(
+						WebMvcAutoConfiguration.class,
+						// deliberately omit HateoasConfiguration → no LinkRelationProvider bean
+						SpringDocConfiguration.class,
+						SpringDocConfigProperties.class,
+						SpringDocHateoasConfiguration.class
+				))
+				.run(context -> {
+					assertThat(context).hasNotFailed();
+					assertThat(context).doesNotHaveBean(CollectionModelContentConverter.class);
+				});
 	}
 }
