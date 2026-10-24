@@ -304,10 +304,51 @@ on top of `3.0.0` `21cde346d`, and haven't been submitted yet.
 | 1 | `fix/jackson3-model-resolution` | B1 (plus the pre-existing empty unwrapped property) | 7 lines in `ModelResolver`, plus tests |
 | 2 | `fix/jackson3-mapper-lifecycle` | B4, B5, E8 | ~30 lines, plus tests |
 | 3 | `docs/jackson3-migration-notes` | E6, E5, B2, B3 | MIGRATION.md only |
+| 4 | `feat/model-deep-copy` | E9 (below) | one new class, `ModelCopy`, plus tests |
 
 E1, E2, E3, E7 and the schema-only part of B2 are raised as proposals in the #4991 comment. E4 (minimum Jackson version) isn't proposed upstream.
 
 The 3 branches merge without conflicts. With all of them, swagger-core and swagger-rest pass (1592 + 246 tests), and
 springdoc's `app237` passes once its expected file is corrected. The 4 `app1` failures remain: they are the B2
 behaviour change, a decision for springdoc.
+
+## E9. An exact deep copy of the models, instead of `cloneViaJson`
+
+springdoc copies swagger models through a JSON round trip (`SpringDocUtils.cloneViaJson`) in 5 places:
+- `OpenAPIService`, the user's `OpenAPI` bean;
+- `GenericResponseService`, `ApiResponses`;
+- `AbstractOpenApiResource`, `List<Server>`;
+- `AbstractRequestService`, `Schema` (twice);
+- `AdditionalModelsConverter`, `Schema`.
+
+swagger-core does the same internally (`AnnotationsUtils.clone`, `SpecFilter`).
+
+Measured on the 3.0.0 branch with a model covering the usual cases. The experiment is kept in
+`swagger-core-feedback/experiment/ModelCopyExperiment.java`.
+
+| Kept after the copy | `Json` round trip | `Json31` round trip | generic mapper | Java serialization¹ | annotation-free typed Jackson² | structural copy (`ModelCopy`) |
+|---|---|---|---|---|---|---|
+| `equals(source)` | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
+| concrete classes | partly | ❌ | ❌ | ✅ | ✅ | ✅ |
+| `Schema.getName()` | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
+| explicit `example(null)` | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ |
+| 3.1 fields of a 3.1 model | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `BigDecimal`/`LocalDate`/`JsonNode`/POJO examples | changed | changed | changed | ✅ | ✅ | ✅ |
+| `null` extension values | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
+| values without a no-arg constructor, `Optional`, `OffsetDateTime` | changed | changed | changed | fails if not `Serializable` | fails / changed | ✅ (shared) |
+| time per copy | ~50–140 µs | ~70 µs | ~2.8 ms | ~120–170 µs | ~160–300 µs | ~90 µs |
+
+¹ The models were made `Serializable` on a scratch branch (27 base classes). It fails with
+`NotSerializableException` on any non-serializable example, default, enum or extension value, and it adds a
+serialization contract to every model, so it isn't proposed.
+
+² A mapper with annotations disabled, field visibility and default typing.
+
+**Proposal (PR 4):** `io.swagger.v3.core.util.ModelCopy.deepCopy(T)`. It copies models, lists, sets and maps,
+deep-copies `JsonNode`s, and shares leaf values. `AnnotationsUtils.clone` stays as it is: delegating it breaks 5
+swagger-core tests, because `ModelResolver` relies on the round trip's normalization.
+
+**springdoc:** `cloneViaJson` stays for now. Once `ModelCopy` is available, the 5 call sites can switch to it. The
+`OpenAPIService` one no longer needs the strict mapper workaround for `$ref`, or the special inclusion settings for
+null extension values.
 
