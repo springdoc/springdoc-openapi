@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3383 – Upgrade Spring AI to version **2.0.1**. The MCP SDK version is now the one required by Spring AI
 - Upgrade spring-boot to version **4.1.2**
 - Upgrade swagger-ui to version **5.34.0**
+- Upgrade spring-cloud-function to version **5.0.5**
+- Use the spring-security-oauth2-authorization-server version managed by Spring Boot (**7.1.2**) instead of 2.0.0-M2
 
 ### Fixed
 
