@@ -29,7 +29,7 @@ package org.springdoc.webflux.api;
 import java.util.Locale;
 import java.util.Optional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.SpringDocCustomizers;
@@ -109,13 +109,13 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * @param apiDocsUrl        the api docs url
 	 * @param locale            the locale
 	 * @return the mono
-	 * @throws JsonProcessingException the json processing exception
+	 * @throws JacksonException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public Mono<byte[]> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, Locale locale)
-			throws JsonProcessingException {
+			throws JacksonException {
 		return super.openapiJson(serverHttpRequest, apiDocsUrl, locale);
 	}
 
@@ -126,13 +126,13 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * @param apiDocsUrl        the api docs url
 	 * @param locale            the locale
 	 * @return the mono
-	 * @throws JsonProcessingException the json processing exception
+	 * @throws JacksonException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
 	@Override
 	public Mono<byte[]> openapiYaml(ServerHttpRequest serverHttpRequest,
-			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, Locale locale) throws JsonProcessingException {
+			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, Locale locale) throws JacksonException {
 		return super.openapiYaml(serverHttpRequest, apiDocsUrl, locale);
 	}
 

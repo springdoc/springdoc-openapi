@@ -58,11 +58,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -104,7 +102,6 @@ import org.springdoc.core.properties.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
-import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringDocProviders;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.core.service.AbstractRequestService;
@@ -1545,15 +1542,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 *
 	 * @param openAPI the open api
 	 * @return the string
-	 * @throws JsonProcessingException the json processing exception
+	 * @throws JacksonException the jackson exception
 	 */
-	protected byte[] writeYamlValue(OpenAPI openAPI) throws JsonProcessingException {
+	protected byte[] writeYamlValue(OpenAPI openAPI) throws JacksonException {
 		String result;
-		ObjectMapper objectMapper = springDocProviders.yamlMapper();
-		if (springDocConfigProperties.isWriterWithOrderByKeys())
-			ObjectMapperProvider.sortOutput(objectMapper, springDocConfigProperties);
-		YAMLFactory factory = (YAMLFactory) objectMapper.getFactory();
-		factory.configure(Feature.USE_NATIVE_TYPE_ID, false);
+		ObjectMapper objectMapper = springDocProviders.yamlWriterMapper();
 		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
 			result = objectMapper.writerFor(OpenAPI.class).writeValueAsString(openAPI);
 		else
@@ -1616,13 +1609,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 *
 	 * @param openAPI the open api
 	 * @return the string
-	 * @throws JsonProcessingException the json processing exception
+	 * @throws JacksonException the jackson exception
 	 */
-	protected byte[] writeJsonValue(OpenAPI openAPI) throws JsonProcessingException {
+	protected byte[] writeJsonValue(OpenAPI openAPI) throws JacksonException {
 		String result;
-		ObjectMapper objectMapper = springDocProviders.jsonMapper();
-		if (springDocConfigProperties.isWriterWithOrderByKeys())
-			ObjectMapperProvider.sortOutput(objectMapper, springDocConfigProperties);
+		ObjectMapper objectMapper = springDocProviders.jsonWriterMapper();
 		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
 			result = objectMapper.writerFor(OpenAPI.class).writeValueAsString(openAPI);
 		else

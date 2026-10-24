@@ -36,9 +36,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.introspect.BeanPropertyDefinition;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
@@ -99,7 +99,7 @@ public class JsonNullableSupportConverter implements ModelConverter {
 				.map(ModelResolver::objectMapper).findFirst().orElse(null);
 		if (mapper == null)
 			return resolved;
-		var bean = mapper.getSerializationConfig().introspect(javaType);
+		var bean = mapper._serializationContext().introspectBeanDescription(javaType);
 		var schema = bean.getClassInfo().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
 		List<String> requiredProperties = schema == null ? List.of() : Arrays.asList(schema.requiredProperties());
 		for (BeanPropertyDefinition property : bean.findProperties()) {

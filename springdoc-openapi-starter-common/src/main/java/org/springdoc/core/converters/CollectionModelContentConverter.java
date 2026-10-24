@@ -28,8 +28,8 @@ package org.springdoc.core.converters;
 
 import java.util.Iterator;
 
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.TypeBindings;
+import tools.jackson.databind.type.CollectionType;
+import tools.jackson.databind.type.TypeBindings;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;

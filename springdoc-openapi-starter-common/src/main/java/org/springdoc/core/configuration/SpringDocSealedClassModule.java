@@ -27,9 +27,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.cfg.MapperConfig;
+import tools.jackson.databind.introspect.Annotated;
+import tools.jackson.databind.jsontype.NamedType;
+import tools.jackson.databind.module.SimpleModule;
 import io.swagger.v3.core.jackson.SwaggerAnnotationIntrospector;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -51,7 +52,7 @@ public class SpringDocSealedClassModule extends SimpleModule {
 	private static class RespectSealedClassAnnotationIntrospector extends SwaggerAnnotationIntrospector {
 
 		@Override
-		public List<NamedType> findSubtypes(Annotated annotated) {
+		public List<NamedType> findSubtypes(MapperConfig<?> config, Annotated annotated) {
 			ArrayList<NamedType> subTypes = new ArrayList<>();
 
 			if (annotated.getAnnotated() instanceof Class<?> clazz

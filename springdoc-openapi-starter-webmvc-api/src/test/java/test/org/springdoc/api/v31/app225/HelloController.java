@@ -1,7 +1,7 @@
 package test.org.springdoc.api.v31.app225;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.annotation.JsonNaming;
 import org.springdoc.core.annotations.ParameterObject;
 
 import org.springframework.web.bind.annotation.PostMapping;

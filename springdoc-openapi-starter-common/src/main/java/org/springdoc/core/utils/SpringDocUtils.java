@@ -26,7 +26,6 @@
 
 package org.springdoc.core.utils;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +33,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.models.media.ComposedSchema;
@@ -610,7 +610,7 @@ public class SpringDocUtils {
 		try {
 			return mapper.readValue(mapper.writeValueAsBytes(source), targetType);
 		}
-		catch (IOException e) {
+		catch (JacksonException e) {
 			LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
 			@SuppressWarnings("unchecked")
 			T fallback = (T) source;
@@ -632,7 +632,7 @@ public class SpringDocUtils {
 		try {
 			return mapper.readValue(mapper.writeValueAsBytes(source), typeRef);
 		}
-		catch (IOException e) {
+		catch (JacksonException e) {
 			LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
 			@SuppressWarnings("unchecked")
 			T fallback = (T) source;

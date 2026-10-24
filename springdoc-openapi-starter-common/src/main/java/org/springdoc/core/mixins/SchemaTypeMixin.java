@@ -29,7 +29,7 @@ package org.springdoc.core.mixins;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.core.jackson.mixin.Schema31Mixin;
 import org.springdoc.core.deserializers.TypeSetDeserializer;
 

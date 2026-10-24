@@ -26,14 +26,14 @@
 
 package org.springdoc.core.deserializers;
 
-import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
 
 /**
  * Reads an OpenAPI 3.1 schema {@code type} that swagger-core serializes as the scalar
@@ -44,10 +44,10 @@ import com.fasterxml.jackson.databind.JsonNode;
  *
  * @author Mattias-Sehlstedt
  */
-public class TypeSetDeserializer extends JsonDeserializer<Set<String>> {
+public class TypeSetDeserializer extends ValueDeserializer<Set<String>> {
 
 	@Override
-	public Set<String> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+	public Set<String> deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
 		JsonNode node = ctxt.readTree(p);
 		if (node == null || node.isNull())
 			return null;
@@ -55,10 +55,10 @@ public class TypeSetDeserializer extends JsonDeserializer<Set<String>> {
 		if (node.isArray())
 			node.forEach(typeNode -> {
 				if (!typeNode.isNull())
-					types.add(typeNode.asText());
+					types.add(typeNode.asString());
 			});
 		else
-			types.add(node.asText());
+			types.add(node.asString());
 		return types.isEmpty() ? null : types;
 	}
 

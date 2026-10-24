@@ -34,7 +34,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -1186,7 +1186,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				try {
 					defaultValue = ObjectMapperFactory.buildStrictGenericObjectMapper().writeValueAsString(sortValues);
 				}
-				catch (JsonProcessingException e) {
+				catch (JacksonException e) {
 					LOGGER.warn(e.getMessage());
 				}
 			}

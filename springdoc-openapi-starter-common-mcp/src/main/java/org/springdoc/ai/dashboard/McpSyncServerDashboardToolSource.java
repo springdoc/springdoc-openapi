@@ -38,9 +38,9 @@ import java.util.stream.Collectors;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import io.modelcontextprotocol.server.McpServerFeatures.SyncToolSpecification;
 import io.modelcontextprotocol.spec.McpSchema;
 import io.modelcontextprotocol.spec.McpSchema.CallToolRequest;
@@ -144,7 +144,7 @@ public class McpSyncServerDashboardToolSource implements McpDashboardToolSource 
 		try {
 			return OBJECT_MAPPER.writeValueAsString(inputSchema);
 		}
-		catch (JsonProcessingException ex) {
+		catch (JacksonException ex) {
 			return "{}";
 		}
 	}
@@ -153,9 +153,9 @@ public class McpSyncServerDashboardToolSource implements McpDashboardToolSource 
 	 * Parses a JSON arguments string into a Map.
 	 * @param arguments the JSON string
 	 * @return the parsed map
-	 * @throws JsonProcessingException if parsing fails
+	 * @throws JacksonException if parsing fails
 	 */
-	private Map<String, Object> parseArguments(String arguments) throws JsonProcessingException {
+	private Map<String, Object> parseArguments(String arguments) throws JacksonException {
 		if (arguments == null || arguments.isBlank()) {
 			return Map.of();
 		}

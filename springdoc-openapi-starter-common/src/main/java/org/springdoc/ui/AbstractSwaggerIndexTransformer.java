@@ -34,8 +34,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
@@ -97,9 +97,9 @@ public class AbstractSwaggerIndexTransformer {
 	 *
 	 * @param html the html
 	 * @return the string
-	 * @throws JsonProcessingException the json processing exception
+	 * @throws JacksonException the json processing exception
 	 */
-	protected String addInitOauth(String html) throws JsonProcessingException {
+	protected String addInitOauth(String html) throws JacksonException {
 		StringBuilder stringBuilder = new StringBuilder("  });\n");
 		stringBuilder.append("ui.initOAuth(\n");
 		String json = objectMapper.writeValueAsString(swaggerUiOAuthProperties.getConfigParameters());
@@ -195,9 +195,9 @@ public class AbstractSwaggerIndexTransformer {
 	 * @param html                      the html
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @return the string
-	 * @throws JsonProcessingException the json processing exception
+	 * @throws JacksonException the json processing exception
 	 */
-	protected String addParameters(String html, SwaggerUiConfigParameters swaggerUiConfigParameters) throws JsonProcessingException {
+	protected String addParameters(String html, SwaggerUiConfigParameters swaggerUiConfigParameters) throws JacksonException {
 		String layout = swaggerUiConfigParameters.getLayout() != null ? swaggerUiConfigParameters.getLayout() : "StandaloneLayout";
 		StringBuilder stringBuilder = new StringBuilder("layout: \"" + layout + "\" ,\n");
 

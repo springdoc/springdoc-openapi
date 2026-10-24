@@ -36,13 +36,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.AnnotatedField;
-import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
-import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
-import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.introspect.AnnotatedField;
+import tools.jackson.databind.introspect.AnnotatedMethod;
+import tools.jackson.databind.introspect.AnnotatedParameter;
+import tools.jackson.databind.introspect.BeanPropertyDefinition;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 import static org.springdoc.core.utils.SchemaUtils.ANNOTATIONS_FOR_NULLABLE;
@@ -78,7 +78,7 @@ public class JavaNullablePropertyCustomizer extends AbstractNullablePropertyCust
 		List<BeanPropertyDefinition> definitions;
 		try {
 			ObjectMapper mapper = getObjectMapperProvider().jsonMapper();
-			BeanDescription beanDescription = mapper.getSerializationConfig().introspect(javaType);
+			BeanDescription beanDescription = mapper._serializationContext().introspectBeanDescription(javaType);
 			definitions = beanDescription.findProperties();
 		}
 		catch (Exception e) {
