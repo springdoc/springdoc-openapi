@@ -303,9 +303,9 @@ on top of `3.0.0` `21cde346d`, and haven't been submitted yet.
 |---|---|---|---|
 | 1 | `fix/jackson3-model-resolution` | B1 (plus the pre-existing empty unwrapped property) | 7 lines in `ModelResolver`, plus tests |
 | 2 | `fix/jackson3-mapper-lifecycle` | B4, B5, E8 | ~30 lines, plus tests |
-| 3 | `docs/jackson3-migration-notes` | E6, E4, E5, B2, B3 | MIGRATION.md only |
+| 3 | `docs/jackson3-migration-notes` | E6, E5, B2, B3 | MIGRATION.md only |
 
-E1, E2, E3, E7 and the schema-only part of B2 are raised as proposals in the #4991 comment.
+E1, E2, E3, E7 and the schema-only part of B2 are raised as proposals in the #4991 comment. E4 (minimum Jackson version) isn't proposed upstream.
 
 The 3 branches merge without conflicts. With all of them, swagger-core and swagger-rest pass (1592 + 246 tests), and
 springdoc's `app237` passes once its expected file is corrected. The 4 `app1` failures remain: they are the B2
