@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3377 – A JSpecify `@Nullable` on a controller method parameter now makes its schema nullable
 - #3381 – A nullable Kotlin property described by a `oneOf` schema, such as a sealed class, is now documented as nullable
 - #3387 – Scalar's own integration works again with the Swagger UI and API-only starters: only the Springdoc Scalar starters replace it
+- #3373 – springdoc no longer lifts Jackson 2 above the version managed by Spring Boot in Gradle builds
 
 ## [2.9.1] - 2026-09-06
 
