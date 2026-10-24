@@ -65,7 +65,7 @@
 		<spring-cloud-function.version>4.2.4</spring-cloud-function.version>
 		<scalar.version>0.6.82</scalar.version>
 		<skipPublishing>false</skipPublishing>
-		<commons-lang3.version>3.20.0</commons-lang3.version>
+		<commons-lang3.version>3.21.0</commons-lang3.version>
 	</properties>
 
 	<dependencyManagement>

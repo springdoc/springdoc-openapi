@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3359 – Upgrade Scalar to version **0.6.82**. The first tag is now open by default, and the links to models changed from `#model/name` to `#models/Name`
 - Upgrade swagger-ui to version **5.34.0**
 - Upgrade spring-cloud-function to version **4.2.4**
+- Upgrade commons-lang3 to version **3.21.0**
 
 ### Fixed
 
