@@ -127,6 +127,10 @@ Thanks to all our [contributors](https://github.com/springdoc/springdoc-openapi/
 Special thanks to [the Spring team](https://spring.io/team) and [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi)
 for their support.
 
+<p align="center">
+  <a href="https://www.jetbrains.com/?from=springdoc-openapi"><img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg" alt="JetBrains logo" height="56"></a>
+</p>
+
 ## 📄 License
 
 springdoc-openapi is Open Source software released under the [Apache 2.0 license](LICENSE).
