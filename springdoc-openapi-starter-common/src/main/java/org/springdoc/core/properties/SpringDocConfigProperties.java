@@ -34,7 +34,6 @@ import java.util.Set;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.SpecVersion;
 import org.springdoc.core.configuration.SpringDocConfiguration;
-import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.utils.Constants;
 
@@ -1217,6 +1216,11 @@ public class SpringDocConfigProperties {
 		private PolymorphicConverter polymorphicConverter = new PolymorphicConverter();
 
 		/**
+		 * The Java nullable property customizer.
+		 */
+		private JavaNullablePropertyCustomizer javaNullablePropertyCustomizer = new JavaNullablePropertyCustomizer();
+
+		/**
 		 * The Kotlin nullable property customizer.
 		 */
 		private KotlinNullablePropertyCustomizerConfig kotlinNullablePropertyCustomizer = new KotlinNullablePropertyCustomizerConfig();
@@ -1274,6 +1278,55 @@ public class SpringDocConfigProperties {
 		 */
 		public void setPolymorphicConverter(PolymorphicConverter polymorphicConverter) {
 			this.polymorphicConverter = polymorphicConverter;
+		}
+
+		/**
+		 * Gets Java nullable property customizer.
+		 *
+		 * @return the Java nullable property customizer
+		 */
+		public JavaNullablePropertyCustomizer getJavaNullablePropertyCustomizer() {
+			return javaNullablePropertyCustomizer;
+		}
+
+		/**
+		 * Sets Java nullable property customizer.
+		 *
+		 * @param javaNullablePropertyCustomizer the Java nullable property customizer
+		 */
+		public void setJavaNullablePropertyCustomizer(JavaNullablePropertyCustomizer javaNullablePropertyCustomizer) {
+			this.javaNullablePropertyCustomizer = javaNullablePropertyCustomizer;
+		}
+
+		/**
+		 * The Java nullable property customizer.
+		 *
+		 * @author bnasslahsen
+		 */
+		public static class JavaNullablePropertyCustomizer {
+
+			/**
+			 * Mark the schema properties of Java models annotated with @Nullable as nullable.
+			 */
+			private boolean enabled;
+
+			/**
+			 * Is enabled boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isEnabled() {
+				return enabled;
+			}
+
+			/**
+			 * Sets enabled.
+			 *
+			 * @param enabled the enabled
+			 */
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
 		}
 
 		/**
@@ -1343,7 +1396,7 @@ public class SpringDocConfigProperties {
 			/**
 			 * Suffix appended to the base schema name when emitting oneOf unions as component refs.
 			 */
-			private String oneOfRefSuffix = PolymorphicModelConverter.DEFAULT_ONE_OF_REF_SUFFIX;
+			private String oneOfRefSuffix = "Variant";
 
 			/**
 			 * Gets one of ref suffix.
