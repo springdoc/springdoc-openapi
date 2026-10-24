@@ -13,10 +13,11 @@ It's a working document for the `springdoc-openapi-jackson3` branch. Nothing has
 | swagger-core | branch [`3.0.0`](https://github.com/swagger-api/swagger-core/tree/3.0.0), commit `21cde346d` (2026-10-23), built locally as `3.0.0-SNAPSHOT` |
 | References | [#4991](https://github.com/swagger-api/swagger-core/issues/4991), [MIGRATION.md](https://github.com/swagger-api/swagger-core/blob/3.0.0/MIGRATION.md), [Swagger 3.X Getting started](https://github.com/swagger-api/swagger-core/wiki/Swagger-3.X---Getting-started) |
 | springdoc-openapi | `main` (3.2.1-SNAPSHOT), Spring Boot 4.1.2, Spring Framework 7 |
-| Jackson at runtime | 3.1.7 and `jackson-annotations` 2.21 (managed by Spring Boot 4.1.2); swagger-core 3.0 builds against 3.2.3 and 2.22 |
+| Jackson | 3.2.3 and `jackson-annotations` 2.22, the versions of swagger-core 3.0.0 (springdoc overrides `jackson-bom.version` and `jackson-2-bom.version`; Spring Boot 4.1.2 manages 3.1.7 and 2.21) |
 | JDK | 21 |
 
-**Test results** (`./mvnw test -Pci`): 1847 tests in 26 modules, **1842 pass, 5 fail**. All 5 failures come from
+**Test results** (`./mvnw test -Pci`, Jackson 3.2.3): 1847 tests in 26 modules, **1842 pass, 5 fail**. The result
+is the same on Jackson 3.1.7. All 5 failures come from
 swagger-core behaviour: [B1](#b1-jsonunwrapped-on-a-record-component-leaks-a-synthetic-jsonunwrapped0-property)
 (1 test) and [B2](#b2-implicit-constructor-parameters-become-extra-writeonly-schema-properties) (4 tests). Their
 golden files are left unchanged on purpose.
@@ -99,6 +100,10 @@ System.out.println(Json31.pretty(ModelConverters.getInstance(true).readAll(Examp
   `jsonUnwrappedHandler`.
 - **Pre-existing, also on swagger-core 2.x:** the empty `"unwrapped" : { }` property, and `unwrapped` in `required`,
   should not appear either, since the property is unwrapped into `value`.
+- **Root cause, OpenAPI 3.1 only:** once the `jsonUnwrappedHandler` has merged the inner properties,
+  `getSchemaFromAnnotation` rebuilds an empty schema from the remaining `@Schema(requiredMode = REQUIRED)`. The
+  OpenAPI 3.0 output is correct. The fix is in PR 1 (see [Proposed upstream](#proposed-upstream)). With it,
+  springdoc's `app237` expected file must also drop the empty `unwrapped` property it had recorded.
 - **springdoc test:** `v31.app237.SpringDocApp237Test`.
 
 ### B2. Implicit constructor parameters become extra `writeOnly` schema properties
@@ -230,9 +235,9 @@ a static utility. Downstream code would then not depend on Jackson internals tha
 
 swagger-core 3.0 builds against Jackson 3.2.3 and `jackson-annotations` 2.22. MIGRATION.md and the wiki give 3.2.3 as
 "the" version. The current Spring Boot release line (4.1.x) manages Jackson 3.1.7 and annotations 2.21, so most
-Spring users will run swagger-core on an older Jackson than it was built with. springdoc's suite passes on 3.1.7, so
-nothing breaks today. But nothing guarantees it either: a call to an API added in 3.2 would fail with
-`NoSuchMethodError` at runtime only.
+Spring users will run swagger-core on an older Jackson than it was built with. swagger-core's own test suite passes
+with `-Djackson-version=3.1.7 -Djackson-annotations-version=2.21`, and so does springdoc's, so nothing breaks today.
+But nothing guarantees it either: a call to an API added in 3.2 would fail with `NoSuchMethodError` at runtime only.
 
 Proposed:
 
@@ -287,3 +292,22 @@ constraint doesn't leak to users.
 | E6 | Docs | `commons-lang3` no longer transitive | ~90 compile errors |
 | E7 | Enhancement | `Month` schema vs. serialized value | inconsistent documentation |
 | E8 | Enhancement | refresh mappers cached inside swagger-core | stale mappers |
+
+## Proposed upstream
+
+The swagger-core backlog is large, so the findings are bundled into 3 small PRs plus one feedback comment on
+[#4991](https://github.com/swagger-api/swagger-core/issues/4991). They're prepared locally in the swagger-core clone,
+on top of `3.0.0` `21cde346d`, and haven't been submitted yet.
+
+| PR | Branch | Covers | Size |
+|---|---|---|---|
+| 1 | `fix/jackson3-model-resolution` | B1 (plus the pre-existing empty unwrapped property) | 7 lines in `ModelResolver`, plus tests |
+| 2 | `fix/jackson3-mapper-lifecycle` | B4, B5, E8 | ~30 lines, plus tests |
+| 3 | `docs/jackson3-migration-notes` | E6, E4, E5, B2, B3 | MIGRATION.md only |
+
+E1, E2, E3, E7 and the schema-only part of B2 are raised as proposals in the #4991 comment.
+
+The 3 branches merge without conflicts. With all of them, swagger-core and swagger-rest pass (1592 + 246 tests), and
+springdoc's `app237` passes once its expected file is corrected. The 4 `app1` failures remain: they are the B2
+behaviour change, a decision for springdoc.
+
