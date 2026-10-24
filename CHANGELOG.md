@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3361 – The `amount` and `currency` properties of `MonetaryAmount` are now marked as required
 - #3359 – Upgrade Scalar to version **0.6.82**. The first tag is now open by default, and the links to models changed from `#model/name` to `#models/Name`
 - #3383 – Upgrade Spring AI to version **2.0.1**. The MCP SDK version is now the one required by Spring AI
+- Upgrade spring-boot to version **4.1.2**
 
 ### Fixed
 
