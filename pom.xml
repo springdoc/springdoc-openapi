@@ -62,7 +62,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
-		<spring-cloud-function.version>4.2.2</spring-cloud-function.version>
+		<spring-cloud-function.version>4.2.4</spring-cloud-function.version>
 		<scalar.version>0.6.82</scalar.version>
 		<skipPublishing>false</skipPublishing>
 		<commons-lang3.version>3.20.0</commons-lang3.version>
