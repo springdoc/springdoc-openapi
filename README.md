@@ -1,340 +1,121 @@
-![Octocat](https://springdoc.org/img/banner-logo.svg)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://ci-cd.springdoc.org:8443/job/springdoc-openapi-branch-IC/)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=springdoc_springdoc-openapi&metric=alert_status)](https://sonarcloud.io/dashboard?id=springdoc_springdoc-openapi)
-[![Known Vulnerabilities](https://snyk.io/test/github/springdoc/springdoc-openapi.git/badge.svg)](https://snyk.io/test/github/springdoc/springdoc-openapi.git)
-[![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
-
-
-``springdoc-openapi`` is on [Open Collective](https://opencollective.com/springdoc). If
-you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
-
-This project is sponsored by
-
 <p align="center">
-<a href="https://opensource.mercedes-benz.com/" target="_blank">
-    <img src="https://springdoc.org/img/mercedes-benz.png" height="10%" width="10%" />
-</a>
-&nbsp;&nbsp;
-
-<a href="https://www.dm-jobs.com/dmTECH/?locale=de_DE&wt_mc=.display.github.sponsoring.logo" target="_blank">
-     <img src="https://springdoc.org/img/dmTECH_Logo.jpg" height="10%" width="10%" />
-</a>
-
-<a href="https://www.contrastsecurity.com/" target="_blank">
-   <img src="https://springdoc.org/img/contrastsecurity.svg" height="10%" width="30%" />
-</a>
-
- <a href="https://www.lvm.de/" target="_blank">
-   <img src="https://springdoc.org/img/LVM_Versicherung_2010_logo.svg.png" height="10%" width="25%" />
-  </a>
- <a href="https://gdnext.com/" target="_blank">
-   <img src="https://springdoc.org/img/gdnext.png" height="10%" width="10%" />
+  <a href="https://springdoc.org">
+    <img src="https://springdoc.org/img/banner-logo.svg" alt="springdoc-openapi" width="420">
   </a>
 </p>
 
-# Table of Contents
+<p align="center">
+  <b>OpenAPI 3 documentation, Swagger UI and Scalar for Spring Boot, generated from your code.</b>
+</p>
 
-- [Full documentation](#full-documentation)
-- [Security contact information](#security-contact-information)
-- [Versioning](#versioning)
-- [**Introduction**](#introduction)
-- [**Getting Started**](#getting-started)
-    - [Library for springdoc-openapi integration with spring-boot and swagger-ui](#library-for-springdoc-openapi-integration-with-spring-boot-and-swagger-ui)
-    - [Spring-boot with OpenAPI Demo applications.](#spring-boot-with-openapi-demo-applications)
-        - [Source Code for Demo Applications.](#source-code-for-demo-applications)
-        - [Demo Spring Boot 4 Web MVC with OpenAPI 3.](#demo-spring-boot-4-web-mvc-with-openapi-3)
-        - [Demo Spring Boot 4 WebFlux with OpenAPI 3.](#demo-spring-boot-4-webflux-with-openapi-3)
-        - [Demo Spring Boot 4 WebFlux with Functional endpoints OpenAPI 3.](#demo-spring-boot-4-webflux-with-functional-endpoints-openapi-3)
-        - [Demo Spring Boot 4 and Spring Hateoas with OpenAPI 3.](#demo-spring-boot-4-and-spring-hateoas-with-openapi-3)
-    - [Integration of the library in a Spring Boot 4.x project without the swagger-ui:](#integration-of-the-library-in-a-spring-boot-3x-project-without-the-swagger-ui)
-    - [Error Handling for REST using @ControllerAdvice](#error-handling-for-rest-using-controlleradvice)
-    - [Adding API Information and Security documentation](#adding-api-information-and-security-documentation)
-    - [spring-webflux support with Annotated Controllers](#spring-webflux-support-with-annotated-controllers)
-    - [Using a separate management port (Spring Boot 4)](#using-a-separate-management-port-spring-boot-3)
-    - [When Spring Security is enabled](#when-spring-security-is-enabled)
-- [Acknowledgements](#acknowledgements)
-    - [Contributors](#contributors)
-    - [Additional Support](#additional-support)
+<p align="center">
+  <a href="https://github.com/springdoc/springdoc-openapi/actions/workflows/snapshot.yml?query=branch%3Amain"><img src="https://github.com/springdoc/springdoc-openapi/actions/workflows/snapshot.yml/badge.svg?branch=main" alt="Build"></a>
+  <a href="https://central.sonatype.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui"><img src="https://img.shields.io/maven-central/v/org.springdoc/springdoc-openapi-starter-webmvc-ui?label=Maven%20Central" alt="Maven Central"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/springdoc/springdoc-openapi" alt="License"></a>
+  <a href="https://stackoverflow.com/questions/tagged/springdoc"><img src="https://img.shields.io/stackexchange/stackoverflow/t/springdoc?label=Stack%20Overflow" alt="Stack Overflow"></a>
+  <a href="https://opencollective.com/springdoc"><img src="https://img.shields.io/opencollective/all/springdoc?label=Open%20Collective" alt="Open Collective"></a>
+</p>
 
-# [Full documentation](https://springdoc.org/)
+<p align="center">
+  <a href="https://springdoc.org"><b>Documentation</b></a> ·
+  <a href="https://springdoc.org/getting-started.html">Getting started</a> ·
+  <a href="https://springdoc.org/properties.html">Properties</a> ·
+  <a href="https://springdoc.org/demos.html">Demos</a> ·
+  <a href="https://springdoc.org/faq.html">FAQ</a> ·
+  <a href="CHANGELOG.md">Changelog</a>
+</p>
 
-## Security contact information
+---
 
-To report a security vulnerability, please use the
-[Tidelift security contact](https://tidelift.com/security).
-Tidelift will coordinate the fix and disclosure.
+**springdoc-openapi** examines your Spring Boot application at runtime, its controllers, configuration,
+validation constraints and annotations, and serves an OpenAPI 3 description in JSON and YAML, together with an
+interactive Swagger UI or Scalar page. Add one dependency: there is nothing to configure.
 
-## Versioning
+<p align="center">
+  <img src="https://springdoc.org/img/pets.webp" alt="Swagger UI generated by springdoc-openapi" width="760">
+</p>
 
-springdoc-openapi follows [Semantic Versioning](https://semver.org/).
-MAJOR version increments are released in lockstep with Spring Boot MAJOR
-releases and may include incompatible/breaking changes. MINOR and PATCH
-releases follow standard SemVer conventions for backwards-compatible
-features and fixes, respectively. See [CHANGELOG.md](CHANGELOG.md) for the
-full release history.
+## Getting started
 
-# **Introduction**
-
-The springdoc-openapi Java library helps automating the generation of API documentation
-using Spring Boot projects.
-springdoc-openapi works by examining an application at runtime to infer API semantics
-based on Spring configurations, class structure and various annotations.
-
-The library automatically generates documentation in JSON/YAML and HTML formatted pages.
-The generated documentation can be complemented using `swagger-api` annotations.
-
-This library supports:
-
-* OpenAPI 3
-* Spring-boot v4 (Java 17 & Jakarta EE 9)
-* JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
-* Swagger-ui
-* OAuth 2
-* GraalVM native images
-
-The following video introduces the Library:
-
-* [https://youtu.be/utRxyPfFlDw](https://youtu.be/utRxyPfFlDw)
-
-For *Spring-boot v4* support, make sure you
-use [springdoc-openapi v3](https://springdoc.org/)
-
-This is a community-based project, not maintained by the Spring Framework Contributors (
-Pivotal)
-
-# **Getting Started**
-
-## Library for springdoc-openapi integration with spring-boot and swagger-ui
-
-* Automatically deploys swagger-ui to a Spring Boot 4.x application
-* Documentation will be available in HTML format, using the
-  official [swagger-ui jars](https://github.com/swagger-api/swagger-ui.git).
-* The Swagger UI page should then be available at http://server:
-  port/context-path/swagger-ui.html and the OpenAPI description will be available at the
-  following url for json format: http://server:port/context-path/v3/api-docs
-    * `server`: The server name or IP
-    * `port`: The server port
-    * `context-path`: The context path of the application
-* Documentation can be available in yaml format as well, on the following path:
-  `/v3/api-docs.yaml`
-* Add the `springdoc-openapi-ui` library to the list of your project dependencies (No
-  additional configuration is needed):
-
-Maven
+For a Spring Boot 4 web application (Java 17+):
 
 ```xml
-   <dependency>
-      <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-      <version>last-release-version</version>
-   </dependency>
+<dependency>
+  <groupId>org.springdoc</groupId>
+  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+  <version>3.2.0</version>
+</dependency>
 ```
 
-Gradle
+Then open `http://localhost:8080/swagger-ui.html`. The OpenAPI description is served at `/v3/api-docs`
+(and `/v3/api-docs.yaml`).
 
-```groovy
-implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
-```
+Using WebFlux, Scalar, or only the API description? Pick another starter in the
+[getting started guide](https://springdoc.org/getting-started.html).
 
-* This step is optional: For custom path of the swagger documentation in HTML format, add
-  a custom springdoc property, in your spring-boot configuration file:
+## Compatibility
 
-```properties
-# swagger-ui custom path
-springdoc.swagger-ui.path=/swagger-ui.html
-```
+| Spring Boot | springdoc-openapi | Documentation |
+|---|---|---|
+| 4.x | **3.x** (this branch) | [springdoc.org](https://springdoc.org) |
+| 3.x | 2.x ([`spring-boot-3` branch](https://github.com/springdoc/springdoc-openapi/tree/spring-boot-3)) | [springdoc.org/v2](https://springdoc.org/v2/) |
+| 2.x and 1.x | 1.8.0 (end of open-source support) | [springdoc.org/v1](https://springdoc.org/v1/) |
 
-## Spring-boot with OpenAPI Demo applications.
+## Modules and features
 
-### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos/4.x/master).
+- [Spring Web MVC](https://springdoc.org/modules.html#_spring_webmvc_support) and [Spring WebFlux](https://springdoc.org/modules.html#_spring_webflux_support), including [functional endpoints](https://springdoc.org/features.html#_spring_webfluxwebmvc_fn_with_functional_endpoints)
+- [Swagger UI](https://springdoc.org/modules.html#_swagger_ui_support) and [Scalar](https://springdoc.org/modules.html#_scalar_support) user interfaces
+- [MCP support](https://springdoc.org/mcp.html), to expose your API as tools for AI agents
+- [Spring Security](https://springdoc.org/modules.html#_spring_security_support) and OAuth 2, [Spring Data REST](https://springdoc.org/modules.html#_spring_data_rest_support), [Spring HATEOAS](https://springdoc.org/modules.html#_spring_hateoas_support), [Actuator](https://springdoc.org/modules.html#_actuator_support) and [Spring Cloud Function](https://springdoc.org/modules.html#_spring_cloud_function_web_support)
+- [Kotlin](https://springdoc.org/modules.html#_kotlin_support), [Groovy](https://springdoc.org/modules.html#_groovy_support) and [Javadoc](https://springdoc.org/modules.html#_javadoc_support) support
+- Bean Validation (`@NotNull`, `@Min`, `@Max`, `@Size`) and GraalVM native images
+- [API information and security schemes](https://springdoc.org/features.html#_adding_api_information_and_security_documentation), [controller selection](https://springdoc.org/features.html#_selecting_the_rest_controllers_to_include_in_the_documentation) and [hundreds of properties](https://springdoc.org/properties.html)
+- [Maven and Gradle plugins](https://springdoc.org/plugins.html) to generate the description at build time
 
-## [Demo Spring Boot 4 Web MVC with OpenAPI 3](https://demos1.springdoc.org/demo-spring-boot-webmvc).
+## Demos
 
-## [Demo Spring Boot 4 WebFlux with OpenAPI 3](https://demos1.springdoc.org/demo-spring-boot-webflux/swagger-ui.html).
+Try the [live demos](https://springdoc.org/demos.html), for Web MVC, WebFlux, Scalar, Spring Cloud and MCP.
+Their source code is in [springdoc-openapi-demos](https://github.com/springdoc/springdoc-openapi-demos/tree/master).
 
-## [Demo Spring Boot 4 WebFlux with Functional endpoints OpenAPI 3](https://demos1.springdoc.org/demo-spring-boot-webflux-functional/swagger-ui.html).
+## Getting help
 
-## [Demo Spring Boot 4 and Spring Cloud Function Web MVC](https://demos1.springdoc.org/spring-cloud-function-webmvc).
+- Read the [documentation](https://springdoc.org), the [FAQ](https://springdoc.org/faq.html), and the
+  [other resources](https://springdoc.org/other-resources.html) (tutorials and articles)
+- Migrating? See [from SpringFox](https://springdoc.org/migrating-from-springfox.html) or
+  [from springdoc-openapi v1](https://springdoc.org/migrating-from-springdoc-v1.html)
+- Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/springdoc) with the `springdoc` tag
+- Report bugs in [GitHub issues](https://github.com/springdoc/springdoc-openapi/issues), with a minimal reproducer
+- Report vulnerabilities privately, following the [security policy](SECURITY.md)
 
-## [Demo Spring Boot 4 and Spring Cloud Function WebFlux](http://158.101.191.70:8085/swagger-ui.html).
+> [!NOTE]
+> springdoc-openapi is a community project, not maintained by the Spring team.
 
-## [Demo Spring Boot 4 and Spring Cloud Gateway](https://demos1.springdoc.org/demo-microservices/swagger-ui.html).
+## Contributing
 
-![Branching](https://springdoc.org/img/pets.png)
+Contributions are welcome! See [CONTRIBUTING.adoc](CONTRIBUTING.adoc) and the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Integration of the library in a Spring Boot 4.x project without the swagger-ui:
-
-* Documentation will be available at the following url for json format: http://server:
-  port/context-path/v3/api-docs
-    * `server`: The server name or IP
-    * `port`: The server port
-    * `context-path`: The context path of the application
-* Documentation will be available in yaml format as well, on the following
-  path : `/v3/api-docs.yaml`
-* Add the library to the list of your project dependencies. (No additional configuration
-  is needed)
-
-Maven
-
-```xml
-   <dependency>
-      <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-      <version>last-release-version</version>
-   </dependency>
-```
-
-Gradle
-
-```groovy
-implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
-```
-
-* This step is optional: For custom path of the OpenAPI documentation in Json format, add
-  a custom springdoc property, in your spring-boot configuration file:
-
-```properties
-# /api-docs endpoint custom path
-springdoc.api-docs.path=/api-docs
-```
-
-* This step is optional: If you want to disable `springdoc-openapi` endpoints, add a
-  custom springdoc property, in your `spring-boot` configuration file:
-
-```properties
-# disable api-docs
-springdoc.api-docs.enabled=false
-```
-
-## Error Handling for REST using @ControllerAdvice
-
-To generate documentation automatically, make sure all the methods declare the HTTP Code
-responses using the annotation: @ResponseStatus.
-
-## Adding API Information and Security documentation
-
-The library uses spring-boot application auto-configured packages to scan for the
-following annotations in spring beans: OpenAPIDefinition and Info.
-These annotations declare, API Information: Title, version, licence, security, servers,
-tags, security and externalDocs.
-For better performance of documentation generation, declare `@OpenAPIDefinition`
-and `@SecurityScheme` annotations within a Spring managed bean.
-
-## spring-webflux support with Annotated Controllers
-
-* Documentation can be available in yaml format as well, on the following path :
-  /v3/api-docs.yaml
-* Add the library to the list of your project dependencies (No additional configuration
-  is needed)
-
-Maven
-
-```xml
-   <dependency>
-      <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-      <version>last-release-version</version>
-   </dependency>
-```
-
-Gradle
-
-```groovy
-implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:latest'
-```
-
-* This step is optional: For custom path of the swagger documentation in HTML format, add
-  a custom springdoc property, in your spring-boot configuration file:
-
-```properties
-# swagger-ui custom path
-springdoc.swagger-ui.path=/swagger-ui.html
-```
-
-The `springdoc-openapi` libraries are hosted on maven central repository.
-The artifacts can be viewed accessed at the following locations:
-
-Releases:
-
-* [https://central.sonatype.com/search?q=g:org.springdoc)](https://central.sonatype.com/search?q=g:org.springdoc)
-  .
-
-Snapshots:
-
-* [https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/org/springdoc/](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/org/springdoc/)
-  .
-
-## Using a separate management port (Spring Boot 4)
-
-Some Spring Boot apps run **Actuator** on a separate management port. In that case:
-
-- **Application port** (e.g., `8080`) serves your app and springdoc endpoints:
-    - `http://localhost:8080/v3/api-docs`
-    - `http://localhost:8080/swagger-ui/index.html`
-
-- **Management port** (e.g., `9090`) serves Actuator:
-    - `http://localhost:9090/actuator`
-    - `http://localhost:9090/actuator/health`
-
-Minimal `application.yml`:
-
-```yaml
-server:
-  port: 8080
-
-management:
-  server:
-    port: 9090
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-
-# springdoc is enabled by default with the starter;
-# endpoints remain on the application port.
-# (OpenAPI JSON = /v3/api-docs, Swagger UI = /swagger-ui/index.html)
-```
-
-### When Spring Security is enabled
-
-With Spring Boot 3, `/v3/api-docs` and Swagger UI are served on the **application port**, while Actuator runs on the **management port**.  
-If Spring Security is enabled, explicitly permit the docs paths on the **application port**:
-
-```java
-@Bean
-SecurityFilterChain api(HttpSecurity http) throws Exception {
-  http
-    .authorizeHttpRequests(auth -> auth
-      .requestMatchers(
-        "/v3/api-docs/**",   
-        "/v3/api-docs.yaml", 
-        "/swagger-ui/**",
-        "/swagger-ui.html"
-      ).permitAll()
-      .anyRequest().authenticated()
-    );
-  return http.build();
-}
-```
-
-# Acknowledgements
-
-## Contributors
-
-springdoc-openapi is relevant and updated regularly due to the valuable contributions from
-its [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contributors).
+Thanks to all our [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contributors):
 
 <a href="https://github.com/springdoc/springdoc-openapi/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" width="50%"/>
+  <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" alt="Contributors" width="60%">
 </a>
 
-Thank you all for your support!
+## Sponsors
 
-## Additional Support
+springdoc-openapi is on [Open Collective](https://opencollective.com/springdoc). If you ❤️ this project, consider
+[becoming a sponsor](https://springdoc.org/sponsor.html). Thank you to our sponsors:
 
-* [Spring Team](https://spring.io/team) - Thanks for their support by sharing all relevant
-  resources around Spring projects.
-* [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) - Thanks a lot for
-  supporting springdoc-openapi project.
+<p align="center">
+  <a href="https://opensource.mercedes-benz.com/"><img src="https://springdoc.org/img/mercedes-benz.webp" alt="Mercedes-Benz" height="56"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.dm-jobs.com/dmTECH/?locale=de_DE&wt_mc=.display.github.sponsoring.logo"><img src="https://springdoc.org/img/dmTECH_Logo.webp" alt="dmTECH" height="56"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.contrastsecurity.com/"><img src="https://springdoc.org/img/contrastsecurity.svg" alt="Contrast Security" height="40"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.lvm.de/"><img src="https://springdoc.org/img/lvm-logo.webp" alt="LVM Versicherung" height="48"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://gdnext.com/"><img src="https://springdoc.org/img/gdnext.webp" alt="GDNext" height="40"></a>
+</p>
 
-![JenBrains logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)
+Special thanks to [the Spring team](https://spring.io/team) and [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi)
+for their support.
+
+## License
+
+springdoc-openapi is Open Source software released under the [Apache 2.0 license](LICENSE).

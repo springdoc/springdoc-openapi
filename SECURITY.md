@@ -14,13 +14,8 @@ Older major/minor streams do not receive security patches.
 
 ## Reporting a Vulnerability
 
-If you think you have found a security vulnerability in springdoc-openapi please *DO NOT*
-disclose it publicly until we've had a chance to fix it. Please don't report security
-vulnerabilities using GitHub issues, instead head over to support@springdoc.org and
-learn how to disclose them responsibly.
+If you think you have found a security vulnerability in springdoc-openapi, please *DO NOT*
+disclose it publicly, and don't report it in a GitHub issue, until it has been fixed.
 
-## Security contact information
-
-To report a security vulnerability, please use the
-[Tidelift security contact](https://tidelift.com/security).
+Report it through the [Tidelift security contact](https://tidelift.com/security).
 Tidelift will coordinate the fix and disclosure.
