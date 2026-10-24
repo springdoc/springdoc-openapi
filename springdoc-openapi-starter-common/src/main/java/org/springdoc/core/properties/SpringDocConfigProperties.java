@@ -34,7 +34,6 @@ import java.util.Set;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.SpecVersion;
 import org.springdoc.core.configuration.SpringDocConfiguration;
-import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.utils.Constants;
 
@@ -1216,6 +1215,16 @@ public class SpringDocConfigProperties {
 		 */
 		private PolymorphicConverter polymorphicConverter = new PolymorphicConverter();
 
+		/**
+		 * The Kotlin nullable property customizer.
+		 */
+		private KotlinNullablePropertyCustomizer kotlinNullablePropertyCustomizer = new KotlinNullablePropertyCustomizer();
+
+		/**
+		 * The Java nullable property customizer.
+		 */
+		private JavaNullablePropertyCustomizer javaNullablePropertyCustomizer = new JavaNullablePropertyCustomizer();
+
 
 		/**
 		 * Gets deprecating converter.
@@ -1272,6 +1281,104 @@ public class SpringDocConfigProperties {
 		}
 
 		/**
+		 * Gets Kotlin nullable property customizer.
+		 *
+		 * @return the Kotlin nullable property customizer
+		 */
+		public KotlinNullablePropertyCustomizer getKotlinNullablePropertyCustomizer() {
+			return kotlinNullablePropertyCustomizer;
+		}
+
+		/**
+		 * Sets Kotlin nullable property customizer.
+		 *
+		 * @param kotlinNullablePropertyCustomizer the Kotlin nullable property customizer
+		 */
+		public void setKotlinNullablePropertyCustomizer(KotlinNullablePropertyCustomizer kotlinNullablePropertyCustomizer) {
+			this.kotlinNullablePropertyCustomizer = kotlinNullablePropertyCustomizer;
+		}
+
+		/**
+		 * Gets Java nullable property customizer.
+		 *
+		 * @return the Java nullable property customizer
+		 */
+		public JavaNullablePropertyCustomizer getJavaNullablePropertyCustomizer() {
+			return javaNullablePropertyCustomizer;
+		}
+
+		/**
+		 * Sets Java nullable property customizer.
+		 *
+		 * @param javaNullablePropertyCustomizer the Java nullable property customizer
+		 */
+		public void setJavaNullablePropertyCustomizer(JavaNullablePropertyCustomizer javaNullablePropertyCustomizer) {
+			this.javaNullablePropertyCustomizer = javaNullablePropertyCustomizer;
+		}
+
+		/**
+		 * The Kotlin nullable property customizer.
+		 *
+		 * @author bnasslahsen
+		 */
+		public static class KotlinNullablePropertyCustomizer {
+
+			/**
+			 * Mark the schema properties of nullable Kotlin types (Type?) as nullable.
+			 */
+			private boolean enabled = true;
+
+			/**
+			 * Is enabled boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isEnabled() {
+				return enabled;
+			}
+
+			/**
+			 * Sets enabled.
+			 *
+			 * @param enabled the enabled
+			 */
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
+		}
+
+		/**
+		 * The Java nullable property customizer.
+		 *
+		 * @author bnasslahsen
+		 */
+		public static class JavaNullablePropertyCustomizer {
+
+			/**
+			 * Mark the schema properties of Java models annotated with @Nullable as nullable.
+			 */
+			private boolean enabled;
+
+			/**
+			 * Is enabled boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isEnabled() {
+				return enabled;
+			}
+
+			/**
+			 * Sets enabled.
+			 *
+			 * @param enabled the enabled
+			 */
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
+		}
+
+		/**
 		 * The type Deprecating converter.
 		 *
 		 * @author bnasslashen
@@ -1320,7 +1427,7 @@ public class SpringDocConfigProperties {
 			/**
 			 * Suffix appended to the base schema name when emitting oneOf unions as component refs.
 			 */
-			private String oneOfRefSuffix = PolymorphicModelConverter.DEFAULT_ONE_OF_REF_SUFFIX;
+			private String oneOfRefSuffix = "Variant";
 
 			/**
 			 * Gets one of ref suffix.
