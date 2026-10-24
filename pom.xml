@@ -66,7 +66,7 @@
 		<jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
 		<spring-cloud-function.version>5.0.5</spring-cloud-function.version>
-		<scalar.version>0.6.82</scalar.version>
+		<scalar.version>0.6.83</scalar.version>
 		<spring-ai.version>2.0.1</spring-ai.version>
 		<skipPublishing>false</skipPublishing>
 		<skip.npm>true</skip.npm>
