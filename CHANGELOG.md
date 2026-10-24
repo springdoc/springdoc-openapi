@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3370 – A `ParameterCustomizer` can read the type-use annotations of a parameter, including the ones declared on the value wrapped in an `Optional`, such as `Optional<@MyAnnotation Foo>`
 - #3382 – Mark the Java properties annotated with `@Nullable` (JSpecify, Spring, JSR-305) as nullable in their schema, including `$ref` and `oneOf` properties. Opt-in with `springdoc.model-converters.java-nullable-property-customizer.enabled=true`
 - #3390 – Add `springdoc.model-converters.polymorphic-converter.one-of-as-ref` to emit the polymorphic `oneOf` unions as reusable component schemas, named after the parent schema with the suffix set by `springdoc.model-converters.polymorphic-converter.one-of-ref-suffix` (`Variant` by default)
+- #3388 – Register the MCP tools with a `McpStatelessSyncServer`, for the STATELESS protocol
 
 ### Changed
 

@@ -186,7 +186,8 @@ public class SpringDocAiAutoConfiguration {
 	/**
 	 * Deferred MCP tool registration. Runs after all singleton beans are created
 	 * (including the MCP server), waits for the OpenAPI specification to become available
-	 * in the cache, and dynamically registers tools with the {@code McpSyncServer}.
+	 * in the cache, and dynamically registers tools with the {@code McpSyncServer}, or with the
+	 * {@code McpStatelessSyncServer} of the STATELESS protocol.
 	 * <p>
 	 * This avoids a startup deadlock: during bean creation, the pre-loading background
 	 * thread is blocked by the singleton lock held by the main thread. Once all singletons
@@ -233,19 +234,29 @@ public class SpringDocAiAutoConfiguration {
 				if (tools.length == 0) {
 					return;
 				}
-				try {
-					io.modelcontextprotocol.server.McpSyncServer mcpServer = applicationContext
-						.getBean(io.modelcontextprotocol.server.McpSyncServer.class);
+				io.modelcontextprotocol.server.McpSyncServer mcpServer = applicationContext
+					.getBeanProvider(io.modelcontextprotocol.server.McpSyncServer.class).getIfAvailable();
+				if (mcpServer != null) {
 					for (ToolCallback tool : tools) {
 						mcpServer
 							.addTool(org.springframework.ai.mcp.McpToolUtils.toSyncToolSpecification(tool));
 					}
 					mcpServer.notifyToolsListChanged();
 					LOGGER.info("Registered {} MCP tools with the MCP server", tools.length);
+					return;
 				}
-				catch (org.springframework.beans.factory.NoSuchBeanDefinitionException ex) {
-					LOGGER.debug("McpSyncServer bean not found. Tools available via ToolCallbackProvider.");
+				// spring.ai.mcp.server.protocol=STATELESS: no session, so no tools list change to notify
+				io.modelcontextprotocol.server.McpStatelessSyncServer statelessMcpServer = applicationContext
+					.getBeanProvider(io.modelcontextprotocol.server.McpStatelessSyncServer.class).getIfAvailable();
+				if (statelessMcpServer != null) {
+					for (ToolCallback tool : tools) {
+						statelessMcpServer.addTool(
+								org.springframework.ai.mcp.McpToolUtils.toStatelessSyncToolSpecification(tool, null));
+					}
+					LOGGER.info("Registered {} MCP tools with the stateless MCP server", tools.length);
+					return;
 				}
+				LOGGER.debug("No MCP server bean found. Tools available via ToolCallbackProvider.");
 			};
 		}
 
