@@ -4,38 +4,61 @@
   </a>
 </p>
 
+<h3 align="center">📘 OpenAPI 3 documentation, Swagger UI and Scalar for Spring Boot, generated from your code</h3>
+
 <p align="center">
-  <b>OpenAPI 3 documentation, Swagger UI and Scalar for Spring Boot, generated from your code.</b>
+  <a href="https://github.com/springdoc/springdoc-openapi/actions/workflows/snapshot.yml?query=branch%3Aspring-boot-3"><img src="https://img.shields.io/github/actions/workflow/status/springdoc/springdoc-openapi/snapshot.yml?branch=spring-boot-3&style=flat-square&logo=githubactions&logoColor=white&label=build" alt="Build"></a>
+  <a href="https://central.sonatype.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui"><img src="https://img.shields.io/maven-central/v/org.springdoc/springdoc-openapi-starter-webmvc-ui?style=flat-square&logo=apachemaven&label=Maven%20Central&color=blue&versionPrefix=2." alt="Maven Central"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/springdoc/springdoc-openapi?style=flat-square&logo=apache&color=blue" alt="License"></a>
+  <a href="https://github.com/springdoc/springdoc-openapi/stargazers"><img src="https://img.shields.io/github/stars/springdoc/springdoc-openapi?style=flat-square&logo=github&color=yellow" alt="GitHub stars"></a>
+  <a href="https://stackoverflow.com/questions/tagged/springdoc"><img src="https://img.shields.io/stackexchange/stackoverflow/t/springdoc?style=flat-square&logo=stackoverflow&logoColor=white&label=Stack%20Overflow&color=orange" alt="Stack Overflow"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/springdoc/springdoc-openapi/actions/workflows/snapshot.yml?query=branch%3Aspring-boot-3"><img src="https://github.com/springdoc/springdoc-openapi/actions/workflows/snapshot.yml/badge.svg?branch=spring-boot-3" alt="Build"></a>
-  <a href="https://central.sonatype.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui"><img src="https://img.shields.io/maven-central/v/org.springdoc/springdoc-openapi-starter-webmvc-ui?label=Maven%20Central&versionPrefix=2." alt="Maven Central"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/springdoc/springdoc-openapi" alt="License"></a>
-  <a href="https://stackoverflow.com/questions/tagged/springdoc"><img src="https://img.shields.io/stackexchange/stackoverflow/t/springdoc?label=Stack%20Overflow" alt="Stack Overflow"></a>
-  <a href="https://opencollective.com/springdoc"><img src="https://img.shields.io/opencollective/all/springdoc?label=Open%20Collective" alt="Open Collective"></a>
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?style=flat-square&logo=springboot&logoColor=white" alt="Spring Boot 3">
+  <img src="https://img.shields.io/badge/Java-17%2B-ED8B00?style=flat-square&logo=openjdk&logoColor=white" alt="Java 17+">
+  <img src="https://img.shields.io/badge/OpenAPI-3.0%20%7C%203.1-6BA539?style=flat-square&logo=openapiinitiative&logoColor=white" alt="OpenAPI 3.0 and 3.1">
+  <img src="https://img.shields.io/badge/Swagger%20UI-included-85EA2D?style=flat-square&logo=swagger&logoColor=black" alt="Swagger UI">
+  <img src="https://img.shields.io/badge/Scalar-supported-1A1A1A?style=flat-square" alt="Scalar">
 </p>
 
 <p align="center">
-  <a href="https://springdoc.org/v2/"><b>Documentation</b></a> ·
-  <a href="https://springdoc.org/v2/getting-started.html">Getting started</a> ·
-  <a href="https://springdoc.org/v2/properties.html">Properties</a> ·
-  <a href="https://springdoc.org/v2/demos.html">Demos</a> ·
-  <a href="https://springdoc.org/v2/faq.html">FAQ</a> ·
-  <a href="CHANGELOG.md">Changelog</a>
+  <a href="https://springdoc.org/v2/"><b>📖 Documentation</b></a> ·
+  <a href="https://springdoc.org/v2/getting-started.html">🚀 Getting started</a> ·
+  <a href="https://springdoc.org/v2/properties.html">⚙️ Properties</a> ·
+  <a href="https://springdoc.org/v2/demos.html">🎮 Demos</a> ·
+  <a href="https://springdoc.org/v2/faq.html">❓ FAQ</a> ·
+  <a href="CHANGELOG.md">📝 Changelog</a>
 </p>
+
+<h3 align="center">💖 Sponsored by</h3>
+
+<p align="center">
+  <a href="https://opensource.mercedes-benz.com/"><img src="https://springdoc.org/img/mercedes-benz.webp" alt="Mercedes-Benz" height="56"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.dm-jobs.com/dmTECH/?locale=de_DE&wt_mc=.display.github.sponsoring.logo"><img src="https://springdoc.org/img/dmTECH_Logo.webp" alt="dmTECH" height="56"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.contrastsecurity.com/"><img src="https://springdoc.org/img/contrastsecurity.svg" alt="Contrast Security" height="40"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.lvm.de/"><img src="https://springdoc.org/img/lvm-logo.webp" alt="LVM Versicherung" height="48"></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://gdnext.com/"><img src="https://springdoc.org/img/gdnext.webp" alt="GDNext" height="40"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/sponsors/springdoc"><img src="https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="Sponsor on GitHub"></a>
+  <a href="https://opencollective.com/springdoc"><img src="https://img.shields.io/badge/Support-Open%20Collective-7FADF2?style=for-the-badge&logo=opencollective&logoColor=white" alt="Support on Open Collective"></a>
+</p>
+
+<p align="center"><sub>If you ❤️ springdoc-openapi, <a href="https://springdoc.org/sponsor.html">become a sponsor</a>: it covers the project expenses and helps it grow.</sub></p>
 
 ---
 
 **springdoc-openapi** examines your Spring Boot application at runtime, its controllers, configuration,
 validation constraints and annotations, and serves an OpenAPI 3 description in JSON and YAML, together with an
-interactive Swagger UI or Scalar page. Add one dependency: there is nothing to configure.
+interactive Swagger UI or Scalar page. Add one dependency: there is nothing to configure. ✨
 
 <p align="center">
   <img src="https://springdoc.org/img/pets.webp" alt="Swagger UI generated by springdoc-openapi" width="760">
 </p>
 
-## Getting started
+## 🚀 Getting started
 
 For a Spring Boot 3 web application (Java 17+):
 
@@ -47,78 +70,66 @@ For a Spring Boot 3 web application (Java 17+):
 </dependency>
 ```
 
-Then open `http://localhost:8080/swagger-ui.html`. The OpenAPI description is served at `/v3/api-docs`
+Then open 👉 `http://localhost:8080/swagger-ui.html`. The OpenAPI description is served at `/v3/api-docs`
 (and `/v3/api-docs.yaml`).
 
 Using WebFlux, Scalar, or only the API description? Pick another starter in the
 [getting started guide](https://springdoc.org/v2/getting-started.html).
 
-## Compatibility
+## 🧭 Compatibility
 
 | Spring Boot | springdoc-openapi | Documentation |
-|---|---|---|
-| 4.x | 3.x ([`main` branch](https://github.com/springdoc/springdoc-openapi/tree/main)) | [springdoc.org](https://springdoc.org) |
-| 3.x | **2.x** (this branch) | [springdoc.org/v2](https://springdoc.org/v2/) |
-| 2.x and 1.x | 1.8.0 (end of open-source support) | [springdoc.org/v1](https://springdoc.org/v1/) |
+|:---:|:---:|:---:|
+| 🍃 4.x | 3.x ([`main` branch](https://github.com/springdoc/springdoc-openapi/tree/main)) | [springdoc.org](https://springdoc.org) |
+| 🍃 3.x | **2.x** (this branch) | [springdoc.org/v2](https://springdoc.org/v2/) |
+| 🍂 2.x and 1.x | 1.8.0 (end of open-source support) | [springdoc.org/v1](https://springdoc.org/v1/) |
 
 > [!NOTE]
 > Extended support for springdoc-openapi v1 is available for organizations that need it: contact
 > [sales@springdoc.org](mailto:sales@springdoc.org).
 
-## Modules and features
+## ✨ Modules and features
 
-- [Spring Web MVC](https://springdoc.org/v2/modules.html#_spring_webmvc_support) and [Spring WebFlux](https://springdoc.org/v2/modules.html#_spring_webflux_support), including [functional endpoints](https://springdoc.org/v2/features.html#_spring_webfluxwebmvc_fn_with_functional_endpoints)
-- [Swagger UI](https://springdoc.org/v2/modules.html#_swagger_ui_support) and [Scalar](https://springdoc.org/v2/modules.html#_scalar_support) user interfaces
-- [Spring Security](https://springdoc.org/v2/modules.html#_spring_security_support) and OAuth 2, [Spring Data REST](https://springdoc.org/v2/modules.html#_spring_data_rest_support), [Spring HATEOAS](https://springdoc.org/v2/modules.html#_spring_hateoas_support), [Actuator](https://springdoc.org/v2/modules.html#_actuator_support) and [Spring Cloud Function](https://springdoc.org/v2/modules.html#_spring_cloud_function_web_support)
-- [Kotlin](https://springdoc.org/v2/modules.html#_kotlin_support), [Groovy](https://springdoc.org/v2/modules.html#_groovy_support) and [Javadoc](https://springdoc.org/v2/modules.html#_javadoc_support) support
-- Bean Validation (`@NotNull`, `@Min`, `@Max`, `@Size`) and GraalVM native images
-- [API information and security schemes](https://springdoc.org/v2/features.html#_adding_api_information_and_security_documentation), [controller selection](https://springdoc.org/v2/features.html#_selecting_the_rest_controllers_to_include_in_the_documentation) and [hundreds of properties](https://springdoc.org/v2/properties.html)
-- [Maven and Gradle plugins](https://springdoc.org/v2/plugins.html) to generate the description at build time
+- 🌐 [Spring Web MVC](https://springdoc.org/v2/modules.html#_spring_webmvc_support) and [Spring WebFlux](https://springdoc.org/v2/modules.html#_spring_webflux_support), including [functional endpoints](https://springdoc.org/v2/features.html#_spring_webfluxwebmvc_fn_with_functional_endpoints)
+- 🖥️ [Swagger UI](https://springdoc.org/v2/modules.html#_swagger_ui_support) and [Scalar](https://springdoc.org/v2/modules.html#_scalar_support) user interfaces
+- 🔐 [Spring Security](https://springdoc.org/v2/modules.html#_spring_security_support) and OAuth 2
+- 🧩 [Spring Data REST](https://springdoc.org/v2/modules.html#_spring_data_rest_support), [Spring HATEOAS](https://springdoc.org/v2/modules.html#_spring_hateoas_support), [Actuator](https://springdoc.org/v2/modules.html#_actuator_support) and [Spring Cloud Function](https://springdoc.org/v2/modules.html#_spring_cloud_function_web_support)
+- 🧪 [Kotlin](https://springdoc.org/v2/modules.html#_kotlin_support), [Groovy](https://springdoc.org/v2/modules.html#_groovy_support) and [Javadoc](https://springdoc.org/v2/modules.html#_javadoc_support) support
+- ✅ Bean Validation (`@NotNull`, `@Min`, `@Max`, `@Size`) and ⚡ GraalVM native images
+- 🛠️ [API information and security schemes](https://springdoc.org/v2/features.html#_adding_api_information_and_security_documentation), [controller selection](https://springdoc.org/v2/features.html#_selecting_the_rest_controllers_to_include_in_the_documentation) and [hundreds of properties](https://springdoc.org/v2/properties.html)
+- 📦 [Maven and Gradle plugins](https://springdoc.org/v2/plugins.html) to generate the description at build time
 
-## Demos
+## 🎮 Demos
 
 Try the [live demos](https://springdoc.org/v2/demos.html), for Web MVC, WebFlux, Scalar and Spring Cloud.
 Their source code is in [springdoc-openapi-demos](https://github.com/springdoc/springdoc-openapi-demos/tree/spring-boot-3).
 
-## Getting help
+## 💬 Getting help
 
-- Read the [documentation](https://springdoc.org/v2/), the [FAQ](https://springdoc.org/v2/faq.html), and the
+- 📖 Read the [documentation](https://springdoc.org/v2/), the [FAQ](https://springdoc.org/v2/faq.html), and the
   [other resources](https://springdoc.org/v2/other-resources.html) (tutorials and articles)
-- Migrating? See [from SpringFox](https://springdoc.org/v2/migrating-from-springfox.html) or
+- 🔀 Migrating? See [from SpringFox](https://springdoc.org/v2/migrating-from-springfox.html) or
   [from springdoc-openapi v1](https://springdoc.org/v2/migrating-from-springdoc-v1.html)
-- Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/springdoc) with the `springdoc` tag
-- Report bugs in [GitHub issues](https://github.com/springdoc/springdoc-openapi/issues), with a minimal reproducer
-- Report vulnerabilities privately, following the [security policy](SECURITY.md)
+- 🙋 Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/springdoc) with the `springdoc` tag
+- 🐛 Report bugs in [GitHub issues](https://github.com/springdoc/springdoc-openapi/issues), with a minimal reproducer
+- 🔒 Report vulnerabilities privately, following the [security policy](SECURITY.md)
 
 > [!NOTE]
 > springdoc-openapi is a community project, not maintained by the Spring team.
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! See [CONTRIBUTING.adoc](CONTRIBUTING.adoc) and the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-Thanks to all our [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contributors):
+Thanks to all our [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contributors) 🙏
 
 <a href="https://github.com/springdoc/springdoc-openapi/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" alt="Contributors" width="60%">
 </a>
 
-## Sponsors
-
-springdoc-openapi is on [Open Collective](https://opencollective.com/springdoc). If you ❤️ this project, consider
-[becoming a sponsor](https://springdoc.org/sponsor.html). Thank you to our sponsors:
-
-<p align="center">
-  <a href="https://opensource.mercedes-benz.com/"><img src="https://springdoc.org/img/mercedes-benz.webp" alt="Mercedes-Benz" height="56"></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.dm-jobs.com/dmTECH/?locale=de_DE&wt_mc=.display.github.sponsoring.logo"><img src="https://springdoc.org/img/dmTECH_Logo.webp" alt="dmTECH" height="56"></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.contrastsecurity.com/"><img src="https://springdoc.org/img/contrastsecurity.svg" alt="Contrast Security" height="40"></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.lvm.de/"><img src="https://springdoc.org/img/lvm-logo.webp" alt="LVM Versicherung" height="48"></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://gdnext.com/"><img src="https://springdoc.org/img/gdnext.webp" alt="GDNext" height="40"></a>
-</p>
-
 Special thanks to [the Spring team](https://spring.io/team) and [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi)
 for their support.
 
-## License
+## 📄 License
 
 springdoc-openapi is Open Source software released under the [Apache 2.0 license](LICENSE).
