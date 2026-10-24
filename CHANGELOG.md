@@ -27,6 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- #3352 – A `@ResponseStatus` on a controller class is now applied to the responses of its operations
+- #3355 – An injected `WebSession` parameter is no longer documented as a query parameter in WebFlux applications
+- #3354 – `/v3/api-docs` no longer fails when an API version parameter declares `@Schema(allowableValues)`
+- #3364 – The application no longer fails to start when Spring HATEOAS is on the classpath without a `LinkRelationProvider` bean
+- #3368 – A `WebAsyncTask` return type is now unwrapped, so its response is described by its result type
 - #3377 – A JSpecify `@Nullable` on a controller method parameter now makes its schema nullable
 - #3381 – A nullable Kotlin property described by a `oneOf` schema, such as a sealed class, is now documented as nullable
 - #3387 – Scalar's own integration works again with the Swagger UI and API-only starters: only the Springdoc Scalar starters replace it
