@@ -28,10 +28,9 @@ package org.springdoc.core.converters;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Stream;
 
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -51,7 +50,7 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	/**
 	 * The constant DEPRECATED_ANNOTATIONS.
 	 */
-	private static final List<Class<? extends Annotation>> DEPRECATED_ANNOTATIONS = Collections.synchronizedList(new ArrayList<>());
+	private static final Set<Class<? extends Annotation>> DEPRECATED_ANNOTATIONS = new CopyOnWriteArraySet<>();
 
 	static {
 		DEPRECATED_ANNOTATIONS.add(Deprecated.class);
