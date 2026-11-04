@@ -63,7 +63,7 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 	/**
 	 * The constant REACTIVE_APPLICATION_CONTEXT_CLASS.
 	 */
-	private static final String REACTIVE_APPLICATION_CONTEXT_CLASS = "org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext";
+	private static final String REACTIVE_APPLICATION_CONTEXT_CLASS = "org.springframework.boot.web.context.reactive.ReactiveWebApplicationContext";
 
 	/**
 	 * The Formatting conversion service.
