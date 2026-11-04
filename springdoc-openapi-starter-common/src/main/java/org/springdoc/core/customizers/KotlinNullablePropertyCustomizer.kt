@@ -39,8 +39,27 @@ class KotlinNullablePropertyCustomizer(
 		} catch (_: Throwable) {
 			return emptySet()
 		}
-		return kotlinClass.memberProperties
+		val nullableKotlinNames = kotlinClass.memberProperties
 			.filter { it.returnType.isMarkedNullable }
 			.mapTo(LinkedHashSet()) { it.name }
+		if (nullableKotlinNames.isEmpty())
+			return nullableKotlinNames
+		// The schema properties are keyed by their JSON names, which differ from the Kotlin
+		// names when renamed with @JsonProperty or @JsonNaming: map them through Jackson.
+		val definitions = try {
+			objectMapperProvider.jsonMapper().serializationConfig.introspect(javaType).findProperties()
+		} catch (_: Exception) {
+			return nullableKotlinNames
+		}
+		val result = LinkedHashSet<String>()
+		val mappedKotlinNames = HashSet<String>()
+		for (definition in definitions) {
+			if (definition.internalName in nullableKotlinNames) {
+				result.add(definition.name)
+				mappedKotlinNames.add(definition.internalName)
+			}
+		}
+		nullableKotlinNames.filterNotTo(result) { it in mappedKotlinNames }
+		return result
 	}
 }
