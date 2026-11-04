@@ -9,7 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Upgrade swagger-core to version **3.0.0**, which moves to Jackson 3 (`tools.jackson`) and Jakarta EE 11. The
+  Jackson mappers of springdoc-openapi and swagger-core are now Jackson 3 mappers
+- The swagger artifacts are renamed: `swagger-annotations-jakarta`, `swagger-models-jakarta` and
+  `swagger-core-jakarta` become `swagger-annotations`, `swagger-models` and `swagger-core`. Update the
+  dependencies you declare explicitly
+- Jackson 3 mappers are immutable: customize the swagger-core mappers with `ObjectMapperFactory.addCustomizer`
+  instead of changing `Json.mapper()` or `Json31.mapper()`
+- With Jackson 3, the parameter of a single public constructor whose name matches no property is documented as a
+  `writeOnly` property
+- The user's `OpenAPI` bean, and the schemas and responses springdoc-openapi adapts, are copied with
+  `ModelCopy.deepCopy` instead of a JSON round trip
 - Upgrade swagger-ui to version **5.34.1**
+
+### Fixed
+
+- With OpenAPI 3.1, a required `@JsonUnwrapped` member no longer adds an empty property to the schema
 
 ## [3.2.0] - 2026-10-24
 
