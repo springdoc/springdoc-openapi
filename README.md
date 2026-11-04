@@ -10,7 +10,7 @@
   <a href="https://github.com/springdoc/springdoc-openapi/actions/workflows/snapshot.yml?query=branch%3Aspring-boot-3"><img src="https://img.shields.io/github/actions/workflow/status/springdoc/springdoc-openapi/snapshot.yml?branch=spring-boot-3&style=flat-square&logo=githubactions&logoColor=white&label=build" alt="Build"></a>
   <a href="https://central.sonatype.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui"><img src="https://img.shields.io/maven-central/v/org.springdoc/springdoc-openapi-starter-webmvc-ui?style=flat-square&logo=apachemaven&label=Maven%20Central&color=blue&versionPrefix=2." alt="Maven Central"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/springdoc/springdoc-openapi?style=flat-square&logo=apache&color=blue" alt="License"></a>
-  <a href="https://github.com/springdoc/springdoc-openapi/stargazers"><img src="https://img.shields.io/github/stars/springdoc/springdoc-openapi?style=flat-square&logo=github&color=yellow" alt="GitHub stars"></a>
+  <a href="https://github.com/springdoc/springdoc-openapi"><img src="https://img.shields.io/github/stars/springdoc/springdoc-openapi?style=flat-square&logo=github&color=yellow" alt="GitHub stars"></a>
   <a href="https://stackoverflow.com/questions/tagged/springdoc"><img src="https://img.shields.io/stackexchange/stackoverflow/t/springdoc?style=flat-square&logo=stackoverflow&logoColor=white&label=Stack%20Overflow&color=orange" alt="Stack Overflow"></a>
 </p>
 
