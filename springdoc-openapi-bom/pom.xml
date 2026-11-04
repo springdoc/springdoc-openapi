@@ -63,17 +63,17 @@
 			<!-- swagger dependencies, so that modules holding only the annotations stay in lockstep -->
 			<dependency>
 				<groupId>io.swagger.core.v3</groupId>
-				<artifactId>swagger-annotations-jakarta</artifactId>
+				<artifactId>swagger-annotations</artifactId>
 				<version>${swagger-api.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.swagger.core.v3</groupId>
-				<artifactId>swagger-models-jakarta</artifactId>
+				<artifactId>swagger-models</artifactId>
 				<version>${swagger-api.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.swagger.core.v3</groupId>
-				<artifactId>swagger-core-jakarta</artifactId>
+				<artifactId>swagger-core</artifactId>
 				<version>${swagger-api.version}</version>
 			</dependency>
 		</dependencies>

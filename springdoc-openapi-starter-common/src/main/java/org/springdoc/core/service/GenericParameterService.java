@@ -16,7 +16,6 @@
 
 package org.springdoc.core.service;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
@@ -36,6 +35,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import tools.jackson.core.JacksonException;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.enums.Explode;
@@ -279,7 +279,7 @@ public class GenericParameterService {
 			try {
 				parameter.setExample(objectMapperProvider.jsonMapper().readTree(parameterDoc.example()));
 			}
-			catch (IOException e) {
+			catch (JacksonException e) {
 				parameter.setExample(parameterDoc.example());
 			}
 		}

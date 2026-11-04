@@ -59,7 +59,10 @@
 		<central-publishing-maven-plugin.version>0.11.0
 		</central-publishing-maven-plugin.version>
 		<flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
-		<swagger-api.version>2.2.55</swagger-api.version>
+		<swagger-api.version>3.0.0-SNAPSHOT</swagger-api.version>
+		<!-- Same Jackson versions as swagger-core 3.0.0 -->
+		<jackson-bom.version>3.2.3</jackson-bom.version>
+		<jackson-2-bom.version>2.22.3</jackson-2-bom.version>
 		<swagger-ui.version>5.34.1</swagger-ui.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jjwt.version>0.9.1</jjwt.version>
@@ -79,7 +82,7 @@
 			<!-- swagger dependencies -->
 			<dependency>
 				<groupId>io.swagger.core.v3</groupId>
-				<artifactId>swagger-core-jakarta</artifactId>
+				<artifactId>swagger-core</artifactId>
 				<version>${swagger-api.version}</version>
 			</dependency>
 			<!-- swagger ui -->
