@@ -532,6 +532,10 @@
           },
           "message": {
             "type": "string"
+          },
+          "message2": {
+            "type": "string",
+            "writeOnly": true
           }
         }
       },

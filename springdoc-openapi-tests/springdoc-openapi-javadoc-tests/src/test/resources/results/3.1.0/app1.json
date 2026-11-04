@@ -548,6 +548,10 @@
           "message": {
             "type": "string",
             "description": "The Message."
+          },
+          "message2": {
+            "type": "string",
+            "writeOnly": true
           }
         }
       },

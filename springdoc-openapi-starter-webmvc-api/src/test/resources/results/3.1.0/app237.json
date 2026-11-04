@@ -62,7 +62,6 @@
             "type": "string",
             "description": "Some description of value"
           },
-          "unwrapped": {},
           "number": {
             "type": "integer",
             "format": "int32",
@@ -71,7 +70,6 @@
         },
         "required": [
           "number",
-          "unwrapped",
           "value"
         ]
       }
