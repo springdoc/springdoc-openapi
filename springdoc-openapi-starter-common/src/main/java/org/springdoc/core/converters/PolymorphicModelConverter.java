@@ -28,9 +28,11 @@ package org.springdoc.core.converters;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -52,6 +54,7 @@ import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 import static java.util.function.Function.identity;
@@ -75,9 +78,11 @@ public class PolymorphicModelConverter implements ModelConverter {
 	private static final Set<String> PARENT_TYPES_TO_IGNORE = Collections.synchronizedSet(new HashSet<>());
 
 	/**
-	 * The constant PARENT_TYPES_TO_IGNORE.
+	 * For each type being resolved on the current thread, innermost last, the names of its
+	 * properties that declare their own subtypes with {@code @Schema(oneOf)} or
+	 * {@code @Schema(allOf)}.
 	 */
-	private static final Set<String> TYPES_TO_SKIP = Collections.synchronizedSet(new HashSet<>());
+	private static final ThreadLocal<Deque<Set<String>>> NARROWED_PROPERTIES = ThreadLocal.withInitial(ArrayDeque::new);
 
 	static {
 		PARENT_TYPES_TO_IGNORE.add("JsonSchema");
@@ -186,6 +191,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
+			Set<String> narrowedProperties = new HashSet<>();
 			for (BeanPropertyBiDefinition propertyDef : introspectBeanProperties(javaType)) {
 				if (propertyDef.isAnyAnnotated(JsonUnwrapped.class)) {
 					if (!TypeNameResolver.std.getUseFqn())
@@ -196,10 +202,10 @@ public class PolymorphicModelConverter implements ModelConverter {
 				else {
 					io.swagger.v3.oas.annotations.media.Schema declaredSchema = propertyDef.getAnyAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
 					if (declaredSchema != null &&
-							(ArrayUtils.isNotEmpty(declaredSchema.oneOf()) || ArrayUtils.isNotEmpty(declaredSchema.allOf())) &&
-							propertyDef.getPrimaryType() != null &&
-							propertyDef.getPrimaryType().getRawClass() != null) {
-						TYPES_TO_SKIP.add(propertyDef.getPrimaryType().getRawClass().getSimpleName());
+							(ArrayUtils.isNotEmpty(declaredSchema.oneOf()) || ArrayUtils.isNotEmpty(declaredSchema.allOf()))) {
+						narrowedProperties.add(propertyDef.forSerialization().getName());
+						if (StringUtils.isNotBlank(declaredSchema.name()))
+							narrowedProperties.add(declaredSchema.name());
 					}
 				}
 			}
@@ -207,7 +213,17 @@ public class PolymorphicModelConverter implements ModelConverter {
 				if (!type.isResolveAsRef() && type.getParent() != null
 						&& PARENT_TYPES_TO_IGNORE.stream().noneMatch(ignore -> type.getParent().getName().startsWith(ignore)))
 					type.resolveAsRef(true);
-				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
+				// The properties of this type are resolved within this call: they read its
+				// narrowed properties in composePolymorphicSchema.
+				Deque<Set<String>> narrowedPropertiesStack = NARROWED_PROPERTIES.get();
+				narrowedPropertiesStack.push(narrowedProperties);
+				Schema<?> resolvedSchema;
+				try {
+					resolvedSchema = chain.next().resolve(type, context, chain);
+				}
+				finally {
+					narrowedPropertiesStack.pop();
+				}
 				resolvedSchema = getResolvedSchema(javaType, resolvedSchema);
 
                 if (resolvedSchema instanceof ComposedSchema composedSchema &&
@@ -251,9 +267,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 		if (isConcreteClass(type)) {
 			result.addOneOfItem(schema);
 		}
-		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
-		Class<?> clazz = javaType.getRawClass();
-		if (TYPES_TO_SKIP.stream().noneMatch(typeToSkip -> typeToSkip.equals(clazz.getSimpleName())))
+		if (!isNarrowedProperty(type))
 			composedSchemas.forEach(result::addOneOfItem);
 
 		if (oneOfAsRef && result.getOneOf() != null && !result.getOneOf().isEmpty())
@@ -267,6 +281,19 @@ public class PolymorphicModelConverter implements ModelConverter {
         }
 
         return result;
+	}
+
+	/**
+	 * Whether the type is resolved for a property that declares its own subtypes with
+	 * {@code @Schema(oneOf)} or {@code @Schema(allOf)} on the type being resolved.
+	 *
+	 * @param type the type
+	 * @return the boolean
+	 */
+	private boolean isNarrowedProperty(AnnotatedType type) {
+		Set<String> narrowedProperties = NARROWED_PROPERTIES.get().peek();
+		return narrowedProperties != null && type.getPropertyName() != null
+				&& narrowedProperties.contains(type.getPropertyName());
 	}
 
 	/**
