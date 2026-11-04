@@ -47,7 +47,7 @@ class KotlinNullablePropertyCustomizer(
 		// The schema properties are keyed by their JSON names, which differ from the Kotlin
 		// names when renamed with @JsonProperty or @JsonNaming: map them through Jackson.
 		val definitions = try {
-			objectMapperProvider.jsonMapper().serializationConfig.introspect(javaType).findProperties()
+			objectMapperProvider.jsonMapper()._serializationContext().introspectBeanDescription(javaType).findProperties()
 		} catch (_: Exception) {
 			return nullableKotlinNames
 		}
