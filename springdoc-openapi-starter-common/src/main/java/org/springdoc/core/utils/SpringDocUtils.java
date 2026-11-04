@@ -25,14 +25,11 @@ import java.util.function.Predicate;
 
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Content;
-import io.swagger.v3.oas.models.media.JsonSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import jakarta.validation.constraints.NotNull;
@@ -602,11 +599,6 @@ public class SpringDocUtils {
 	public static  <T> T cloneViaJson(Object source, Class<T> targetType, ObjectMapper mapper) {
 		if (source == null) return null;
 		try {
-			// A single OpenAPI 3.1 type is serialized as a scalar. swagger-core may
-			// have cached the JsonSchema deserializer before SchemaTypeMixin was added.
-			if (JsonSchema.class.isAssignableFrom(targetType) && mapper == Json31.mapper())
-				return mapper.readerFor(targetType).with(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-						.readValue(mapper.writeValueAsBytes(source));
 			return mapper.readValue(mapper.writeValueAsBytes(source), targetType);
 		}
 		catch (JacksonException e) {

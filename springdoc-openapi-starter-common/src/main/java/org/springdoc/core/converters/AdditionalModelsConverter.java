@@ -20,15 +20,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.core.util.ModelCopy;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
-import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
 
 /**
@@ -151,7 +150,7 @@ public class AdditionalModelsConverter implements ModelConverter {
 				Schema schema = modelToSchemaMap.get(cls);
 				if (springDocObjectMapper.isOpenapi31())
 					handleSchemaTypes(schema);
-				return cloneViaJson(schema, new TypeReference<Schema>() {}, springDocObjectMapper.jsonMapper());
+				return ModelCopy.deepCopy(schema);
 			}
 			if (modelToClassMap.containsKey(cls))
 				type = new AnnotatedType(modelToClassMap.get(cls)).resolveAsRef(true);

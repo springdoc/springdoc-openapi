@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.ModelCopy;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Content;
@@ -55,7 +56,6 @@ import org.springdoc.core.models.MethodAdviceInfo;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.JavadocProvider;
-import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
@@ -85,7 +85,6 @@ import static org.springdoc.core.utils.Constants.DEFAULT_DESCRIPTION;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.getContent;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
-import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 
 /**
@@ -774,7 +773,7 @@ public class GenericResponseService implements ApplicationContextAware {
 					}
 				}
 			}
-			return cloneViaJson(genericApiResponseMap, ApiResponses.class, ObjectMapperProvider.createJson(springDocConfigProperties));
+			return ModelCopy.deepCopy(genericApiResponseMap);
 		}
 		finally {
 			reentrantLock.unlock();

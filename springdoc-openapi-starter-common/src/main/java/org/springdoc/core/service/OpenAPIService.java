@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.ObjectMapperFactory;
+import io.swagger.v3.core.util.ModelCopy;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Webhook;
@@ -88,7 +88,6 @@ import org.springframework.web.method.HandlerMethod;
 import static org.springdoc.core.utils.Constants.DEFAULT_SERVER_DESCRIPTION;
 import static org.springdoc.core.utils.Constants.DEFAULT_TITLE;
 import static org.springdoc.core.utils.Constants.DEFAULT_VERSION;
-import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
@@ -257,8 +256,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			calculatedOpenAPI.setPaths(new Paths());
 		}
 		else {
-			calculatedOpenAPI = cloneViaJson(openAPI, OpenAPI.class, ObjectMapperFactory.buildStrictGenericObjectMapper().rebuild()
-				.changeDefaultPropertyInclusion(inclusion -> com.fasterxml.jackson.annotation.JsonInclude.Value.construct(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL, com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS)).build());
+			calculatedOpenAPI = ModelCopy.deepCopy(openAPI);
 		}
 
 		if (apiDef.isPresent()) {

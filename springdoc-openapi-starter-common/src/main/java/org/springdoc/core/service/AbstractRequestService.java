@@ -46,6 +46,7 @@ import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.core.util.ModelCopy;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
@@ -72,7 +73,6 @@ import org.springdoc.core.models.ParameterInfo;
 import org.springdoc.core.models.RequestBodyInfo;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.providers.JavadocProvider;
-import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.SchemaUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
@@ -99,7 +99,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
 import static org.springdoc.core.service.GenericParameterService.isFile;
-import static org.springdoc.core.utils.SpringDocUtils.cloneViaJson;
 import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -740,7 +739,7 @@ public abstract class AbstractRequestService {
 			// issue #3270). Copy an inline schema before mutating it, but only when there is a
 			// constraint to apply, to avoid perturbing schemas that are left untouched.
 			if (schema != null && schema.get$ref() == null && SchemaUtils.hasValidationConstraints(annotations)) {
-				schema = cloneViaJson(schema, schema.getClass(), parameterBuilder.getObjectMapperProvider().jsonMapper());
+				schema = ModelCopy.deepCopy(schema);
 				parameter.setSchema(schema);
 			}
 			SchemaUtils.applyValidationsToSchema(schema, annotations, openapiVersion);
@@ -759,7 +758,7 @@ public abstract class AbstractRequestService {
 					java.lang.reflect.AnnotatedType[] typeArgs = paramType.getAnnotatedActualTypeArguments();
 					for (java.lang.reflect.AnnotatedType typeArg : typeArgs) {
 						List<Annotation> genericAnnotations = Arrays.stream(typeArg.getAnnotations()).toList();
-						Schema schemaItemsClone = cloneViaJson(schema.getItems(), Schema.class, ObjectMapperProvider.createJson(parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties()));
+						Schema schemaItemsClone = ModelCopy.deepCopy(schema.getItems());
 						schema.items(schemaItemsClone);
 						SchemaUtils.applyValidationsToSchema(schema.getItems(), genericAnnotations, openapiVersion);
 					}
