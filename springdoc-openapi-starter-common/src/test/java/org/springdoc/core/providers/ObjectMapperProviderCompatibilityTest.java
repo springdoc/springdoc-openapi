@@ -25,11 +25,12 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.oas.models.media.Schema;
-import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springdoc.core.customizers.JavaNullablePropertyCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
+
+import org.springframework.lang.Nullable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
