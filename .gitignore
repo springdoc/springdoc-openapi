@@ -150,3 +150,6 @@ Desktop.ini
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+# Spring JavaFormat IntelliJ plugin activation (local only)
+.springjavaformatconfig
