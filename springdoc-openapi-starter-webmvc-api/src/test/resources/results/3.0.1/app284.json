@@ -1,0 +1,165 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/outer": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "outer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Outer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/both": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "both",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BothHolder"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Circle": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Shape"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "radius": {
+                "type": "number",
+                "format": "double"
+              }
+            }
+          }
+        ]
+      },
+      "NarrowedHolder": {
+        "type": "object",
+        "properties": {
+          "shape": {
+            "$ref": "#/components/schemas/Shape"
+          }
+        }
+      },
+      "Outer": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "$ref": "#/components/schemas/NarrowedHolder"
+          },
+          "second": {
+            "$ref": "#/components/schemas/PlainHolder"
+          }
+        }
+      },
+      "PlainHolder": {
+        "type": "object",
+        "properties": {
+          "shape": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Circle"
+              },
+              {
+                "$ref": "#/components/schemas/Square"
+              }
+            ]
+          }
+        }
+      },
+      "Shape": {
+        "required": [
+          "kind"
+        ],
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "kind"
+        }
+      },
+      "Square": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Shape"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "side": {
+                "type": "number",
+                "format": "double"
+              }
+            }
+          }
+        ]
+      },
+      "BothHolder": {
+        "type": "object",
+        "properties": {
+          "narrowed": {
+            "$ref": "#/components/schemas/Shape"
+          },
+          "plain": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Circle"
+              },
+              {
+                "$ref": "#/components/schemas/Square"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
