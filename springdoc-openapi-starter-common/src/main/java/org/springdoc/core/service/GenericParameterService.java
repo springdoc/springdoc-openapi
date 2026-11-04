@@ -375,7 +375,13 @@ public class GenericParameterService {
 			Annotation[] paramAnnotations = getParameterAnnotations(methodParameter);
 			TypeAndTypeAnnotations resolved = resolveTypeAndTypeAnnotationsForParameter(methodParameter);
 			Type type = resolved.type();
-			Annotation[] typeAnnotations = resolved.typeAnnotations().toArray(Annotation[]::new);
+			// An annotation applicable to both declarations and types, such as @Valid or @NotNull, is
+			// reported both as a parameter annotation and as a type annotation: keep it only once, as
+			// the annotations are part of the cache key of the resolved schema.
+			List<Annotation> paramAnnotationList = Arrays.asList(paramAnnotations);
+			Annotation[] typeAnnotations = resolved.typeAnnotations().stream()
+					.filter(annotation -> !paramAnnotationList.contains(annotation))
+					.toArray(Annotation[]::new);
 			Annotation[] mergedAnnotations =
 					Stream.concat(
 							Arrays.stream(paramAnnotations),
