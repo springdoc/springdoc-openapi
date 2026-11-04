@@ -1,0 +1,119 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/snake-case": {
+      "post": {
+        "tags": [
+          "renamed-nullable-controller"
+        ],
+        "operationId": "snakeCase",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnakeCaseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/renamed": {
+      "post": {
+        "tags": [
+          "renamed-nullable-controller"
+        ],
+        "operationId": "renamed",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenamedRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SnakeCaseRequest": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "last_name"
+        ]
+      },
+      "RenamedRequest": {
+        "type": "object",
+        "properties": {
+          "sameName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "renamed_by_getter": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "renamed_by_field": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "renamed_non_null": {
+            "type": "string"
+          },
+          "renamed_with_schema": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "renamed and described"
+          }
+        },
+        "required": [
+          "renamed_non_null"
+        ]
+      }
+    }
+  }
+}
