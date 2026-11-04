@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package test.org.springdoc.api.v31.app284;
 
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
