@@ -638,7 +638,9 @@ public class GenericResponseService implements ApplicationContextAware {
 				&& methodParameter.getExecutable().isAnnotationPresent(ExceptionHandler.class)) {
 			// ExceptionHandler's exception class resolution is non-trivial
 			// more info on its javadoc
-			Set<Class<?>> exceptions = getExceptionsFromExceptionHandler(methodParameter);
+			// Stored by name: filterAndEnrichGenericMapResponseByDeclarations looks up the declared exceptions by name.
+			Set<String> exceptions = getExceptionsFromExceptionHandler(methodParameter).stream()
+					.map(Class::getName).collect(Collectors.toCollection(LinkedHashSet::new));
 			apiResponse.addExtension(EXTENSION_EXCEPTION_CLASSES, exceptions);
 		}
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
