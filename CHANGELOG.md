@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   instead of changing `Json.mapper()` or `Json31.mapper()`
 - With Jackson 3, the parameter of a single public constructor whose name matches no property is documented as a
   `writeOnly` property
+- With Jackson 3, the properties of getters starting with an acronym keep its case, as Jackson 3 serializes them:
+  `getETag()` is documented as `ETag` instead of `etag`, and `getURI()` as `URI` instead of `uri`
 - The user's `OpenAPI` bean, and the schemas and responses springdoc-openapi adapts, are copied with
   `ModelCopy.deepCopy` instead of a JSON round trip
 - Upgrade swagger-ui to version **5.34.1**
