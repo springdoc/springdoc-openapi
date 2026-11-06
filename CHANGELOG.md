@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Upgrade swagger-ui to version **5.34.1**
 
+### Fixed
+
+- #3405 – Document the validation constraints of parameters without Hibernate Validator on the classpath, instead of failing with `NoClassDefFoundError`
+
 ## [2.10.0] - 2026-10-24
 
 ### Added
