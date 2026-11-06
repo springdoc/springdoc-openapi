@@ -25,7 +25,14 @@ updates:
     directory: /springdoc-openapi-starter-common-mcp/src/main/frontend
     schedule:
       interval: weekly
+    # A package belongs to the first group it matches. The first two groups keep packages that must be upgraded
+    # together in one PR, majors included: the @rjsf packages require the same major of each other, and
+    # @vitejs/plugin-react supports a limited range of vite majors.
     groups:
+      rjsf:
+        patterns: ['@rjsf/*']
+      vite:
+        patterns: ['vite', '@vitejs/*']
       npm:
         patterns: ['*']
         update-types: [minor, patch]
