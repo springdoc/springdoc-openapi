@@ -17,7 +17,7 @@ export default function HttpMethodBadge({ method, className }: HttpMethodBadgePr
   if (!method) return null
   const colorClass = METHOD_COLORS[method.toUpperCase()] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
   return (
-    <span className={cn('px-1.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide', colorClass, className)}>
+    <span className={cn('px-1.5 py-0.5 text-[10px] font-bold rounded-sm uppercase tracking-wide', colorClass, className)}>
       {method}
     </span>
   )

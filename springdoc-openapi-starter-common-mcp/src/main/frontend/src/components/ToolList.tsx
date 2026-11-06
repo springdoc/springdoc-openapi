@@ -46,14 +46,14 @@ export default function ToolList({ tools, isLoading, error, selectedTool, onSele
   }
 
   return (
-    <aside className="w-72 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col overflow-hidden">
+    <aside className="w-72 shrink-0 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col overflow-hidden">
       <div className="p-3">
         <input
           type="text"
           placeholder="Search tools..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
 
@@ -117,14 +117,14 @@ export default function ToolList({ tools, isLoading, error, selectedTool, onSele
                     <div className="flex items-center gap-2 mb-1">
                       {tool.httpMethod && <HttpMethodBadge method={tool.httpMethod} />}
                       {!tool.httpMethod && (
-                        <span className="px-1.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
+                        <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-sm uppercase tracking-wide bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
                           MCP
                         </span>
                       )}
                       <span className="text-sm font-medium truncate">{tool.name}</span>
                       {tool.requiresApproval && (
                         <svg
-                          className="h-3.5 w-3.5 text-amber-500 flex-shrink-0"
+                          className="h-3.5 w-3.5 text-amber-500 shrink-0"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"

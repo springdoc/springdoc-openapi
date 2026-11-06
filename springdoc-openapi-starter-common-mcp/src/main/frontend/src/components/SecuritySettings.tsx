@@ -88,7 +88,7 @@ export default function SecuritySettings({
                 onClick={() => onConfigChange({ ...config, authMode: mode.value })}
                 className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
                   config.authMode === mode.value
-                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
+                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-xs'
                     : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
@@ -109,7 +109,7 @@ export default function SecuritySettings({
                     type="text"
                     value={config.tokenEndpoint}
                     onChange={(e) => onConfigChange({ ...config, tokenEndpoint: e.target.value })}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                     placeholder="https://your-authorization-server/oauth2/token"
                   />
                   {isPlaintextEndpoint && (
@@ -125,7 +125,7 @@ export default function SecuritySettings({
                   <select
                     value={config.grantType}
                     onChange={(e) => onConfigChange({ ...config, grantType: e.target.value })}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="client_credentials">client_credentials</option>
                     <option value="password">password</option>
@@ -139,7 +139,7 @@ export default function SecuritySettings({
                     type="text"
                     value={config.clientId}
                     onChange={(e) => onConfigChange({ ...config, clientId: e.target.value })}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                     placeholder="your-client-id"
                   />
                 </div>
@@ -151,7 +151,7 @@ export default function SecuritySettings({
                     type="password"
                     value={config.clientSecret}
                     onChange={(e) => onConfigChange({ ...config, clientSecret: e.target.value })}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                     placeholder="your-client-secret"
                   />
                 </div>
@@ -196,7 +196,7 @@ export default function SecuritySettings({
 
               {accessToken && (
                 <div className="flex items-center gap-2 p-2.5 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
-                  <svg className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-4 w-4 text-green-600 dark:text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                   <code className="text-xs text-green-800 dark:text-green-300 font-mono flex-1 truncate">
@@ -204,7 +204,7 @@ export default function SecuritySettings({
                   </code>
                   <button
                     onClick={handleCopyToken}
-                    className="flex-shrink-0 px-2 py-1 text-[10px] font-medium text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-800/50 rounded hover:bg-green-200 dark:hover:bg-green-700/50 transition-colors"
+                    className="shrink-0 px-2 py-1 text-[10px] font-medium text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-800/50 rounded-sm hover:bg-green-200 dark:hover:bg-green-700/50 transition-colors"
                   >
                     {copied ? 'Copied!' : 'Copy'}
                   </button>
@@ -225,7 +225,7 @@ export default function SecuritySettings({
                     type="text"
                     value={config.apiKeyHeaderName}
                     onChange={(e) => onConfigChange({ ...config, apiKeyHeaderName: e.target.value })}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                     placeholder="X-API-Key"
                   />
                 </div>
@@ -237,7 +237,7 @@ export default function SecuritySettings({
                     type="password"
                     value={config.apiKeyValue}
                     onChange={(e) => onConfigChange({ ...config, apiKeyValue: e.target.value })}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                     placeholder="your-api-key"
                   />
                 </div>
@@ -245,11 +245,11 @@ export default function SecuritySettings({
 
               {config.apiKeyValue && (
                 <div className="flex items-center gap-2 p-2.5 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
-                  <svg className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-4 w-4 text-green-600 dark:text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                   <span className="text-xs text-green-800 dark:text-green-300">
-                    API Key configured — will be sent as <code className="font-mono bg-green-100 dark:bg-green-800/50 px-1 rounded">{config.apiKeyHeaderName || 'X-API-Key'}</code> header
+                    API Key configured — will be sent as <code className="font-mono bg-green-100 dark:bg-green-800/50 px-1 rounded-sm">{config.apiKeyHeaderName || 'X-API-Key'}</code> header
                   </span>
                 </div>
               )}
