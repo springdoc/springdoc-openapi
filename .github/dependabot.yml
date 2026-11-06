@@ -1,0 +1,70 @@
+version: 2
+updates:
+  # main: Spring Boot 4.x line
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      maven:
+        patterns: ['*']
+        update-types: [minor, patch]
+    ignore:
+      # A new Spring Boot major, and the libraries released with it, need a new release line.
+      - dependency-name: 'org.springframework.boot:spring-boot-starter-parent'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'org.springframework.cloud:*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'org.springframework.ai:*'
+        update-types: ['version-update:semver-major']
+      # Maven 3.10 restricts where server credentials are sent, which breaks the Central upload.
+      - dependency-name: 'org.apache.maven:apache-maven'
+        versions: ['>=3.10']
+
+  - package-ecosystem: npm
+    directory: /springdoc-openapi-starter-common-mcp/src/main/frontend
+    schedule:
+      interval: weekly
+    groups:
+      npm:
+        patterns: ['*']
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ['*']
+
+  # spring-boot-3: Spring Boot 3.x line (springdoc-openapi 2.x)
+  - package-ecosystem: maven
+    directory: /
+    target-branch: spring-boot-3
+    schedule:
+      interval: weekly
+    groups:
+      maven:
+        patterns: ['*']
+        update-types: [minor, patch]
+    ignore:
+      # This line stays on Spring Boot 3, and on the libraries that support it.
+      - dependency-name: 'org.springframework.boot:spring-boot-starter-parent'
+        versions: ['>=4']
+      - dependency-name: 'org.springframework.cloud:*'
+        versions: ['>=5']
+      # swagger-core 3 is built on Jackson 3, used by Spring Boot 4.
+      - dependency-name: 'io.swagger.core.v3:*'
+        versions: ['>=3']
+      - dependency-name: 'org.apache.maven:apache-maven'
+        versions: ['>=3.10']
+
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: spring-boot-3
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ['*']
