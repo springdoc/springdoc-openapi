@@ -31,9 +31,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.crypto.SecretKey;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,14 +62,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	private final long lifetime;
 
 
-	private final String key;
+	private final SecretKey key;
 
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, long lifetime,
 			String key) {
 		this.authenticationManager = authenticationManager;
 		this.lifetime = lifetime;
-		this.key = key;
+		this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
 	}
 
 
@@ -94,11 +97,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		Date expirationDate = new Date(notBefore.getTime() + lifetime);
 
 		String token = Jwts.builder()
-				.setClaims(new HashMap<>())
-				.setSubject(((User) auth.getPrincipal()).getUsername())
-				.setNotBefore(notBefore)
-				.setExpiration(expirationDate)
-				.signWith(SignatureAlgorithm.HS512, key)
+				.claims(new HashMap<>())
+				.subject(((User) auth.getPrincipal()).getUsername())
+				.notBefore(notBefore)
+				.expiration(expirationDate)
+				.signWith(key, Jwts.SIG.HS512)
 				.compact();
 		res.addHeader(WebSecurity.HeaderString, WebSecurity.TokenPrefix + token);
 

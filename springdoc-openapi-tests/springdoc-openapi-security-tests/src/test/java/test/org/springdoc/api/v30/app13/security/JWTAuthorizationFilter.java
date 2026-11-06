@@ -29,8 +29,12 @@ package test.org.springdoc.api.v30.app13.security;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.crypto.SecretKey;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,12 +52,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	public static final String AUTH_ERROR_ATTRIBUTE = "authError";
 
 
-	private final String key;
+	private final SecretKey key;
 
 
 	public JWTAuthorizationFilter(AuthenticationManager authManager, String key) {
 		super(authManager);
-		this.key = key;
+		this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
 	}
 
 
@@ -90,9 +94,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 			String user = null;
 			try {
 				user = Jwts.parser()
-						.setSigningKey(key)
-						.parseClaimsJws(token.replace(WebSecurity.TokenPrefix, ""))
-						.getBody()
+						.verifyWith(key)
+						.build()
+						.parseSignedClaims(token.replace(WebSecurity.TokenPrefix, ""))
+						.getPayload()
 						.getSubject();
 			}
 			catch (ExpiredJwtException e) {
