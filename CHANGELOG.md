@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - With OpenAPI 3.1, a required `@JsonUnwrapped` member no longer adds an empty property to the schema
+- #3405 – Document the validation constraints of parameters without Hibernate Validator on the classpath, instead of failing with `NoClassDefFoundError`
 
 ## [3.2.0] - 2026-10-24
 
