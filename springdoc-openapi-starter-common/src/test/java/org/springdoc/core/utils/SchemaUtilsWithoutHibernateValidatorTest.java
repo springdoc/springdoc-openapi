@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package org.springdoc.core.utils;
 
 import java.io.IOException;
