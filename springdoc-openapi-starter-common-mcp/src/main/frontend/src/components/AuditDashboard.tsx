@@ -73,7 +73,7 @@ function methodBadge(method?: string) {
     DELETE: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300',
   }
   const cls = colors[method] ?? 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
-  return <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${cls}`}>{method}</span>
+  return <span className={`px-1.5 py-0.5 rounded-sm text-[10px] font-bold ${cls}`}>{method}</span>
 }
 
 function httpStatusColor(code?: number) {
@@ -236,10 +236,10 @@ function TraceViewer({ event, tools }: { event: AuditEvent; tools: McpToolInfo[]
             {(exec.rest_duration_ms != null || exec.duration_ms != null) && (
               <div className="flex items-center gap-2 mt-1">
                 {exec.rest_duration_ms != null && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">REST API: {exec.rest_duration_ms}ms</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">REST API: {exec.rest_duration_ms}ms</span>
                 )}
                 {exec.rest_duration_ms != null && exec.duration_ms != null && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Overhead: {exec.duration_ms - exec.rest_duration_ms}ms</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Overhead: {exec.duration_ms - exec.rest_duration_ms}ms</span>
                 )}
               </div>
             )}
@@ -529,7 +529,7 @@ export default function AuditDashboard() {
             placeholder="Search tool, path, principal…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full pl-8 pr-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-400"
           />
         </div>
 

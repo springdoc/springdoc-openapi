@@ -105,9 +105,9 @@ function ToolHealthRow({ tm }: { tm: ToolMetrics }) {
 // ── Recent execution row ──────────────────────────────────────────────────────
 
 function statusBadge(success: boolean, requiresApproval?: boolean) {
-  if (requiresApproval) return <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">HITL</span>
-  if (success) return <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">OK</span>
-  return <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300">ERR</span>
+  if (requiresApproval) return <span className="px-1.5 py-0.5 rounded-sm text-[10px] font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">HITL</span>
+  if (success) return <span className="px-1.5 py-0.5 rounded-sm text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">OK</span>
+  return <span className="px-1.5 py-0.5 rounded-sm text-[10px] font-semibold bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300">ERR</span>
 }
 
 // ── SVG icons (inline, no dep) ────────────────────────────────────────────────
@@ -200,7 +200,7 @@ function ReadWritePieChart({ readCount, writeCount }: ReadWriteData) {
 
   return (
     <div className="flex items-center gap-6 py-2">
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="flex-shrink-0">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="shrink-0">
         {/* Write arc (bottom layer) */}
         <circle
           cx={cx} cy={cy} r={r}
@@ -273,7 +273,7 @@ export default function KpiDashboard({ metrics, totalTools, tools, onClear }: Kp
           label="Total Executions"
           value={totalExecutions.toLocaleString()}
           sub={`${callsToday} today`}
-          gradient="bg-gradient-to-br from-indigo-500 to-indigo-700"
+          gradient="bg-linear-to-br from-indigo-500 to-indigo-700"
           icon={<IconZap />}
           sparkData={globalDurations}
           sparkColor="rgba(255,255,255,0.9)"
@@ -282,14 +282,14 @@ export default function KpiDashboard({ metrics, totalTools, tools, onClear }: Kp
           label="Success Rate"
           value={totalExecutions === 0 ? '—' : `${successRate}%`}
           sub={`${successCount} successful`}
-          gradient="bg-gradient-to-br from-emerald-500 to-emerald-700"
+          gradient="bg-linear-to-br from-emerald-500 to-emerald-700"
           icon={<IconCheck />}
         />
         <KpiCard
           label="Avg Response"
           value={totalExecutions === 0 ? '—' : `${avgDuration} ms`}
           sub="per tool call"
-          gradient="bg-gradient-to-br from-sky-500 to-sky-700"
+          gradient="bg-linear-to-br from-sky-500 to-sky-700"
           icon={<IconClock />}
           sparkData={globalDurations}
           sparkColor="rgba(255,255,255,0.9)"
@@ -298,21 +298,21 @@ export default function KpiDashboard({ metrics, totalTools, tools, onClear }: Kp
           label="HITL Blocked"
           value={approvalCount.toLocaleString()}
           sub="approval required"
-          gradient="bg-gradient-to-br from-amber-500 to-orange-600"
+          gradient="bg-linear-to-br from-amber-500 to-orange-600"
           icon={<IconShield />}
         />
         <KpiCard
           label="Errors"
           value={errorCount.toLocaleString()}
           sub={totalExecutions > 0 ? `${pct(errorCount, totalExecutions)}% error rate` : 'no calls yet'}
-          gradient="bg-gradient-to-br from-red-500 to-rose-700"
+          gradient="bg-linear-to-br from-red-500 to-rose-700"
           icon={<IconXCircle />}
         />
         <KpiCard
           label="Active Tools"
           value={`${activeTools} / ${totalTools}`}
           sub="seen in this session"
-          gradient="bg-gradient-to-br from-violet-500 to-purple-700"
+          gradient="bg-linear-to-br from-violet-500 to-purple-700"
           icon={<IconCpu />}
         />
       </div>
@@ -382,12 +382,12 @@ export default function KpiDashboard({ metrics, totalTools, tools, onClear }: Kp
               <ul className="divide-y divide-gray-100 dark:divide-gray-700">
                 {recentExecutions.slice(0, 50).map((ex) => (
                   <li key={ex.id} className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700/40 transition-colors">
-                    <div className="flex-shrink-0">{statusBadge(ex.success, ex.requiresApproval)}</div>
+                    <div className="shrink-0">{statusBadge(ex.success, ex.requiresApproval)}</div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-mono text-gray-700 dark:text-gray-300 truncate">{ex.toolName}</p>
                       <p className="text-[10px] text-gray-400">{timeAgo(ex.timestamp)}</p>
                     </div>
-                    <div className="flex-shrink-0 text-right">
+                    <div className="shrink-0 text-right">
                       <p className="text-xs text-gray-500 dark:text-gray-400">{ex.durationMs} ms</p>
                       {ex.httpStatusCode ? (
                         <p className={`text-[10px] font-medium ${ex.httpStatusCode < 300 ? 'text-emerald-500' : ex.httpStatusCode < 500 ? 'text-amber-500' : 'text-red-500'}`}>

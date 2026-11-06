@@ -22,20 +22,20 @@ export default function ToolDetail({ tool, onExecute, isExecuting }: ToolDetailP
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xs border border-gray-200 dark:border-gray-700">
       <div className="p-6 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-3 mb-2">
           {tool.httpMethod ? (
             <HttpMethodBadge method={tool.httpMethod} className="text-xs px-2 py-1" />
           ) : (
-            <span className="px-2 py-1 text-xs font-bold rounded uppercase tracking-wide bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
+            <span className="px-2 py-1 text-xs font-bold rounded-sm uppercase tracking-wide bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
               MCP Tool
             </span>
           )}
           <h2 className="text-xl font-semibold">{tool.name}</h2>
         </div>
         {tool.path && (
-          <code className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded">
+          <code className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded-sm">
             {tool.path}
           </code>
         )}
@@ -45,7 +45,7 @@ export default function ToolDetail({ tool, onExecute, isExecuting }: ToolDetailP
       {tool.requiresApproval && (
         <div className="mx-6 mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-lg flex gap-3">
           <svg
-            className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5"
+            className="h-5 w-5 text-amber-500 shrink-0 mt-0.5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
