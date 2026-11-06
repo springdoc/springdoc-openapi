@@ -256,9 +256,9 @@ public final class OpenApiSchemaConverter {
 	 * @param schema the OpenAPI schema
 	 * @param node the JSON node to populate
 	 * @param components the OpenAPI components for $ref resolution
-	 * @param visited identity set of already-visited schemas for cycle detection
+	 * @param visited identity set of the schemas on the current resolution path for cycle
+	 * detection
 	 */
-	@SuppressWarnings("unchecked")
 	private static void applySchemaToNode(Schema<?> schema, ObjectNode node, Components components,
 			Set<Schema<?>> visited) {
 		// Circular reference detection
@@ -266,7 +266,25 @@ public final class OpenApiSchemaConverter {
 			node.put("type", "object");
 			return;
 		}
+		try {
+			applySchemaContent(schema, node, components, visited);
+		}
+		finally {
+			// Only schemas on the current path are cycles; siblings may reuse the schema
+			visited.remove(schema);
+		}
+	}
 
+	/**
+	 * Converts the content of a schema that is not part of a circular reference.
+	 * @param schema the OpenAPI schema
+	 * @param node the JSON node to populate
+	 * @param components the OpenAPI components for $ref resolution
+	 * @param visited identity set of the schemas on the current resolution path
+	 */
+	@SuppressWarnings("unchecked")
+	private static void applySchemaContent(Schema<?> schema, ObjectNode node, Components components,
+			Set<Schema<?>> visited) {
 		// Handle allOf: merge all sub-schemas into this node
 		if (schema.getAllOf() != null && !schema.getAllOf().isEmpty()) {
 			applyAllOf(schema, node, components, visited);
