@@ -600,6 +600,100 @@ class OpenApiSchemaConverterTest {
 	}
 
 	/**
+	 * Test that several properties referencing the same component are all expanded and
+	 * not mistaken for circular references.
+	 * @throws Exception if JSON parsing fails
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	void testSiblingReferencesToSameSchemaAreExpanded() throws Exception {
+		Components components = new Components();
+
+		Schema<Object> commonSchema = new Schema<>();
+		commonSchema.setType("object");
+		Map<String, Schema> commonProps = new LinkedHashMap<>();
+		commonProps.put("street", new StringSchema());
+		commonSchema.setProperties(commonProps);
+		components.addSchemas("Common", commonSchema);
+
+		Schema<?> firstRef = new Schema<>();
+		firstRef.set$ref("#/components/schemas/Common");
+		Schema<?> secondRef = new Schema<>();
+		secondRef.set$ref("#/components/schemas/Common");
+		Schema<Object> personSchema = new Schema<>();
+		personSchema.setType("object");
+		Map<String, Schema> personProps = new LinkedHashMap<>();
+		personProps.put("home", firstRef);
+		personProps.put("work", secondRef);
+		personSchema.setProperties(personProps);
+		components.addSchemas("Person", personSchema);
+
+		Schema<?> bodyRef = new Schema<>();
+		bodyRef.set$ref("#/components/schemas/Person");
+		Operation operation = new Operation();
+		operation.setRequestBody(new RequestBody()
+			.content(new Content().addMediaType("application/json", new MediaType().schema(bodyRef)))
+			.required(true));
+
+		String schemaJson = OpenApiSchemaConverter.buildInputSchema("/test", operation, components);
+		JsonNode properties = objectMapper.readTree(schemaJson).get("properties").get("body").get("properties");
+
+		assertThat(properties.get("home").get("properties").has("street")).isTrue();
+		assertThat(properties.get("work").get("properties").has("street")).isTrue();
+	}
+
+	/**
+	 * Test that a schema reused in sibling branches is expanded everywhere while a real
+	 * cycle below it is still cut off.
+	 * @throws Exception if JSON parsing fails
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	void testSiblingReferencesStillBreakCircularReferences() throws Exception {
+		Components components = new Components();
+
+		Schema<?> selfRef = new Schema<>();
+		selfRef.set$ref("#/components/schemas/Node");
+		Schema<Object> nodeSchema = new Schema<>();
+		nodeSchema.setType("object");
+		Map<String, Schema> nodeProps = new LinkedHashMap<>();
+		nodeProps.put("name", new StringSchema());
+		nodeProps.put("child", selfRef);
+		nodeSchema.setProperties(nodeProps);
+		components.addSchemas("Node", nodeSchema);
+
+		Schema<?> leftRef = new Schema<>();
+		leftRef.set$ref("#/components/schemas/Node");
+		Schema<?> rightRef = new Schema<>();
+		rightRef.set$ref("#/components/schemas/Node");
+		Schema<Object> treeSchema = new Schema<>();
+		treeSchema.setType("object");
+		Map<String, Schema> treeProps = new LinkedHashMap<>();
+		treeProps.put("left", leftRef);
+		treeProps.put("right", rightRef);
+		treeSchema.setProperties(treeProps);
+		components.addSchemas("Tree", treeSchema);
+
+		Schema<?> bodyRef = new Schema<>();
+		bodyRef.set$ref("#/components/schemas/Tree");
+		Operation operation = new Operation();
+		operation.setRequestBody(new RequestBody()
+			.content(new Content().addMediaType("application/json", new MediaType().schema(bodyRef)))
+			.required(true));
+
+		String schemaJson = OpenApiSchemaConverter.buildInputSchema("/test", operation, components);
+		JsonNode properties = objectMapper.readTree(schemaJson).get("properties").get("body").get("properties");
+
+		for (String branch : List.of("left", "right")) {
+			JsonNode node = properties.get(branch);
+			assertThat(node.get("properties").has("name")).isTrue();
+			JsonNode child = node.get("properties").get("child");
+			assertThat(child.get("type").asText()).isEqualTo("object");
+			assertThat(child.has("properties")).isFalse();
+		}
+	}
+
+	/**
 	 * Test that validation constraints are correctly propagated to the JSON Schema.
 	 * @throws Exception if JSON parsing fails
 	 */
