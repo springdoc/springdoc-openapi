@@ -146,3 +146,6 @@ Desktop.ini
 .eslintcache
 /.claude/
 /CLAUDE.md
+
+# Spring JavaFormat IntelliJ plugin activation (local only)
+.springjavaformatconfig
