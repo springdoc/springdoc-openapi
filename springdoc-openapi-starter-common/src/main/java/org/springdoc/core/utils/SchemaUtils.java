@@ -89,6 +89,12 @@ public class SchemaUtils {
 	 */
 	private static final Set<Class<?>> OPTIONAL_TYPES = new HashSet<>();
 
+	/**
+	 * The name of the Hibernate Validator {@link Range} constraint, which is compared by name as
+	 * Hibernate Validator may not be on the classpath.
+	 */
+	private static final String HIBERNATE_VALIDATOR_RANGE = "org.hibernate.validator.constraints.Range";
+
 	static {
 		OPTIONAL_TYPES.add(Optional.class);
 		OPTIONAL_TYPES.add(OptionalInt.class);
@@ -317,7 +323,7 @@ public class SchemaUtils {
 			if (annotationName.equals(Pattern.class.getSimpleName())) {
 				schema.setPattern(((Pattern) anno).regexp());
 			}
-			if (annotationName.equals(Range.class.getSimpleName())) {
+			if (anno.annotationType().getName().equals(HIBERNATE_VALIDATOR_RANGE)) {
 				schema.setMinimum(BigDecimal.valueOf(((Range) anno).min()));
 				schema.setMaximum(BigDecimal.valueOf(((Range) anno).max()));
 			}
@@ -347,7 +353,7 @@ public class SchemaUtils {
 					|| type == Negative.class || type == NegativeOrZero.class
 					|| type == Min.class || type == Max.class
 					|| type == DecimalMin.class || type == DecimalMax.class
-					|| type == Size.class || type == Pattern.class || type == Range.class;
+					|| type == Size.class || type == Pattern.class || type.getName().equals(HIBERNATE_VALIDATOR_RANGE);
 		});
 	}
 
