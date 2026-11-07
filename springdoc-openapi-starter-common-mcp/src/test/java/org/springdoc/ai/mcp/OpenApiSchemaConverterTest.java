@@ -23,6 +23,7 @@ import java.util.Map;
 
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Content;
@@ -749,6 +750,41 @@ class OpenApiSchemaConverterTest {
 		assertThat(nicknameNode.get("type").isArray()).isTrue();
 		assertThat(nicknameNode.get("type").get(0).asText()).isEqualTo("string");
 		assertThat(nicknameNode.get("type").get(1).asText()).isEqualTo("null");
+	}
+
+	/**
+	 * Test that OpenAPI 3.1 request body properties retain every declared type.
+	 * @throws Exception if JSON parsing fails
+	 */
+	@Test
+	void testOpenApi31TypeArraysInRequestBody() throws Exception {
+		Operation operation = Json31.mapper().readValue("""
+				{
+				  "requestBody": {
+				    "content": {
+				      "application/json": {
+				        "schema": {
+				          "type": "object",
+				          "properties": {
+				            "content": { "type": ["string", "null"] },
+				            "label": { "type": ["integer", "string"] }
+				          }
+				        }
+				      }
+				    }
+				  }
+				}
+				""", Operation.class);
+
+		String schemaJson = OpenApiSchemaConverter.buildInputSchema("/notes", operation, null);
+		JsonNode properties = objectMapper.readTree(schemaJson).at("/properties/body/properties");
+
+		assertThat(properties.at("/content/type").isArray()).isTrue();
+		assertThat(properties.at("/content/type")).extracting(JsonNode::asText)
+			.containsExactlyInAnyOrder("string", "null");
+		assertThat(properties.at("/label/type").isArray()).isTrue();
+		assertThat(properties.at("/label/type")).extracting(JsonNode::asText)
+			.containsExactlyInAnyOrder("integer", "string");
 	}
 
 	/**

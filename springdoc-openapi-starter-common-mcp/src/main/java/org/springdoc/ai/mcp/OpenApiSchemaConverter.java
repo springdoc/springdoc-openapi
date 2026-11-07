@@ -293,7 +293,12 @@ public final class OpenApiSchemaConverter {
 
 		// Type and nullable
 		String type = getSchemaType(schema);
-		if (Boolean.TRUE.equals(schema.getNullable())) {
+		Set<String> types = schema.getTypes();
+		if (types != null && types.size() > 1) {
+			ArrayNode typeArray = node.putArray("type");
+			types.forEach(typeArray::add);
+		}
+		else if (Boolean.TRUE.equals(schema.getNullable())) {
 			ArrayNode typeArray = node.putArray("type");
 			typeArray.add(type != null ? type : "object");
 			typeArray.add("null");
