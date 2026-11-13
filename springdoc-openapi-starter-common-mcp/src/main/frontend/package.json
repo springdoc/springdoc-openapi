@@ -9,9 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@rjsf/core": "^6.11.0",
+    "@rjsf/core": "^6.11.1",
     "@rjsf/utils": "^6.11.0",
-    "@rjsf/validator-ajv8": "^6.11.0",
+    "@rjsf/validator-ajv8": "^6.11.1",
     "@tanstack/react-query": "^5.105.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
