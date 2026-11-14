@@ -25,14 +25,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import tools.jackson.databind.node.ArrayNode;
 import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.StringNode;
 import com.querydsl.core.types.Predicate;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.api.ErrorMessage;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.conditions.CacheOrGroupedOpenApiCondition;
@@ -153,6 +157,8 @@ public class SpringDocConfiguration {
 
 	static {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema())
+				.replaceWithSchema(ArrayNode.class, new ArraySchema().items(new Schema<>()))
+				.replaceWithSchema(StringNode.class, new StringSchema())
 				.replaceWithClass(Charset.class, String.class)
 				.addResponseWrapperToIgnore(DeferredResult.class)
 				.addResponseWrapperToIgnore(Future.class)
