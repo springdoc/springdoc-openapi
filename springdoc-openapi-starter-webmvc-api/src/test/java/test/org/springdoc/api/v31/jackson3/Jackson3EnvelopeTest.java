@@ -21,6 +21,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.api.AbstractCommonTest;
 import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.JsonNode;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @Import(Jackson3EnvelopeTest.ItemsController.class)
 class Jackson3EnvelopeTest extends AbstractCommonTest {
@@ -41,14 +43,24 @@ class Jackson3EnvelopeTest extends AbstractCommonTest {
 			.andExpect(jsonPath("$.paths['/items'].get.responses['200'].content['application/json'].schema['$ref']")
 				.value("#/components/schemas/EnvelopeListItem"))
 			.andExpect(jsonPath("$.components.schemas.EnvelopeListItem.properties.data.type").value("array"))
-			.andExpect(jsonPath("$.components.schemas.EnvelopeListItem.properties.meta.type").value("object"));
+			.andExpect(jsonPath("$.components.schemas.EnvelopeListItem.properties.meta.type").value("object"))
+			.andExpect(jsonPath("$.paths['/items/node'].get.responses['200'].content['application/json'].schema['$ref']")
+				.value("#/components/schemas/ItemWithNode"))
+				.andExpect(jsonPath("$.components.schemas.ItemWithNode.properties.payload.type").value("object"));
+
 	}
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
+
 	@RestController
 	static class ItemsController {
+
+		@GetMapping(value = "/items/node", produces = "application/json")
+		public ItemWithNode itemWithNode() {
+			return new ItemWithNode("example", null);
+		}
 
 		@GetMapping(value = "/items", produces = "application/json")
 		public Envelope<List<Item>> items() {
@@ -59,4 +71,6 @@ class Jackson3EnvelopeTest extends AbstractCommonTest {
 	record Envelope<T>(T data, ObjectNode meta) {}
 
 	record Item(String name) {}
+
+	record ItemWithNode(String name, JsonNode payload) {}
 }

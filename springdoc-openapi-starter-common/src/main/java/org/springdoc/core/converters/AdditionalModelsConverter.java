@@ -34,6 +34,7 @@ import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
  * The type Additional models converter.
  *
  * @author bnasslahsen
+ * @author nadunmA
  */
 public class AdditionalModelsConverter implements ModelConverter {
 
@@ -131,6 +132,15 @@ public class AdditionalModelsConverter implements ModelConverter {
 	 */
 	public static void removeFromClassMap(Class clazz) {
 		modelToClassMap.remove(clazz);
+	}
+
+	/**
+	 * Checks whether the given class has a schema or class replacement registered.
+	 * @param clazz the class to check
+	 * @return {@code true} if a replacement is registered for the class
+	 */
+	public static boolean isModelReplaced(Class<?> clazz) {
+		return modelToSchemaMap.containsKey(clazz) || modelToClassMap.containsKey(clazz);
 	}
 
 	/**

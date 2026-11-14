@@ -54,6 +54,7 @@ import static java.util.stream.Collectors.toMap;
  * The type Polymorphic model converter.
  *
  * @author bnasslahsen
+ * @author nadunmA
  */
 public class PolymorphicModelConverter implements ModelConverter {
 
@@ -185,6 +186,9 @@ public class PolymorphicModelConverter implements ModelConverter {
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
+			if (AdditionalModelsConverter.isModelReplaced(javaType.getRawClass())) {
+				return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
+			}
 			Set<String> narrowedProperties = new HashSet<>();
 			for (BeanPropertyBiDefinition propertyDef : introspectBeanProperties(javaType)) {
 				if (propertyDef.isAnyAnnotated(JsonUnwrapped.class)) {

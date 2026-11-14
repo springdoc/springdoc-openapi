@@ -25,6 +25,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ObjectNode;
 import com.querydsl.core.types.Predicate;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -139,6 +140,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
  * The type Spring doc configuration.
  *
  * @author bnasslahsen
+ * @author nadunmA
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
@@ -153,6 +155,7 @@ public class SpringDocConfiguration {
 
 	static {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema())
+				.replaceWithSchema(JsonNode.class, new ObjectSchema())
 				.replaceWithClass(Charset.class, String.class)
 				.addResponseWrapperToIgnore(DeferredResult.class)
 				.addResponseWrapperToIgnore(Future.class)
