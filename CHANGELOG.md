@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Upgrade swagger-ui to version **5.34.1**
+- Upgrade swagger-ui to version **5.35.0**
 - Upgrade Scalar to version **0.7.0**
 
 ### Fixed
