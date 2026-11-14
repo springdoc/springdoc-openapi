@@ -108,6 +108,11 @@
 			<artifactId>kotlin-reflect</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlinx</groupId>
+			<artifactId>kotlinx-serialization-core-jvm</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!-- Spring Web /Data Rest/Hateoas && For Enhanced Pageable Support-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

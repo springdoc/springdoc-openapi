@@ -1215,6 +1215,11 @@ public class SpringDocConfigProperties {
 		 */
 		private JavaNullablePropertyCustomizer javaNullablePropertyCustomizer = new JavaNullablePropertyCustomizer();
 
+		/**
+		 * The kotlinx.serialization required property customizer.
+		 */
+		private KotlinxSerializationRequiredPropertyCustomizer kotlinxSerializationRequiredPropertyCustomizer = new KotlinxSerializationRequiredPropertyCustomizer();
+
 
 		/**
 		 * Gets deprecating converter.
@@ -1289,6 +1294,24 @@ public class SpringDocConfigProperties {
 		}
 
 		/**
+		 * Gets kotlinx.serialization required property customizer.
+		 *
+		 * @return the kotlinx.serialization required property customizer
+		 */
+		public KotlinxSerializationRequiredPropertyCustomizer getKotlinxSerializationRequiredPropertyCustomizer() {
+			return kotlinxSerializationRequiredPropertyCustomizer;
+		}
+
+		/**
+		 * Sets kotlinx.serialization required property customizer.
+		 *
+		 * @param kotlinxSerializationRequiredPropertyCustomizer the kotlinx.serialization required property customizer
+		 */
+		public void setKotlinxSerializationRequiredPropertyCustomizer(KotlinxSerializationRequiredPropertyCustomizer kotlinxSerializationRequiredPropertyCustomizer) {
+			this.kotlinxSerializationRequiredPropertyCustomizer = kotlinxSerializationRequiredPropertyCustomizer;
+		}
+
+		/**
 		 * Gets Java nullable property customizer.
 		 *
 		 * @return the Java nullable property customizer
@@ -1315,6 +1338,38 @@ public class SpringDocConfigProperties {
 
 			/**
 			 * Mark the schema properties of nullable Kotlin types (Type?) as nullable.
+			 */
+			private boolean enabled = true;
+
+			/**
+			 * Is enabled boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isEnabled() {
+				return enabled;
+			}
+
+			/**
+			 * Sets enabled.
+			 *
+			 * @param enabled the enabled
+			 */
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
+		}
+
+		/**
+		 * The kotlinx.serialization required property customizer.
+		 *
+		 * @author bnasslahsen
+		 */
+		public static class KotlinxSerializationRequiredPropertyCustomizer {
+
+			/**
+			 * Mark the properties of kotlinx.serialization @Serializable classes without a default
+			 * value as required, when jackson-module-kotlin is absent.
 			 */
 			private boolean enabled = true;
 
