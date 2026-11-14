@@ -19,6 +19,7 @@ package org.springdoc.core.configuration
 import org.springdoc.core.converters.KotlinInlineClassUnwrappingConverter
 import org.springdoc.core.customizers.KotlinDeprecatedPropertyCustomizer
 import org.springdoc.core.customizers.KotlinNullablePropertyCustomizer
+import org.springdoc.core.customizers.KotlinxSerializationRequiredPropertyCustomizer
 import org.springdoc.core.providers.ObjectMapperProvider
 import org.springdoc.core.utils.Constants
 import org.springdoc.core.utils.SpringDocKotlinUtils
@@ -28,6 +29,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication
 import org.springframework.context.annotation.Bean
@@ -76,6 +78,16 @@ class SpringDocKotlinConfiguration() {
 		@ConditionalOnProperty(name = [Constants.SPRINGDOC_KOTLIN_NULLABLE_PROPERTY_CUSTOMIZER_ENABLED], matchIfMissing = true)
 		fun kotlinNullablePropertyCustomizer(objectMapperProvider: ObjectMapperProvider): KotlinNullablePropertyCustomizer {
 			return KotlinNullablePropertyCustomizer(objectMapperProvider)
+		}
+
+		@Bean
+		@Lazy(false)
+		@ConditionalOnMissingBean
+		@ConditionalOnClass(name = ["kotlinx.serialization.Serializable"])
+		@ConditionalOnMissingClass("com.fasterxml.jackson.module.kotlin.KotlinModule")
+		@ConditionalOnProperty(name = [Constants.SPRINGDOC_KOTLINX_SERIALIZATION_REQUIRED_PROPERTY_CUSTOMIZER_ENABLED], matchIfMissing = true)
+		fun kotlinxSerializationRequiredPropertyCustomizer(objectMapperProvider: ObjectMapperProvider): KotlinxSerializationRequiredPropertyCustomizer {
+			return KotlinxSerializationRequiredPropertyCustomizer(objectMapperProvider)
 		}
 
 		@Bean

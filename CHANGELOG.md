@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.10.1]
 
+### Added
+
+- #3433 – Derive the `required` properties of `kotlinx.serialization` `@Serializable` classes when `jackson-module-kotlin` is absent: a primary constructor property is required unless it has a default value or is `@Transient`, or when it is annotated with `@Required`. Disable it with `springdoc.model-converters.kotlinx-serialization-required-property-customizer.enabled=false`
+
 ### Changed
 
 - Upgrade swagger-ui to version **5.34.1**
