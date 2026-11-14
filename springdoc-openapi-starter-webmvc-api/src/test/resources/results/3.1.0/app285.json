@@ -1,0 +1,58 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/nodes": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "nodes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonNodes"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "JsonNode": {},
+      "JsonNodes": {
+        "type": "object",
+        "properties": {
+          "any": {
+            "$ref": "#/components/schemas/JsonNode"
+          },
+          "object": {
+            "type": "object"
+          },
+          "array": {
+            "type": "array",
+            "items": {}
+          },
+          "string": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

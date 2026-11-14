@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - #3405 – Document the validation constraints of parameters without Hibernate Validator on the classpath, instead of failing with `NoClassDefFoundError`
 - #3429 – In Spring Data REST response schemas, an association to an entity without an exported repository uses the `<Name>Response` schema also when it is nullable (wrapped in `allOf` or `oneOf`), and an entity whose `@Schema(name)` differs from its class name gets its associations filtered as well. This `<Name>Response` naming applies since 2.9.1
+- #3431 – An `ArrayNode` field is documented as an array and a `TextNode` field as a string, like an `ObjectNode` field is documented as an object, instead of a reference to a schema declared as an object
 
 ## [2.10.0] - 2026-10-24
 
