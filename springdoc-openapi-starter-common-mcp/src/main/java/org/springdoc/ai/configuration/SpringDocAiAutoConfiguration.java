@@ -28,12 +28,14 @@ import org.springdoc.ai.mcp.McpCommunityToolAuditAspect;
 import org.springdoc.ai.mcp.McpNativeToolAuditAspect;
 import org.springdoc.ai.mcp.OpenApiMcpToolCallbackProvider;
 import org.springdoc.ai.properties.SpringDocAiProperties;
+import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.service.OpenAPIService;
 
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -50,6 +52,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
 import static org.springdoc.ai.properties.SpringDocAiProperties.SPRINGDOC_MCP_ENABLED;
+import static org.springdoc.core.utils.Constants.DEFAULT_GROUP_NAME;
 
 /**
  * Auto-configuration for springdoc OpenAPI AI (MCP) integration.
@@ -205,6 +208,7 @@ public class SpringDocAiAutoConfiguration {
 		 * Registers MCP tools after all singletons are instantiated.
 		 * @param toolCallbackProvider the tool callback provider
 		 * @param openAPIService the OpenAPI service
+		 * @param openApiResources the springdoc OpenAPI resources
 		 * @param aiProperties the AI properties
 		 * @param applicationContext the application context
 		 * @return the smart initializing singleton
@@ -212,15 +216,35 @@ public class SpringDocAiAutoConfiguration {
 		@Bean
 		SmartInitializingSingleton openApiMcpDeferredToolRegistrar(
 				OpenApiMcpToolCallbackProvider toolCallbackProvider, OpenAPIService openAPIService,
-				SpringDocAiProperties aiProperties, ApplicationContext applicationContext) {
+				ObjectProvider<AbstractOpenApiResource> openApiResources, SpringDocAiProperties aiProperties,
+				ApplicationContext applicationContext) {
 			return () -> {
-				io.swagger.v3.oas.models.OpenAPI openAPI = waitForOpenApi(openAPIService, aiProperties);
-				if (openAPI == null) {
-					LOGGER.warn("Timed out waiting for OpenAPI specification after {} seconds. "
-							+ "No MCP tools will be registered.", aiProperties.getInitTimeoutSeconds());
-					return;
+				// the resource of the default group builds the specification in its own
+				// OpenAPIService, which is a different instance with grouped API docs or a
+				// disabled cache, so read it from that resource when it exists
+				AbstractOpenApiResource defaultOpenApiResource = openApiResources.orderedStream()
+					.filter(openApiResource -> DEFAULT_GROUP_NAME.equals(openApiResource.getGroupName()))
+					.findFirst()
+					.orElse(null);
+				io.swagger.v3.oas.models.OpenAPI openAPI;
+				if (defaultOpenApiResource != null) {
+					try {
+						openAPI = defaultOpenApiResource.getOpenApiDocument(Locale.getDefault());
+					}
+					catch (RuntimeException ex) {
+						LOGGER.warn("Failed to build the OpenAPI specification. No MCP tools will be registered.", ex);
+						return;
+					}
 				}
-				ToolCallback[] tools = toolCallbackProvider.getToolCallbacks();
+				else {
+					openAPI = waitForOpenApi(openAPIService, aiProperties);
+					if (openAPI == null) {
+						LOGGER.warn("Timed out waiting for OpenAPI specification after {} seconds. "
+								+ "No MCP tools will be registered.", aiProperties.getInitTimeoutSeconds());
+						return;
+					}
+				}
+				ToolCallback[] tools = toolCallbackProvider.initToolCallbacks(openAPI);
 				if (tools.length == 0) {
 					return;
 				}

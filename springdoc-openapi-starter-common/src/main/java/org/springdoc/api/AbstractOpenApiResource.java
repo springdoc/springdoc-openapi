@@ -348,6 +348,27 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	/**
+	 * Gets the name of the group documented by this resource.
+	 *
+	 * @return the group name
+	 */
+	public String getGroupName() {
+		return groupName;
+	}
+
+	/**
+	 * Gets the OpenAPI document of this resource, without a server URL derived from a
+	 * request. The document is built on the first call, then served from the cache of
+	 * this resource.
+	 *
+	 * @param locale the locale
+	 * @return the open api
+	 */
+	public OpenAPI getOpenApiDocument(Locale locale) {
+		return this.getOpenApi(null, locale);
+	}
+
+	/**
 	 * Gets open api.
 	 *
 	 * @param locale the locale

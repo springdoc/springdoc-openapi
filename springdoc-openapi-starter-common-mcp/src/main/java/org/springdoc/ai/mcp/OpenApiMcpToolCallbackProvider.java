@@ -114,11 +114,25 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 		}
 		OpenAPI openAPI = openAPIService.getCachedOpenAPI(Locale.getDefault());
 		if (openAPI != null) {
-			cached = buildToolCallbacks(openAPI);
-			this.cachedToolCallbacks.set(cached);
-			return cached;
+			return initToolCallbacks(openAPI);
 		}
 		return new ToolCallback[0];
+	}
+
+	/**
+	 * Builds the tool callbacks from the given OpenAPI specification, unless they are
+	 * already built, and caches them.
+	 * @param openAPI the OpenAPI spec
+	 * @return the tool callbacks
+	 */
+	public ToolCallback[] initToolCallbacks(OpenAPI openAPI) {
+		ToolCallback[] cached = this.cachedToolCallbacks.get();
+		if (cached != null) {
+			return cached;
+		}
+		cached = buildToolCallbacks(openAPI);
+		this.cachedToolCallbacks.set(cached);
+		return cached;
 	}
 
 	/**

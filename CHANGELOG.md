@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3425 – In the MCP tool input schema, expand every property that references the same component, instead of treating the repeated references as circular and dropping their properties
 - #3427 – In the MCP tool input schema, keep every type of an OpenAPI 3.1 type array, such as `["string", "null"]`, instead of only the first one
 - #3429 – In Spring Data REST response schemas, an association to an entity without an exported repository uses the `<Name>Response` schema also when it is nullable (wrapped in `allOf` or `oneOf`), and an entity whose `@Schema(name)` differs from its class name gets its associations filtered as well. This `<Name>Response` naming applies since 3.1.1
+- #3434 – The MCP tools are registered when `springdoc.group-configs` or `springdoc.cache.disabled` is set, instead of waiting for `springdoc.ai.mcp.init-timeout-seconds` and registering none
 
 ## [3.2.0] - 2026-10-24
 
