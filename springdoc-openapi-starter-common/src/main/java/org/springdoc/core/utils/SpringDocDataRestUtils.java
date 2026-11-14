@@ -16,6 +16,7 @@
 
 package org.springdoc.core.utils;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,6 +57,7 @@ import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.data.util.TypeInformation;
 import org.springframework.hateoas.server.LinkRelationProvider;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import static org.springdoc.core.utils.SpringDocUtils.isComposedSchema;
 
@@ -133,8 +135,9 @@ public class SpringDocDataRestUtils {
 				entityInfo.setIgnoredFields(ignoredFields);
 			Set<String> associationsFields = getAssociationsFields(resourceMetadata, entity);
 			entityInfo.setAssociationsFields(associationsFields);
-			allAssociationsFieldsMap.put(domainType.getSimpleName(), getAllAssociationsFields(resourceMetadata, entity));
-			entityInoMap.put(domainType.getSimpleName(), entityInfo);
+			String schemaName = getSchemaName(domainType);
+			allAssociationsFieldsMap.put(schemaName, getAllAssociationsFields(resourceMetadata, entity));
+			entityInoMap.put(schemaName, entityInfo);
 		}
 
 		openAPI.getPaths().entrySet()
@@ -317,6 +320,27 @@ public class SpringDocDataRestUtils {
 		else if (property.getItems() != null) {
 			updateResponseSchemaProperty(property.getItems(), components, openapi31);
 		}
+		else if (isComposedSchema(property)) {
+			// a nullable or annotated association is wrapped: allOf in OpenAPI 3.0, oneOf in OpenAPI 3.1
+			for (List<Schema> composedSchemas : Arrays.asList(property.getAllOf(), property.getOneOf(), property.getAnyOf())) {
+				if (composedSchemas != null)
+					composedSchemas.forEach(composedSchema -> updateResponseSchemaProperty(composedSchema, components, openapi31));
+			}
+		}
+	}
+
+	/**
+	 * Gets the schema name of an entity, which is the name of its {@code @Schema}
+	 * annotation when set, or its simple class name.
+	 *
+	 * @param domainType the domain type
+	 * @return the schema name
+	 */
+	private static String getSchemaName(Class<?> domainType) {
+		io.swagger.v3.oas.annotations.media.Schema schema = domainType.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+		if (schema != null && StringUtils.hasText(schema.name()))
+			return schema.name();
+		return domainType.getSimpleName();
 	}
 
 	/**
