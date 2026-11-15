@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `ModelCopy.deepCopy` instead of a JSON round trip
 - Upgrade swagger-ui to version **5.35.0**
 - Upgrade spring-boot to version **4.2.0-RC2**. Spring Boot 4.2 ignores the `X-Forwarded-Prefix` header by default: behind a proxy that sets it, enable it with `spring.mvc.forwarded-headers.use-forwarded-prefix=true` or `spring.webflux.forwarded-headers.use-forwarded-prefix=true` so that the Swagger UI and Scalar URLs keep the prefix
-- Upgrade Scalar to version **0.7.0**
+- Upgrade Scalar to version **0.7.2**
 
 ### Fixed
 
