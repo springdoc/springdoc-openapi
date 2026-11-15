@@ -30,6 +30,46 @@
           }
         }
       }
+    },
+    "/envelope/single": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "envelopeSingle",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnvelopeItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/envelope/list": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "envelopeList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnvelopeListItem"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -54,6 +94,39 @@
           },
           "string": {
             "type": "string"
+          }
+        }
+      },
+      "EnvelopeItem": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Item"
+          },
+          "meta": {
+            "type": "object"
+          }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "EnvelopeListItem": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            }
+          },
+          "meta": {
+            "type": "object"
           }
         }
       }

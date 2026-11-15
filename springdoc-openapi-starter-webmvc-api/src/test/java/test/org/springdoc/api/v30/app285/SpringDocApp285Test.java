@@ -22,7 +22,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * The Jackson 3 {@code ArrayNode} and {@code StringNode} are documented as an array and a
- * string, like {@code ObjectNode} is documented as an object.
+ * string, like {@code ObjectNode} is documented as an object, and a generic envelope with a
+ * Jackson 3 node keeps its schema.
  *
  * @see <a href="https://github.com/springdoc/springdoc-openapi/issues/3431">#3431</a>
  */

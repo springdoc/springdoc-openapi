@@ -16,6 +16,8 @@
 
 package test.org.springdoc.api.v31.app285;
 
+import java.util.List;
+
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ArrayNode;
 import tools.jackson.databind.node.ObjectNode;
@@ -37,6 +39,16 @@ public class HelloController {
 		return null;
 	}
 
+	@GetMapping("/envelope/list")
+	public Envelope<List<Item>> envelopeList() {
+		return null;
+	}
+
+	@GetMapping("/envelope/single")
+	public Envelope<Item> envelopeSingle() {
+		return null;
+	}
+
 	/**
 	 * A model with a field of each Jackson 3 node type.
 	 *
@@ -46,6 +58,24 @@ public class HelloController {
 	 * @param string a JSON string
 	 */
 	public record JsonNodes(JsonNode any, ObjectNode object, ArrayNode array, StringNode string) {
+	}
+
+	/**
+	 * A generic response envelope with a Jackson 3 node for its metadata.
+	 *
+	 * @param data the data
+	 * @param meta the metadata
+	 * @param <T>  the type of the data
+	 */
+	public record Envelope<T>(T data, ObjectNode meta) {
+	}
+
+	/**
+	 * An item.
+	 *
+	 * @param name the name
+	 */
+	public record Item(String name) {
 	}
 
 }
