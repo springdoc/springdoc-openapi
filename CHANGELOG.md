@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.2.1]
 
+### Security
+
+- [GHSA-cg2g-xh64-v4q7](https://github.com/advisories/GHSA-cg2g-xh64-v4q7), [GHSA-mrv2-3pqr-j5jr](https://github.com/advisories/GHSA-mrv2-3pqr-j5jr), [GHSA-c6gr-qvv4-5v3f](https://github.com/advisories/GHSA-c6gr-qvv4-5v3f) – Vulnerabilities in the DOMPurify bundled with swagger-ui, addressed by upgrading swagger-ui to **5.35.0** (DOMPurify 3.4.17)
+
 ### Added
 
 - #3433 – Derive the `required` properties of `kotlinx.serialization` `@Serializable` classes when `jackson-module-kotlin` is absent: a primary constructor property is required unless it has a default value or is `@Transient`, or when it is annotated with `@Required`. Disable it with `springdoc.model-converters.kotlinx-serialization-required-property-customizer.enabled=false`
@@ -39,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3429 – In Spring Data REST response schemas, an association to an entity without an exported repository uses the `<Name>Response` schema also when it is nullable (wrapped in `allOf` or `oneOf`), and an entity whose `@Schema(name)` differs from its class name gets its associations filtered as well. This `<Name>Response` naming applies since 3.1.1
 - #3434 – The MCP tools are registered when `springdoc.group-configs` or `springdoc.cache.disabled` is set, instead of waiting for `springdoc.ai.mcp.init-timeout-seconds` and registering none
 - #3431 – With Jackson 3, an `ArrayNode` field is documented as an array and a `StringNode` field as a string, like an `ObjectNode` field is documented as an object, instead of a reference to an empty schema
+- Serve the swagger-ui webjar found on the classpath when the application overrides its version, instead of returning 404 unless `springdoc.swagger-ui.version` is also set
 
 ## [3.2.0] - 2026-10-24
 

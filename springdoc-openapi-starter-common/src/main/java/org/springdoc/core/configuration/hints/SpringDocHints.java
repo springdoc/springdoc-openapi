@@ -203,6 +203,7 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 		hints.reflection().registerField(FieldUtils.getDeclaredField(io.swagger.v3.core.converter.ModelConverters.class, "converters", true));
 		hints.reflection().registerType(org.springdoc.core.utils.Constants.class, hint -> hint.withMembers(MemberCategory.ACCESS_DECLARED_FIELDS));
 		hints.resources().registerPattern(SwaggerUiConfigProperties.SPRINGDOC_CONFIG_PROPERTIES)
+				.registerPattern(SwaggerUiConfigProperties.SWAGGER_UI_WEBJAR_POM_PROPERTIES)
 				.registerResourceBundle("sun.util.resources.LocaleNames");
 	}
 
