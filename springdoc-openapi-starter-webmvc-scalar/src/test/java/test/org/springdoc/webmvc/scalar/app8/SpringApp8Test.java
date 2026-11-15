@@ -23,7 +23,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {
-		"spring.mvc.pathmatch.matching-strategy=ant_path_matcher",
 		"scalar.path="+ SpringApp8Test.SCALAR_PATH,
 		"spring.mvc.servlet.path="+ SpringApp8Test.SERVLET_PATH
 })

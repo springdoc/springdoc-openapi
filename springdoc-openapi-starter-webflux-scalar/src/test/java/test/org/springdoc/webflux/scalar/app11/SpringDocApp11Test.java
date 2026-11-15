@@ -31,7 +31,8 @@ import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_PATH;
 import static org.springdoc.scalar.ScalarConstants.SCALAR_JS_FILENAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
-@TestPropertySource(properties = "server.forward-headers-strategy=framework")
+@TestPropertySource(properties = { "server.forward-headers-strategy=framework",
+		"spring.webflux.forwarded-headers.use-forwarded-prefix=true" })
 public class SpringDocApp11Test extends AbstractCommonTest {
 
 	private static final String X_FORWARD_PREFIX = "/path/prefix";

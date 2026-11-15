@@ -28,6 +28,7 @@ import static test.org.springdoc.webflux.scalar.app12.SpringDocApp12Test.SCALAR_
 
 @TestPropertySource(properties = {
 		"server.forward-headers-strategy=framework",
+		"spring.webflux.forwarded-headers.use-forwarded-prefix=true",
 		"scalar.path="+ SCALAR_PATH
 })
 public class SpringDocApp12Test extends AbstractCommonTest {

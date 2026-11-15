@@ -28,6 +28,7 @@ import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_PATH;
 
 @TestPropertySource(properties = {
 		"server.forward-headers-strategy=framework",
+		"spring.mvc.forwarded-headers.use-forwarded-prefix=true",
 		"scalar.path="+ SpringDocApp17Test.SCALAR_PATH
 
 })

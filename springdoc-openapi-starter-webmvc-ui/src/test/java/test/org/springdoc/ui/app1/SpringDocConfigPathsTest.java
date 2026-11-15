@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
-		"spring.mvc.pathmatch.matching-strategy=ant_path_matcher",
 		"springdoc.swagger-ui.path=/test/swagger.html",
 		"server.servlet.context-path=/context-path",
 		"spring.mvc.servlet.path=/servlet-path"

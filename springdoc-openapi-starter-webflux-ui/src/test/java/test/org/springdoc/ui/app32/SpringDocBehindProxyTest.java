@@ -29,7 +29,8 @@ import org.springframework.test.context.TestPropertySource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestPropertySource(properties = {
-		"server.forward-headers-strategy=framework"
+		"server.forward-headers-strategy=framework",
+		"spring.webflux.forwarded-headers.use-forwarded-prefix=true"
 })
 @Import(SpringDocConfig.class)
 public class SpringDocBehindProxyTest extends AbstractSpringDocTest {

@@ -33,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
-		"server.forward-headers-strategy=framework"
+		"server.forward-headers-strategy=framework",
+		"spring.mvc.forwarded-headers.use-forwarded-prefix=true"
 })
 public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 

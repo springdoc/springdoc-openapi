@@ -27,6 +27,7 @@ import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {
 		"server.forward-headers-strategy=framework",
+		"spring.webflux.forwarded-headers.use-forwarded-prefix=true",
 		"scalar.path="+ SpringDocApp13Test.SCALAR_PATH,
 		"springdoc.api-docs.path=/bar/openapi/v3"
 })

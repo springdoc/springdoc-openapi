@@ -37,6 +37,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
 		properties = { "spring.webflux.base-path=/test",
 				"server.forward-headers-strategy=framework",
+				"spring.webflux.forwarded-headers.use-forwarded-prefix=true",
 				"server.port=9318",
 				"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
 				"springdoc.api-docs.path=/documentation/v3/api-docs" })

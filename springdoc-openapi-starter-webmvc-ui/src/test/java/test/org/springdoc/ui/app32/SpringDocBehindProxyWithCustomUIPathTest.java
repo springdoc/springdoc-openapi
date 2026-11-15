@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = {
 		"server.forward-headers-strategy=framework",
+		"spring.mvc.forwarded-headers.use-forwarded-prefix=true",
 		"springdoc.swagger-ui.path=/foo/documentation/swagger.html"
 })
 public class SpringDocBehindProxyWithCustomUIPathTest extends AbstractSpringDocTest {

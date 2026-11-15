@@ -30,6 +30,7 @@ import static test.org.springdoc.webmvc.scalar.app18.SpringDocApp18Test.SCALAR_P
 
 @TestPropertySource(properties = {
 		"server.forward-headers-strategy=framework",
+		"spring.mvc.forwarded-headers.use-forwarded-prefix=true",
 		"scalar.path="+SCALAR_PATH,
 		"springdoc.api-docs.path=/bar/openapi/v3"
 })

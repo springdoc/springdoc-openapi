@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @TestPropertySource(properties = {
 		"server.forward-headers-strategy=framework",
+		"spring.webflux.forwarded-headers.use-forwarded-prefix=true",
 		"springdoc.swagger-ui.path=/foo/documentation/swagger.html",
 		"springdoc.api-docs.path=/bar/openapi/v3"
 })
