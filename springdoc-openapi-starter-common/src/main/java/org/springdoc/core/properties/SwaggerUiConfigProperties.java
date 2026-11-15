@@ -36,9 +36,11 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.ClassUtils;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_PREFIX;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
+import static org.springdoc.core.utils.Constants.SWAGGER_UI_WEBJAR_NAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 
@@ -64,6 +66,16 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 * The constant SPRINGDOC_SWAGGERUI_VERSION.
 	 */
 	private static final String SPRINGDOC_SWAGGER_VERSION = SPRINGDOC_SWAGGER_PREFIX + ".version";
+
+	/**
+	 * The location of the swagger-ui webjar resources, followed by the version.
+	 */
+	private static final String SWAGGER_UI_WEBJAR_LOCATION = "META-INF/resources/webjars/" + SWAGGER_UI_WEBJAR_NAME + DEFAULT_PATH_SEPARATOR;
+
+	/**
+	 * The Maven properties of the swagger-ui webjar, which hold its version.
+	 */
+	public static final String SWAGGER_UI_WEBJAR_POM_PROPERTIES = "META-INF/maven/org.webjars/" + SWAGGER_UI_WEBJAR_NAME + "/pom.properties";
 
 	/**
 	 * The Disable swagger default url.
@@ -101,12 +113,35 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 			try {
 				Resource resource = new ClassPathResource(DEFAULT_PATH_SEPARATOR + SPRINGDOC_CONFIG_PROPERTIES);
 				Properties props = PropertiesLoaderUtils.loadProperties(resource);
-				setVersion(props.getProperty(SPRINGDOC_SWAGGER_VERSION));
+				setVersion(resolveWebJarVersion(props.getProperty(SPRINGDOC_SWAGGER_VERSION), ClassUtils.getDefaultClassLoader()));
 			}
 			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
+	}
+
+	/**
+	 * Resolves the version of the swagger-ui webjar to serve. It is the version
+	 * springdoc-openapi is built with, unless the application overrides the swagger-ui
+	 * webjar with another version: the resources of the built version are then missing,
+	 * and the version of the webjar on the classpath is used.
+	 *
+	 * @param builtVersion the swagger-ui version springdoc-openapi is built with
+	 * @param classLoader  the class loader
+	 * @return the swagger-ui version
+	 * @throws IOException if the webjar properties cannot be read
+	 */
+	static String resolveWebJarVersion(String builtVersion, ClassLoader classLoader) throws IOException {
+		if (StringUtils.isEmpty(builtVersion) || new ClassPathResource(SWAGGER_UI_WEBJAR_LOCATION + builtVersion + DEFAULT_PATH_SEPARATOR + "index.html", classLoader).exists())
+			return builtVersion;
+		Resource webJarProperties = new ClassPathResource(SWAGGER_UI_WEBJAR_POM_PROPERTIES, classLoader);
+		if (webJarProperties.exists()) {
+			String webJarVersion = PropertiesLoaderUtils.loadProperties(webJarProperties).getProperty("version");
+			if (StringUtils.isNotEmpty(webJarVersion) && new ClassPathResource(SWAGGER_UI_WEBJAR_LOCATION + webJarVersion + DEFAULT_PATH_SEPARATOR + "index.html", classLoader).exists())
+				return webJarVersion;
+		}
+		return builtVersion;
 	}
 
 	/**
