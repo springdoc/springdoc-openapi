@@ -30,12 +30,16 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.ai.customizers.McpToolCustomizer;
 import org.springdoc.ai.customizers.McpToolDefinitionContext;
 import org.springdoc.ai.properties.SpringDocAiProperties;
+import org.springdoc.api.AbstractOpenApiResource;
+import org.springdoc.api.AbstractMultipleOpenApiResource;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.service.OpenAPIService;
 
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.env.Environment;
+import static org.springdoc.core.utils.Constants.DEFAULT_GROUP_NAME;
 
 /**
  * A {@link ToolCallbackProvider} that bridges springdoc-openapi with Spring AI. It
@@ -89,6 +93,16 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 	private final AtomicReference<ToolCallback[]> cachedToolCallbacks = new AtomicReference<>();
 
 	/**
+	 * The springdoc OpenAPI resources (used as fallback when the default OpenAPIService cache is empty).
+	 */
+	private final ObjectProvider<AbstractOpenApiResource> openApiResources;
+
+	/**
+	 * The springdoc multiple OpenAPI resources (used as fallback when default API docs are disabled).
+	 */
+	private final ObjectProvider<AbstractMultipleOpenApiResource<?>> multipleOpenApiResources;
+
+	/**
 	 * Constructs a new OpenApiMcpToolCallbackProvider.
 	 * @param openAPIService the OpenAPI service
 	 * @param springDocConfigProperties the springdoc config properties
@@ -97,13 +111,51 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 	 * @param environment the Spring environment
 	 */
 	public OpenApiMcpToolCallbackProvider(OpenAPIService openAPIService,
-			SpringDocConfigProperties springDocConfigProperties, SpringDocAiProperties aiProperties,
-			Optional<List<McpToolCustomizer>> mcpToolCustomizers, Environment environment) {
+										  SpringDocConfigProperties springDocConfigProperties, SpringDocAiProperties aiProperties,
+										  Optional<List<McpToolCustomizer>> mcpToolCustomizers, Environment environment) {
+		// Backward-compatible constructor delegating with null openApiResources and multipleOpenApiResources
+		this(openAPIService, springDocConfigProperties, aiProperties, mcpToolCustomizers, environment, null, null);
+	}
+
+	/**
+	 * Constructs a new OpenApiMcpToolCallbackProvider.
+	 * @param openAPIService the OpenAPI service
+	 * @param springDocConfigProperties the springdoc config properties
+	 * @param aiProperties the AI properties
+	 * @param mcpToolCustomizers the MCP tool customizers
+	 * @param environment the Spring environment
+	 * @param openApiResources the springdoc OpenAPI resources
+	 */
+	public OpenApiMcpToolCallbackProvider(OpenAPIService openAPIService,
+										  SpringDocConfigProperties springDocConfigProperties, SpringDocAiProperties aiProperties,
+										  Optional<List<McpToolCustomizer>> mcpToolCustomizers, Environment environment,
+										  ObjectProvider<AbstractOpenApiResource> openApiResources) {
+		this(openAPIService, springDocConfigProperties, aiProperties, mcpToolCustomizers, environment, openApiResources,
+				null);
+	}
+
+	/**
+	 * Constructs a new OpenApiMcpToolCallbackProvider.
+	 * @param openAPIService the OpenAPI service
+	 * @param springDocConfigProperties the springdoc config properties
+	 * @param aiProperties the AI properties
+	 * @param mcpToolCustomizers the MCP tool customizers
+	 * @param environment the Spring environment
+	 * @param openApiResources the springdoc OpenAPI resources
+	 * @param multipleOpenApiResources the springdoc multiple OpenAPI resources
+	 */
+	public OpenApiMcpToolCallbackProvider(OpenAPIService openAPIService,
+										  SpringDocConfigProperties springDocConfigProperties, SpringDocAiProperties aiProperties,
+										  Optional<List<McpToolCustomizer>> mcpToolCustomizers, Environment environment,
+										  ObjectProvider<AbstractOpenApiResource> openApiResources,
+										  ObjectProvider<AbstractMultipleOpenApiResource<?>> multipleOpenApiResources) {
 		this.openAPIService = openAPIService;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.aiProperties = aiProperties;
 		this.mcpToolCustomizers = mcpToolCustomizers;
 		this.environment = environment;
+		this.openApiResources = openApiResources;
+		this.multipleOpenApiResources = multipleOpenApiResources;
 	}
 
 	@Override
@@ -113,6 +165,35 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 			return cached;
 		}
 		OpenAPI openAPI = openAPIService.getCachedOpenAPI(Locale.getDefault());
+		// Each OpenAPI resource uses its own OpenAPIService instance with grouped API docs,
+		// so resolve the OpenAPI spec from the default resource or the first available grouped resource
+		if (openAPI == null && openApiResources != null) {
+			List<AbstractOpenApiResource> resources = openApiResources.orderedStream().toList();
+			AbstractOpenApiResource targetResource = resources.stream()
+					.filter(resource -> DEFAULT_GROUP_NAME.equals(resource.getGroupName()))
+					.findFirst()
+					.orElseGet(() -> resources.stream()
+							.filter(resource -> resource.getGroupName() != null)
+							.findFirst()
+							.orElse(null));
+
+			// Fallback to grouped resources inside AbstractMultipleOpenApiResource when default API docs are disabled
+			if (targetResource == null && multipleOpenApiResources != null) {
+				targetResource = multipleOpenApiResources.orderedStream()
+						.flatMap(multipleResource -> multipleResource.getGroupedOpenApiResources().stream())
+						.findFirst()
+						.orElse(null);
+			}
+
+			if (targetResource != null) {
+				try {
+					openAPI = targetResource.getOpenApiDocument(Locale.getDefault());
+				}
+				catch (RuntimeException ex) {
+					LOGGER.warn("Failed to build the OpenAPI specification for MCP tool callbacks.", ex);
+				}
+			}
+		}
 		if (openAPI != null) {
 			return initToolCallbacks(openAPI);
 		}

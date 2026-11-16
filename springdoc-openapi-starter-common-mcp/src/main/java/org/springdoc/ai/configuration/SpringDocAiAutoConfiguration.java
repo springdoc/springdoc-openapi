@@ -32,6 +32,7 @@ import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.service.OpenAPIService;
+import org.springdoc.api.AbstractMultipleOpenApiResource;
 
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.beans.factory.InitializingBean;
@@ -110,15 +111,19 @@ public class SpringDocAiAutoConfiguration {
 	 * @param aiProperties the AI properties
 	 * @param mcpToolCustomizers the MCP tool customizers
 	 * @param environment the Spring environment
+	 * @param openApiResources the springdoc OpenAPI resources
+	 * @param multipleOpenApiResources the springdoc multiple OpenAPI resources
 	 * @return the tool callback provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	OpenApiMcpToolCallbackProvider openApiMcpToolCallbackProvider(OpenAPIService openAPIService,
-			SpringDocConfigProperties springDocConfigProperties, SpringDocAiProperties aiProperties,
-			Optional<List<McpToolCustomizer>> mcpToolCustomizers, Environment environment) {
+																  SpringDocConfigProperties springDocConfigProperties, SpringDocAiProperties aiProperties,
+																  Optional<List<McpToolCustomizer>> mcpToolCustomizers, Environment environment,
+																  ObjectProvider<AbstractOpenApiResource> openApiResources,
+																  ObjectProvider<AbstractMultipleOpenApiResource<?>> multipleOpenApiResources) {
 		return new OpenApiMcpToolCallbackProvider(openAPIService, springDocConfigProperties, aiProperties,
-				mcpToolCustomizers, environment);
+				mcpToolCustomizers, environment, openApiResources, multipleOpenApiResources);
 	}
 
 	/**
@@ -216,16 +221,23 @@ public class SpringDocAiAutoConfiguration {
 		@Bean
 		SmartInitializingSingleton openApiMcpDeferredToolRegistrar(
 				OpenApiMcpToolCallbackProvider toolCallbackProvider, OpenAPIService openAPIService,
-				ObjectProvider<AbstractOpenApiResource> openApiResources, SpringDocAiProperties aiProperties,
-				ApplicationContext applicationContext) {
+				ObjectProvider<AbstractOpenApiResource> openApiResources,
+				ObjectProvider<AbstractMultipleOpenApiResource<?>> multipleOpenApiResources,
+				SpringDocAiProperties aiProperties, ApplicationContext applicationContext) {
 			return () -> {
 				// the resource of the default group builds the specification in its own
 				// OpenAPIService, which is a different instance with grouped API docs or a
 				// disabled cache, so read it from that resource when it exists
 				AbstractOpenApiResource defaultOpenApiResource = openApiResources.orderedStream()
-					.filter(openApiResource -> DEFAULT_GROUP_NAME.equals(openApiResource.getGroupName()))
-					.findFirst()
-					.orElse(null);
+						.filter(openApiResource -> DEFAULT_GROUP_NAME.equals(openApiResource.getGroupName()))
+						.findFirst()
+						.orElseGet(() -> openApiResources.orderedStream()
+								.filter(openApiResource -> openApiResource.getGroupName() != null)
+								.findFirst()
+								.orElseGet(() -> multipleOpenApiResources.orderedStream()
+										.flatMap(multipleResource -> multipleResource.getGroupedOpenApiResources().stream())
+										.findFirst()
+										.orElse(null)));
 				io.swagger.v3.oas.models.OpenAPI openAPI;
 				if (defaultOpenApiResource != null) {
 					try {

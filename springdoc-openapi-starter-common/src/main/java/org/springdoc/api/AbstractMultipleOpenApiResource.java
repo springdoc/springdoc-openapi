@@ -18,6 +18,8 @@ package org.springdoc.api;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import org.springdoc.core.customizers.SpringDocCustomizers;
@@ -153,6 +155,16 @@ public abstract class AbstractMultipleOpenApiResource<R extends AbstractOpenApiR
 			throw new OpenApiResourceNotFoundException("No OpenAPI resource found for group: " + group);
 		}
 		return openApiResource;
+	}
+
+	/**
+	 * Gets grouped open api resources.
+	 *
+	 * @return the grouped open api resources
+	 */
+	public Collection<R> getGroupedOpenApiResources() {
+		return groupedOpenApiResources != null ? Collections.unmodifiableCollection(groupedOpenApiResources.values())
+				: Collections.emptyList();
 	}
 
 }
