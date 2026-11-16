@@ -147,6 +147,21 @@ public abstract class AbstractMultipleOpenApiResource<R extends AbstractOpenApiR
 	 * @param group the group
 	 * @return the open api resource or throw
 	 */
+	/**
+	 * Gets the resources of the API groups, in the order of the groups.
+	 *
+	 * @return the resources of the API groups
+	 */
+	public List<R> getGroupedOpenApiResources() {
+		if (groupedOpenApiResources == null)
+			return List.of();
+		return groupedOpenApis.stream()
+				.map(GroupedOpenApi::getGroup)
+				.distinct()
+				.map(groupedOpenApiResources::get)
+				.toList();
+	}
+
 	protected R getOpenApiResourceOrThrow(String group) {
 		R openApiResource = groupedOpenApiResources.get(group);
 		if (openApiResource == null) {

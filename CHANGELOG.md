@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #3427 – In the MCP tool input schema, keep every type of an OpenAPI 3.1 type array, such as `["string", "null"]`, instead of only the first one
 - #3429 – In Spring Data REST response schemas, an association to an entity without an exported repository uses the `<Name>Response` schema also when it is nullable (wrapped in `allOf` or `oneOf`), and an entity whose `@Schema(name)` differs from its class name gets its associations filtered as well. This `<Name>Response` naming applies since 3.1.1
 - #3434 – The MCP tools are registered when `springdoc.group-configs` or `springdoc.cache.disabled` is set, instead of waiting for `springdoc.ai.mcp.init-timeout-seconds` and registering none
+- #3441 – With `springdoc.enable-default-api-docs=false`, the MCP tools are registered from the operations of every API group, an operation of several groups becoming a single tool, instead of waiting for `springdoc.ai.mcp.init-timeout-seconds` and registering none
 - #3431 – With Jackson 3, an `ArrayNode` field is documented as an array and a `StringNode` field as a string, like an `ObjectNode` field is documented as an object, instead of a reference to an empty schema
 - Serve the swagger-ui webjar found on the classpath when the application overrides its version, instead of returning 404 unless `springdoc.swagger-ui.version` is also set
 

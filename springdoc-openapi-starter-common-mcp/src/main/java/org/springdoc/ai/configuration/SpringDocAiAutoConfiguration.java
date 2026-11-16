@@ -28,6 +28,7 @@ import org.springdoc.ai.mcp.McpCommunityToolAuditAspect;
 import org.springdoc.ai.mcp.McpNativeToolAuditAspect;
 import org.springdoc.ai.mcp.OpenApiMcpToolCallbackProvider;
 import org.springdoc.ai.properties.SpringDocAiProperties;
+import org.springdoc.api.AbstractMultipleOpenApiResource;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -209,6 +210,7 @@ public class SpringDocAiAutoConfiguration {
 		 * @param toolCallbackProvider the tool callback provider
 		 * @param openAPIService the OpenAPI service
 		 * @param openApiResources the springdoc OpenAPI resources
+		 * @param multipleOpenApiResources the springdoc OpenAPI resources of the API groups
 		 * @param aiProperties the AI properties
 		 * @param applicationContext the application context
 		 * @return the smart initializing singleton
@@ -216,8 +218,9 @@ public class SpringDocAiAutoConfiguration {
 		@Bean
 		SmartInitializingSingleton openApiMcpDeferredToolRegistrar(
 				OpenApiMcpToolCallbackProvider toolCallbackProvider, OpenAPIService openAPIService,
-				ObjectProvider<AbstractOpenApiResource> openApiResources, SpringDocAiProperties aiProperties,
-				ApplicationContext applicationContext) {
+				ObjectProvider<AbstractOpenApiResource> openApiResources,
+				ObjectProvider<AbstractMultipleOpenApiResource<?>> multipleOpenApiResources,
+				SpringDocAiProperties aiProperties, ApplicationContext applicationContext) {
 			return () -> {
 				// the resource of the default group builds the specification in its own
 				// OpenAPIService, which is a different instance with grouped API docs or a
@@ -226,10 +229,21 @@ public class SpringDocAiAutoConfiguration {
 					.filter(openApiResource -> DEFAULT_GROUP_NAME.equals(openApiResource.getGroupName()))
 					.findFirst()
 					.orElse(null);
-				io.swagger.v3.oas.models.OpenAPI openAPI;
-				if (defaultOpenApiResource != null) {
+				// without the default API docs, expose the operations of every API group
+				List<AbstractOpenApiResource> groupedOpenApiResources = (defaultOpenApiResource != null) ? List.of()
+						: multipleOpenApiResources.orderedStream()
+							.flatMap(multipleOpenApiResource -> multipleOpenApiResource.getGroupedOpenApiResources().stream())
+							.map(AbstractOpenApiResource.class::cast)
+							.toList();
+				ToolCallback[] tools;
+				if (defaultOpenApiResource != null || !groupedOpenApiResources.isEmpty()) {
 					try {
-						openAPI = defaultOpenApiResource.getOpenApiDocument(Locale.getDefault());
+						tools = (defaultOpenApiResource != null)
+								? toolCallbackProvider
+									.initToolCallbacks(defaultOpenApiResource.getOpenApiDocument(Locale.getDefault()))
+								: toolCallbackProvider.initToolCallbacks(groupedOpenApiResources.stream()
+									.map(openApiResource -> openApiResource.getOpenApiDocument(Locale.getDefault()))
+									.toList());
 					}
 					catch (RuntimeException ex) {
 						LOGGER.warn("Failed to build the OpenAPI specification. No MCP tools will be registered.", ex);
@@ -237,14 +251,14 @@ public class SpringDocAiAutoConfiguration {
 					}
 				}
 				else {
-					openAPI = waitForOpenApi(openAPIService, aiProperties);
+					io.swagger.v3.oas.models.OpenAPI openAPI = waitForOpenApi(openAPIService, aiProperties);
 					if (openAPI == null) {
 						LOGGER.warn("Timed out waiting for OpenAPI specification after {} seconds. "
 								+ "No MCP tools will be registered.", aiProperties.getInitTimeoutSeconds());
 						return;
 					}
+					tools = toolCallbackProvider.initToolCallbacks(openAPI);
 				}
-				ToolCallback[] tools = toolCallbackProvider.initToolCallbacks(openAPI);
 				if (tools.length == 0) {
 					return;
 				}

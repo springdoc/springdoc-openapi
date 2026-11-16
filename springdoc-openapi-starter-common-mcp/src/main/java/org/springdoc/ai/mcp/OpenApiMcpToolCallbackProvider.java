@@ -17,10 +17,13 @@
 package org.springdoc.ai.mcp;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import io.swagger.v3.oas.models.OpenAPI;
@@ -131,6 +134,40 @@ public class OpenApiMcpToolCallbackProvider implements ToolCallbackProvider {
 			return cached;
 		}
 		cached = buildToolCallbacks(openAPI);
+		this.cachedToolCallbacks.set(cached);
+		return cached;
+	}
+
+	/**
+	 * Builds the tool callbacks from the given OpenAPI specifications, such as those of
+	 * the API groups, unless they are already built, and caches them. An operation that
+	 * several specifications document becomes a single tool.
+	 * @param openAPIs the OpenAPI specs
+	 * @return the tool callbacks
+	 */
+	public ToolCallback[] initToolCallbacks(List<OpenAPI> openAPIs) {
+		ToolCallback[] cached = this.cachedToolCallbacks.get();
+		if (cached != null) {
+			return cached;
+		}
+		Map<String, ToolCallback> toolsByOperation = new LinkedHashMap<>();
+		Set<String> toolNames = new HashSet<>();
+		for (OpenAPI openAPI : openAPIs) {
+			for (ToolCallback tool : buildToolCallbacks(openAPI)) {
+				String operation = (tool instanceof OpenApiToolCallback openApiTool)
+						? openApiTool.getMethod() + " " + openApiTool.getPath() : tool.getToolDefinition().name();
+				if (toolsByOperation.containsKey(operation)) {
+					continue;
+				}
+				if (!toolNames.add(tool.getToolDefinition().name())) {
+					LOGGER.warn("Skipping the MCP tool of {}: its name {} is already used by another operation", operation,
+							tool.getToolDefinition().name());
+					continue;
+				}
+				toolsByOperation.put(operation, tool);
+			}
+		}
+		cached = toolsByOperation.values().toArray(new ToolCallback[0]);
 		this.cachedToolCallbacks.set(cached);
 		return cached;
 	}
