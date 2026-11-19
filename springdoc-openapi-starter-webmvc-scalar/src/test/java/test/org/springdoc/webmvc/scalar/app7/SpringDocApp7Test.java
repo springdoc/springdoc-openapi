@@ -26,7 +26,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import static org.springdoc.scalar.ScalarConstants.SCALAR_DEFAULT_PATH;
 
-@TestPropertySource(properties = { "server.forward-headers-strategy=framework" })
+@TestPropertySource(properties = { "server.request.header.forwarded.strategy=framework" })
 public class SpringDocApp7Test extends AbstractCommonTest {
 
 	@Test

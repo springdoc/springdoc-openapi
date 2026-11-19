@@ -30,8 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
-		"server.forward-headers-strategy=framework",
-		"spring.mvc.forwarded-headers.use-forwarded-prefix=true",
+		"server.request.header.forwarded.strategy=framework",
+		"server.request.header.forwarded.use-prefix=true",
 		"springdoc.swagger-ui.path=/foo/documentation/swagger.html",
 		"springdoc.api-docs.path=/bar/openapi/v3"
 })

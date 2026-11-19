@@ -47,9 +47,9 @@ import static org.springdoc.scalar.ScalarConstants.DEFAULT_SCALAR_ACTUATOR_PATH;
  * <p>This configuration deliberately does not register a
  * {@link org.springframework.web.filter.ForwardedHeaderFilter}: doing so would make the whole
  * application trust the {@code Forwarded} and {@code X-Forwarded-*} headers of every caller,
- * overriding Spring Boot's {@code server.forward-headers-strategy=none} default. Set
- * {@code server.forward-headers-strategy=framework} (or {@code native}) when the application
- * really runs behind a trusted reverse proxy.
+ * overriding Spring Boot's {@code server.request.header.forwarded.strategy} default, which is
+ * {@code none} outside a cloud platform. Set {@code server.request.header.forwarded.strategy=framework}
+ * (or {@code web-server}) when the application really runs behind a trusted reverse proxy.
  *
  * @author  bnasslahsen
  */

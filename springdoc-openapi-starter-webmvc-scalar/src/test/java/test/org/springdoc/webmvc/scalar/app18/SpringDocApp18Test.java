@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static test.org.springdoc.webmvc.scalar.app18.SpringDocApp18Test.SCALAR_PATH;
 
 @TestPropertySource(properties = {
-		"server.forward-headers-strategy=framework",
-		"spring.mvc.forwarded-headers.use-forwarded-prefix=true",
+		"server.request.header.forwarded.strategy=framework",
+		"server.request.header.forwarded.use-prefix=true",
 		"scalar.path="+SCALAR_PATH,
 		"springdoc.api-docs.path=/bar/openapi/v3"
 })

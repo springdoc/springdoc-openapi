@@ -22,7 +22,7 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = { "server.forward-headers-strategy=framework" })
+@TestPropertySource(properties = { "server.request.header.forwarded.strategy=framework" })
 public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocTest {
 
 	@Test

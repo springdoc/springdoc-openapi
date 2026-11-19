@@ -35,8 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @TestPropertySource(properties = {
-		"server.forward-headers-strategy=framework",
-		"spring.mvc.forwarded-headers.use-forwarded-prefix=true"
+		"server.request.header.forwarded.strategy=framework",
+		"server.request.header.forwarded.use-prefix=true"
 })
 public class SpringDocApp16Test extends AbstractCommonTest {
 

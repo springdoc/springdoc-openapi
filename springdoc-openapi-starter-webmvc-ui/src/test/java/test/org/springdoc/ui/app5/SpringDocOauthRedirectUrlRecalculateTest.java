@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = { "server.forward-headers-strategy=framework" })
+@TestPropertySource(properties = { "server.request.header.forwarded.strategy=framework" })
 public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocTest {
 
 	@Test

@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Adding the Scalar starter must not opt the whole application into trusting the
  * {@code Forwarded} / {@code X-Forwarded-*} headers of every caller. That decision belongs
- * to {@code server.forward-headers-strategy}, which defaults to {@code none}.
+ * to {@code server.request.header.forwarded.strategy}, which is {@code none} outside a cloud platform.
  *
  * @author bnasslahsen
  */
@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ScalarForwardedHeaderTest {
 
 	/**
-	 * The type Spring Boot registers when {@code server.forward-headers-strategy=framework}.
+	 * The type Spring Boot registers when {@code server.request.header.forwarded.strategy=framework}.
 	 */
 	private static final ResolvableType FILTER_REGISTRATION = ResolvableType
 			.forClassWithGenerics(FilterRegistrationBean.class, ForwardedHeaderFilter.class);
@@ -63,7 +63,7 @@ class ScalarForwardedHeaderTest {
 	 * documented way of running Scalar behind a trusted proxy keeps working.
 	 */
 	@Nested
-	@SpringBootTest(properties = "server.forward-headers-strategy=framework")
+	@SpringBootTest(properties = "server.request.header.forwarded.strategy=framework")
 	class WhenTheApplicationOptsIn {
 
 		@Autowired
