@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade swagger-ui to version **5.35.1**
 - Upgrade spring-boot to version **4.2.0**. Spring Boot 4.2 ignores the `X-Forwarded-Prefix` header by default: behind a proxy that sets it, enable it with `server.request.header.forwarded.use-prefix=true` so that the Swagger UI and Scalar URLs keep the prefix. `server.forward-headers-strategy` is deprecated in favor of `server.request.header.forwarded.strategy`
 - Upgrade Scalar to version **0.7.2**
+- Upgrade Spring AI to version **2.0.2**
 
 ### Fixed
 
