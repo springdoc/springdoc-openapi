@@ -68,17 +68,12 @@ jobs:
   release:
     needs: test
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    # Every Maven and git command below runs with these set. The release plugin
-    # forks a second Maven process, and setup-java writes the Central credentials
-    # into settings.xml as ${env.MAVEN_USERNAME}/${env.MAVEN_PASSWORD}, so both the
-    # outer and the forked build need them in the environment. Keeping them at job
-    # level means no step can lose them by accident.
-    env:
-      MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-      MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
-      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    timeout-minutes: 90
+    # The release credentials are set only on the steps that run the release plugin
+    # or configure git, so the other steps and actions of this job never see them.
+    # The release plugin forks a second Maven process, and setup-java writes the
+    # Central credentials into settings.xml as ${env.MAVEN_USERNAME} and
+    # ${env.MAVEN_PASSWORD}, so the steps that run Maven need all of them.
     steps:
       - uses: actions/checkout@v7
         with:
@@ -110,6 +105,8 @@ jobs:
           # <scm> uses an SSH URL, and release:perform clones it fresh into
           # target/checkout. The runner has no SSH key, so route it over HTTPS.
           git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf 'git@github.com:'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # release:prepare, not release:perform, is the step that puts something
       # irreversible on the remote: it tags the release commit and pushes the tag
@@ -175,6 +172,10 @@ jobs:
         env:
           RELEASE_VERSION: ${{ inputs.releaseVersion }}
           DEVELOPMENT_VERSION: ${{ inputs.developmentVersion }}
+          MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # The status of the rehearsal is captured rather than propagated, so the
           # cleanup below always runs and the failure is reported at the end.
@@ -187,7 +188,8 @@ jobs:
             -DreleaseVersion="${RELEASE_VERSION}" \
             -DdevelopmentVersion="${DEVELOPMENT_VERSION}" \
             -DdryRun=true \
-            -DpushChanges=false
+            -DpushChanges=false \
+            -Darguments="-DskipTests -Dskip.npm=false"
           rehearsal_status=$?
 
           # release:clean restores the POMs from the .releaseBackup files and drops
@@ -217,19 +219,15 @@ jobs:
 
           echo "Rehearsal OK: release:prepare completed and the working tree is clean again."
 
-      # The tagged build is what gets published, so it is the build that has to
-      # pass. release:prepare runs its preparationGoals ("clean verify", the plugin
-      # default) on the transformed POM, which is why the suite runs a second time
-      # in this workflow: that forked verify is what turns red code into a stopped
-      # release rather than a pushed tag. The separate Test job exists to fail even
-      # earlier, before the version transformation starts.
+      # The suite runs once per release, in the Test job that gates this one: the
+      # release commit only changes the versions of the tested commit. Both
+      # invocations below therefore skip the tests. release:prepare still runs its
+      # preparationGoals ("clean verify", the plugin default) on the transformed POM,
+      # so a release POM that does not build stops the release before the tag is
+      # pushed.
       #
-      # -Darguments is the release plugin's `arguments` parameter, and the shared
-      # phase that consumes it (AbstractRunGoalsPhase) feeds both the prepare-time
-      # verify and the perform-time deploy. While prepare and perform were a single
-      # command that parameter therefore skipped tests in both; now that perform is
-      # its own invocation, -Darguments applies only to the invocation that carries
-      # it, so the prepare-time verify runs the suite and only the deploy skips it.
+      # -Darguments is the release plugin's `arguments` parameter, and it applies only
+      # to the invocation that carries it, so each of the two invocations passes it.
       #
       # -Dskip.npm=false is forced for the same reason the profiles are explicit. The MCP
       # dashboard assets are build output and are no longer tracked in git, so a release
@@ -242,10 +240,15 @@ jobs:
         env:
           RELEASE_VERSION: ${{ inputs.releaseVersion }}
           DEVELOPMENT_VERSION: ${{ inputs.developmentVersion }}
+          MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./mvnw $MAVEN_ARGS -Pci,gpg release:prepare \
             -DreleaseVersion="${RELEASE_VERSION}" \
-            -DdevelopmentVersion="${DEVELOPMENT_VERSION}"
+            -DdevelopmentVersion="${DEVELOPMENT_VERSION}" \
+            -Darguments="-DskipTests -Dskip.npm=false"
 
           # release:perform deploys the tag that the step above pushed. It resolves
           # its parameters from release.properties, so it takes no versions here -

@@ -17,6 +17,7 @@ check `origin`; the two agree only when `origin` names the same repository as `<
 ## What a real run does
 
 1. **Test job** — `./mvnw -Pci -T1C test`. Gates the release job, so a release never starts from red code.
+   This is the only run of the suite: the release commit only changes the versions of the tested commit.
 2. **Preflight** — refuses a `releaseVersion` whose tag is already on `origin` or whose artifacts are
    already published to Maven Central. Central releases are immutable, so this failure has to happen
    before anything is pushed. It fails closed: if Central cannot be reached the run stops rather than
@@ -25,12 +26,12 @@ check `origin`; the two agree only when `origin` names the same repository as `<
    next patch version, not one that is already out. That is also the version you would release, so a
    rehearsal is worth running with the real candidate.
 3. **`release:prepare`** — transforms the POMs to `releaseVersion`, runs its default
-   `preparationGoals` (`clean verify`, i.e. the full test suite **on the release POM**, hence the
-   second run of the suite in this workflow), commits, tags `v<releaseVersion>`, commits
-   `developmentVersion` and **pushes both commits and the tag**.
+   `preparationGoals` (`clean verify` with `-DskipTests -Dskip.npm=false`, so a release POM that does
+   not build stops the release), commits, tags `v<releaseVersion>`, commits `developmentVersion` and
+   **pushes both commits and the tag**.
    `release:perform` runs as a separate step, so it only starts once the tag actually exists.
 4. **`release:perform`** — checks out the tag into `target/checkout` and runs `deploy` there with
-   `-DskipTests -Dskip.npm=false` (the suite already ran in step 3, and the MCP dashboard must still be
+   `-DskipTests -Dskip.npm=false` (the suite already ran in step 1, and the MCP dashboard must still be
    built from the tagged sources). Deployment goes to the Central Portal through
    `central-publishing-maven-plugin`, which bundles and uploads the modules — including the parent
    POM `org.springdoc:springdoc-openapi` — except `springdoc-openapi-tests`
@@ -97,12 +98,13 @@ Useful when diagnosing without touching the CI:
 # What the workflow runs for a real release: prepare first, so that perform only
 # starts once the tag exists, then the deploy of that tag.
 ./mvnw -B -Pci,gpg release:prepare \
-  -DreleaseVersion=3.1.1 -DdevelopmentVersion=3.1.2-SNAPSHOT
+  -DreleaseVersion=3.1.1 -DdevelopmentVersion=3.1.2-SNAPSHOT \
+  -Darguments="-DskipTests -Dskip.npm=false"
 ./mvnw -B -Pci,gpg release:perform -Darguments="-DskipTests -Dskip.npm=false"
 
 # Rehearsal, identical to dryRun: true
 ./mvnw -B -Pci,gpg release:prepare \
   -DreleaseVersion=3.1.1 -DdevelopmentVersion=3.1.2-SNAPSHOT \
-  -DdryRun=true -DpushChanges=false
+  -DdryRun=true -DpushChanges=false -Darguments="-DskipTests -Dskip.npm=false"
 ./mvnw -B -Pci,gpg release:clean   # never pass -DdryRun here: release:clean has no such parameter
 ```
