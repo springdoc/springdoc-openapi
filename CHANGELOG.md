@@ -37,6 +37,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - With OpenAPI 3.1, a required `@JsonUnwrapped` member no longer adds an empty property to the schema
+- #3393 – A subtype keeps the `allOf` reference to its polymorphic parent when a controller repeats an annotation of its interface, such as `@Valid`, on a `@RequestBody`
+- #3395 – OpenAPI 3.1 schemas are cloned correctly, and without changing the original schema, also when swagger-core resolved a schema before springdoc-openapi configured its mapper
+- #3397 – With Spring Boot 4, WebFlux applications document their parameters with their own conversion service, instead of a default one that knows none of their converters
+- #3398 – A property declaring `@Schema(oneOf)` or `@Schema(allOf)` narrows only its own subtypes, instead of making every other property of the same type lose its subtypes
+- #3399 – A nullable Kotlin property renamed with `@JsonProperty` or `@JsonNaming` is marked nullable
+- #3402 – The registry of deprecated annotations is thread safe
 - #3405 – Document the validation constraints of parameters without Hibernate Validator on the classpath, instead of failing with `NoClassDefFoundError`
 - #3425 – In the MCP tool input schema, expand every property that references the same component, instead of treating the repeated references as circular and dropping their properties
 - #3427 – In the MCP tool input schema, keep every type of an OpenAPI 3.1 type array, such as `["string", "null"]`, instead of only the first one
