@@ -2,7 +2,7 @@
 
 The release itself is driven by [`.github/workflows/release.yml`](release.yml), run from the branch
 being released (`main` or `spring-boot-3`) with **Actions → Release → Run workflow**.
-`spring-boot-3` predates the MCP modules, so the npm and dashboard steps are no-ops on that branch.
+`spring-boot-3` predates the MCP modules, so its workflow has no npm cache and does not pass `-Dskip.npm=false`.
 
 The workflow must run in the canonical `springdoc/springdoc-openapi` repository, not a fork:
 `release:prepare` pushes to the `<scm>` connection URL, while the preflight and the recovery step
@@ -10,8 +10,8 @@ check `origin`; the two agree only when `origin` names the same repository as `<
 
 | Input                | Example         | Notes                                                |
 | -------------------- | --------------- | ---------------------------------------------------- |
-| `releaseVersion`     | `3.1.1`         | Must not exist as a tag or on Maven Central already.  |
-| `developmentVersion` | `3.1.2-SNAPSHOT`| Version the release branch keeps afterwards.          |
+| `releaseVersion`     | `2.9.1`         | Must not exist as a tag or on Maven Central already.  |
+| `developmentVersion` | `2.9.2-SNAPSHOT`| Version the release branch keeps afterwards.          |
 | `dryRun`             | `false`         | `true` rehearses `release:prepare` and changes nothing on the remote. |
 
 ## What a real run does
@@ -26,13 +26,12 @@ check `origin`; the two agree only when `origin` names the same repository as `<
    next patch version, not one that is already out. That is also the version you would release, so a
    rehearsal is worth running with the real candidate.
 3. **`release:prepare`** — transforms the POMs to `releaseVersion`, runs its default
-   `preparationGoals` (`clean verify` with `-DskipTests -Dskip.npm=false`, so a release POM that does
+   `preparationGoals` (`clean verify` with `-DskipTests`, so a release POM that does
    not build stops the release), commits, tags `v<releaseVersion>`, commits `developmentVersion` and
    **pushes both commits and the tag**.
    `release:perform` runs as a separate step, so it only starts once the tag actually exists.
 4. **`release:perform`** — checks out the tag into `target/checkout` and runs `deploy` there with
-   `-DskipTests -Dskip.npm=false` (the suite already ran in step 1, and the MCP dashboard must still be
-   built from the tagged sources). Deployment goes to the Central Portal through
+   `-DskipTests` (the suite already ran in step 1). Deployment goes to the Central Portal through
    `central-publishing-maven-plugin`, which bundles and uploads the modules — including the parent
    POM `org.springdoc:springdoc-openapi` — except `springdoc-openapi-tests`
    (`<skipPublishing>true</skipPublishing>`), signs with the `gpg` profile and waits for validation
@@ -87,7 +86,7 @@ back automatically, and re-running with the same `releaseVersion` fails the pref
    `git push origin :refs/tags/v<releaseVersion>` and `git push --force-with-lease origin <sha>^:<branch>`.
    If in doubt, do not rewrite the branch — release a new patch version instead.
 4. Re-run the workflow with the same versions.
-5. If a version is beyond repair, bump the patch number (`3.1.2` instead of `3.1.1`) and delete the
+5. If a version is beyond repair, bump the patch number (`2.9.2` instead of `2.9.1`) and delete the
    half-finished tag so it cannot be mistaken for a real release.
 
 ## Local equivalents
@@ -98,13 +97,13 @@ Useful when diagnosing without touching the CI:
 # What the workflow runs for a real release: prepare first, so that perform only
 # starts once the tag exists, then the deploy of that tag.
 ./mvnw -B -Pci,gpg release:prepare \
-  -DreleaseVersion=3.1.1 -DdevelopmentVersion=3.1.2-SNAPSHOT \
-  -Darguments="-DskipTests -Dskip.npm=false"
-./mvnw -B -Pci,gpg release:perform -Darguments="-DskipTests -Dskip.npm=false"
+  -DreleaseVersion=2.9.1 -DdevelopmentVersion=2.9.2-SNAPSHOT \
+  -Darguments="-DskipTests"
+./mvnw -B -Pci,gpg release:perform -Darguments="-DskipTests"
 
 # Rehearsal, identical to dryRun: true
 ./mvnw -B -Pci,gpg release:prepare \
-  -DreleaseVersion=3.1.1 -DdevelopmentVersion=3.1.2-SNAPSHOT \
-  -DdryRun=true -DpushChanges=false -Darguments="-DskipTests -Dskip.npm=false"
+  -DreleaseVersion=2.9.1 -DdevelopmentVersion=2.9.2-SNAPSHOT \
+  -DdryRun=true -DpushChanges=false -Darguments="-DskipTests"
 ./mvnw -B -Pci,gpg release:clean   # never pass -DdryRun here: release:clean has no such parameter
 ```
