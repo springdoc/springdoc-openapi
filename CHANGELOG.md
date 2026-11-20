@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The user's `OpenAPI` bean, and the schemas and responses springdoc-openapi adapts, are copied with
   `ModelCopy.deepCopy` instead of a JSON round trip
 - Upgrade swagger-ui to version **5.35.1**
-- Upgrade spring-boot to version **4.2.0**. Spring Boot 4.2 ignores the `X-Forwarded-Prefix` header by default: behind a proxy that sets it, enable it with `server.request.header.forwarded.use-prefix=true` so that the Swagger UI and Scalar URLs keep the prefix. `server.forward-headers-strategy` is deprecated in favor of `server.request.header.forwarded.strategy`
+- Upgrade spring-boot to version **4.2.0**. Spring Boot 4.2 ignores the `X-Forwarded-Prefix` header by default: behind a proxy that sets it, enable it with `server.request.header.forwarded.use-prefix=true` so that the Swagger UI and Scalar URLs keep the prefix. `server.forward-headers-strategy` is deprecated in favor of `server.request.header.forwarded.strategy`. Behind a proxy that sends the host in the standard `Forwarded` header and the prefix in `X-Forwarded-Prefix`, the Spring Boot properties cannot read both, as `use-prefix` requires the `x-forwarded` naming: serve the application under the prefix (`server.servlet.context-path` or `spring.webflux.base-path`) and forward the path unchanged, or register a `ForwardedHeaderFilter` or `ForwardedHeaderTransformer` that reads the standard header with `setUseForwardedPrefix(true)`
 - Upgrade Scalar to version **0.8.0**
 - Upgrade Spring AI to version **2.0.2**
 
