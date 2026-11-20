@@ -16,7 +16,7 @@
 
     <!-- Initialize the Scalar API Reference -->
     <script>
-      Scalar.createApiReference('#app', {"darkMode":false,"defaultOpenAllTags":false,"defaultOpenFirstTag":true,"documentDownloadType":"both","expandAllModelSections":false,"expandAllResponses":false,"expandAllSchemaProperties":false,"favicon":"favicon.svg","hideClientButton":false,"hideDarkModeToggle":false,"hideModels":false,"hideSearch":false,"hideTestRequestButton":false,"layout":"modern","orderRequiredPropertiesFirst":true,"persistAuth":false,"showOperationId":false,"showSidebar":true,"sources":[{"default":false,"title":"users","url":"http://localhost:9519/v3/api-docs/users"}],"telemetry":true,"theme":"default","withDefaultFonts":true})
+      Scalar.createApiReference('#app', {"darkMode":false,"defaultOpenAllTags":false,"defaultOpenFirstTag":true,"documentDownloadType":"both","expandAllModelSections":false,"expandAllResponses":false,"expandAllSchemaProperties":false,"favicon":"favicon.svg","hideClientButton":false,"hideDarkModeToggle":false,"hideModels":false,"hideSearch":false,"hideTestRequestButton":false,"layout":"modern","orderRequiredPropertiesFirst":true,"persistAuth":false,"persistSelectedClient":true,"showDefaultClientsWithSdkInstallation":false,"showOperationId":false,"showSidebar":true,"sources":[{"default":false,"title":"users","url":"http://localhost:9519/v3/api-docs/users"}],"telemetry":true,"theme":"default","withDefaultFonts":true})
     </script>
   </body>
 </html>
