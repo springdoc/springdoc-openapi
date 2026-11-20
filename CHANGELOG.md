@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Upgrade swagger-ui to version **5.35.1**
-- Upgrade Scalar to version **0.7.2**
+- Upgrade Scalar to version **0.8.0**
 - Upgrade spring-cloud-function to version **4.3.4**
 
 ### Fixed
