@@ -312,11 +312,11 @@ public class SchemaUtils {
 				if (type == null && schema.getTypes() != null && schema.getTypes().size() == 1)
 					type = schema.getTypes().iterator().next();
 				if (OPENAPI_ARRAY_TYPE.equals(type)) {
-					schema.setMinItems(((Size) anno).min());
+					schema.setMinItems(stricterMinimum(schema.getMinItems(), ((Size) anno).min()));
 					schema.setMaxItems(((Size) anno).max());
 				}
 				else if (OPENAPI_STRING_TYPE.equals(type)) {
-					schema.setMinLength(((Size) anno).min());
+					schema.setMinLength(stricterMinimum(schema.getMinLength(), ((Size) anno).min()));
 					schema.setMaxLength(((Size) anno).max());
 				}
 			}
@@ -334,6 +334,10 @@ public class SchemaUtils {
 				schema.setNullable(false);
 			}
 		}
+	}
+
+	private static Integer stricterMinimum(Integer current, int minimum) {
+		return current == null ? minimum : Math.max(current, minimum);
 	}
 
 	/**
