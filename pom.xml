@@ -54,15 +54,15 @@
 		<maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
 		<maven-release-plugin.version>3.3.1</maven-release-plugin.version>
 		<central-publishing-maven-plugin.version>0.12.0</central-publishing-maven-plugin.version>
-		<flatten-maven-plugin.version>1.9.0</flatten-maven-plugin.version>
-		<swagger-api.version>2.2.55</swagger-api.version>
-		<swagger-ui.version>5.35.1</swagger-ui.version>
+		<flatten-maven-plugin.version>1.10.0</flatten-maven-plugin.version>
+		<swagger-api.version>2.2.56</swagger-api.version>
+		<swagger-ui.version>5.36.0</swagger-ui.version>
 		<gmavenplus-plugin.version>5.1.0</gmavenplus-plugin.version>
 		<jjwt.version>0.13.0</jjwt.version>
 		<jackson-databind-nullable.version>0.2.13</jackson-databind-nullable.version>
 		<therapi-runtime-javadoc.version>0.16.0</therapi-runtime-javadoc.version>
 		<spring-cloud-function.version>4.3.4</spring-cloud-function.version>
-		<scalar.version>0.8.0</scalar.version>
+		<scalar.version>0.10.0</scalar.version>
 		<skipPublishing>false</skipPublishing>
 		<commons-lang3.version>3.22.0</commons-lang3.version>
 	</properties>
