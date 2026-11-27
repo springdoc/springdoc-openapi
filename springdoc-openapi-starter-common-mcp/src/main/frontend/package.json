@@ -12,13 +12,13 @@
     "@rjsf/core": "^6.11.1",
     "@rjsf/utils": "^6.11.0",
     "@rjsf/validator-ajv8": "^6.11.1",
-    "@tanstack/react-query": "^5.107.1",
+    "@tanstack/react-query": "^5.108.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-json-view-lite": "^2.1.0",
-    "tailwind-merge": "^3.7.0"
+    "tailwind-merge": "^3.7.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.5",
