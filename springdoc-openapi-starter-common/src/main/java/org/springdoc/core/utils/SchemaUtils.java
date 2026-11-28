@@ -292,7 +292,7 @@ public class SchemaUtils {
 			if (annotationName.equals(DecimalMin.class.getSimpleName())) {
 				DecimalMin min = (DecimalMin) anno;
 				if (min.inclusive()) {
-					schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
+				schema.setMinimum(new BigDecimal(min.value()));
 				}
 				else {
 					schema.setExclusiveMinimum(true);
@@ -301,7 +301,7 @@ public class SchemaUtils {
 			if (annotationName.equals(DecimalMax.class.getSimpleName())) {
 				DecimalMax max = (DecimalMax) anno;
 				if (max.inclusive()) {
-					schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
+				schema.setMaximum(new BigDecimal(max.value()));
 				}
 				else {
 					schema.setExclusiveMaximum(true);
